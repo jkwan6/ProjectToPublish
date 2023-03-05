@@ -1,0 +1,12 @@
+C:\Projects\ProjectToPublish\MyWebSite\ProjectDbDomain\bin\Debug\net6.0\ProjectDbDomain.deps.json
+C:\Projects\ProjectToPublish\MyWebSite\ProjectDbDomain\bin\Debug\net6.0\ProjectDbDomain.dll
+C:\Projects\ProjectToPublish\MyWebSite\ProjectDbDomain\bin\Debug\net6.0\ProjectDbDomain.pdb
+C:\Projects\ProjectToPublish\MyWebSite\ProjectDbDomain\obj\Debug\net6.0\ProjectDbDomain.csproj.AssemblyReference.cache
+C:\Projects\ProjectToPublish\MyWebSite\ProjectDbDomain\obj\Debug\net6.0\ProjectDbDomain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projects\ProjectToPublish\MyWebSite\ProjectDbDomain\obj\Debug\net6.0\ProjectDbDomain.AssemblyInfoInputs.cache
+C:\Projects\ProjectToPublish\MyWebSite\ProjectDbDomain\obj\Debug\net6.0\ProjectDbDomain.AssemblyInfo.cs
+C:\Projects\ProjectToPublish\MyWebSite\ProjectDbDomain\obj\Debug\net6.0\ProjectDbDomain.csproj.CoreCompileInputs.cache
+C:\Projects\ProjectToPublish\MyWebSite\ProjectDbDomain\obj\Debug\net6.0\ProjectDbDomain.dll
+C:\Projects\ProjectToPublish\MyWebSite\ProjectDbDomain\obj\Debug\net6.0\refint\ProjectDbDomain.dll
+C:\Projects\ProjectToPublish\MyWebSite\ProjectDbDomain\obj\Debug\net6.0\ProjectDbDomain.pdb
+C:\Projects\ProjectToPublish\MyWebSite\ProjectDbDomain\obj\Debug\net6.0\ref\ProjectDbDomain.dll
