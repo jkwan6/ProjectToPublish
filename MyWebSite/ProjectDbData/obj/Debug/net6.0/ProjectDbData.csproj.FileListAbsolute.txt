@@ -13,3 +13,5 @@ C:\Projects\ProjectToPublish\MyWebSite\ProjectDbData\obj\Debug\net6.0\ref\Projec
 C:\Projects\ProjectToPublish\MyWebSite\ProjectDbData\bin\Debug\net6.0\ProjectDbDomain.dll
 C:\Projects\ProjectToPublish\MyWebSite\ProjectDbData\bin\Debug\net6.0\ProjectDbDomain.pdb
 C:\Projects\ProjectToPublish\MyWebSite\ProjectDbData\obj\Debug\net6.0\ProjectDbData.csproj.CopyComplete
+C:\Projects\ProjectToPublish\MyWebSite\ProjectDbData\bin\Debug\net6.0\ProjectDbData.runtimeconfig.json
+C:\Projects\ProjectToPublish\MyWebSite\ProjectDbData\obj\Debug\net6.0\ProjectDbData.genruntimeconfig.cache

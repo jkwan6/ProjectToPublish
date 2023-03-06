@@ -6,12 +6,12 @@ namespace ProjectDbData
 {
     public class AppDbContext: IdentityDbContext<ApplicationUser>
     {
-        public AppDbContext() : base()
-        {
-        }
+        //public AppDbContext() : base()
+        //{
+        //}
 
         // Will use the Ctor of the base class with parameters = DbContexOptions
-        public AppDbContext(DbContextOptions options) : base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
 
