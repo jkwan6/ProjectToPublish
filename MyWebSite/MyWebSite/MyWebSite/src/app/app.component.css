@@ -1,0 +1,26 @@
+/*CSS Styles for Overall Layout*/
+
+
+.LayoutFlexContainer{
+    display:flex;
+    flex-direction:column;
+    border:solid;
+    height:100%;
+}
+
+.BodyStyles{
+    flex-grow:1;
+}
+
+.FooterStyles{
+    height:60px;
+
+
+/*    position:fixed;
+    width:100%;
+    bottom:0;*/
+}
+
+.NavBarStyles{
+    
+}

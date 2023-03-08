@@ -1,2 +1,0 @@
-C:\Projects\ProjectToPublish\MyWebSite\MyWebSite\obj\Debug\MyWebSite.esproj.SuggestedBindingRedirects.cache
-C:\Projects\ProjectToPublish\MyWebSite\MyWebSite\obj\Debug\MyWebSite.esproj.CoreCompileInputs.cache
