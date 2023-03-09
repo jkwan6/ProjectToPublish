@@ -4,23 +4,23 @@
 .LayoutFlexContainer{
     display:flex;
     flex-direction:column;
-    border:solid;
     height:100%;
 }
 
-.BodyStyles{
-    flex-grow:1;
+.NavBarStyles {
+    /*flex:1 1 auto;*/
 }
 
-.FooterStyles{
-    height:60px;
+.BodyStyles {
+    /*overflow: auto;*/
+    height: 100%;
+    flex: 1 1 auto;
+}
 
-
-/*    position:fixed;
+.FooterStyles {
+  flex: 1 1 auto;
+/*      position:fixed;
     width:100%;
     bottom:0;*/
 }
 
-.NavBarStyles{
-    
-}

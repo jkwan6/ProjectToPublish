@@ -1,0 +1,14 @@
+
+.FooterLinks{
+    text-decoration:none;
+}
+
+.FooterLinks:visited {
+  color:black;
+}
+
+.FooterLinks:hover{
+    text-decoration:underline;
+}
+
+

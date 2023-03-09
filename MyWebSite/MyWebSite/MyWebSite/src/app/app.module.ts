@@ -9,7 +9,7 @@ import { AngularMaterialModule } from './app-material.module';
 import { NavBarMenuComponent } from './Layout/nav-bar-menu/nav-bar-menu.component';
 import { FooterBarComponent } from './Layout/footer-bar/footer-bar.component';
 import { BodyContentComponent } from './Layout/body-content/body-content.component';
-
+import { SideBarComponent } from './Layout/body-content/side-bar/side-bar.component';
 
 
 @NgModule({
@@ -17,7 +17,8 @@ import { BodyContentComponent } from './Layout/body-content/body-content.compone
     AppComponent,
     NavBarMenuComponent,
     FooterBarComponent,
-    BodyContentComponent
+    BodyContentComponent,
+    SideBarComponent
   ],
   imports: [
     BrowserModule, HttpClientModule, BrowserAnimationsModule, AppRoutingModule, AngularMaterialModule
