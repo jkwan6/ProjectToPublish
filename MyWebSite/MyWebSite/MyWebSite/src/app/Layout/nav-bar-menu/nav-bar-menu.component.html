@@ -1,16 +1,43 @@
 <div>
-
   <mat-toolbar color="primary">
-    <div class="body-width">
-      <button (click)="vm.isPressed = !vm.isPressed; onToggle()"
-              [ngClass]="{'pressed':vm.isPressed}"
-              mat-button
-              matTooltip="Menu"
-              [matTooltipShowDelay]="showDelay.value"
-              [matTooltipHideDelay]="hideDelay.value">
-        <mat-icon>{{!vm.isPressed ? 'menu' : 'close'}}</mat-icon>
-      </button>
+
+    <div class="body-width LayoutFlexContainer">
+
+      <div class="Flex-Content1">
+        <button (click)="vm.isPressed = !vm.isPressed; onToggle()"
+                [ngClass]="{'pressed':vm.isPressed}"
+                mat-button
+                [matTooltip]="!vm.isPressed ? 'Menu' : 'Close'"
+                [matTooltipShowDelay]="showDelay.value"
+                [matTooltipHideDelay]="hideDelay.value">
+          <mat-icon>{{!vm.isPressed ? 'menu' : 'close'}}</mat-icon>
+        </button>
+      </div>
+
+      <div class="Flex-Content2">
+        My Page
+      </div>
+
+      <div class="LoginPage">
+
+        <span class="flex-container-no-wrap">
+          <a mat-button
+             class="Pill-Button1"
+             color="secondary"
+             [routerLink]="['/login']">
+            Sign Up
+          </a>
+
+          <a mat-flat-button
+             class="Pill-Button2"
+             color="secondary"
+             [routerLink]="['/login']">
+            Log In
+          </a>
+        </span>
+      </div>
 
     </div>
+
   </mat-toolbar>
 </div>

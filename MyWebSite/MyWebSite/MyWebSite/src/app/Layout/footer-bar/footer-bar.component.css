@@ -4,11 +4,13 @@
 }
 
 .FooterLinks:visited {
-  color:black;
+  color:white;
 }
 
 .FooterLinks:hover{
     text-decoration:underline;
 }
 
-
+.footer-color {
+  background-color: rgb(63 81 181);
+}

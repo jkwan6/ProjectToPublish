@@ -1,3 +1,30 @@
 .pressed {
   background: rgba(0,0,0,.2);
 }
+
+.LayoutFlexContainer{
+  display: flex;
+  flex-direction: row;
+}
+
+.Flex-Content2{
+    margin:auto;
+}
+
+.Pill-Button1 {
+  border-radius: 100vw;
+  margin:5px;
+}
+
+.Pill-Button1:hover {
+  background: rgba(0,0,0,.2);
+}
+
+.Pill-Button2 {
+  border-radius: 100vw;
+  margin: 5px;
+}
+
+.Pill-Button2:hover {
+  background: rgb(200, 200, 200, .8);
+}
