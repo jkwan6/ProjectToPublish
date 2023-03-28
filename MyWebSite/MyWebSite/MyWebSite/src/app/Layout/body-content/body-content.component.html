@@ -1,14 +1,17 @@
+<div class="body-width body-height">
+  <mat-drawer-container class="body-height">
 
-<mat-drawer-container class="body-height">
+    <mat-drawer class="sidenav-specs"
+                #drawer mode="side"
+                position="start">
+      <app-side-bar></app-side-bar>
+    </mat-drawer>
 
-  <mat-drawer class="sidenav-specs"
-              #drawer mode="side"
-              position="start">
-    <app-side-bar></app-side-bar>
-  </mat-drawer>
+    <div>
+      <router-outlet></router-outlet>
+    </div>
 
-  <div>
-    <router-outlet></router-outlet>
-  </div>
+  </mat-drawer-container>
 
-</mat-drawer-container>
+</div>
+

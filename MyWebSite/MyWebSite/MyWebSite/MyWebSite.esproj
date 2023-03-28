@@ -11,6 +11,7 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\MyWebSite</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="src\app\pages\" />
     <Folder Include="src\app\web-pages\" />
   </ItemGroup>
 </Project>

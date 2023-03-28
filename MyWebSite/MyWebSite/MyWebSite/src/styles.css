@@ -15,8 +15,12 @@ body {
 }
 
 .body-width{
-    max-width:1200px;
+    max-width:1300px;
     margin-left:auto;
     margin-right:auto;
     width:100%;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
 }

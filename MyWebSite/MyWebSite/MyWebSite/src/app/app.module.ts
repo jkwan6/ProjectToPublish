@@ -10,6 +10,12 @@ import { NavBarMenuComponent } from './Layout/nav-bar-menu/nav-bar-menu.componen
 import { FooterBarComponent } from './Layout/footer-bar/footer-bar.component';
 import { BodyContentComponent } from './Layout/body-content/body-content.component';
 import { SideBarComponent } from './Layout/body-content/side-bar/side-bar.component';
+import { ContactInfoComponent } from './pages/contact-info/contact-info.component';
+import { AcademicComponent } from './pages/academic/academic.component';
+import { ExperienceComponent } from './pages/experience/experience.component';
+import { TimelineComponent } from './pages/timeline/timeline.component';
+import { SkillsComponent } from './pages/skills/skills.component';
+import { LifeInGeneralComponent } from './pages/life-in-general/life-in-general.component';
 
 
 @NgModule({
@@ -18,7 +24,13 @@ import { SideBarComponent } from './Layout/body-content/side-bar/side-bar.compon
     NavBarMenuComponent,
     FooterBarComponent,
     BodyContentComponent,
-    SideBarComponent
+    SideBarComponent,
+    ContactInfoComponent,
+    AcademicComponent,
+    ExperienceComponent,
+    TimelineComponent,
+    SkillsComponent,
+    LifeInGeneralComponent
   ],
   imports: [
     BrowserModule, HttpClientModule, BrowserAnimationsModule, AppRoutingModule, AngularMaterialModule

@@ -1,0 +1,12 @@
+.WelcomeMessage{
+    padding:15px;
+    padding-top:15px;
+    padding-bottom:0;
+    text-align:left;
+    text-decoration:underline;
+}
+
+.DefaultText{
+    padding-left:20px;
+    padding-right:20px;
+}

@@ -7,6 +7,10 @@
   flex-direction: row;
 }
 
+.Flex-Content1{
+    padding-top:3px;
+}
+
 .Flex-Content2{
     margin:auto;
 }
@@ -27,4 +31,16 @@
 
 .Pill-Button2:hover {
   background: rgb(200, 200, 200, .8);
+}
+
+.NavbarLinks {
+  text-decoration: none;
+}
+
+.NavbarLinks:visited {
+  color: white;
+}
+
+.NavbarLinks:hover {
+  text-decoration: underline;
 }
