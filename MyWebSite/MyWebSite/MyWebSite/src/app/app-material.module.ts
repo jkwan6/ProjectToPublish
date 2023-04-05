@@ -18,7 +18,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSelectModule } from '@angular/material/select';
-import { MatMenuModule } from '@angular/material/menu'
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTabsModule } from '@angular/material/tabs';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { MatMenuModule } from '@angular/material/menu'
     MatIconModule,
     MatButtonToggleModule,
     MatSelectModule,
-    MatMenuModule
+    MatMenuModule,
+    MatTabsModule
   ],
   exports: [
     MatButtonModule,
@@ -61,7 +63,8 @@ import { MatMenuModule } from '@angular/material/menu'
     MatIconModule,
     MatButtonToggleModule,
     MatSelectModule,
-    MatMenuModule
+    MatMenuModule,
+    MatTabsModule
   ]
 })
 export class AngularMaterialModule { }
