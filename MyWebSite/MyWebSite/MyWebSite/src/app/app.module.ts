@@ -16,7 +16,7 @@ import { ExperienceComponent } from './pages/experience/experience.component';
 import { TimelineComponent } from './pages/timeline/timeline.component';
 import { SkillsComponent } from './pages/skills/skills.component';
 import { LifeInGeneralComponent } from './pages/life-in-general/life-in-general.component';
-
+import { LogInSignUpComponent } from './log-in-sign-up/log-in-sign-up.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +30,8 @@ import { LifeInGeneralComponent } from './pages/life-in-general/life-in-general.
     ExperienceComponent,
     TimelineComponent,
     SkillsComponent,
-    LifeInGeneralComponent
+    LifeInGeneralComponent,
+    LogInSignUpComponent
   ],
   imports: [
     BrowserModule, HttpClientModule, BrowserAnimationsModule, AppRoutingModule, AngularMaterialModule

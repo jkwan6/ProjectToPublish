@@ -1,1 +1,54 @@
-<p>log-in-sign-up works!</p>
+<div class="Container">
+
+  <div class="filler1"></div>
+
+  <div class="log-in-body">
+
+    <div class="Flex-Content1">
+      <mat-icon style="transform: scale(3); padding-top:15px;">account_circle</mat-icon>
+    </div>
+
+    <div class="Login-Block">
+
+      <h4 class="title-style">Log In</h4>
+
+      <div class="log-in-details">
+        <mat-form-field style="margin-bottom:-1.25em;"
+                        class="log-in-field"
+                        appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput>
+        </mat-form-field>
+
+        <mat-form-field style="margin-bottom: -1.25em;"
+                        class="log-in-field"
+                        appearance="outline">
+          <mat-label>Password</mat-label>
+          <input matInput [type]="hide ? 'password' : 'text'">
+          <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <button color="primary" class="log-in-button" mat-raised-button>Login</button>
+      </div>
+    </div>
+
+    <div class="Flex-Content3">
+      <div class="create-account">
+        <div class="button1">
+          Forgot Password?
+        </div>
+        <div class="button2">
+          Create Account
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="filler2"></div>
+
+</div>
+
+
