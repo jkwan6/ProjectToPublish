@@ -1,0 +1,12 @@
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\ServiceLayer\bin\Debug\net6.0\4. ServiceLayer.deps.json
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\ServiceLayer\bin\Debug\net6.0\4. ServiceLayer.dll
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\ServiceLayer\bin\Debug\net6.0\4. ServiceLayer.pdb
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\ServiceLayer\obj\Debug\net6.0\4. ServiceLayer.csproj.AssemblyReference.cache
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\ServiceLayer\obj\Debug\net6.0\4. ServiceLayer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\ServiceLayer\obj\Debug\net6.0\4. ServiceLayer.AssemblyInfoInputs.cache
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\ServiceLayer\obj\Debug\net6.0\4. ServiceLayer.AssemblyInfo.cs
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\ServiceLayer\obj\Debug\net6.0\4. ServiceLayer.csproj.CoreCompileInputs.cache
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\ServiceLayer\obj\Debug\net6.0\4. ServiceLayer.dll
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\ServiceLayer\obj\Debug\net6.0\refint\4. ServiceLayer.dll
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\ServiceLayer\obj\Debug\net6.0\4. ServiceLayer.pdb
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\ServiceLayer\obj\Debug\net6.0\ref\4. ServiceLayer.dll

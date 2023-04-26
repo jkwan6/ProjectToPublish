@@ -1,0 +1,17 @@
+
+.FooterLinks{
+    text-decoration:none;
+}
+
+.FooterLinks:visited {
+  color:white;
+}
+
+.FooterLinks:hover{
+    text-decoration:underline;
+}
+
+.footer-color {
+  background-color: rgb(63 81 181);
+  height:40px;
+}
