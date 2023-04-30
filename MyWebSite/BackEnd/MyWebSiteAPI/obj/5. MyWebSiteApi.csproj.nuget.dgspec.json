@@ -4,12 +4,12 @@
     "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\MyWebSiteAPI\\5. MyWebSiteApi.csproj": {}
   },
   "projects": {
-    "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\DataLayer\\1. DataLayer.csproj": {
+    "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\DataLayer\\DataLayer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\DataLayer\\1. DataLayer.csproj",
-        "projectName": "1. DataLayer",
-        "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\DataLayer\\1. DataLayer.csproj",
+        "projectUniqueName": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\DataLayer\\DataLayer.csproj",
+        "projectName": "DataLayer",
+        "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\DataLayer\\DataLayer.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
         "outputPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\DataLayer\\obj\\",
         "projectStyle": "PackageReference",
@@ -111,8 +111,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\DataLayer\\1. DataLayer.csproj": {
-                "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\DataLayer\\1. DataLayer.csproj"
+              "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\DataLayer\\DataLayer.csproj": {
+                "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\DataLayer\\DataLayer.csproj"
               }
             }
           }

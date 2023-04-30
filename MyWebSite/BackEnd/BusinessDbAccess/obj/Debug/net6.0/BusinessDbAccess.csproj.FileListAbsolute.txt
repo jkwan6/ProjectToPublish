@@ -1,0 +1,12 @@
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BusinessDbAccess\bin\Debug\net6.0\BusinessDbAccess.deps.json
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BusinessDbAccess\bin\Debug\net6.0\BusinessDbAccess.dll
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BusinessDbAccess\bin\Debug\net6.0\BusinessDbAccess.pdb
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BusinessDbAccess\obj\Debug\net6.0\BusinessDbAccess.csproj.AssemblyReference.cache
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BusinessDbAccess\obj\Debug\net6.0\BusinessDbAccess.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BusinessDbAccess\obj\Debug\net6.0\BusinessDbAccess.AssemblyInfoInputs.cache
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BusinessDbAccess\obj\Debug\net6.0\BusinessDbAccess.AssemblyInfo.cs
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BusinessDbAccess\obj\Debug\net6.0\BusinessDbAccess.csproj.CoreCompileInputs.cache
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BusinessDbAccess\obj\Debug\net6.0\BusinessDbAccess.dll
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BusinessDbAccess\obj\Debug\net6.0\refint\BusinessDbAccess.dll
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BusinessDbAccess\obj\Debug\net6.0\BusinessDbAccess.pdb
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BusinessDbAccess\obj\Debug\net6.0\ref\BusinessDbAccess.dll

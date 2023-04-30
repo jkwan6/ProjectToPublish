@@ -1,0 +1,14 @@
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\DataLayer\bin\Debug\net6.0\DataLayer.deps.json
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\DataLayer\bin\Debug\net6.0\DataLayer.runtimeconfig.json
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\DataLayer\bin\Debug\net6.0\DataLayer.dll
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\DataLayer\bin\Debug\net6.0\DataLayer.pdb
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\DataLayer\obj\Debug\net6.0\DataLayer.csproj.AssemblyReference.cache
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\DataLayer\obj\Debug\net6.0\DataLayer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\DataLayer\obj\Debug\net6.0\DataLayer.AssemblyInfoInputs.cache
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\DataLayer\obj\Debug\net6.0\DataLayer.AssemblyInfo.cs
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\DataLayer\obj\Debug\net6.0\DataLayer.csproj.CoreCompileInputs.cache
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\DataLayer\obj\Debug\net6.0\DataLayer.dll
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\DataLayer\obj\Debug\net6.0\refint\DataLayer.dll
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\DataLayer\obj\Debug\net6.0\DataLayer.pdb
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\DataLayer\obj\Debug\net6.0\DataLayer.genruntimeconfig.cache
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\DataLayer\obj\Debug\net6.0\ref\DataLayer.dll

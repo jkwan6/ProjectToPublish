@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "FbIWdF5yDE6Dw8gfq8+xRYd/KbEXvbztiEzJG6pThOdustuYFbnsZmkk0G7pWWZu0ye8uiy2hyPf+1x2BZCQHA==",
+  "dgSpecHash": "/3nQFhwB3BRJxMjFIm0SwlW9v0sfCEhHCH47xz1zRUz9aZvG8TAB+FpuE6pZAGUQ1T695tYdjX+ZlaJkodTnQA==",
   "success": true,
-  "projectFilePath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BusinessLogic\\3. BusinessLogic.csproj",
+  "projectFilePath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BusinessLogic\\BusinessLogic.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

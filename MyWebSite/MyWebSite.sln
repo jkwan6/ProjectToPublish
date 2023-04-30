@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "5. MyWebSiteApi", "BackEnd\MyWebSiteAPI\5. MyWebSiteApi.csproj", "{3E9A6E4C-4175-4CFC-9E29-96A3A370BFF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyWebSiteApi", "BackEnd\MyWebSiteAPI\MyWebSiteApi.csproj", "{3E9A6E4C-4175-4CFC-9E29-96A3A370BFF6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "2. BusinessDbAccess", "BackEnd\BusinessDbAccess\2. BusinessDbAccess.csproj", "{2A65E182-FFB3-4F2E-865A-52EDAD1DDA7D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessDbAccess", "BackEnd\BusinessDbAccess\BusinessDbAccess.csproj", "{2A65E182-FFB3-4F2E-865A-52EDAD1DDA7D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "3. BusinessLogic", "BackEnd\BusinessLogic\3. BusinessLogic.csproj", "{9E32A99B-3322-44CB-A3A0-A103D24CBDF1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogic", "BackEnd\BusinessLogic\BusinessLogic.csproj", "{9E32A99B-3322-44CB-A3A0-A103D24CBDF1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "1. DataLayer", "BackEnd\DataLayer\1. DataLayer.csproj", "{2E7B9357-7587-4B71-A109-A5FA66DC5AFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLayer", "BackEnd\DataLayer\DataLayer.csproj", "{2E7B9357-7587-4B71-A109-A5FA66DC5AFD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "4. ServiceLayer", "BackEnd\ServiceLayer\4. ServiceLayer.csproj", "{033CB73E-A97E-45C4-AE69-4890568F946D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceLayer", "BackEnd\ServiceLayer\ServiceLayer.csproj", "{033CB73E-A97E-45C4-AE69-4890568F946D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiTests", "BackEnd\ApiTests\ApiTests.csproj", "{D903E2E2-3068-4DB3-A023-1BD53F3925E8}"
 EndProject

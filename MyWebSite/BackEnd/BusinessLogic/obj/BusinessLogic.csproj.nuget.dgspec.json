@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Projects\\ProjectToPublish\\MyWebSite\\BusinessLogic\\BusinessLogic.csproj": {}
+    "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BusinessLogic\\BusinessLogic.csproj": {}
   },
   "projects": {
-    "C:\\Projects\\ProjectToPublish\\MyWebSite\\BusinessLogic\\BusinessLogic.csproj": {
+    "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BusinessLogic\\BusinessLogic.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BusinessLogic\\BusinessLogic.csproj",
+        "projectUniqueName": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BusinessLogic\\BusinessLogic.csproj",
         "projectName": "BusinessLogic",
-        "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BusinessLogic\\BusinessLogic.csproj",
+        "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BusinessLogic\\BusinessLogic.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BusinessLogic\\obj\\",
+        "outputPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BusinessLogic\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

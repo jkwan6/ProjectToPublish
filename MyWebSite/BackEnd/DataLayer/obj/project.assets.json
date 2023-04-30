@@ -2156,9 +2156,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\DataLayer\\1. DataLayer.csproj",
-      "projectName": "1. DataLayer",
-      "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\DataLayer\\1. DataLayer.csproj",
+      "projectUniqueName": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\DataLayer\\DataLayer.csproj",
+      "projectName": "DataLayer",
+      "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\DataLayer\\DataLayer.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
       "outputPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\DataLayer\\obj\\",
       "projectStyle": "PackageReference",

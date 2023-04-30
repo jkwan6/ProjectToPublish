@@ -1,0 +1,12 @@
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BusinessLogic\bin\Debug\net6.0\BusinessLogic.deps.json
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BusinessLogic\bin\Debug\net6.0\BusinessLogic.dll
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BusinessLogic\bin\Debug\net6.0\BusinessLogic.pdb
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BusinessLogic\obj\Debug\net6.0\BusinessLogic.csproj.AssemblyReference.cache
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BusinessLogic\obj\Debug\net6.0\BusinessLogic.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BusinessLogic\obj\Debug\net6.0\BusinessLogic.AssemblyInfoInputs.cache
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BusinessLogic\obj\Debug\net6.0\BusinessLogic.AssemblyInfo.cs
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BusinessLogic\obj\Debug\net6.0\BusinessLogic.csproj.CoreCompileInputs.cache
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BusinessLogic\obj\Debug\net6.0\BusinessLogic.dll
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BusinessLogic\obj\Debug\net6.0\refint\BusinessLogic.dll
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BusinessLogic\obj\Debug\net6.0\BusinessLogic.pdb
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BusinessLogic\obj\Debug\net6.0\ref\BusinessLogic.dll

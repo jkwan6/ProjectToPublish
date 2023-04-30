@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Projects\\ProjectToPublish\\MyWebSite\\ProjectDbDomain\\BusinessDbAccess.csproj": {}
+    "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BusinessDbAccess\\BusinessDbAccess.csproj": {}
   },
   "projects": {
-    "C:\\Projects\\ProjectToPublish\\MyWebSite\\ProjectDbDomain\\BusinessDbAccess.csproj": {
+    "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BusinessDbAccess\\BusinessDbAccess.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\ProjectToPublish\\MyWebSite\\ProjectDbDomain\\BusinessDbAccess.csproj",
+        "projectUniqueName": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BusinessDbAccess\\BusinessDbAccess.csproj",
         "projectName": "BusinessDbAccess",
-        "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\ProjectDbDomain\\BusinessDbAccess.csproj",
+        "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BusinessDbAccess\\BusinessDbAccess.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\ProjectDbDomain\\obj\\",
+        "outputPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BusinessDbAccess\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

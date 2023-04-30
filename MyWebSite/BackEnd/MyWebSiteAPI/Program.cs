@@ -4,6 +4,8 @@ using Microsoft.Extensions.Options;
 using DataLayer;
 using DataLayer.Entities;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using ServiceLayer.CommentsService;
+using ServiceLayer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +31,13 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Injecting Concrete DbContext
+builder.Services.AddScoped<AppDbContext>();
+builder.Services.AddScoped<IRepositoryBase<Comments>, CommentsRepository>();
+builder.Services.AddScoped<CommentsService>();
+
+// Middleware Pipeline
 
 var app = builder.Build();
 

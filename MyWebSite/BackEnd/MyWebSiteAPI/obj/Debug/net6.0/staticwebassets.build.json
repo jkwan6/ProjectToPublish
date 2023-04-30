@@ -1,8 +1,8 @@
 {
   "Version": 1,
-  "Hash": "Zgv39JbfDNsXUtDpIJflQ1x6059mZFj6+oTvZGtISIA=",
-  "Source": "5. MyWebSiteApi",
-  "BasePath": "_content/5. MyWebSiteApi",
+  "Hash": "IM8zxSiEHOSO/BhtJ82eRiJ3QsF2421iARrOxsfLLto=",
+  "Source": "MyWebSiteApi",
+  "BasePath": "_content/MyWebSiteApi",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],

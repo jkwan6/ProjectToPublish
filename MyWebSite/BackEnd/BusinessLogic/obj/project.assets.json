@@ -14,9 +14,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BusinessLogic\\3. BusinessLogic.csproj",
-      "projectName": "3. BusinessLogic",
-      "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BusinessLogic\\3. BusinessLogic.csproj",
+      "projectUniqueName": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BusinessLogic\\BusinessLogic.csproj",
+      "projectName": "BusinessLogic",
+      "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BusinessLogic\\BusinessLogic.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
       "outputPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BusinessLogic\\obj\\",
       "projectStyle": "PackageReference",

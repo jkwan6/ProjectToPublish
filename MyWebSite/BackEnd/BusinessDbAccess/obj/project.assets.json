@@ -825,9 +825,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BusinessDbAccess\\2. BusinessDbAccess.csproj",
-      "projectName": "2. BusinessDbAccess",
-      "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BusinessDbAccess\\2. BusinessDbAccess.csproj",
+      "projectUniqueName": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BusinessDbAccess\\BusinessDbAccess.csproj",
+      "projectName": "BusinessDbAccess",
+      "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BusinessDbAccess\\BusinessDbAccess.csproj",
       "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
       "outputPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BusinessDbAccess\\obj\\",
       "projectStyle": "PackageReference",
