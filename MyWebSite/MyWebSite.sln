@@ -15,6 +15,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceLayer", "BackEnd\Ser
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiTests", "BackEnd\ApiTests\ApiTests.csproj", "{D903E2E2-3068-4DB3-A023-1BD53F3925E8}"
 EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "MyWebSite", "FrontEnd\MyWebSite\MyWebSite\MyWebSite.esproj", "{1924A3ED-E2E7-4785-9518-2952835B7833}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthenticationServices", "AuthenticationServices\AuthenticationServices.csproj", "{F4BD2C4A-091B-4F7C-B7BF-EAB1BE8CBEB2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,16 @@ Global
 		{D903E2E2-3068-4DB3-A023-1BD53F3925E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D903E2E2-3068-4DB3-A023-1BD53F3925E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D903E2E2-3068-4DB3-A023-1BD53F3925E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1924A3ED-E2E7-4785-9518-2952835B7833}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1924A3ED-E2E7-4785-9518-2952835B7833}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1924A3ED-E2E7-4785-9518-2952835B7833}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{1924A3ED-E2E7-4785-9518-2952835B7833}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1924A3ED-E2E7-4785-9518-2952835B7833}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1924A3ED-E2E7-4785-9518-2952835B7833}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{F4BD2C4A-091B-4F7C-B7BF-EAB1BE8CBEB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4BD2C4A-091B-4F7C-B7BF-EAB1BE8CBEB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4BD2C4A-091B-4F7C-B7BF-EAB1BE8CBEB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4BD2C4A-091B-4F7C-B7BF-EAB1BE8CBEB2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

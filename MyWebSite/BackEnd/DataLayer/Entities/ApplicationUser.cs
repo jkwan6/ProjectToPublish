@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using DataLayer.EntitiesAuth;
+using Microsoft.AspNetCore.Identity;
+using System.Text.Json.Serialization;
 
 namespace DataLayer.Entities
 {
     public class ApplicationUser : IdentityUser
     {
-
+        [JsonIgnore] public List<RefreshToken> RefreshTokens { get; set; }
+        [JsonIgnore] public List<AppSession> AppSessions { get; set; }
     }
 }

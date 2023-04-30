@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using DataLayer.Entities;
+using DataLayer.EntitiesAuth;
+using System.Diagnostics.Metrics;
 
 namespace DataLayer
 {
@@ -23,8 +25,9 @@ namespace DataLayer
                 typeof(AppDbContext).Assembly
                 );
         }
-
         public DbSet<Comments> Comments { get; set; }
+        public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+        public DbSet<AppSession> AppSessions => Set<AppSession>();
 
     }
 }
