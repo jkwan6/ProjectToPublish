@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace DataLayer.Entities
 {
-    public class Comments
+    public class Comments: IEntityBase
     {
     [Key]
     [Required]
-    public int Id { get; set; }
+    public new int Id { get; set; }
     public DateTime CommentsTime => DateTime.UtcNow;
     public string? CommentsDescription { get; set; }
     }

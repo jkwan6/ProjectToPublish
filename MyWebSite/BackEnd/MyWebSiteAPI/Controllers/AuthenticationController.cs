@@ -6,5 +6,7 @@ namespace MyWebSiteApi.Controllers
     [ApiController]
     public class AuthenticationController : Controller
     {
+
+
     }
 }

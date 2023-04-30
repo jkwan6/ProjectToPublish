@@ -28,36 +28,31 @@ namespace MyWebSiteApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Comments>> GetByIdAsync(int id)
+        public async Task<HttpResponseMessage> GetByIdAsync(int id)
         {
             var result = await _service.GetByIdAsync(id);
             return result;
         }
 
-        [HttpPut]
-        public void PutAsync(Comments comment)
+        [HttpPut("{id}")]
+        public async Task<HttpResponseMessage> PutAsync(int id, Comments comment)
         {
-            _service.PutAsync(comment);
-            _service.Save();
+            var results = await _service.PutAsync(id, comment);
+            return results;
         }
 
         [HttpPost]
-        public void PostAsync(Comments comment)
+        public async Task<HttpResponseMessage> PostAsync(Comments comment)
         {
-            _service.PostAsync(comment);
-            _service.Save();
+            var results = await _service.PostAsync(comment);
+            return results;
         }
 
-
-
-
-        // Put
-
-        // Post
-
-        // Delete
-
-
-
+        [HttpDelete("{id}")]
+        public async Task<HttpResponseMessage> DeleteAsync(int id)
+        {
+            var response = await _service.DeleteAsync(id);
+            return response;
+        }
     }
 }

@@ -24,32 +24,28 @@ namespace ServiceLayer.CommentsService
             return results;
         }
 
-        public async Task<ActionResult<Comments>> GetByIdAsync(int id)
+        public async Task<HttpResponseMessage> GetByIdAsync(int id)
         {
             var results = await _repository.GetByIdAsync(id);
             return results;
         }
 
-        public void PutAsync(Comments comment)
+        public async Task<HttpResponseMessage> PutAsync(int id, Comments comment)
         {
-            _repository.PutAsync(comment);
+            var results = await _repository.PutAsync(id, comment);
+            return results!;
         }
 
-        public void PostAsync(Comments comment)
+        public async Task<HttpResponseMessage> PostAsync(Comments comment)
         {
-            _repository.PostAsync(comment);
+            var results = await _repository.PostAsync(comment);
+            return results!;
         }
 
-        public async Task<IActionResult> DeleteAsync(int id)
+        public async Task<HttpResponseMessage> DeleteAsync(int id)
         {
-            var response = await _repository.DeleteAsync(id);
-            var result = new ObjectResult(response.Content);
+            var result = await _repository.DeleteAsync(id);
             return result;
-        }
-
-        public void Save()
-        {
-            _repository.Save();
         }
     }
 }

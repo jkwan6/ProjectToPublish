@@ -144,3 +144,5 @@ C:\Projects\ProjectToPublish\MyWebSite\BackEnd\MyWebSiteAPI\bin\Debug\net6.0\Mic
 C:\Projects\ProjectToPublish\MyWebSite\BackEnd\MyWebSiteAPI\bin\Debug\net6.0\Newtonsoft.Json.dll
 C:\Projects\ProjectToPublish\MyWebSite\BackEnd\MyWebSiteAPI\bin\Debug\net6.0\ServiceLayer.dll
 C:\Projects\ProjectToPublish\MyWebSite\BackEnd\MyWebSiteAPI\bin\Debug\net6.0\ServiceLayer.pdb
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\MyWebSiteAPI\bin\Debug\net6.0\System.Net.Http.Formatting.dll
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\MyWebSiteAPI\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
