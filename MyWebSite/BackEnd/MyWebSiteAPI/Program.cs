@@ -6,42 +6,83 @@ using DataLayer.Entities;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using ServiceLayer.CommentsService;
 using ServiceLayer;
+using AuthenticationServices.AuthenticationService;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+//////// <--- INFRASTRUCTURE SERVICE ---> //////////
 
+// CONTROLLER CONFIGS
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
-
-
+// DBCONTEXT CONFIGS
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")
         ).LogTo(Console.WriteLine, new[] { DbLoggerCategory.Query.Name })
     );
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "AngularPolicy",
+        cfg =>
+        {
+            cfg.AllowAnyHeader();
+            cfg.AllowAnyMethod();
+            cfg.WithOrigins(builder.Configuration["AllowedCORS"]);
+        });
+});
+
+// PASSWORD CONFIGS
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.SignIn.RequireConfirmedAccount = true;
-    options.Password.RequireDigit = true;
-    options.Password.RequireLowercase = true;
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequiredLength = 1;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+
 }).AddEntityFrameworkStores<AppDbContext>();
+
+// JWT CONFIGS
+builder.Services.AddAuthentication(opt =>
+{
+    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        RequireExpirationTime = true,
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+        ValidAudience = builder.Configuration["JwtSettings:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecurityKey"]))
+    };
+});
+
+////////////////////////////////////////////////////
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Injecting Concrete DbContext
+// DI CONTAINER
 builder.Services.AddScoped<AppDbContext>();
 builder.Services.AddScoped<IRepositoryBase<Comments>, CommentsRepository>();
 builder.Services.AddScoped<CommentsService>();
-
-// Middleware Pipeline
+builder.Services.AddScoped<JwtCreatorService>();
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+//////// <--- MIDDLEWARE PIPELINE ---> //////////
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -51,6 +92,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseCors("AngularPolicy");
 
 app.MapControllers();
 

@@ -6,7 +6,7 @@ using ServiceLayer.CommentsService;
 
 namespace MyWebSiteApi.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class CommentsController : Controller
     {

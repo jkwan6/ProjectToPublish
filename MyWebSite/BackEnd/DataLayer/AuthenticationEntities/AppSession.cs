@@ -7,10 +7,10 @@ namespace DataLayer.AuthenticationEntities
     {
         // Properties
         [Key][Required] public int AppSessionId { get; set; }
-        public string CreatedByIp { get; set; }
-        public DateTime Created { get; set; }
+        public string? CreatedByIp { get; set; }
+        public DateTime? Created { get; set; }
         public DateTime? Expires { get; set; }
-        public string UserFingerprint { get; set; }
+        public string? UserFingerprint { get; set; }
         public DateTime? Revoked { get; set; }
 
         // Method Properties

@@ -1,5 +1,4 @@
-﻿using static AuthenticationServices.AuthenticationService.AuthenticationService;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using DataLayer;
 using Microsoft.AspNetCore.Identity;
 using DataLayer.Entities;
@@ -32,46 +31,65 @@ namespace AuthenticationServices.AuthenticationService
             // Login Method - Returns JWT and Refresh Token
             public async Task<LoginResult> Login(LoginRequest loginRequest, string ipAddress)
             {
-                // Validation against DB
-                var user = await _userManager.FindByNameAsync(loginRequest.Email);
-                var password = await _userManager.CheckPasswordAsync(user, loginRequest.Password);
+            // Validation against DB
+            var user = await _userManager.FindByNameAsync(loginRequest.Email);
+            var password = await _userManager.CheckPasswordAsync(user, loginRequest.Password);
 
-                // Early Return if Authentication Fails
-                if (user is null || password is false) return new LoginResult(false);
+            // Early Return if Authentication Fails
+            if (user is null || password is false) return new LoginResult(false);
 
-                // Will need to instantiate a Session
-                // Will need to create a refresh token
-                // Will need to create an access token
+            // Will need to instantiate a Session
+            // Will need to create a refresh token
+            // Will need to create an access token
 
-                // Those three will have to be linked together
-                // Session will be the parent
-                // Refresh Tokens will provide Access Tokens
-                // Access Tokens will provide Access to App
+            // Those three will have to be linked together
+            // Session will be the parent
+            // Refresh Tokens will provide Access Tokens
+            // Access Tokens will provide Access to App
 
-                // Multiple Sessions will have to be allowed to live at the same time
-                // For Multiple Devices
-                // Will need to Authenticate the Session based upon a few Browser Fingerprints
-                // Will have to mock the Browser Fingerprints to just a basic few
+            // Multiple Sessions will have to be allowed to live at the same time
+            // For Multiple Devices
+            // Will need to Authenticate the Session based upon a few Browser Fingerprints
+            // Will have to mock the Browser Fingerprints to just a basic few
 
 
-                // Creation of Tokens
-                var session = new AppSession(); // Paused here
-                var tokenPrep = await _jwtCreator.GetTokenAsync(user);  // Token Prep
-                var tokenToReturn = new JwtSecurityTokenHandler().WriteToken(tokenPrep);
-                var refreshTokenToReturn = generateRefreshToken(ipAddress);
+            // Creation of Tokens
+            var session = new AppSession(); // Paused here
+            session.User = user;
+            var tokenPrep = await _jwtCreator.GetTokenAsync(user);  // Token Prep
+            var tokenToReturn = new JwtSecurityTokenHandler().WriteToken(tokenPrep);
+            var refreshTokenToReturn = generateRefreshToken(ipAddress);
 
-                // DbContext Logic
-                if (user.RefreshTokens is null) { user.RefreshTokens = new List<RefreshToken>(); }
-                user.RefreshTokens.Add(refreshTokenToReturn);
-                _context.Users.Update(user);
-                _context.SaveChanges();
+            // DbContext Logic
+            if (user.RefreshTokens is null) 
+            { 
+                user.RefreshTokens = new List<RefreshToken>(); 
+            }
 
-                // Assigning Token to Login Result
-                var loginResult = new LoginResult(true)
-                { token = tokenToReturn, refreshToken = refreshTokenToReturn.Token };
+            if (user.AppSessions is null)
+            {
+                user.AppSessions = new List<AppSession>();
+            }
 
-                // Returning LoginResult
-                return loginResult;
+            if (session.RefreshTokens is null)
+            {
+                session.RefreshTokens = new List<RefreshToken>();
+            }
+
+
+            session.RefreshTokens.Add(refreshTokenToReturn);
+            user.AppSessions.Add(session);
+            user.RefreshTokens.Add(refreshTokenToReturn);
+
+            _context.Users.Update(user);
+            _context.SaveChanges();
+
+            // Assigning Token to Login Result
+            var loginResult = new LoginResult(true)
+            { token = tokenToReturn, refreshToken = refreshTokenToReturn.Token };
+
+            // Returning LoginResult
+            return loginResult;
             }
 
 

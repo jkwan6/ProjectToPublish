@@ -13,5 +13,6 @@
   <ItemGroup>
     <Folder Include="src\app\pages\" />
     <Folder Include="src\app\web-pages\" />
+    <Folder Include="src\service\" />
   </ItemGroup>
 </Project>

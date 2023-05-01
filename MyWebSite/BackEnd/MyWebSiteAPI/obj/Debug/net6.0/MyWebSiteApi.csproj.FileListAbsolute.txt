@@ -146,3 +146,6 @@ C:\Projects\ProjectToPublish\MyWebSite\BackEnd\MyWebSiteAPI\bin\Debug\net6.0\Ser
 C:\Projects\ProjectToPublish\MyWebSite\BackEnd\MyWebSiteAPI\bin\Debug\net6.0\ServiceLayer.pdb
 C:\Projects\ProjectToPublish\MyWebSite\BackEnd\MyWebSiteAPI\bin\Debug\net6.0\System.Net.Http.Formatting.dll
 C:\Projects\ProjectToPublish\MyWebSite\BackEnd\MyWebSiteAPI\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\MyWebSiteAPI\bin\Debug\net6.0\AuthenticationServices.dll
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\MyWebSiteAPI\bin\Debug\net6.0\AuthenticationServices.pdb
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\MyWebSiteAPI\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

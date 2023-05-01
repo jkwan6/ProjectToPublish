@@ -17,6 +17,8 @@ import { TimelineComponent } from './pages/timeline/timeline.component';
 import { SkillsComponent } from './pages/skills/skills.component';
 import { LifeInGeneralComponent } from './pages/life-in-general/life-in-general.component';
 import { LogInSignUpComponent } from './log-in-sign-up/log-in-sign-up.component';
+import { HomePageComponent } from './home-page/home-page.component';
+
 
 @NgModule({
   declarations: [
@@ -31,7 +33,8 @@ import { LogInSignUpComponent } from './log-in-sign-up/log-in-sign-up.component'
     TimelineComponent,
     SkillsComponent,
     LifeInGeneralComponent,
-    LogInSignUpComponent
+    LogInSignUpComponent,
+    HomePageComponent
   ],
   imports: [
     BrowserModule, HttpClientModule, BrowserAnimationsModule, AppRoutingModule, AngularMaterialModule

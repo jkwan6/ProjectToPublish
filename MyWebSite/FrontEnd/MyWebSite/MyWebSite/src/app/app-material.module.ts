@@ -42,7 +42,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatButtonToggleModule,
     MatSelectModule,
     MatMenuModule,
-    MatTabsModule
+    MatTabsModule,
   ],
   exports: [
     MatButtonModule,
