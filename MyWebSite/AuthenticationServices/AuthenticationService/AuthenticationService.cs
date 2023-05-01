@@ -5,10 +5,11 @@ using Microsoft.AspNetCore.Identity;
 using DataLayer.Entities;
 using AuthenticationServices.DTO;
 using System.IdentityModel.Tokens.Jwt;
+using DataLayer.AuthenticationEntities;
 
 namespace AuthenticationServices.AuthenticationService
 {
-    public class AuthenticationService
+    public class AuthenticationService: IAuthenticationService
     {
 
             // Properties

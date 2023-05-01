@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using DataLayer.Entities;
 
-namespace DataLayer.EntitiesAuth
+namespace DataLayer.AuthenticationEntities
 {
     public class RefreshToken
     {
@@ -23,7 +23,7 @@ namespace DataLayer.EntitiesAuth
         // <-- Relationships --> //
 
 
-        // Parent Relationship 1
+        // Parent Relationships
         public AppSession AppSession { get; set; }
         public int AppSessionId { get; set; }
 

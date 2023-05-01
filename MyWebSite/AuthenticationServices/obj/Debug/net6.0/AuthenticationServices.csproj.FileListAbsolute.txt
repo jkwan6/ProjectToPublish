@@ -1,0 +1,15 @@
+C:\Projects\ProjectToPublish\MyWebSite\AuthenticationServices\obj\Debug\net6.0\AuthenticationServices.csproj.AssemblyReference.cache
+C:\Projects\ProjectToPublish\MyWebSite\AuthenticationServices\obj\Debug\net6.0\AuthenticationServices.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projects\ProjectToPublish\MyWebSite\AuthenticationServices\obj\Debug\net6.0\AuthenticationServices.AssemblyInfoInputs.cache
+C:\Projects\ProjectToPublish\MyWebSite\AuthenticationServices\obj\Debug\net6.0\AuthenticationServices.AssemblyInfo.cs
+C:\Projects\ProjectToPublish\MyWebSite\AuthenticationServices\obj\Debug\net6.0\AuthenticationServices.csproj.CoreCompileInputs.cache
+C:\Projects\ProjectToPublish\MyWebSite\AuthenticationServices\bin\Debug\net6.0\AuthenticationServices.deps.json
+C:\Projects\ProjectToPublish\MyWebSite\AuthenticationServices\bin\Debug\net6.0\AuthenticationServices.dll
+C:\Projects\ProjectToPublish\MyWebSite\AuthenticationServices\bin\Debug\net6.0\AuthenticationServices.pdb
+C:\Projects\ProjectToPublish\MyWebSite\AuthenticationServices\bin\Debug\net6.0\DataLayer.dll
+C:\Projects\ProjectToPublish\MyWebSite\AuthenticationServices\bin\Debug\net6.0\DataLayer.pdb
+C:\Projects\ProjectToPublish\MyWebSite\AuthenticationServices\obj\Debug\net6.0\AuthenticationServices.csproj.CopyComplete
+C:\Projects\ProjectToPublish\MyWebSite\AuthenticationServices\obj\Debug\net6.0\AuthenticationServices.dll
+C:\Projects\ProjectToPublish\MyWebSite\AuthenticationServices\obj\Debug\net6.0\refint\AuthenticationServices.dll
+C:\Projects\ProjectToPublish\MyWebSite\AuthenticationServices\obj\Debug\net6.0\AuthenticationServices.pdb
+C:\Projects\ProjectToPublish\MyWebSite\AuthenticationServices\obj\Debug\net6.0\ref\AuthenticationServices.dll

@@ -1,4 +1,4 @@
-﻿using DataLayer.EntitiesAuth;
+﻿using DataLayer.AuthenticationEntities;
 using Microsoft.AspNetCore.Identity;
 using System.Text.Json.Serialization;
 
