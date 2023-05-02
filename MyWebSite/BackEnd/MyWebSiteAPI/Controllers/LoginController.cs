@@ -1,5 +1,8 @@
 ﻿using AuthenticationBusinessLogic.DTO;
 using AuthenticationServices.AuthenticationService;
+using DataLayer.Entities;
+using DataLayer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Net.Http.Headers;
@@ -8,17 +11,26 @@ namespace MyWebSiteApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthenticationController : Controller
+    public partial class AuthenticationController : Controller
     {
-        private readonly IAuthenticationService _authService;
 
-        /* <------------  Constructor ------------> */
-        public AuthenticationController(IAuthenticationService authService)
+        private readonly AppDbContext _context;
+        private readonly IAuthenticationService _authService;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+
+        public AuthenticationController(
+            AppDbContext context,
+            IAuthenticationService authService,
+            UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager)
         {
-            _authService = authService;                     // DI
+            _authService = authService;
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _context = context;
         }
 
-        /* <-------------  Endpoints -------------> */
 
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
@@ -27,14 +39,15 @@ namespace MyWebSiteApi.Controllers
 
             var loginResult = await _authService.Login(loginRequest, ipAdress()!);
 
-            setTokenCookie(loginResult.refreshToken);
-
             bool isAuthorized = (loginResult.success) ? true : false;
+
+            if (isAuthorized) setTokenCookie(loginResult.refreshToken!);
 
             return (isAuthorized) ? Ok(loginResult) : Unauthorized(loginResult);
         }
 
 
+        #region Stuff to develop later
         //[HttpPost("refreshtoken")]
         //public async Task<IActionResult> RefreshToken()
         //{
@@ -50,19 +63,19 @@ namespace MyWebSiteApi.Controllers
         //}
 
 
-        [HttpPost("revoketoken")]
-        public IActionResult RevokeToken()
-        {
-            var refreshToken = Request.Cookies["refreshtoken"];
+        //[HttpPost("revoketoken")]
+        //public IActionResult RevokeToken()
+        //{
+        //    var refreshToken = Request.Cookies["refreshtoken"];
 
-            if (string.IsNullOrEmpty(refreshToken)) { return BadRequest("Token Required"); };
+        //    if (string.IsNullOrEmpty(refreshToken)) { return BadRequest("Token Required"); };
 
-            var result = _authService.RevokeToken(refreshToken, ipAdress());
+        //    var result = _authService.RevokeToken(refreshToken, ipAdress());
 
-            return Ok(result);
-        }
+        //    return Ok(result);
+        //}
 
-
+        #endregion
 
 
         /* <----------  Private Methods ----------> */
@@ -74,15 +87,14 @@ namespace MyWebSiteApi.Controllers
                 // Will convert IPV6 to IPV4. Will keep IPV4 to IPV4
                 return this.HttpContext.Connection.RemoteIpAddress?.MapToIPv4().ToString();
         }
-
         private void setTokenCookie(string token)
         {
             var cookieOptions = new CookieOptions
             {
-                HttpOnly = true,
-                Expires = DateTime.UtcNow.AddDays(7)
+                HttpOnly = true,                                            // Http Only
+                Expires = DateTime.UtcNow.AddDays(7)                        // Cookie expires in 7 days
             };
-            Response.Cookies.Append("refreshToken", token, cookieOptions);
+            Response.Cookies.Append("refreshToken", token, cookieOptions);  // Cookie Configs
         }
 
     }

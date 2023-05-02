@@ -149,3 +149,5 @@ C:\Projects\ProjectToPublish\MyWebSite\BackEnd\MyWebSiteAPI\bin\Debug\net6.0\New
 C:\Projects\ProjectToPublish\MyWebSite\BackEnd\MyWebSiteAPI\bin\Debug\net6.0\AuthenticationServices.dll
 C:\Projects\ProjectToPublish\MyWebSite\BackEnd\MyWebSiteAPI\bin\Debug\net6.0\AuthenticationServices.pdb
 C:\Projects\ProjectToPublish\MyWebSite\BackEnd\MyWebSiteAPI\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\MyWebSiteAPI\bin\Debug\net6.0\AuthenticationBusinessLogic.dll
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\MyWebSiteAPI\bin\Debug\net6.0\AuthenticationBusinessLogic.pdb

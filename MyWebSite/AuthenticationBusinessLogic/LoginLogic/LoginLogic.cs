@@ -58,7 +58,7 @@ namespace AuthenticationBusinessLogic.LoginLogic
         public async Task<RefreshToken> CreateRefreshToken(string userId, AppSession session, string ipAddress)
         {
             var _user = await _userManager.FindByIdAsync(userId);
-            var _session = await _context.AppSessions.FindAsync(session);
+            var _session = await _context.AppSessions.FindAsync(session.AppSessionId);
 
             var refreshToken = new RefreshToken(_user);
             refreshToken.CreatedByIp = ipAddress;
@@ -78,12 +78,19 @@ namespace AuthenticationBusinessLogic.LoginLogic
             return refreshToken;
         }
 
-        public async Task<string> CreateAccessToken(string userId, AppSession session, string ipAddress)
+        public async Task<AccessToken> CreateAccessToken(string userId, RefreshToken refreshToken, string ipAddress)
         {
             var _user = await _userManager.FindByIdAsync(userId);
+            var _refreshToken = await _context.RefreshTokens.FindAsync(refreshToken.Id);
+            var accessToken = new AccessToken(_refreshToken!);
 
             var tokenPrep = await _jwtCreator.GetTokenAsync(_user);
-            var accessToken = new JwtSecurityTokenHandler().WriteToken(tokenPrep);
+            var token = new JwtSecurityTokenHandler().WriteToken(tokenPrep);
+
+            accessToken.Token = token;
+
+            _context.AccessTokens.Add(accessToken);
+            _context.SaveChanges();
 
             return accessToken;
         }

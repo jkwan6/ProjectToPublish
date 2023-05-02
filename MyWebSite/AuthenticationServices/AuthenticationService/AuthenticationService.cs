@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using AuthenticationBusinessLogic.DTO;
 using AuthenticationBusinessLogic.LoginLogic;
 using System.Reflection.Metadata.Ecma335;
+using AuthenticationServices.BusinessLogic;
 
 namespace AuthenticationServices.AuthenticationService
 {
@@ -17,24 +18,15 @@ namespace AuthenticationServices.AuthenticationService
 
         // Properties
         private readonly AppDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly JwtCreatorService _jwtCreator;
-        private readonly HttpRequest _httpRequest;
         private readonly LoginLogic _loginLogic;
 
         public AuthenticationService(
-                    AppDbContext context,
-                    UserManager<ApplicationUser> userManager,
-                    JwtCreatorService jwtCreator,
-                    HttpRequest httpRequest,
-                    LoginLogic loginLogic)
-                    {
-                        _context = context;
-                        _userManager = userManager;
-                        _jwtCreator = jwtCreator;
-                        _httpRequest = httpRequest;
-                        _loginLogic = loginLogic;
-                    }
+            AppDbContext context,
+            LoginLogic loginLogic)
+            {
+                _context = context;
+                _loginLogic = loginLogic;
+            }
 
         // Login Method - Returns JWT and Refresh Token
         public async Task<LoginResult> Login(LoginRequest loginRequest, string ipAddress)
@@ -48,9 +40,9 @@ namespace AuthenticationServices.AuthenticationService
             var userId = authenticateUserTuple.Item2;                                                // Succeed --> get Id
 
             // Continue Authentication
-            var session = await _loginLogic.CreateSession(userId!, "112");
-            var refreshToken = await _loginLogic.CreateRefreshToken(userId!, session, "123");
-            var accessToken = await _loginLogic.CreateAccessToken(userId, session, "123");
+            var session = await _loginLogic.CreateSession(userId!, ipAddress);
+            var refreshToken = await _loginLogic.CreateRefreshToken(userId!, session, ipAddress);
+            var accessToken = await _loginLogic.CreateAccessToken(userId!, refreshToken, ipAddress);
             #region To Do List
             // Will need to instantiate a Session
             // Will need to create a refresh token
@@ -70,7 +62,7 @@ namespace AuthenticationServices.AuthenticationService
             // Assigning Token to Login Result
             var loginResult = new LoginResult(true)
             { 
-                token = accessToken, 
+                token = accessToken.Token, 
                 refreshToken = refreshToken.Token 
             };
 
@@ -78,7 +70,14 @@ namespace AuthenticationServices.AuthenticationService
         }
 
 
+        //public async Task<AuthenticationBusinessLogic.DTO.SignInResult> SignIn()
+        //{
 
+        //}
+
+
+
+        #region UnComment
         //public async Task<LoginResult> RefreshToken(string oldRefreshToken, string ipAddress)
         //{
         //    //// Provides me with the user based on token and ipAddress
@@ -119,40 +118,36 @@ namespace AuthenticationServices.AuthenticationService
 
         //    //return new LoginResult(true) { token = tokenToReturn, refreshToken = newRefreshToken.Token };
         //}
+        #endregion
 
+        #region RevokeToken
+        //public async Task<LoginResult> RevokeToken(string refreshTokenString, string ipAdress)
+        //{
+        //    // Get the Token from the Db
+        //    var refreshTokenEntity = _context.RefreshTokens.Select(x => x)
+        //        .Where(x => x.Token
+        //        .Equals(refreshTokenString))
+        //        .First();
 
+        //    // Get the User from the Db
+        //    var user = _context.Users
+        //        .Select(x => x)
+        //        .Where(x => x.RefreshTokens
+        //        .Any(x => x.Equals(refreshTokenEntity)));
 
-        public async Task<LoginResult> RevokeToken(string refreshTokenString, string ipAdress)
-        {
-            // Get the Token from the Db
-            var refreshTokenEntity = _context.RefreshTokens.Select(x => x)
-                .Where(x => x.Token
-                .Equals(refreshTokenString))
-                .First();
+        //    // From then on you revoke
+        //    if (!refreshTokenEntity.IsActive) return new LoginResult(false);
 
-            // Get the User from the Db
-            var user = _context.Users
-                .Select(x => x)
-                .Where(x => x.RefreshTokens
-                .Any(x => x.Equals(refreshTokenEntity)));
+        //    // Revoking the Token -- What happens to those that were not assigned this?
+        //    refreshTokenEntity.Revoked = DateTime.UtcNow;
 
-            // From then on you revoke
-            if (!refreshTokenEntity.IsActive) return new LoginResult(false);
-
-            // Revoking the Token -- What happens to those that were not assigned this?
-            refreshTokenEntity.Revoked = DateTime.UtcNow;
-
-
-
-
-            return null;
-        }
+        //    return null;
+        //}
+        #endregion
 
 
 
 
 
-
-        /* <----------  Private Methods ----------> */
     }
 }

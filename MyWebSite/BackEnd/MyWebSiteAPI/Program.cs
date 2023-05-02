@@ -9,6 +9,9 @@ using ServiceLayer;
 using AuthenticationServices.AuthenticationService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using AuthenticationBusinessLogic.LoginLogic;
+using AuthenticationServices.BusinessLogic;
+using AuthenticationBusinessLogic.SignInLogic;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -77,8 +80,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<AppDbContext>();
 builder.Services.AddScoped<IRepositoryBase<Comments>, CommentsRepository>();
 builder.Services.AddScoped<CommentsService>();
-builder.Services.AddScoped<JwtCreatorService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<LoginLogic>();
+builder.Services.AddScoped<SignInLogic>();
+builder.Services.AddScoped<JwtCreatorLogic>();
 
 var app = builder.Build();
 

@@ -23,7 +23,7 @@ namespace AuthenticationBusinessLogic.DTO
         public string? token { get; set; }
 
 
-        [JsonIgnore] // Will Not be Sent Via the Return Body
-        public string refreshToken { get; set; }
+        [JsonIgnore] // Will Not be Sent Via the Return Body --> Will be send in a cookie
+        public string? refreshToken { get; set; }
     }
 }

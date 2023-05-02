@@ -22,6 +22,28 @@ namespace DataLayer.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("DataLayer.AuthenticationEntities.AccessToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("RefreshTokenId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RefreshTokenId");
+
+                    b.ToTable("AccessToken", (string)null);
+                });
+
             modelBuilder.Entity("DataLayer.AuthenticationEntities.AppSession", b =>
                 {
                     b.Property<int>("AppSessionId")
@@ -34,13 +56,13 @@ namespace DataLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedByIp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("Expires")
+                    b.Property<DateTime>("Expires")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("Revoked")
@@ -77,7 +99,7 @@ namespace DataLayer.Migrations
                     b.Property<string>("CreatedByIp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("Expires")
+                    b.Property<DateTime>("Expires")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ReplacedByToken")
@@ -180,7 +202,7 @@ namespace DataLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -316,6 +338,17 @@ namespace DataLayer.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("DataLayer.AuthenticationEntities.AccessToken", b =>
+                {
+                    b.HasOne("DataLayer.AuthenticationEntities.RefreshToken", "RefreshToken")
+                        .WithMany("AccessTokens")
+                        .HasForeignKey("RefreshTokenId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("RefreshToken");
+                });
+
             modelBuilder.Entity("DataLayer.AuthenticationEntities.AppSession", b =>
                 {
                     b.HasOne("DataLayer.Entities.ApplicationUser", "User")
@@ -400,6 +433,11 @@ namespace DataLayer.Migrations
             modelBuilder.Entity("DataLayer.AuthenticationEntities.AppSession", b =>
                 {
                     b.Navigation("RefreshTokens");
+                });
+
+            modelBuilder.Entity("DataLayer.AuthenticationEntities.RefreshToken", b =>
+                {
+                    b.Navigation("AccessTokens");
                 });
 
             modelBuilder.Entity("DataLayer.Entities.ApplicationUser", b =>

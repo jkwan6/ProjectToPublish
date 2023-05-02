@@ -12,15 +12,13 @@ namespace DataLayer.AuthenticationEntities
             Created = DateTime.UtcNow;
         }
 
+        public RefreshToken() {}
 
         // Properties
         [Key][Required] public int Id { get; set; }
-        public string Token { get; set; }
-
-        public readonly DateTime Expires;
-
-        public readonly DateTime? Created;
-
+        public string Token { get; set; } = null!;
+        public DateTime Expires { get; set; }
+        public DateTime? Created { get; set; }
         public string? CreatedByIp { get; set; }
         public DateTime? Revoked { get; set; }
         public string? RevokedByIp { get; set; }
@@ -35,10 +33,13 @@ namespace DataLayer.AuthenticationEntities
 
 
         // Parent Relationships
-        public AppSession AppSession { get; set; }
+        public AppSession AppSession { get; set; } = null!;
         public int AppSessionId { get; set; }
 
-        public ApplicationUser User { get; set; }
-        public string ApplicationUserId { get; set; }
+        public ApplicationUser User { get; set; } = null!;
+        public string ApplicationUserId { get; set; } = null!;
+
+        // Child Relationship
+        public List<AccessToken> AccessTokens { get; set; } = null!;
     }
 }

@@ -9,6 +9,6 @@ namespace AuthenticationServices.AuthenticationService
     {
         public Task<LoginResult> Login(LoginRequest loginRequest, string ipAddress);
         //public Task<LoginResult> RefreshToken(string oldRefreshToken, string ipAddress);
-        public Task<LoginResult> RevokeToken(string refreshToken, string ipAdress);
+        //public Task<LoginResult> RevokeToken(string refreshToken, string ipAdress);
     }
 }
