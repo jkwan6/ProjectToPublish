@@ -1,6 +1,8 @@
 ﻿using AuthenticationServices.AuthenticationService;
 using AuthenticationServices.DTO;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using System.Net.Http.Headers;
 
 namespace MyWebSiteApi.Controllers
 {

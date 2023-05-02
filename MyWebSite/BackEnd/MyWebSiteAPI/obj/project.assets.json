@@ -2838,11 +2838,27 @@
           "lib/netstandard1.3/System.Xml.XmlDocument.dll": {}
         }
       },
+      "AuthenticationBusinessLogic/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "DataLayer": "1.0.0",
+          "Microsoft.Extensions.Configuration.Abstractions": "6.0.0"
+        },
+        "compile": {
+          "bin/placeholder/AuthenticationBusinessLogic.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/AuthenticationBusinessLogic.dll": {}
+        }
+      },
       "AuthenticationServices/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
-          "DataLayer": "1.0.0"
+          "AuthenticationBusinessLogic": "1.0.0",
+          "DataLayer": "1.0.0",
+          "Microsoft.AspNetCore.Http.Abstractions": "2.2.0"
         },
         "compile": {
           "bin/placeholder/AuthenticationServices.dll": {}
@@ -8399,6 +8415,11 @@
         "system.xml.xmldocument.4.3.0.nupkg.sha512",
         "system.xml.xmldocument.nuspec"
       ]
+    },
+    "AuthenticationBusinessLogic/1.0.0": {
+      "type": "project",
+      "path": "../../AuthenticationBusinessLogic/AuthenticationBusinessLogic.csproj",
+      "msbuildProject": "../../AuthenticationBusinessLogic/AuthenticationBusinessLogic.csproj"
     },
     "AuthenticationServices/1.0.0": {
       "type": "project",

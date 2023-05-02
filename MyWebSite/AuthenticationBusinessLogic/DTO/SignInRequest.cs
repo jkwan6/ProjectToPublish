@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AuthenticationServices.DTO
+namespace AuthenticationBusinessLogic.DTO
 {
     public class SignInRequest
     {

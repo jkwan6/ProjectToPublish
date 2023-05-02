@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace AuthenticationServices.DTO
+namespace AuthenticationBusinessLogic.DTO
 {
     public class LoginResult
     {
