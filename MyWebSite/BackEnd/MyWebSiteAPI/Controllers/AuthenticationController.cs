@@ -1,5 +1,5 @@
-﻿using AuthenticationServices.AuthenticationService;
-using AuthenticationServices.DTO;
+﻿using AuthenticationBusinessLogic.DTO;
+using AuthenticationServices.AuthenticationService;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Net.Http.Headers;
@@ -35,19 +35,19 @@ namespace MyWebSiteApi.Controllers
         }
 
 
-        [HttpPost("refreshtoken")]
-        public async Task<IActionResult> RefreshToken()
-        {
-            var refreshToken = Request.Cookies["refreshToken"];
+        //[HttpPost("refreshtoken")]
+        //public async Task<IActionResult> RefreshToken()
+        //{
+        //    var refreshToken = Request.Cookies["refreshToken"];
 
-            var loginResult = await _authService.RefreshToken(refreshToken, ipAdress());
+        //    var loginResult = await _authService.RefreshToken(refreshToken, ipAdress());
 
-            setTokenCookie(loginResult.refreshToken);
+        //    setTokenCookie(loginResult.refreshToken);
 
-            bool isAuthorized = (loginResult.success) ? true : false;
+        //    bool isAuthorized = (loginResult.success) ? true : false;
 
-            return (isAuthorized) ? Ok(loginResult) : Unauthorized(loginResult);
-        }
+        //    return (isAuthorized) ? Ok(loginResult) : Unauthorized(loginResult);
+        //}
 
 
         [HttpPost("revoketoken")]

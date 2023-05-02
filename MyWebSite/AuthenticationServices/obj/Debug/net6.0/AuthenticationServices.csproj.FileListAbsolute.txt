@@ -13,3 +13,5 @@ C:\Projects\ProjectToPublish\MyWebSite\AuthenticationServices\obj\Debug\net6.0\A
 C:\Projects\ProjectToPublish\MyWebSite\AuthenticationServices\obj\Debug\net6.0\refint\AuthenticationServices.dll
 C:\Projects\ProjectToPublish\MyWebSite\AuthenticationServices\obj\Debug\net6.0\AuthenticationServices.pdb
 C:\Projects\ProjectToPublish\MyWebSite\AuthenticationServices\obj\Debug\net6.0\ref\AuthenticationServices.dll
+C:\Projects\ProjectToPublish\MyWebSite\AuthenticationServices\bin\Debug\net6.0\AuthenticationBusinessLogic.dll
+C:\Projects\ProjectToPublish\MyWebSite\AuthenticationServices\bin\Debug\net6.0\AuthenticationBusinessLogic.pdb

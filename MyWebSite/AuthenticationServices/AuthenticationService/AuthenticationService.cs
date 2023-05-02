@@ -2,7 +2,6 @@
 using DataLayer;
 using Microsoft.AspNetCore.Identity;
 using DataLayer.Entities;
-using AuthenticationServices.DTO;
 using System.IdentityModel.Tokens.Jwt;
 using DataLayer.AuthenticationEntities;
 using System.Net;
@@ -49,15 +48,9 @@ namespace AuthenticationServices.AuthenticationService
             var userId = authenticateUserTuple.Item2;                                                // Succeed --> get Id
 
             // Continue Authentication
-
-            // Create Session
-            var session = _loginLogic.CreateSession(userId!, "112");
-            // Create Token
-            var refreshToken = _loginLogic.CreateRefreshToken(userId);
-
-            // Create AccessToken
-            // Return
-
+            var session = await _loginLogic.CreateSession(userId!, "112");
+            var refreshToken = await _loginLogic.CreateRefreshToken(userId!, session, "123");
+            var accessToken = await _loginLogic.CreateAccessToken(userId, session, "123");
             #region To Do List
             // Will need to instantiate a Session
             // Will need to create a refresh token
@@ -74,88 +67,58 @@ namespace AuthenticationServices.AuthenticationService
             // Will have to mock the Browser Fingerprints to just a basic few
             #endregion
 
+            // Assigning Token to Login Result
+            var loginResult = new LoginResult(true)
+            { 
+                token = accessToken, 
+                refreshToken = refreshToken.Token 
+            };
 
-            // Creation of Tokens
-            var session = new AppSession(user); // Paused here
-        session.User = user;
-        var tokenPrep = await _jwtCreator.GetTokenAsync(user);  // Token Prep
-        var tokenToReturn = new JwtSecurityTokenHandler().WriteToken(tokenPrep);
-        var refreshTokenToReturn = generateRefreshToken(ipAddress);
-
-        // DbContext Logic
-        if (user.RefreshTokens is null) 
-        { 
-            user.RefreshTokens = new List<RefreshToken>(); 
-        }
-
-        if (user.AppSessions is null)
-        {
-            user.AppSessions = new List<AppSession>();
-        }
-
-        if (session.RefreshTokens is null)
-        {
-            session.RefreshTokens = new List<RefreshToken>();
-        }
-
-
-        session.RefreshTokens.Add(refreshTokenToReturn);
-        user.AppSessions.Add(session);
-        user.RefreshTokens.Add(refreshTokenToReturn);
-
-        _context.Users.Update(user);
-        _context.SaveChanges();
-
-        // Assigning Token to Login Result
-        var loginResult = new LoginResult(true)
-        { token = tokenToReturn, refreshToken = refreshTokenToReturn.Token };
-
-        // Returning LoginResult
-        return loginResult;
+            return loginResult;
         }
 
 
 
-        public async Task<LoginResult> RefreshToken(string oldRefreshToken, string ipAddress)
-        {
-            // Provides me with the user based on token and ipAddress
-            var user = _context.Users
-                .SingleOrDefault(u => u.RefreshTokens
-                .Any(t => t.Token == oldRefreshToken
-                        && t.CreatedByIp == ipAddress));
+        //public async Task<LoginResult> RefreshToken(string oldRefreshToken, string ipAddress)
+        //{
+        //    //// Provides me with the user based on token and ipAddress
+        //    //var user = _context.Users
+        //    //    .SingleOrDefault(u => u.RefreshTokens
+        //    //    .Any(t => t.Token == oldRefreshToken
+        //    //            && t.CreatedByIp == ipAddress));
 
-            // If conditions not met, Return Early
-            if (user is null) return new LoginResult(false) { message = "No User Found" };
+        //    //// If conditions not met, Return Early
+        //    //if (user is null) return new LoginResult(false) { message = "No User Found" };
 
-            // Get Current Refresh Token based on User and Refresh Token Parameter
-            var currentRefreshTokenPrep = _context.Users
-                .Where(x => x == user)
-                .SelectMany(user => user.RefreshTokens
-                .Where(t => t.Token.Contains(oldRefreshToken)));
-            var currentRefreshToken = currentRefreshTokenPrep.First();
+        //    //// Get Current Refresh Token based on User and Refresh Token Parameter
+        //    //var currentRefreshTokenPrep = _context.Users
+        //    //    .Where(x => x == user)
+        //    //    .SelectMany(user => user.RefreshTokens
+        //    //    .Where(t => t.Token.Contains(oldRefreshToken)));
+        //    //var currentRefreshToken = currentRefreshTokenPrep.First();
 
-            // Create new RefreshToken
-            var newRefreshToken = generateRefreshToken(ipAddress);
+        //    //// Create new RefreshToken
+        //    //var newRefreshToken = generateRefreshToken(ipAddress);
 
-            // Revoking previous Token
-            currentRefreshToken.Revoked = DateTime.UtcNow;
-            currentRefreshToken.RevokedByIp = ipAddress;
-            currentRefreshToken.ReplacedByToken = newRefreshToken.Token;
+        //    //// Revoking previous Token
+        //    //currentRefreshToken.Revoked = DateTime.UtcNow;
+        //    //currentRefreshToken.RevokedByIp = ipAddress;
+        //    //currentRefreshToken.ReplacedByToken = newRefreshToken.Token;
 
-            // Save the New RefreshToken to DB
-            //if (user.RefreshTokens is null) { user.RefreshTokens = new List<RefreshToken>();
-            user.RefreshTokens.Add(newRefreshToken);
-            _context.Users.Update(user);
-            _context.SaveChanges();
+        //    //// Save the New RefreshToken to DB
+        //    ////if (user.RefreshTokens is null) { user.RefreshTokens = new List<RefreshToken>();
+        //    //user.RefreshTokens.Add(newRefreshToken);
+        //    //_context.Users.Update(user);
+        //    //_context.SaveChanges();
 
-            // Creation of Access token
-            var tokenPrep = await _jwtCreator.GetTokenAsync(user);
-            var tokenToReturn = new JwtSecurityTokenHandler().WriteToken(tokenPrep);
+        //    //// Creation of Access token
+        //    //var tokenPrep = await _jwtCreator.GetTokenAsync(user);
+        //    //var tokenToReturn = new JwtSecurityTokenHandler().WriteToken(tokenPrep);
 
 
 
-            return new LoginResult(true) { token = tokenToReturn, refreshToken = newRefreshToken.Token };
-        }
+        //    //return new LoginResult(true) { token = tokenToReturn, refreshToken = newRefreshToken.Token };
+        //}
 
 
 
@@ -191,24 +154,5 @@ namespace AuthenticationServices.AuthenticationService
 
 
         /* <----------  Private Methods ----------> */
-        private RefreshToken generateRefreshToken(string ipAddress)
-        {
-            using (var rngCryptoServiceProvider = RandomNumberGenerator.Create())
-            {
-                var randomBytes = new byte[64];
-                rngCryptoServiceProvider.GetBytes(randomBytes);
-                var token = Convert.ToBase64String(randomBytes);
-
-                var refreshToken = new RefreshToken
-                {
-                    Token = token,
-                    Expires = DateTime.UtcNow.AddMinutes(5),
-                    Created = DateTime.UtcNow,
-                    CreatedByIp = ipAddress
-                };
-
-                return refreshToken;
-            }
-        }
     }
 }

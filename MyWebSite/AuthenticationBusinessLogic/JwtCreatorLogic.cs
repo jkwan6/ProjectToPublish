@@ -50,7 +50,9 @@ namespace AuthenticationServices.BusinessLogic
         }
 
         // Method to Create the User Claims to be placed in the JWT
-        private async Task<List<Claim>> GetClaimsAsync(ApplicationUser user, UserManager<ApplicationUser> userManager)
+        private async Task<List<Claim>> GetClaimsAsync
+            (ApplicationUser user,
+            UserManager<ApplicationUser> userManager)
         {
             var claims = new List<Claim>
             {

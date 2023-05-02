@@ -1,0 +1,12 @@
+C:\Projects\ProjectToPublish\MyWebSite\AuthenticationDbAccess\bin\Debug\net6.0\AuthenticationDbAccess.deps.json
+C:\Projects\ProjectToPublish\MyWebSite\AuthenticationDbAccess\bin\Debug\net6.0\AuthenticationDbAccess.dll
+C:\Projects\ProjectToPublish\MyWebSite\AuthenticationDbAccess\bin\Debug\net6.0\AuthenticationDbAccess.pdb
+C:\Projects\ProjectToPublish\MyWebSite\AuthenticationDbAccess\obj\Debug\net6.0\AuthenticationDbAccess.csproj.AssemblyReference.cache
+C:\Projects\ProjectToPublish\MyWebSite\AuthenticationDbAccess\obj\Debug\net6.0\AuthenticationDbAccess.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projects\ProjectToPublish\MyWebSite\AuthenticationDbAccess\obj\Debug\net6.0\AuthenticationDbAccess.AssemblyInfoInputs.cache
+C:\Projects\ProjectToPublish\MyWebSite\AuthenticationDbAccess\obj\Debug\net6.0\AuthenticationDbAccess.AssemblyInfo.cs
+C:\Projects\ProjectToPublish\MyWebSite\AuthenticationDbAccess\obj\Debug\net6.0\AuthenticationDbAccess.csproj.CoreCompileInputs.cache
+C:\Projects\ProjectToPublish\MyWebSite\AuthenticationDbAccess\obj\Debug\net6.0\AuthenticationDbAccess.dll
+C:\Projects\ProjectToPublish\MyWebSite\AuthenticationDbAccess\obj\Debug\net6.0\refint\AuthenticationDbAccess.dll
+C:\Projects\ProjectToPublish\MyWebSite\AuthenticationDbAccess\obj\Debug\net6.0\AuthenticationDbAccess.pdb
+C:\Projects\ProjectToPublish\MyWebSite\AuthenticationDbAccess\obj\Debug\net6.0\ref\AuthenticationDbAccess.dll

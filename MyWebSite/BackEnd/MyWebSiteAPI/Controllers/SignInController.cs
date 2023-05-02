@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using AuthenticationServices.AuthenticationService;
-using AuthenticationServices.DTO;
 using DataLayer.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using DataLayer;
+using AuthenticationBusinessLogic.DTO;
 
 namespace MyWebSiteApi.Controllers
 {

@@ -1,4 +1,5 @@
 ﻿using AuthenticationBusinessLogic.DTO;
+using AuthenticationServices.BusinessLogic;
 using DataLayer;
 using DataLayer.AuthenticationEntities;
 using DataLayer.Entities;
@@ -8,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,18 +20,15 @@ namespace AuthenticationBusinessLogic.LoginLogic
 
         private readonly AppDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly JwtCreatorService _jwtCreator;
-        private readonly HttpRequest _httpRequest;
+        private readonly JwtCreatorLogic _jwtCreator;
         public LoginLogic(
             AppDbContext context,
             UserManager<ApplicationUser> userManager,
-            JwtCreatorService jwtCreator,
-            HttpRequest httpRequest)
+            JwtCreatorLogic jwtCreator)
         {
             _context = context;
             _userManager = userManager;
             _jwtCreator = jwtCreator;
-            _httpRequest = httpRequest;
         }
 
 
@@ -51,57 +50,44 @@ namespace AuthenticationBusinessLogic.LoginLogic
             var user = await _userManager.FindByIdAsync(userId);
             var session = new AppSession(user);
             session.CreatedByIp = ipAddress;
+            _context.AppSessions.Add(session);
             _context.SaveChanges();
             return session;
         }
 
-        public async Task<RefreshToken> CreateRefreshToken(string userId, string sessionId, string ipAddress)
+        public async Task<RefreshToken> CreateRefreshToken(string userId, AppSession session, string ipAddress)
         {
-            var user = await _userManager.FindByIdAsync(userId);
-        }
+            var _user = await _userManager.FindByIdAsync(userId);
+            var _session = await _context.AppSessions.FindAsync(session);
 
+            var refreshToken = new RefreshToken(_user);
+            refreshToken.CreatedByIp = ipAddress;
+            refreshToken.AppSession = session!;
 
-        public async Task<LoginResult> Login(LoginRequest loginRequest, string ipAddress)
-        {
-
-            // Creation of Tokens
-            var session = new AppSession(); // Paused here
-            session.User = user;
-            var tokenPrep = await _jwtCreator.GetTokenAsync(user);  // Token Prep
-            var tokenToReturn = new JwtSecurityTokenHandler().WriteToken(tokenPrep);
-            var refreshTokenToReturn = generateRefreshToken(ipAddress);
-
-            // DbContext Logic
-            if (user.RefreshTokens is null)
+            using (var rngCryptoServiceProvider = RandomNumberGenerator.Create())
             {
-                user.RefreshTokens = new List<RefreshToken>();
-            }
-
-            if (user.AppSessions is null)
-            {
-                user.AppSessions = new List<AppSession>();
-            }
-
-            if (session.RefreshTokens is null)
-            {
-                session.RefreshTokens = new List<RefreshToken>();
-            }
+                var randomBytes = new byte[64];
+                rngCryptoServiceProvider.GetBytes(randomBytes);
+                var token = Convert.ToBase64String(randomBytes);
+                refreshToken.Token = token;
+            } // Creating Random Token
 
 
-            session.RefreshTokens.Add(refreshTokenToReturn);
-            user.AppSessions.Add(session);
-            user.RefreshTokens.Add(refreshTokenToReturn);
-
-            _context.Users.Update(user);
+            _context.RefreshTokens.Add(refreshToken);
             _context.SaveChanges();
-
-            // Assigning Token to Login Result
-            var loginResult = new LoginResult(true)
-            { token = tokenToReturn, refreshToken = refreshTokenToReturn.Token };
-
-            // Returning LoginResult
-            return loginResult;
+            return refreshToken;
         }
+
+        public async Task<string> CreateAccessToken(string userId, AppSession session, string ipAddress)
+        {
+            var _user = await _userManager.FindByIdAsync(userId);
+
+            var tokenPrep = await _jwtCreator.GetTokenAsync(_user);
+            var accessToken = new JwtSecurityTokenHandler().WriteToken(tokenPrep);
+
+            return accessToken;
+        }
+
 
 
     }
