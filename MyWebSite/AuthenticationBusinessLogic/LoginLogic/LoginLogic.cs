@@ -45,14 +45,19 @@ namespace AuthenticationBusinessLogic.LoginLogic
         }
 
 
-        public async Task<AppSession> CreateSession(string userID, string ipAddress)
+        public async Task<AppSession> CreateSession(string userId, string ipAddress)
         {
             // To Do - User Fingerprinting Session
-            var user = await _userManager.FindByIdAsync(userID);
+            var user = await _userManager.FindByIdAsync(userId);
             var session = new AppSession(user);
             session.CreatedByIp = ipAddress;
             _context.SaveChanges();
             return session;
+        }
+
+        public async Task<RefreshToken> CreateRefreshToken(string userId, string sessionId, string ipAddress)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
         }
 
 

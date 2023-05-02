@@ -53,6 +53,7 @@ namespace AuthenticationServices.AuthenticationService
             // Create Session
             var session = _loginLogic.CreateSession(userId!, "112");
             // Create Token
+            var refreshToken = _loginLogic.CreateRefreshToken(userId);
 
             // Create AccessToken
             // Return

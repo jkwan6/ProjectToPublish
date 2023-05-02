@@ -5,6 +5,12 @@ namespace DataLayer.AuthenticationEntities
 {
     public class RefreshToken
     {
+        public RefreshToken()
+        {
+
+        }
+
+
         // Properties
         [Key][Required] public int Id { get; set; }
         public string Token { get; set; }
