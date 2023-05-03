@@ -15,9 +15,9 @@ namespace AuthenticationServices.AuthenticationService
             // Check if AccessToken is linked to Refresh Token
             var bothTokenMatches = await _refreshLogic.TokenMatches(currentRefreshToken, currentAccessToken);
             var refreshTokenIsValid = await _refreshLogic.RefreshTokenIsValid(currentRefreshToken);
-            var sessionValidity = await _refreshLogic.SessionIsValid(currentRefreshToken);
+            var sessionIsValid = await _refreshLogic.SessionIsValid(currentRefreshToken);
 
-            if (!bothTokenMatches || !sessionValidity) return new RefreshResult();       // Early Return - Will have to Sign In Again
+            if (bothTokenMatches is false || sessionIsValid is false) return new RefreshResult();       // Early Return - Will have to Sign In Again
 
             // Create New Refresh And New Access Based on RT Validity
             string refreshTokenToUse;

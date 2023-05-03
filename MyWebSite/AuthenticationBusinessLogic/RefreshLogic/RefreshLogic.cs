@@ -35,19 +35,20 @@ namespace AuthenticationBusinessLogic.RefreshLogic
         public async Task<bool> TokenMatches(string currentRefreshToken, string currentAccessToken)
         {
             // Entities from tokens
-            var refreshEntityFromRefresh = await _context.RefreshTokens.Where(x => x.Token == currentRefreshToken).SingleAsync();
-            var accessEntityFromAccess = await _context.AccessTokens.Where(x => x.Token == currentAccessToken).SingleAsync();
+            var refreshEntityFromRefresh = await _context.RefreshTokens.Where(x => x.Token == currentRefreshToken).FirstOrDefaultAsync();
+            var accessEntityFromAccess = await _context.AccessTokens.Where(x => x.Token == currentAccessToken).FirstOrDefaultAsync();
 
             // Entity from Relationship 
             var refreshEntityFromAccess = await _context.RefreshTokens.SingleOrDefaultAsync(x => x.AccessTokens.Any(x => x.Token == currentAccessToken));
             var test = _context.RefreshTokens.Where(x => x == refreshEntityFromAccess).Include(x => x.AccessTokens).ToList();
-            var accessTokenFromRefresh = refreshEntityFromRefresh.AccessTokens.Last();
+            var accessTokenFromRefreshId = refreshEntityFromRefresh.AccessTokens.Max(x => x.Id);
+            var accessTokenFromRefresh = refreshEntityFromRefresh.AccessTokens.SingleOrDefault(x => x.Id == accessTokenFromRefreshId);
 
             // Check if Matches
             var refreshTokenMatches = (refreshEntityFromRefresh == refreshEntityFromAccess) ? true : false;
             var accessTokenMatches = (accessEntityFromAccess == accessTokenFromRefresh) ? true : false;
 
-            var bothMatches = (!refreshTokenMatches || !accessTokenMatches) ? false : true;
+            var bothMatches = (refreshTokenMatches is false || accessTokenMatches is false) ? false : true;
 
             return bothMatches;
         }
@@ -55,7 +56,7 @@ namespace AuthenticationBusinessLogic.RefreshLogic
         public async Task<bool> RefreshTokenIsValid(string currentRefreshToken)
         {
             var refreshEntityFromRefresh = await _context.RefreshTokens.Where(x => x.Token == currentRefreshToken).SingleAsync();
-            var isValid = (!refreshEntityFromRefresh.IsActive || refreshEntityFromRefresh.IsExpired) ? false : true;
+            var isValid = (refreshEntityFromRefresh.IsActive is false || refreshEntityFromRefresh.IsExpired is true) ? false : true;
             return isValid;
         }
 
@@ -63,7 +64,7 @@ namespace AuthenticationBusinessLogic.RefreshLogic
         public async Task<bool> SessionIsValid(string currentRefreshToken)
         {
             var currentSession = await _context.AppSessions.SingleOrDefaultAsync(x => x.RefreshTokens!.Any(x => x.Token == currentRefreshToken));
-            var isValid = (!currentSession!.IsActive || currentSession.IsExpired) ? false : true;
+            var isValid = (currentSession!.IsActive is false || currentSession.IsExpired is true) ? false : true;
             return isValid;
         }
 
