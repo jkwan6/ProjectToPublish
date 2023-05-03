@@ -10,22 +10,26 @@ using AuthenticationBusinessLogic.DTO;
 using AuthenticationBusinessLogic.LoginLogic;
 using System.Reflection.Metadata.Ecma335;
 using AuthenticationServices.BusinessLogic;
+using AuthenticationBusinessLogic.SignInLogic;
 
 namespace AuthenticationServices.AuthenticationService
 {
-    public class AuthenticationService: IAuthenticationService
+    public partial class AuthenticationService: IAuthenticationService
     {
 
         // Properties
         private readonly AppDbContext _context;
         private readonly LoginLogic _loginLogic;
+        private readonly SignInLogic _signInLogic;
 
         public AuthenticationService(
             AppDbContext context,
-            LoginLogic loginLogic)
+            LoginLogic loginLogic,
+            SignInLogic signInLogic)
             {
                 _context = context;
                 _loginLogic = loginLogic;
+                _signInLogic = signInLogic;
             }
 
         // Login Method - Returns JWT and Refresh Token
@@ -43,11 +47,8 @@ namespace AuthenticationServices.AuthenticationService
             var session = await _loginLogic.CreateSession(userId!, ipAddress);
             var refreshToken = await _loginLogic.CreateRefreshToken(userId!, session, ipAddress);
             var accessToken = await _loginLogic.CreateAccessToken(userId!, refreshToken, ipAddress);
+            
             #region To Do List
-            // Will need to instantiate a Session
-            // Will need to create a refresh token
-            // Will need to create an access token
-
             // Those three will have to be linked together
             // Session will be the parent
             // Refresh Tokens will provide Access Tokens
@@ -68,12 +69,6 @@ namespace AuthenticationServices.AuthenticationService
 
             return loginResult;
         }
-
-
-        //public async Task<AuthenticationBusinessLogic.DTO.SignInResult> SignIn()
-        //{
-
-        //}
 
 
 
