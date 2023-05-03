@@ -73,8 +73,8 @@ namespace AuthenticationBusinessLogic.LoginLogic
             } // Creating Random Token
 
 
-            _context.RefreshTokens.Add(refreshToken);
-            _context.SaveChanges();
+            await _context.RefreshTokens.AddAsync(refreshToken);
+            await _context.SaveChangesAsync();
             return refreshToken;
         }
 

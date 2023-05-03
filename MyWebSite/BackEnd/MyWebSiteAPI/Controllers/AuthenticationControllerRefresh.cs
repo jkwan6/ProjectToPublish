@@ -12,13 +12,12 @@ namespace MyWebSiteApi.Controllers
             var refreshToken = Request.Cookies["refreshToken"];
             var accessToken = Request.Headers["token"];
 
-            var refreshResult = await _authService.RefreshToken(refreshResult, accessToken);
+            var refreshResult = await _authService.RefreshToken(refreshToken, accessToken);
 
-            setTokenCookie(loginResult.refreshToken);
+            setTokenCookie(refreshResult.refreshToken);
 
-            bool isAuthorized = (loginResult.success) ? true : false;
 
-            return (isAuthorized) ? Ok(loginResult) : Unauthorized(loginResult);
+            return Ok(refreshResult);
         }
     }
 }

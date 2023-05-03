@@ -9,6 +9,7 @@ namespace AuthenticationServices.AuthenticationService
     {
         public Task<LoginResult> Login(LoginRequest loginRequest, string ipAddress);
         public Task<SignInResultDTO> SignIn(SignInRequest signInRequest);
+        public Task<RefreshResult> RefreshToken(string currentRefreshToken, string currentAccessToken);
         //public Task<LoginResult> RevokeToken(string refreshToken, string ipAdress);
     }
 }
