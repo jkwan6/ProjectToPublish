@@ -13,6 +13,11 @@ using Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal;
 
 namespace AuthenticationBusinessLogic.SignInLogic
 {
+    public enum Roles
+    {
+        RegisteredUser
+    }
+
     public class SignInLogic
     {
         private readonly AppDbContext _context;
@@ -27,9 +32,10 @@ namespace AuthenticationBusinessLogic.SignInLogic
             _userManager = userManager;
         }
 
-
-        public async Task<bool> EmailExists(string email)
+        public async Task<bool> EmailExists(SignInRequest signInRequest)
         {
+            var email = signInRequest.Email;
+
             var userExists = await _userManager.FindByEmailAsync(email);    // Return Null if doesnt exist
 
             if (userExists == null) { return false; } else { return true; }
@@ -42,16 +48,23 @@ namespace AuthenticationBusinessLogic.SignInLogic
             var newUser = new ApplicationUser()
             {
                 SecurityStamp = Guid.NewGuid().ToString(),
-                Email = email
+                Email = email,
+                UserName = email
             };
 
             var registeringProcess = await _userManager.CreateAsync(newUser, password);
+            await _userManager.AddToRoleAsync(newUser, Roles.RegisteredUser.ToString());
             var registerSuccess = registeringProcess.Succeeded;
+
+            newUser.EmailConfirmed = true;                                                     // Confirm Email
+            newUser.LockoutEnabled = false;                                                    // Remove Lockout
 
             var signInResult = 
                 (registerSuccess)
-                ? new SignInResultDTO(SignInResultDTO.PossibleResults.Failed) 
+                ? new SignInResultDTO(SignInResultDTO.PossibleResults.SignInSuccessful) 
                 : new SignInResultDTO(SignInResultDTO.PossibleResults.Failed);
+
+            if (registerSuccess) { await _context.SaveChangesAsync(); }
 
             return signInResult;
         }

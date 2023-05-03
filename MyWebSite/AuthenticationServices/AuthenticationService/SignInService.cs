@@ -10,23 +10,16 @@ namespace AuthenticationServices.AuthenticationService
 {
     public partial class AuthenticationService: IAuthenticationService
     {
-        public async Task<AuthenticationBusinessLogic.DTO.SignInResult> SignIn(SignInRequest signInRequest)
+        public async Task<SignInResultDTO> SignIn(SignInRequest signInRequest)
         {
-            var email = signInRequest.Email;
-            var password = signInRequest.Password;
-
-            var emailAlreadyExists = await _signInLogic.EmailExists(email);
-            if (emailAlreadyExists) { return new SignInResult(SignInResult.PossibleResults.UserAlreadyExists); } // Early return
+            var emailAlreadyExists = await _signInLogic.EmailExists(signInRequest);
+            if (emailAlreadyExists) { return new SignInResultDTO(SignInResultDTO.PossibleResults.UserAlreadyExists); } // Early return
 
             // If User Doesnt Exists, Code Continues
-            var registerNewUser = await _signInLogic.RegisterNewUser(SignInRequest)();
+            var registerNewUser = await _signInLogic.RegisterNewUser(signInRequest);
+            var signInResult = registerNewUser;
 
-            var newUser = new ApplicationUser()
-            {
-                SecurityStamp = Guid.NewGuid().ToString(),
-                Email = email
-            };
-
+            return signInResult;
         }
 
     }

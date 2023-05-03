@@ -8,7 +8,7 @@ namespace AuthenticationServices.AuthenticationService
     public interface IAuthenticationService
     {
         public Task<LoginResult> Login(LoginRequest loginRequest, string ipAddress);
-        //public Task<LoginResult> RefreshToken(string oldRefreshToken, string ipAddress);
+        public Task<SignInResultDTO> SignIn(SignInRequest signInRequest);
         //public Task<LoginResult> RevokeToken(string refreshToken, string ipAdress);
     }
 }

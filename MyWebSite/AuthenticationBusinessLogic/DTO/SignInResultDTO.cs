@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace AuthenticationBusinessLogic.DTO
 {
-    public class SignInResult
+    public class SignInResultDTO
     {
         public enum PossibleResults
         {
             UserAlreadyExists,
             InvalidPasswordOrEmail,
-            LoginSuccessful,
+            SignInSuccessful,
             Failed
         }
 
-        public SignInResult(PossibleResults possibleResults)
+        public SignInResultDTO(PossibleResults possibleResults)
         {
             switch(possibleResults)
             {
@@ -25,9 +25,9 @@ namespace AuthenticationBusinessLogic.DTO
                     success = false;
                     message = "Invalid Email of Password";
                     break;
-                case PossibleResults.LoginSuccessful:
+                case PossibleResults.SignInSuccessful:
                     success = true;
-                    message = "Login Successful";
+                    message = "SignIn Successful";
                     break;
                 case PossibleResults.UserAlreadyExists:
                     success = false;
@@ -36,10 +36,6 @@ namespace AuthenticationBusinessLogic.DTO
                 case PossibleResults.Failed:
                     success = false;
                     message = "SignIn Failed";
-                    break;
-                default:
-                    success = false;
-                    message = "Retry Signing In";
                     break;
             }
         }
