@@ -11,26 +11,33 @@ using AuthenticationBusinessLogic.LoginLogic;
 using System.Reflection.Metadata.Ecma335;
 using AuthenticationServices.BusinessLogic;
 using AuthenticationBusinessLogic.SignInLogic;
+using AuthenticationBusinessLogic.RefreshLogic;
 
 namespace AuthenticationServices.AuthenticationService
 {
     public partial class AuthenticationService: IAuthenticationService
     {
 
-        // Properties
+        #region Properties
         private readonly AppDbContext _context;
         private readonly LoginLogic _loginLogic;
         private readonly SignInLogic _signInLogic;
+        private readonly RefreshLogic _refreshLogic;
+        #endregion
 
+        #region Constructor
         public AuthenticationService(
             AppDbContext context,
             LoginLogic loginLogic,
-            SignInLogic signInLogic)
+            SignInLogic signInLogic,
+            RefreshLogic refreshLogic)
             {
                 _context = context;
                 _loginLogic = loginLogic;
                 _signInLogic = signInLogic;
+                _refreshLogic = refreshLogic;
             }
+        #endregion
 
         // Login Method - Returns JWT and Refresh Token
         public async Task<LoginResult> Login(LoginRequest loginRequest, string ipAddress)

@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using AuthenticationBusinessLogic.LoginLogic;
 using AuthenticationServices.BusinessLogic;
 using AuthenticationBusinessLogic.SignInLogic;
+using AuthenticationBusinessLogic.RefreshLogic;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -83,6 +84,7 @@ builder.Services.AddScoped<CommentsService>();
 builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<LoginLogic>();
 builder.Services.AddScoped<SignInLogic>();
+builder.Services.AddScoped<RefreshLogic>();
 builder.Services.AddScoped<JwtCreatorLogic>();
 
 var app = builder.Build();
