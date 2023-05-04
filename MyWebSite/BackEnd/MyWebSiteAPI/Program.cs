@@ -32,6 +32,8 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: "AngularPolicy",
         cfg =>
         {
+            cfg.SetIsOriginAllowed(origin => true);
+            cfg.AllowCredentials();
             cfg.AllowAnyHeader();
             cfg.AllowAnyMethod();
             cfg.WithOrigins(builder.Configuration["AllowedCORS"]);

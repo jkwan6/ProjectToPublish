@@ -66,7 +66,7 @@ export class LogInSignUpComponent implements OnInit {
   }
 
   public testMethod(url: string, loginRequest : ILoginRequest): Observable<any> {
-    var observable: Observable<any> = this.client.post<any>(url, loginRequest);
+    var observable: Observable<any> = this.client.post<any>(url, loginRequest, {withCredentials : true });
     return observable;
   }
 
