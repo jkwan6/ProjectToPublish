@@ -40,7 +40,7 @@ namespace AuthenticationBusinessLogic.RefreshLogic
 
             // Entity from Relationship 
             var refreshEntityFromAccess = await _context.RefreshTokens.SingleOrDefaultAsync(x => x.AccessTokens.Any(x => x.Token == currentAccessToken));
-            var test = _context.RefreshTokens.Where(x => x == refreshEntityFromAccess).Include(x => x.AccessTokens).ToList();
+            var loadInMemory = _context.RefreshTokens.Where(x => x == refreshEntityFromAccess).Include(x => x.AccessTokens).ToList();
             var accessTokenFromRefreshId = refreshEntityFromRefresh.AccessTokens.Max(x => x.Id);
             var accessTokenFromRefresh = refreshEntityFromRefresh.AccessTokens.SingleOrDefault(x => x.Id == accessTokenFromRefreshId);
 

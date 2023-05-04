@@ -20,7 +20,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 // CONTROLLER CONFIGS
 builder.Services.AddControllers();
-
 // DBCONTEXT CONFIGS
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(

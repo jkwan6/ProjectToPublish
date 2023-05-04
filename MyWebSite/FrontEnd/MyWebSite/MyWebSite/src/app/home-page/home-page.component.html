@@ -19,17 +19,3 @@
 
 <h1 class="DefaultText">Comments</h1>
 
-<table mat-table
-       [dataSource]="Comments"
-       [hidden]="!Comments"
-       matSort (matSortChange)="loadData()">
-  <tr>
-    <ng-container matColumnDef="commentsDescriptions">
-      <th mat-header-cell class="col-1" *matHeaderCellDef mat-sort-header> ID </th>
-      <td mat-cell class="col-1" *matCellDef="let ICountry"> {{ Comments }} </td>
-    </ng-container>
-  </tr>
-
-
-
-</table>

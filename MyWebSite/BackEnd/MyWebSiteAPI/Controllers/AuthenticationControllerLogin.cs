@@ -92,7 +92,8 @@ namespace MyWebSiteApi.Controllers
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,                                            // Http Only
-                Expires = DateTime.UtcNow.AddDays(7)                        // Cookie expires in 7 days
+                Expires = DateTime.UtcNow.AddDays(7),                        // Cookie expires in 7 days
+
             };
             Response.Cookies.Append("refreshToken", token, cookieOptions);  // Cookie Configs
         }

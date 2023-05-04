@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
+import { error } from '@angular/compiler/src/util';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { environment } from '../../environments/environment.prod';
 import { IComments } from '../interface/IComments';
 
@@ -13,8 +15,10 @@ import { IComments } from '../interface/IComments';
 })
 export class HomePageComponent implements OnInit {
 
+  constructor(private client: HttpClient) { }
+
   public displayedColumns: string[] = ["id", "name", "iso2", "iso3", "citiesCount"];
-  public Comments!: MatTableDataSource<IComments>;  // Generic Class from AngMat Table
+  public Comments!: IComments[];  // Generic Class from AngMat Table
   defaultPageIndex: number = 0;
   defaultPageSize: number = 10;
   public defaultSortColumn: string = "name";
@@ -23,31 +27,30 @@ export class HomePageComponent implements OnInit {
   filterQuery?: string;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-  constructor(private http: HttpClient) { }
+  @ViewChild(MatSort) sort!: MatSort;
 
 
   ngOnInit(): void {
-    this.loadData();
-  }
+    var url: string = "api/comments";
+    url = this.getUrl(url);
+    var observable = this.testMethod(url);
 
-  loadData(query?: string) {
-    this.getData();
-  }
-
-  getData() {
-    var observable = this.getDataLogic();
-    observable.subscribe(result => {
-      this.Comments = new MatTableDataSource<IComments>();
+    observable.subscribe(results => {
+      var test = results;
+      console.log(test);
     }, error => console.error(error));
+
+  };
+
+  public getUrl(url: string): string {
+    return environment.baseUrl + url;
   }
 
-  getDataLogic(): Observable<IComments>    // RETURN THIS TYPE
-  {
-    var url = this.getUrl('api/comments');
-    return this.http.get<IComments>(url);
-  }
-  protected getUrl(url: string) {
-    return environment.baseUrl + url;
+  public testMethod(url: string): Observable<any> {
+    var observable: Observable<any> = this.client.get<any>(url);
+    observable = observable
+      .pipe(
+        map((results: any) => ({...results, commentsDescription: results.commentsDescription = "zzz"})));
+    return observable;
   }
 }
