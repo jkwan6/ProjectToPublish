@@ -90,7 +90,7 @@
 .button1{
     flex-grow:1;
     display:flex;
-    justify-content:start;
+    justify-content:flex-start;
     padding-left:10px;
     color:blue;
     font-weight:500;
@@ -100,7 +100,7 @@
 .button2 {
   flex-grow: 1;
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   padding-right: 10px;
   color: blue;
   font-weight: 500;

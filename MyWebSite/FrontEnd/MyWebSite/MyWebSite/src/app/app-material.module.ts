@@ -20,6 +20,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
+import { ReactiveFormsModule } from "@angular/forms";
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatSelectModule,
     MatMenuModule,
     MatTabsModule,
+    ReactiveFormsModule
   ],
   exports: [
     MatButtonModule,
@@ -64,7 +66,8 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatButtonToggleModule,
     MatSelectModule,
     MatMenuModule,
-    MatTabsModule
+    MatTabsModule,
+    ReactiveFormsModule
   ]
 })
 export class AngularMaterialModule { }

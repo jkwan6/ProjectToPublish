@@ -17,7 +17,7 @@ export class HomePageComponent implements OnInit {
 
   constructor(private client: HttpClient) { }
 
-  public displayedColumns: string[] = ["id", "name", "iso2", "iso3", "citiesCount"];
+  public displayedColumns: string[] = ["commentsDescription"];
   public Comments!: IComments[];  // Generic Class from AngMat Table
   defaultPageIndex: number = 0;
   defaultPageSize: number = 10;
@@ -37,7 +37,8 @@ export class HomePageComponent implements OnInit {
 
     observable.subscribe(results => {
       var test = results;
-      console.log(test);
+      this.Comments = test
+      console.log(this.Comments);
     }, error => console.error(error));
 
   };
@@ -46,11 +47,8 @@ export class HomePageComponent implements OnInit {
     return environment.baseUrl + url;
   }
 
-  public testMethod(url: string): Observable<any> {
-    var observable: Observable<any> = this.client.get<any>(url);
-    observable = observable
-      .pipe(
-        map((results: any) => ({...results, commentsDescription: results.commentsDescription = "zzz"})));
+  public testMethod(url: string): Observable<IComments[]> {
+    var observable: Observable<IComments[]> = this.client.get<IComments[]>(url);
     return observable;
   }
 }
