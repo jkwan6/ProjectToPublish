@@ -1,0 +1,52 @@
+
+
+
+<div class="comment-container">
+
+  <h1>Leave a comment</h1>
+
+
+
+
+
+  <table mat-table
+         [dataSource]="Comments">
+    matSort (matSortChange)="loadData()"
+    [matSortActive]="defaultSortColumn"
+    [matSortDirection]="defaultSortOrder"
+    matSortDisableClear>
+
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> Comment ID </th>
+      <td mat-cell *matCellDef="let IComments"> {{ IComments.id}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="commentsDescription">
+      <th mat-header-cell *matHeaderCellDef> Comment Description </th>
+      <td mat-cell *matCellDef="let IComments"> {{ IComments.commentsDescription}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="commentsTime">
+      <th mat-header-cell *matHeaderCellDef> Comment Date </th>
+      <td mat-cell *matCellDef="let IComments"> {{ IComments.commentsTime}} </td>
+    </ng-container>
+
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>-->
+    <!--<tr mat-her-rmatHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>-->
+
+
+  </table>
+
+
+
+
+
+
+
+
+
+</div>

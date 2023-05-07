@@ -1,7 +1,9 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
 import { Subscription } from 'rxjs';
-import { SideNavService } from '../../service/SideNavService';
+import { SideNavService } from '../../service/SideNavService/SideNavService';
+
+
 
 @Component({
   selector: 'app-body-content',

@@ -5,8 +5,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { map, Observable } from 'rxjs';
-import { environment } from '../../environments/environment.prod';
-import { IComments } from '../interface/IComments';
+import { environment } from '../../../environments/environment.prod';
+import { IComments } from '../../interface/IComments';
 
 @Component({
   selector: 'app-home-page',
@@ -17,7 +17,7 @@ export class HomePageComponent implements OnInit {
 
   constructor(private client: HttpClient) { }
 
-  public displayedColumns: string[] = ["commentsDescription"];
+  public displayedColumns: string[] = ["id", "commentsDescription", "commentsTime"];
   public Comments!: IComments[];  // Generic Class from AngMat Table
   defaultPageIndex: number = 0;
   defaultPageSize: number = 10;
@@ -38,7 +38,7 @@ export class HomePageComponent implements OnInit {
     observable.subscribe(results => {
       var test = results;
       this.Comments = test
-      console.log(this.Comments);
+/*      console.log(this.Comments);*/
     }, error => console.error(error));
 
   };

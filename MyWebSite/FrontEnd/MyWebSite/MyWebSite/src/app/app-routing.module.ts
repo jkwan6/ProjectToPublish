@@ -1,12 +1,12 @@
 import { Component, NgModule } from '@angular/core';
 import { Routes, RouterModule, Router } from '@angular/router';
-import { HomePageComponent } from './home-page/home-page.component';
-import { LogInSignUpComponent } from './log-in-sign-up/log-in-sign-up.component';
-import { AcademicComponent } from './pages/academic/academic.component';
-import { ContactInfoComponent } from './pages/contact-info/contact-info.component';
-import { ExperienceComponent } from './pages/experience/experience.component';
-import { SkillsComponent } from './pages/skills/skills.component';
-import { TimelineComponent } from './pages/timeline/timeline.component';
+import { HomePageComponent } from './pages/home-page/home-page.component';
+import { LogInSignUpComponent } from './pages/log-in-sign-up/log-in-sign-up.component';
+import { AcademicComponent } from './pages/sub-pages/academic/academic.component';
+import { ContactInfoComponent } from './pages/sub-pages/contact-info/contact-info.component';
+import { ExperienceComponent } from './pages/sub-pages/experience/experience.component';
+import { SkillsComponent } from './pages/sub-pages/skills/skills.component';
+import { TimelineComponent } from './pages/sub-pages/timeline/timeline.component';
 
 
 

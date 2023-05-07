@@ -4,8 +4,8 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { map, Observable } from 'rxjs';
-import { environment } from '../../environments/environment.prod';
-import { ILoginRequest } from '../interface/ILoginRequest';
+import { environment } from '../../../environments/environment.prod';
+import { ILoginRequest } from '../../interface/ILoginRequest';
 
 
 
@@ -15,7 +15,6 @@ import { ILoginRequest } from '../interface/ILoginRequest';
   styleUrls: ['./log-in-sign-up.component.css']
 })
 export class LogInSignUpComponent implements OnInit {
-
 
   hide = true
 
