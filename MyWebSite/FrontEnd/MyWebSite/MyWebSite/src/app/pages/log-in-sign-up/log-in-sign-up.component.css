@@ -106,3 +106,7 @@
   font-weight: 500;
   text-decoration: underline;
 }
+
+.button2:hover {
+  text-decoration: underline;
+}

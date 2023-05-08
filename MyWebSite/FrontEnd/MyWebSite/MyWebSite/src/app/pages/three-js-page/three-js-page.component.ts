@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as THREE from 'three';
-import { AxesHelper } from 'three';
+import { AxesHelper, PositionalAudio } from 'three';
 
 
 @Component({
@@ -22,7 +22,6 @@ export class ThreeJsPageComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-
     this.scene = new THREE.Scene();
     this.axesHelper = new THREE.AxesHelper(3);
 
@@ -30,7 +29,13 @@ export class ThreeJsPageComponent implements OnInit {
     this.geometry = new THREE.BoxGeometry(1, 1, 1);
     this.material = new THREE.MeshBasicMaterial({ color: 0xFF5733 });
     this.mesh = new THREE.Mesh(this.geometry, this.material);
-    //this.mesh.position.y = 1;
+
+    //this.mesh.rotation.reorder('YXZ');
+    this.mesh.rotation.y = 2 * Math.PI / 3;
+    this.mesh.rotation.x = 4 * Math.PI / 3;
+    this.mesh.scale.x = 2;
+    //this.mesh.rotation.reorder('YXZ');
+    this.mesh.position.y = 5;
     this.scene.add(this.mesh);
     this.scene.add(this.axesHelper);
 
@@ -42,10 +47,10 @@ export class ThreeJsPageComponent implements OnInit {
 
     // Camera(Vertical FOV, Aspect Ratio,)
     this.camera = new THREE.PerspectiveCamera(75, sizes.width/sizes.height);
-    this.camera.position.x = 1;
-    this.camera.position.y = 1;
+    //this.camera.position.x = 1;
+    //this.camera.position.y = 1;
     this.camera.position.z = 3;
-
+    this.camera.lookAt(this.mesh.position);
     this.scene.add(this.camera);
 
     // Renderer
@@ -55,5 +60,9 @@ export class ThreeJsPageComponent implements OnInit {
     });
     this.renderer.setSize(sizes.width, sizes.height);
     this.renderer.render(this.scene, this.camera);
+
+
+
   }
+
 }
