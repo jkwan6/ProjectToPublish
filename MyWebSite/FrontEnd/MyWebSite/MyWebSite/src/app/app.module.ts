@@ -20,6 +20,8 @@ import { LogInSignUpComponent } from './pages/log-in-sign-up/log-in-sign-up.comp
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { CommentModuleComponent } from './modules/comment-module/comment-module.component';
 import { SignFaceComponent } from './sign-face/sign-face.component';
+import { CommentTemplateComponent } from './modules/comment-module/comment-template/comment-template.component';
+import { ThreeJsPageComponent } from './pages/three-js-page/three-js-page.component';
 
 
 @NgModule({
@@ -38,7 +40,9 @@ import { SignFaceComponent } from './sign-face/sign-face.component';
     LogInSignUpComponent,
     HomePageComponent,
     CommentModuleComponent,
-    SignFaceComponent
+    SignFaceComponent,
+    CommentTemplateComponent,
+    ThreeJsPageComponent
   ],
   imports: [
     BrowserModule, HttpClientModule, BrowserAnimationsModule, AppRoutingModule, AngularMaterialModule

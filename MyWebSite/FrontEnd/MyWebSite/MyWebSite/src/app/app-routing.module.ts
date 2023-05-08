@@ -7,6 +7,7 @@ import { ContactInfoComponent } from './pages/sub-pages/contact-info/contact-inf
 import { ExperienceComponent } from './pages/sub-pages/experience/experience.component';
 import { SkillsComponent } from './pages/sub-pages/skills/skills.component';
 import { TimelineComponent } from './pages/sub-pages/timeline/timeline.component';
+import { ThreeJsPageComponent } from './pages/three-js-page/three-js-page.component';
 
 
 
@@ -19,8 +20,7 @@ const routes: Routes = [
   { path: 'experience', component: ExperienceComponent },
   { path: 'timeline', component: TimelineComponent },
   { path: 'skills', component: SkillsComponent },
-
-
+  { path: 'three', component: ThreeJsPageComponent }
 ]
 
 
