@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { ActivatedRoute, Params } from '@angular/router';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.prod';
 import { ILoginRequest } from '../../interface/ILoginRequest';
@@ -18,16 +19,24 @@ export class LogInSignUpComponent implements OnInit {
 
   hide = true
 
-  constructor(private client: HttpClient) { }
+  constructor(
+    private client: HttpClient,
+    private activatedRoute: ActivatedRoute
+  ) { }
 
   form!: FormGroup;
   private email!: string;
   private password!: string;
+  public loginCheck!: boolean;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   ngOnInit(): void {
+    var loginOrSignUp = this.activatedRoute.toString();
+    var containsLogin = loginOrSignUp.includes("login")
+    this.loginCheck = (containsLogin) ? true : false;
+
     this.form = new FormGroup({
       email: new FormControl('', Validators.required),
       password: new FormControl('', Validators.required)

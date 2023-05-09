@@ -2,16 +2,14 @@
 
   <div class="filler1"></div>
 
-  <div class="log-in-body">
+  <div class="log-in-body" *ngIf="loginCheck">
 
     <div class="Flex-Content1">
       <mat-icon style="transform: scale(3); padding-top:15px;">account_circle</mat-icon>
     </div>
 
-
-    <form
-          class="Login-Block"
-          [formGroup] ="form"
+    <form class="Login-Block"
+          [formGroup]="form"
           (ngSubmit)="login()">
 
       <h4 class="title-style">Log In</h4>
@@ -37,12 +35,11 @@
 
         </mat-form-field>
 
-        <button
-                color="primary"
+        <button color="primary"
                 class="log-in-button"
                 type="submit"
                 mat-raised-button>
-        Login
+          Login
         </button>
 
       </div>
@@ -52,13 +49,74 @@
 
     <div class="Flex-Content3">
       <div class="create-account">
-        
+
         <div class="button1">
           Forgot Password?
         </div>
 
         <a class="button2" [routerLink]="['/signup']">
           Create Account
+        </a>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="log-in-body" *ngIf="!loginCheck">
+
+    <div class="Flex-Content1">
+      <mat-icon style="transform: scale(3); padding-top:15px;">account_circle</mat-icon>
+    </div>
+
+    <form class="Login-Block"
+          [formGroup]="form"
+          (ngSubmit)="login()">
+
+      <h4 class="title-style">Sign Up</h4>
+
+      <div class="log-in-details">
+
+        <mat-form-field style="margin-bottom:-1.25em;"
+                        class="log-in-field"
+                        appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email">
+        </mat-form-field>
+
+        <mat-form-field style="margin-bottom: -1.25em;"
+                        class="log-in-field"
+                        appearance="outline">
+          <mat-label>Password</mat-label>
+          <input matInput formControlName="password" [type]="hide ? 'password' : 'text'">
+
+          <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+
+        </mat-form-field>
+
+        <button color="primary"
+                class="log-in-button"
+                type="submit"
+                mat-raised-button>
+          Sign Up
+        </button>
+
+      </div>
+    </form>
+
+
+
+    <div class="Flex-Content3">
+      <div class="create-account">
+
+        <div class="button1">
+         <!-- Forgot Password?-->
+        </div>
+
+        <a class="button2" [routerLink]="['/signup']">
+          <!--Create Account-->
         </a>
       </div>
     </div>
