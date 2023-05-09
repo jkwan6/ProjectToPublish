@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import * as THREE from 'three';
 import { AxesHelper, PositionalAudio } from 'three';
 import * as dat from 'lil-gui';
@@ -9,7 +9,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
   templateUrl: './three-js-page.component.html',
   styleUrls: ['./three-js-page.component.css']
 })
-export class ThreeJsPageComponent implements OnInit {
+export class ThreeJsPageComponent implements AfterViewInit {
 
   // Properties
   scene!: THREE.Scene;
@@ -20,9 +20,11 @@ export class ThreeJsPageComponent implements OnInit {
   renderer!: THREE.WebGLRenderer;
   axesHelper!: THREE.AxesHelper;
 
-  constructor() { }
+  @ViewChild('divElement') divElement: any;
 
-  ngOnInit(): void {
+
+
+  ngAfterViewInit(): void {
     this.scene = new THREE.Scene();
     this.axesHelper = new THREE.AxesHelper(3);
 
@@ -43,13 +45,14 @@ export class ThreeJsPageComponent implements OnInit {
     const gui = new dat.GUI();
     gui.add(this.mesh.position, 'y')
     // Sizes
-    const sizes = {
-      width: 800,
-      height: 600
+    let sizes = {
+      width: this.divElement.nativeElement.offsetWidth,
+      height: this.divElement.nativeElement.offsetHeight,
     };
+    let aspectRatio = sizes.width / sizes.height;
 
     // Camera(Vertical FOV, Aspect Ratio,)
-    this.camera = new THREE.PerspectiveCamera(75, sizes.width/sizes.height);
+    this.camera = new THREE.PerspectiveCamera(75, aspectRatio);
     //this.camera.position.x = 1;
     //this.camera.position.y = 1;
     this.camera.position.z = 3;
@@ -61,9 +64,29 @@ export class ThreeJsPageComponent implements OnInit {
     this.renderer = new THREE.WebGLRenderer({
       canvas: canvas!
     });
-    this.renderer.setSize(sizes.width, sizes.height);
-    this.renderer.render(this.scene, this.camera);
 
+    // Animation
+
+    window.addEventListener('resize', () => {
+      let sizes = {
+        width: this.divElement.nativeElement.offsetWidth,
+        height: this.divElement.nativeElement.offsetHeight,
+      };
+      let aspectRatio = sizes.width / sizes.height;
+
+      this.camera!.aspect = aspectRatio;
+      this.camera?.updateProjectionMatrix();
+      this.renderer!.setSize(sizes.width, sizes.height);
+      this.renderer.render(this.scene, this.camera);
+    }, false);
+
+
+
+    this.renderer.setSize(sizes.width, sizes.height);
+
+    this.renderer.render(this.scene, this.camera);
   }
+
+
 
 }
