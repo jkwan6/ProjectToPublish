@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import * as THREE from 'three';
 import { AxesHelper, PositionalAudio } from 'three';
-
+import * as dat from 'lil-gui';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 @Component({
   selector: 'app-three-js-page',
@@ -35,10 +36,12 @@ export class ThreeJsPageComponent implements OnInit {
     this.mesh.rotation.x = 4 * Math.PI / 3;
     this.mesh.scale.x = 2;
     //this.mesh.rotation.reorder('YXZ');
-    this.mesh.position.y = 5;
+    //this.mesh.position.y = 0;
     this.scene.add(this.mesh);
     this.scene.add(this.axesHelper);
 
+    const gui = new dat.GUI();
+    gui.add(this.mesh.position, 'y')
     // Sizes
     const sizes = {
       width: 800,
@@ -50,7 +53,7 @@ export class ThreeJsPageComponent implements OnInit {
     //this.camera.position.x = 1;
     //this.camera.position.y = 1;
     this.camera.position.z = 3;
-    this.camera.lookAt(this.mesh.position);
+    //this.camera.lookAt(this.mesh.position);
     this.scene.add(this.camera);
 
     // Renderer
@@ -60,8 +63,6 @@ export class ThreeJsPageComponent implements OnInit {
     });
     this.renderer.setSize(sizes.width, sizes.height);
     this.renderer.render(this.scene, this.camera);
-
-
 
   }
 
