@@ -1,8 +1,10 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import * as THREE from 'three';
-import { AxesHelper, Clock, PositionalAudio } from 'three';
+import { AxesHelper, Clock, MeshMatcapMaterial, PositionalAudio } from 'three';
 import * as dat from 'lil-gui';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 
 @Component({
   selector: 'app-three-js-page',
@@ -27,6 +29,7 @@ export class ThreeJsPageComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
 
+
     // Textures
     const textureLoader = new THREE.TextureLoader();
     const doorColorTexture = textureLoader.load('../../../assets/textures/door/color.jpg');
@@ -36,9 +39,54 @@ export class ThreeJsPageComponent implements AfterViewInit {
     const doorNormalTexture = textureLoader.load('../../../assets/textures/door/normal.jpg');
     const doorMetalnessTexture = textureLoader.load('../../../assets/textures/door/metalness.jpg');
     const doorRoughnessTexture = textureLoader.load('../../../assets/textures/door/roughness.jpg');
+    const matCapMaterial = textureLoader.load('../../../assets/textures/matcaps/1.png');
+    
 
-    const matCapTexture = textureLoader.load('../../../assets/textures/matcaps/3.png');
+
     const gradientTexture = textureLoader.load('../../../assets/textures/gradients/3.jpg');
+
+    var textGeometry:TextGeometry;
+
+    // Font
+    //const fontLoader = new FontLoader();
+    //fontLoader.load(
+    //  '../../../assets/fonts/helvetiker_regular.typeface.json',
+    //  ( font ) => {
+    //    textGeometry = new TextGeometry(
+    //      'text',
+    //      {
+    //        font,
+    //        size: 0.5,
+    //        height: 0.2,
+    //        curveSegments: 1,
+    //        bevelEnabled: true,
+    //        bevelThickness:0.03,
+    //        bevelSize: 0.02,
+    //        bevelOffset: 0,
+    //        bevelSegments:1
+    //      }
+    //    )
+
+    //    //textGeometry.computeBoundingBox();
+    //    //textGeometry.translate(
+    //    //  - textGeometry.boundingBox!.max.x * 0.5,
+    //    //  - textGeometry.boundingBox!.max.y * 0.5,
+    //    //  - textGeometry.boundingBox!.max.z * 0.5
+    //    //)
+
+    //    textGeometry.center();
+
+    //    console.log(textGeometry.boundingBox)
+
+    //    const textMaterial = new THREE.MeshMatcapMaterial();
+    //    textMaterial.matcap = matCapMaterial;
+    //    //textMaterial.wireframe = true;
+    //    const text = new THREE.Mesh(textGeometry, textMaterial);
+    //    this.scene.add(text);
+
+    //  }
+    //)
+
 
     // Initial Div Setup
     let sizes = {
@@ -76,21 +124,21 @@ export class ThreeJsPageComponent implements AfterViewInit {
 
     /*const material = new THREE.MeshDepthMaterial();*/
 
-    const cubeTextureLoader = new THREE.CubeTextureLoader();
-    const environmentMapTexture = cubeTextureLoader.load([
-      '../../../assets/textures/environmentMaps/2/px.jpg',
-      '../../../assets/textures/environmentMaps/2/nx.jpg',
-      '../../../assets/textures/environmentMaps/2/py.jpg',
-      '../../../assets/textures/environmentMaps/2/ny.jpg',
-      '../../../assets/textures/environmentMaps/2/pz.jpg',
-      '../../../assets/textures/environmentMaps/2/nz.jpg',
-    ]
-    )
+    //const cubeTextureLoader = new THREE.CubeTextureLoader();
+    //const environmentMapTexture = cubeTextureLoader.load([
+    //  '../../../assets/textures/environmentMaps/2/px.jpg',
+    //  '../../../assets/textures/environmentMaps/2/nx.jpg',
+    //  '../../../assets/textures/environmentMaps/2/py.jpg',
+    //  '../../../assets/textures/environmentMaps/2/ny.jpg',
+    //  '../../../assets/textures/environmentMaps/2/pz.jpg',
+    //  '../../../assets/textures/environmentMaps/2/nz.jpg',
+    //]
+    //)
 
     const material = new THREE.MeshStandardMaterial();
     material.metalness = 0.7;
     material.roughness = 0.2;
-    material.envMap = environmentMapTexture;
+    //material.envMap = environmentMapTexture;
     //material.map = doorColorTexture;
     //material.aoMap = doorAmbientOcclusionTexture;
     //material.aoMapIntensity = 1;
@@ -142,15 +190,20 @@ export class ThreeJsPageComponent implements AfterViewInit {
     this.scene.add(sphere, plane, taurus);
 
     // Light
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-    this.scene.add(ambientLight);
 
-    const pointLight = new THREE.PointLight(0xffffff, 0.5);
-    pointLight.position.x = 2;
-    pointLight.position.y = 3;
-    pointLight.position.z = 4;
+    const light = new THREE.AmbientLight(0xffffff, 0.5)
+    this.scene.add(light);
 
-    this.scene.add(pointLight)
+
+    //const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    //this.scene.add(ambientLight);
+
+    //const pointLight = new THREE.PointLight(0xffffff, 0.5);
+    //pointLight.position.x = 2;
+    //pointLight.position.y = 3;
+    //pointLight.position.z = 4;
+
+    //this.scene.add(pointLight)
 
     // Camera Setup
     this.camera = new THREE.PerspectiveCamera(75, aspectRatio);
