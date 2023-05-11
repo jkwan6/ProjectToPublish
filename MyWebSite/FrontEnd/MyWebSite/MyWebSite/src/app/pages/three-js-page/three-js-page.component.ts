@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import * as THREE from 'three';
-import { AxesHelper, Clock, MeshMatcapMaterial, PositionalAudio } from 'three';
+import { AmbientLight, AxesHelper, Clock, MeshMatcapMaterial, PositionalAudio } from 'three';
 import * as dat from 'lil-gui';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
@@ -13,7 +13,7 @@ import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 })
 export class ThreeJsPageComponent implements AfterViewInit {
 
-  // Properties
+  // PROPERTIES
   scene!: THREE.Scene;
   geometry!: THREE.BoxGeometry;
   material!: THREE.MeshBasicMaterial;
@@ -30,7 +30,7 @@ export class ThreeJsPageComponent implements AfterViewInit {
   ngAfterViewInit(): void {
 
 
-    // Textures
+    // TEXTURES
     const textureLoader = new THREE.TextureLoader();
     const doorColorTexture = textureLoader.load('../../../assets/textures/door/color.jpg');
     const doorAlphaTexture = textureLoader.load('../../../assets/textures/door/alpha.jpg');
@@ -40,13 +40,22 @@ export class ThreeJsPageComponent implements AfterViewInit {
     const doorMetalnessTexture = textureLoader.load('../../../assets/textures/door/metalness.jpg');
     const doorRoughnessTexture = textureLoader.load('../../../assets/textures/door/roughness.jpg');
     const matCapMaterial = textureLoader.load('../../../assets/textures/matcaps/1.png');
-    
-
-
     const gradientTexture = textureLoader.load('../../../assets/textures/gradients/3.jpg');
 
-    var textGeometry:TextGeometry;
 
+    // INITIAL DIV SETUP
+    let sizes = {
+      width: this.divElement.nativeElement.offsetWidth,
+      height: this.divElement.nativeElement.offsetHeight,
+    };
+    let aspectRatio = sizes.width / sizes.height;
+
+    // SCENE SETUP
+    this.scene = new THREE.Scene();
+    this.axesHelper = new THREE.AxesHelper(3);
+    this.scene.add(this.axesHelper);
+
+    //var textGeometry:TextGeometry;
     // Font
     //const fontLoader = new FontLoader();
     //fontLoader.load(
@@ -88,24 +97,6 @@ export class ThreeJsPageComponent implements AfterViewInit {
     //)
 
 
-    // Initial Div Setup
-    let sizes = {
-      width: this.divElement.nativeElement.offsetWidth,
-      height: this.divElement.nativeElement.offsetHeight,
-    };
-    let aspectRatio = sizes.width / sizes.height;
-
-    // Scene Setup
-    this.scene = new THREE.Scene();
-    this.axesHelper = new THREE.AxesHelper(3);
-    this.scene.add(this.axesHelper);
-
-
-    // Dat Gui
-    const gui = new dat.GUI();
-
-
-
 
     // Mesh Geometry Setup
     //const material = new THREE.MeshBasicMaterial({ map: doorColorTexture });
@@ -135,6 +126,8 @@ export class ThreeJsPageComponent implements AfterViewInit {
     //]
     //)
 
+
+    // MATERIALS
     const material = new THREE.MeshStandardMaterial();
     material.metalness = 0.7;
     material.roughness = 0.2;
@@ -149,14 +142,7 @@ export class ThreeJsPageComponent implements AfterViewInit {
     //material.alphaMap = doorAlphaTexture;
     //material.transparent = true;
 
-    gui.add(material.normalScale, 'x').min(0).max(10).step(1)
-    gui.add(material.normalScale, 'y').min(0).max(10).step(1)
-    gui.add(material, 'metalness').min(0).max(1).step(0.1)
-    gui.add(material, 'roughness').min(0).max(1).step(0.1)
-    gui.add(material, 'aoMapIntensity').min(0).max(10).step(0.5)
-    gui.add(material, 'displacementScale').min(0).max(1).step(0.01)
-
-
+    // GEOMETRY
     const sphere = new THREE.Mesh(
       new THREE.SphereGeometry(0.5, 64, 64),
       material
@@ -189,12 +175,24 @@ export class ThreeJsPageComponent implements AfterViewInit {
 
     this.scene.add(sphere, plane, taurus);
 
-    // Light
+    // LIGHT
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
+    //this.scene.add(ambientLight);
 
-    const light = new THREE.AmbientLight(0xffffff, 0.5)
-    this.scene.add(light);
+    const directionalLight = new THREE.DirectionalLight(0x00fffc, 0.3);
+    directionalLight.position.set(0.1, 0, 0)
+    //this.scene.add(directionalLight);
 
+    const hemisphereLight = new THREE.HemisphereLight(0xff0000, 0x0000ff);
+    //this.scene.add(hemisphereLight);
 
+    const pointLight = new THREE.PointLight(0xff9000, 1)
+  //this.scene.add(pointLight);
+
+    const rectAreaLight = new THREE.RectAreaLight(0x4e00ff,1,3,1);
+    this.scene.add(rectAreaLight);
+    rectAreaLight.position.set(1, 1, 2)
+    rectAreaLight.lookAt(plane.position)
     //const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     //this.scene.add(ambientLight);
 
@@ -205,21 +203,37 @@ export class ThreeJsPageComponent implements AfterViewInit {
 
     //this.scene.add(pointLight)
 
-    // Camera Setup
+    // CAMERA SETUP
     this.camera = new THREE.PerspectiveCamera(75, aspectRatio);
     this.camera.position.z = 3;
     this.scene.add(this.camera);
 
-    // Renderer
+    // RENDERER
     const canvas = document.querySelector('.webgl');
     this.renderer = new THREE.WebGLRenderer({
       canvas: canvas!
     });
 
-    // Control Setup
+    // CONTROL SETUP
     this.controls = new OrbitControls(this.camera, this.renderer.domElement)
     this.controls.target.set(0, 0, 0);
     this.controls.update();
+
+
+    // DAT GUI
+    const gui = new dat.GUI();
+    gui.add(material.normalScale, 'x').min(0).max(10).step(1)
+    gui.add(material.normalScale, 'y').min(0).max(10).step(1)
+    gui.add(material, 'metalness').min(0).max(1).step(0.1)
+    gui.add(material, 'roughness').min(0).max(1).step(0.1)
+    gui.add(material, 'aoMapIntensity').min(0).max(10).step(0.5)
+    gui.add(material, 'displacementScale').min(0).max(1).step(0.01)
+    gui.add(ambientLight, "intensity").min(0).max(3).step(0.2);
+    gui.add(directionalLight, "intensity").min(0).max(3).step(0.2)
+    gui.add(hemisphereLight,"intensity").min(0).max(3).step(0.2)
+    gui.add(pointLight, "intensity").min(0).max(10).step(0.5)
+    gui.add(pointLight, "distance").min(0).max(10).step(0.5)
+    gui.add(pointLight, "decay").min(0).max(10).step(0.5)
 
     // Finalize Initial View
     this.renderer.setSize(sizes.width, sizes.height);
