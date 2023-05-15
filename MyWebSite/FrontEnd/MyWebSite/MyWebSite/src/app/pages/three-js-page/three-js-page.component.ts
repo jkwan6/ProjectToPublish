@@ -55,76 +55,6 @@ export class ThreeJsPageComponent implements AfterViewInit {
     this.axesHelper = new THREE.AxesHelper(3);
     this.scene.add(this.axesHelper);
 
-    //var textGeometry:TextGeometry;
-    // Font
-    //const fontLoader = new FontLoader();
-    //fontLoader.load(
-    //  '../../../assets/fonts/helvetiker_regular.typeface.json',
-    //  ( font ) => {
-    //    textGeometry = new TextGeometry(
-    //      'text',
-    //      {
-    //        font,
-    //        size: 0.5,
-    //        height: 0.2,
-    //        curveSegments: 1,
-    //        bevelEnabled: true,
-    //        bevelThickness:0.03,
-    //        bevelSize: 0.02,
-    //        bevelOffset: 0,
-    //        bevelSegments:1
-    //      }
-    //    )
-
-    //    //textGeometry.computeBoundingBox();
-    //    //textGeometry.translate(
-    //    //  - textGeometry.boundingBox!.max.x * 0.5,
-    //    //  - textGeometry.boundingBox!.max.y * 0.5,
-    //    //  - textGeometry.boundingBox!.max.z * 0.5
-    //    //)
-
-    //    textGeometry.center();
-
-    //    console.log(textGeometry.boundingBox)
-
-    //    const textMaterial = new THREE.MeshMatcapMaterial();
-    //    textMaterial.matcap = matCapMaterial;
-    //    //textMaterial.wireframe = true;
-    //    const text = new THREE.Mesh(textGeometry, textMaterial);
-    //    this.scene.add(text);
-
-    //  }
-    //)
-
-
-
-    // Mesh Geometry Setup
-    //const material = new THREE.MeshBasicMaterial({ map: doorColorTexture });
-    //material.wireframe = true;
-    //material.opacity = 0.5;
-    //material.transparent = true;
-    //material.side = THREE.DoubleSide
-    //material.alphaMap = (doorAlphaTexture);
-
-    //const material = new THREE.MeshNormalMaterial();
-    //material.wireframe = true;
-    //material.flatShading = true;
-
-    //const material = new THREE.MeshMatcapMaterial();
-    //material.matcap = matCapTexture;
-
-    /*const material = new THREE.MeshDepthMaterial();*/
-
-    //const cubeTextureLoader = new THREE.CubeTextureLoader();
-    //const environmentMapTexture = cubeTextureLoader.load([
-    //  '../../../assets/textures/environmentMaps/2/px.jpg',
-    //  '../../../assets/textures/environmentMaps/2/nx.jpg',
-    //  '../../../assets/textures/environmentMaps/2/py.jpg',
-    //  '../../../assets/textures/environmentMaps/2/ny.jpg',
-    //  '../../../assets/textures/environmentMaps/2/pz.jpg',
-    //  '../../../assets/textures/environmentMaps/2/nz.jpg',
-    //]
-    //)
 
 
     // MATERIALS
@@ -141,6 +71,51 @@ export class ThreeJsPageComponent implements AfterViewInit {
     //material.normalScale.set(1, 1)
     //material.alphaMap = doorAlphaTexture;
     //material.transparent = true;
+
+
+    // PARTICLES
+    const particleGeometry = new THREE.BufferGeometry();
+    const particleMaterial = new THREE.PointsMaterial({
+/*      color: 'pink',*/
+      size: 0.1,
+      sizeAttenuation: true
+    });
+    const count = 20000;
+
+
+    const particlesTexture = textureLoader.load('../../../assets/textures/particles/2.png');
+
+
+    particleMaterial.alphaMap = particlesTexture;
+    //particleMaterial.alphaTest = 0.001;
+    particleMaterial.depthWrite = false;
+    particleMaterial.blending = THREE.AdditiveBlending;
+    particleMaterial.transparent = true;
+    particleMaterial.vertexColors = true;
+
+    const position = new Float32Array(count * 3);
+    const colors = new Float32Array(count * 3);
+
+    for (let i = 0; i < count * 3; i++) {
+      position[i] = (Math.random() - 0.5) * 10
+      colors[i] = Math.random()
+    }
+
+    particleGeometry.setAttribute(
+      'position',
+      new THREE.BufferAttribute(position, 3)
+    );
+
+    particleGeometry.setAttribute(
+      'color',
+      new THREE.BufferAttribute(colors, 3)
+    );
+
+    // POINTS
+    const particles = new THREE.Points(particleGeometry, particleMaterial);
+    this.scene.add(particles);
+
+
 
     // GEOMETRY
     const sphere = new THREE.Mesh(
@@ -173,7 +148,7 @@ export class ThreeJsPageComponent implements AfterViewInit {
     );
 
 
-    this.scene.add(sphere, plane, taurus);
+    //this.scene.add(sphere, plane, taurus);
 
     // LIGHT
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
@@ -191,7 +166,7 @@ export class ThreeJsPageComponent implements AfterViewInit {
 
     const rectAreaLight = new THREE.RectAreaLight(0x4e00ff,1,3,1);
     this.scene.add(rectAreaLight);
-    rectAreaLight.position.set(1, 1, 2)
+    rectAreaLight.position.set(1, 1, 4)
     rectAreaLight.lookAt(plane.position)
     //const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     //this.scene.add(ambientLight);
@@ -234,7 +209,7 @@ export class ThreeJsPageComponent implements AfterViewInit {
     gui.add(pointLight, "intensity").min(0).max(10).step(0.5)
     gui.add(pointLight, "distance").min(0).max(10).step(0.5)
     gui.add(pointLight, "decay").min(0).max(10).step(0.5)
-
+    gui.add(rectAreaLight, "intensity").min(0).max(4).step(0.2);
     // Finalize Initial View
     this.renderer.setSize(sizes.width, sizes.height);
     this.renderer.render(this.scene, this.camera);
