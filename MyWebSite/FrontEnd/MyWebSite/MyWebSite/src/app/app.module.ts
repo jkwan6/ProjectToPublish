@@ -22,6 +22,7 @@ import { CommentModuleComponent } from './modules/comment-module/comment-module.
 import { SignFaceComponent } from './sign-face/sign-face.component';
 import { CommentTemplateComponent } from './modules/comment-module/comment-template/comment-template.component';
 import { ThreeJsPageComponent } from './pages/three-js-page/three-js-page.component';
+import { ThreeJsPageTwoComponent } from './pages/three-js-page-two/three-js-page-two.component';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { ThreeJsPageComponent } from './pages/three-js-page/three-js-page.compon
     CommentModuleComponent,
     SignFaceComponent,
     CommentTemplateComponent,
-    ThreeJsPageComponent
+    ThreeJsPageComponent,
+    ThreeJsPageTwoComponent
   ],
   imports: [
     BrowserModule, HttpClientModule, BrowserAnimationsModule, AppRoutingModule, AngularMaterialModule
