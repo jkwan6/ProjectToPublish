@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, OnDestroy } from '@angular/core';
 import * as THREE from 'three';
 import { AmbientLight, AxesHelper, Clock, MeshMatcapMaterial, PositionalAudio } from 'three';
 import * as dat from 'lil-gui';
@@ -11,7 +11,10 @@ import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
   templateUrl: './three-js-page.component.html',
   styleUrls: ['./three-js-page.component.css']
 })
-export class ThreeJsPageComponent implements AfterViewInit {
+export class ThreeJsPageComponent implements AfterViewInit, OnDestroy{
+  ngOnDestroy(): void {
+    this.gui.destroy();
+  }
 
   // PROPERTIES
   scene!: THREE.Scene;
@@ -22,6 +25,7 @@ export class ThreeJsPageComponent implements AfterViewInit {
   renderer!: THREE.WebGLRenderer;
   axesHelper!: THREE.AxesHelper;
   controls!: OrbitControls;
+  gui!: dat.GUI;
 
   @ViewChild('divElement') divElement: any;
 
@@ -196,20 +200,20 @@ export class ThreeJsPageComponent implements AfterViewInit {
 
 
     // DAT GUI
-    const gui = new dat.GUI();
-    gui.add(material.normalScale, 'x').min(0).max(10).step(1)
-    gui.add(material.normalScale, 'y').min(0).max(10).step(1)
-    gui.add(material, 'metalness').min(0).max(1).step(0.1)
-    gui.add(material, 'roughness').min(0).max(1).step(0.1)
-    gui.add(material, 'aoMapIntensity').min(0).max(10).step(0.5)
-    gui.add(material, 'displacementScale').min(0).max(1).step(0.01)
-    gui.add(ambientLight, "intensity").min(0).max(3).step(0.2);
-    gui.add(directionalLight, "intensity").min(0).max(3).step(0.2)
-    gui.add(hemisphereLight,"intensity").min(0).max(3).step(0.2)
-    gui.add(pointLight, "intensity").min(0).max(10).step(0.5)
-    gui.add(pointLight, "distance").min(0).max(10).step(0.5)
-    gui.add(pointLight, "decay").min(0).max(10).step(0.5)
-    gui.add(rectAreaLight, "intensity").min(0).max(4).step(0.2);
+    this.gui = new dat.GUI();
+    this.gui.add(material.normalScale, 'x').min(0).max(10).step(1)
+    this.gui.add(material.normalScale, 'y').min(0).max(10).step(1)
+    this.gui.add(material, 'metalness').min(0).max(1).step(0.1)
+    this.gui.add(material, 'roughness').min(0).max(1).step(0.1)
+    this.gui.add(material, 'aoMapIntensity').min(0).max(10).step(0.5)
+    this.gui.add(material, 'displacementScale').min(0).max(1).step(0.01)
+    this.gui.add(ambientLight, "intensity").min(0).max(3).step(0.2);
+    this.gui.add(directionalLight, "intensity").min(0).max(3).step(0.2)
+    this.gui.add(hemisphereLight,"intensity").min(0).max(3).step(0.2)
+    this.gui.add(pointLight, "intensity").min(0).max(10).step(0.5)
+    this.gui.add(pointLight, "distance").min(0).max(10).step(0.5)
+    this.gui.add(pointLight, "decay").min(0).max(10).step(0.5)
+    this.gui.add(rectAreaLight, "intensity").min(0).max(4).step(0.2);
     // Finalize Initial View
     this.renderer.setSize(sizes.width, sizes.height);
     this.renderer.render(this.scene, this.camera);

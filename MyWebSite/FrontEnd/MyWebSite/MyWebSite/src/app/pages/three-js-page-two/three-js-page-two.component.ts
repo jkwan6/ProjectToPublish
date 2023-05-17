@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, OnDestroy } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import * as dat from 'lil-gui'
@@ -9,7 +9,7 @@ import * as dat from 'lil-gui'
   templateUrl: './three-js-page-two.component.html',
   styleUrls: ['./three-js-page-two.component.css']
 })
-export class ThreeJsPageTwoComponent implements AfterViewInit {
+export class ThreeJsPageTwoComponent implements AfterViewInit, OnDestroy {
 
   // PROPERTIES
   scene!: THREE.Scene;
@@ -20,11 +20,15 @@ export class ThreeJsPageTwoComponent implements AfterViewInit {
   renderer!: THREE.WebGLRenderer;
   axesHelper!: THREE.AxesHelper;
   controls!: OrbitControls;
+  gui!: dat.GUI;
 
   @ViewChild('divElement') divElement: any;
 
 
   constructor() { }
+    ngOnDestroy(): void {
+      this.gui.destroy();
+    }
   ngAfterViewInit(): void {
 
     // #region INITIAL DIV SETUP
@@ -40,7 +44,6 @@ export class ThreeJsPageTwoComponent implements AfterViewInit {
     this.axesHelper = new THREE.AxesHelper(3);
     this.scene.add(this.axesHelper);
     // #endregion
-
 
     // #region GENERATE GALAXY
     const parameters = {
@@ -141,7 +144,6 @@ export class ThreeJsPageTwoComponent implements AfterViewInit {
     generateGalaxy();
     // #endregion
 
-
     // #region CAMERA SETUP
     this.camera = new THREE.PerspectiveCamera(75, aspectRatio);
     this.camera.position.z = 3;
@@ -167,18 +169,18 @@ export class ThreeJsPageTwoComponent implements AfterViewInit {
     // #endregion
 
     // #region DAT GUI
-    const gui = new dat.GUI({width: 360});
+    this.gui = new dat.GUI({width: 360});
 
 
-    gui.add(parameters, 'count').min(100).max(100000).step(100).onFinishChange(generateGalaxy)
-    gui.add(parameters, 'size').min(0.001).max(0.1).step(0.001).onFinishChange(generateGalaxy)
-    gui.add(parameters, 'radius').min(0.01).max(20).step(0.01).onFinishChange(generateGalaxy);
-    gui.add(parameters, 'branches').min(2).max(20).step(1).onFinishChange(generateGalaxy);
-    gui.add(parameters, 'spin').min(-5).max(5).step(0.001).onFinishChange(generateGalaxy);
-    gui.add(parameters, 'randomness').min(0).max(2).step(0.01).onFinishChange(generateGalaxy);
-    gui.add(parameters, 'randomnessPower').min(1).max(10).step(1).onFinishChange(generateGalaxy);
-    gui.addColor(parameters, 'insideColor').onFinishChange(generateGalaxy);
-    gui.addColor(parameters, 'outsideColor').onFinishChange(generateGalaxy);
+    this.gui.add(parameters, 'count').min(100).max(100000).step(100).onFinishChange(generateGalaxy)
+    this.gui.add(parameters, 'size').min(0.001).max(0.1).step(0.001).onFinishChange(generateGalaxy)
+    this.gui.add(parameters, 'radius').min(0.01).max(20).step(0.01).onFinishChange(generateGalaxy);
+    this.gui.add(parameters, 'branches').min(2).max(20).step(1).onFinishChange(generateGalaxy);
+    this.gui.add(parameters, 'spin').min(-5).max(5).step(0.001).onFinishChange(generateGalaxy);
+    this.gui.add(parameters, 'randomness').min(0).max(2).step(0.01).onFinishChange(generateGalaxy);
+    this.gui.add(parameters, 'randomnessPower').min(1).max(10).step(1).onFinishChange(generateGalaxy);
+    this.gui.addColor(parameters, 'insideColor').onFinishChange(generateGalaxy);
+    this.gui.addColor(parameters, 'outsideColor').onFinishChange(generateGalaxy);
     //
     // #endregion
 

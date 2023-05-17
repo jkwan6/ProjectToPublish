@@ -23,6 +23,9 @@ import { SignFaceComponent } from './sign-face/sign-face.component';
 import { CommentTemplateComponent } from './modules/comment-module/comment-template/comment-template.component';
 import { ThreeJsPageComponent } from './pages/three-js-page/three-js-page.component';
 import { ThreeJsPageTwoComponent } from './pages/three-js-page-two/three-js-page-two.component';
+import { ThreeJsPageThreeComponent } from './pages/three-js-page-three/three-js-page-three.component';
+import { SubMenu1Component } from './pages/three-js-page-three/sub-menu1/sub-menu1.component';
+import { SubMenu2Component } from './pages/three-js-page-three/sub-menu2/sub-menu2.component';
 
 
 @NgModule({
@@ -44,7 +47,10 @@ import { ThreeJsPageTwoComponent } from './pages/three-js-page-two/three-js-page
     SignFaceComponent,
     CommentTemplateComponent,
     ThreeJsPageComponent,
-    ThreeJsPageTwoComponent
+    ThreeJsPageTwoComponent,
+    ThreeJsPageThreeComponent,
+    SubMenu1Component,
+    SubMenu2Component
   ],
   imports: [
     BrowserModule, HttpClientModule, BrowserAnimationsModule, AppRoutingModule, AngularMaterialModule

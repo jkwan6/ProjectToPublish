@@ -22,6 +22,7 @@ export class BodyContentComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.subscription = this.sideNavService.currentToggleStatus$.subscribe(x => this.matDrawer.toggle(x.valueOf()))
+
   }
 
 
