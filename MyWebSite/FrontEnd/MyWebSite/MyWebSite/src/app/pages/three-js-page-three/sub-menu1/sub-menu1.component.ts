@@ -3,6 +3,9 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import * as dat from 'lil-gui'
 import { CdkScrollable } from '@angular/cdk/scrolling';
+import { ScrollService } from '../../../service/ScrollService/ScrollService';
+import gsap from 'gsap';
+
 
 @Component({
   selector: 'app-sub-menu1',
@@ -25,7 +28,7 @@ export class SubMenu1Component implements AfterViewInit, OnDestroy {
   controls!: OrbitControls;
   @ViewChild('divElement') divElement: any;
 
-  constructor() { }
+  constructor(private scrollService: ScrollService) { }
     ngOnDestroy(): void {
         throw new Error('Method not implemented.');
   }
@@ -42,8 +45,8 @@ export class SubMenu1Component implements AfterViewInit, OnDestroy {
 
     // #region SCENE SETUP
     this.scene = new THREE.Scene();
-    this.axesHelper = new THREE.AxesHelper(3);
-    this.scene.add(this.axesHelper);
+    //this.axesHelper = new THREE.AxesHelper(3);
+    //this.scene.add(this.axesHelper);
     // #endregion
 
 
@@ -77,17 +80,22 @@ export class SubMenu1Component implements AfterViewInit, OnDestroy {
       new THREE.TorusGeometry(1, 0.4, 16, 60),
       material
     )
+    mesh1.position.x = 1;
     mesh1.scale.set(0.5, 0.5, 0.5)
+
     const mesh2 = new THREE.Mesh(
       new THREE.ConeGeometry(1, 2, 32),
       material
     );
+    mesh2.position.x = -1;
     mesh2.scale.set(0.5, 0.5, 0.5)
+
     const mesh3 = new THREE.Mesh(
       new THREE.TorusKnotGeometry(0.8, 0.35, 100, 16),
       material
     );
     mesh3.scale.set(0.5, 0.5, 0.5)
+    mesh3.position.x = 1;
 
     mesh1.position.y = - objectsDistance * 0;
     mesh2.position.y = - objectsDistance * 1;
@@ -103,6 +111,36 @@ export class SubMenu1Component implements AfterViewInit, OnDestroy {
 
     // #endregion
 
+    // #region PARTICLES
+
+
+    const particlesCount = 500;
+    const positions = new Float32Array(particlesCount * 3);
+
+    for (let i = 0; i < particlesCount; i++) {
+      positions[i * 3 + 0] = (Math.random() - 0.5) * 10;    // X
+      positions[i * 3 + 1] = 4 - (Math.random()) * 18;      // Y
+      positions[i * 3 + 2] = (Math.random() -0.5) * 10;     // Z
+
+    }
+
+    const particlesGeometry = new THREE.BufferGeometry();
+
+    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+
+    // Material
+    const particleMaterial = new THREE.PointsMaterial({
+      color: parameters.materialColor,
+      sizeAttenuation: true,
+      size: 0.01
+    })
+
+    const particles = new THREE.Points(particlesGeometry, particleMaterial);
+    this.scene.add(particles)
+
+    // #endregion
+
+
 
     // #region LIGHT
 
@@ -116,9 +154,12 @@ export class SubMenu1Component implements AfterViewInit, OnDestroy {
     // #endregion
 
     // #region CAMERA SETUP
+
+    const cameraGroup = new THREE.Group()
+    this.scene.add(cameraGroup);
     this.camera = new THREE.PerspectiveCamera(75, aspectRatio);
     this.camera.position.z = 3;
-    this.scene.add(this.camera);
+    cameraGroup.add(this.camera);
     // #endregion
 
     // #region RENDERER
@@ -152,28 +193,48 @@ export class SubMenu1Component implements AfterViewInit, OnDestroy {
       })
 
     // #endregion
-
-
     let scrollY = window.scrollY;
     let scrollX = window.scrollX;
 
 
-
-
-
+    let currentSection = 0;
 
 
     // #region CLOCK & ANIMATION
+
+    const cursor = {
+      x : 0,
+      y : 0
+    }
+
+
     const clock = new THREE.Clock();
+    let previousTime = 0;
     const tick = () => {
       const elapsedTime = clock.getElapsedTime();
+      const deltaTime = elapsedTime - previousTime
+      previousTime = elapsedTime;
+      //console.log(deltaTime)
       /*      this.controls.update();*/
+
+
+      // Animate Camera
+      if (this.scrollService.getScrollY()) {
+        this.camera.position.y =
+          - this.scrollService.getScrollY()! / this.scrollService.getTotalScrollHeight()! * 1.5 * 8;
+      }
+
+      const parallaxX = cursor.x;
+      const parallaxY = - cursor.y;
+      cameraGroup.position.x += (parallaxX - cameraGroup.position.x) * 0.5 * deltaTime;
+      cameraGroup.position.y += (parallaxY - cameraGroup.position.y) * 0.5 * deltaTime;
+
 
 
       // Animate Meshes
       for (const mesh of sectionMeshes) {
-        mesh.rotation.x = elapsedTime * 0.1;
-        mesh.rotation.y = elapsedTime * 0.15;
+        mesh.rotation.x += deltaTime * 0.1;
+        mesh.rotation.y += deltaTime * 0.15;
       }
 
 
@@ -199,6 +260,47 @@ export class SubMenu1Component implements AfterViewInit, OnDestroy {
       this.renderer!.setSize(sizes.width, sizes.height);
       this.renderer.render(this.scene, this.camera);
     }, false);
+    // #endregion
+
+    // #region SCROLL EVENT LISTENER
+    document.addEventListener("scroll", () => {
+      //console.log(this.scrollService.getScrollY())
+      //console.log(this.scrollService.getTotalScrollHeight())
+      scrollY = this.scrollService.getScrollY()!;
+      //console.log(scrollY / sizes.height)
+
+      let newSection = scrollY / sizes.height
+      newSection = Math.round(newSection)
+
+
+      if (newSection != currentSection) {
+        currentSection = newSection
+
+        gsap.to(
+          sectionMeshes[currentSection].rotation,
+          {
+            duration: 2,
+            ease: 'power2.inOut',
+            x: '+=6',
+            y: '+=3',
+            z: '+=2'
+          }
+        )
+
+        console.log('changed', currentSection)
+      }
+
+
+      //console.log(newSection)
+    }, true);
+    // #endregion
+
+    // #region MOUSE MOVE EVENT LISTENER
+    window.addEventListener('mousemove', (event) => {
+      cursor.x = event.clientX / window.innerWidth - 0.5;
+      cursor.y = event.clientY / window.innerHeight - 0.5;
+/*      console.log(cursor)*/
+    });
     // #endregion
 
   }

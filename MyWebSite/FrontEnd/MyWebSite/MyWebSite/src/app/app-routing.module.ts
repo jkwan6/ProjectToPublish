@@ -7,6 +7,7 @@ import { ContactInfoComponent } from './pages/sub-pages/contact-info/contact-inf
 import { ExperienceComponent } from './pages/sub-pages/experience/experience.component';
 import { SkillsComponent } from './pages/sub-pages/skills/skills.component';
 import { TimelineComponent } from './pages/sub-pages/timeline/timeline.component';
+import { ThreeJsPageFourComponent } from './pages/three-js-page-four/three-js-page-four.component';
 import { SubMenu1Component } from './pages/three-js-page-three/sub-menu1/sub-menu1.component';
 import { ThreeJsPageThreeComponent } from './pages/three-js-page-three/three-js-page-three.component';
 import { ThreeJsPageTwoComponent } from './pages/three-js-page-two/three-js-page-two.component';
@@ -25,7 +26,7 @@ const routes: Routes = [
   { path: 'three', component: ThreeJsPageComponent },
   { path: 'three-2', component: ThreeJsPageTwoComponent },
   { path: 'three-3', component: ThreeJsPageThreeComponent },
-  { path: 'subtest', component: SubMenu1Component}
+  { path: 'three-4', component: ThreeJsPageFourComponent }
 ]
 
 

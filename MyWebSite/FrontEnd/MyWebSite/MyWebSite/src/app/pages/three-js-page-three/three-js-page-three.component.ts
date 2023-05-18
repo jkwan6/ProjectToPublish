@@ -2,9 +2,10 @@ import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import * as dat from 'lil-gui'
+import { ScrollService } from '../../service/ScrollService/ScrollService';
 
 @Component({
-  selector: 'app-three-js-page-three',
+  /*//selector: 'app-three-js-page-three',*/
   templateUrl: './three-js-page-three.component.html',
   styleUrls: ['./three-js-page-three.component.css']
 })
@@ -22,14 +23,16 @@ export class ThreeJsPageThreeComponent implements AfterViewInit {
   controls!: OrbitControls;
   @ViewChild('divElement') divElement: any;
 
-  constructor() { }
+  constructor(private scrollService: ScrollService) {  }
   ngAfterViewInit(): void {
 
-    const test = document.getElementById('test1')
-    test!.addEventListener('scroll', () => {
-      console.log(test?.scrollTop)
-
+    const test1 = document.getElementById('test1')
+    test1!.addEventListener('scroll', () => {
+      this.scrollService.setScrollY(test1!.scrollTop);
+      this.scrollService.setTotalScrollHeight(test1!.scrollHeight)
     })
+
+    const test2 = document.getElementById('test2')
   }
 
 }

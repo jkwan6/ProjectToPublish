@@ -21,6 +21,6 @@ body {
     width:100%;
 }
 
-/*::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 0px;
-}*/
+}
