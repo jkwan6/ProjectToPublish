@@ -10,6 +10,7 @@
 
 .NavBarStyles {
   flex: 1 1 auto;
+  flex-shrink: 1;
 }
 
 .BodyStyles {
