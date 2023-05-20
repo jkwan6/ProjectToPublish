@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import * as CANNON from 'cannon'
+import * as CANNON from 'cannon-es'
 import * as THREE from 'three'
 import * as dat from 'lil-gui'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
@@ -38,7 +38,7 @@ export class ThreeJsPageFourComponent implements AfterViewInit {
       reset: () => {
         for (const object of objectsToUpdate) {
           object.body.removeEventListener('collide', playHitSound)
-          world.remove(object.body)
+          world.removeBody(object.body)
 
 
           // Remove mesh
