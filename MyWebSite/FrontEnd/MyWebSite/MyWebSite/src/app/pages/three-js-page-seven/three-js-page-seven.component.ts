@@ -5,6 +5,9 @@ import * as dat from 'lil-gui'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
+import { vertex } from './shaders/vertex'
+import { fragment } from './shaders/fragment'
+
 
 @Component({
   selector: 'app-three-js-page-seven',
@@ -14,56 +17,65 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
 export class ThreeJsPageSevenComponent implements AfterViewInit {
 
   constructor() { }
-    ngAfterViewInit(): void {
+  ngAfterViewInit(): void {
 
-      /**
-       * Base
-       */
-      // Debug
-      const gui = new dat.GUI()
+    /**
+     * Base
+     */
+    // Debug
+    const gui = new dat.GUI()
 
-      // Canvas
-      const canvas = document.querySelector('canvas.webgl')
+    // Canvas
+    const canvas = document.querySelector('canvas.webgl')
 
-      // Scene
-      const scene = new THREE.Scene()
+    // Scene
+    const scene = new THREE.Scene()
 
-      /**
-       * Textures
-       */
-      const textureLoader = new THREE.TextureLoader()
+    /**
+     * Textures
+     */
+    const textureLoader = new THREE.TextureLoader()
+    const flagTexture = textureLoader.load('../../../assets/textures/flag-french.jpg');
 
-      /**
-       * Test mesh
-       */
-      // Geometry
-      const geometry = new THREE.PlaneGeometry(1, 1, 32, 32)
+    /**
+     * Test mesh
+     */
+    // Geometry
+    const geometry : THREE.PlaneGeometry | any = new THREE.PlaneGeometry(1, 1, 32, 32)
+      console.log(geometry)
+
+
+    const count = geometry.attributes.position.count;
+    const random = new Float32Array(count);
+    for (let i = 0; i < count; i++) {
+      random[i] = Math.random();
+    }
+
+    geometry.setAttribute('aRandom', new THREE.BufferAttribute(random, 1))
+    console.log(count)
 
       // Material
-      const material = new THREE.RawShaderMaterial({
-        vertexShader: `
-        uniform mat4 projectionMatrix;
-        uniform mat4 viewMatrix;
-        uniform mat4 modelMatrix;
-
-        attribute vec3 position;
-
-        void main()
-        {
-            gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
-        }`,
-        fragmentShader: `
-        precision mediump float;
-
-        void main()
-        {
-            gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
-        }`
+      const material: THREE.RawShaderMaterial | any = new THREE.RawShaderMaterial({
+        vertexShader: vertex,
+        fragmentShader: fragment,
+        uniforms: {
+          uFrequency: { value: new THREE.Vector2(10, 5) },
+          uTime: { value: 0 },
+          uColor: { value: new THREE.Color('purple') },
+          uTexture: { value: flagTexture }
+        },
+        transparent: true
       })
+
+    gui.add(material.uniforms.uFrequency.value, 'x').min(0).max(30).step(1).name('FreqX');
+    gui.add(material.uniforms.uFrequency.value, 'y').min(0).max(30).step(1).name('FreqY');
+
+
 
       // Mesh
       const mesh = new THREE.Mesh(geometry, material)
       scene.add(mesh)
+
 
       /**
        * Sizes
@@ -116,6 +128,9 @@ export class ThreeJsPageSevenComponent implements AfterViewInit {
 
       const tick = () => {
         const elapsedTime = clock.getElapsedTime()
+
+        // Update Materials
+        material.uniforms.uTime.value = elapsedTime;
 
         // Update controls
         controls.update()

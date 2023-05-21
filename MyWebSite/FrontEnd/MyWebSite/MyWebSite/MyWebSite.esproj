@@ -11,7 +11,12 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\MyWebSite</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="src\app\pages\three-js-page-seven\shaders\" />
     <Folder Include="src\service\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\app\pages\three-js-page-seven\shaders\fragment.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\app\pages\three-js-page-seven\shaders\vertex.glsl" />
   </ItemGroup>
 </Project>
