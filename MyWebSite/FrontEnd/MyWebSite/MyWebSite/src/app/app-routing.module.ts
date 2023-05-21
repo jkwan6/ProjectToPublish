@@ -9,6 +9,7 @@ import { SkillsComponent } from './pages/sub-pages/skills/skills.component';
 import { TimelineComponent } from './pages/sub-pages/timeline/timeline.component';
 import { ThreeJsPageFiveComponent } from './pages/three-js-page-five/three-js-page-five.component';
 import { ThreeJsPageFourComponent } from './pages/three-js-page-four/three-js-page-four.component';
+import { ThreeJsPageSevenComponent } from './pages/three-js-page-seven/three-js-page-seven.component';
 import { ThreeJsPageSixComponent } from './pages/three-js-page-six/three-js-page-six.component';
 import { SubMenu1Component } from './pages/three-js-page-three/sub-menu1/sub-menu1.component';
 import { ThreeJsPageThreeComponent } from './pages/three-js-page-three/three-js-page-three.component';
@@ -31,6 +32,7 @@ const routes: Routes = [
   { path: 'three-4', component: ThreeJsPageFourComponent },
   { path: 'three-5', component: ThreeJsPageFiveComponent },
   { path: 'three-6', component: ThreeJsPageSixComponent },
+  { path: 'three-7', component: ThreeJsPageSevenComponent },
 
 ]
 

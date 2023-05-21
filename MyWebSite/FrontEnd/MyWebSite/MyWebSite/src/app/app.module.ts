@@ -29,6 +29,7 @@ import { SubMenu2Component } from './pages/three-js-page-three/sub-menu2/sub-men
 import { ThreeJsPageFourComponent } from './pages/three-js-page-four/three-js-page-four.component';
 import { ThreeJsPageFiveComponent } from './pages/three-js-page-five/three-js-page-five.component';
 import { ThreeJsPageSixComponent } from './pages/three-js-page-six/three-js-page-six.component';
+import { ThreeJsPageSevenComponent } from './pages/three-js-page-seven/three-js-page-seven.component';
 
 
 @NgModule({
@@ -56,7 +57,8 @@ import { ThreeJsPageSixComponent } from './pages/three-js-page-six/three-js-page
     SubMenu2Component,
     ThreeJsPageFourComponent,
     ThreeJsPageFiveComponent,
-    ThreeJsPageSixComponent
+    ThreeJsPageSixComponent,
+    ThreeJsPageSevenComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule, BrowserAnimationsModule, AppRoutingModule, AngularMaterialModule
