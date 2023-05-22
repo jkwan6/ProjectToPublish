@@ -30,6 +30,8 @@ import { ThreeJsPageFourComponent } from './pages/three-js-page-four/three-js-pa
 import { ThreeJsPageFiveComponent } from './pages/three-js-page-five/three-js-page-five.component';
 import { ThreeJsPageSixComponent } from './pages/three-js-page-six/three-js-page-six.component';
 import { ThreeJsPageSevenComponent } from './pages/three-js-page-seven/three-js-page-seven.component';
+import { ThreeJsPage8Component } from './pages/three-js-page8/three-js-page8.component';
+import { ThreeJsPage9Component } from './pages/three-js-page9/three-js-page9.component';
 
 
 @NgModule({
@@ -59,6 +61,8 @@ import { ThreeJsPageSevenComponent } from './pages/three-js-page-seven/three-js-
     ThreeJsPageFiveComponent,
     ThreeJsPageSixComponent,
     ThreeJsPageSevenComponent,
+    ThreeJsPage8Component,
+    ThreeJsPage9Component,
   ],
   imports: [
     BrowserModule, HttpClientModule, BrowserAnimationsModule, AppRoutingModule, AngularMaterialModule
