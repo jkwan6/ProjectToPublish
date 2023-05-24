@@ -15,6 +15,7 @@ import { SubMenu1Component } from './pages/three-js-page-three/sub-menu1/sub-men
 import { ThreeJsPageThreeComponent } from './pages/three-js-page-three/three-js-page-three.component';
 import { ThreeJsPageTwoComponent } from './pages/three-js-page-two/three-js-page-two.component';
 import { ThreeJsPageComponent } from './pages/three-js-page/three-js-page.component';
+import { ThreeJsPage10Component } from './pages/three-js-page10/three-js-page10.component';
 import { ThreeJsPage8Component } from './pages/three-js-page8/three-js-page8.component';
 import { ThreeJsPage9Component } from './pages/three-js-page9/three-js-page9.component';
 
@@ -37,6 +38,7 @@ const routes: Routes = [
   { path: 'three-7', component: ThreeJsPageSevenComponent },
   { path: 'three-8', component: ThreeJsPage8Component },
   { path: 'three-9', component: ThreeJsPage9Component },
+  { path: 'three-10', component: ThreeJsPage10Component },
 
 ]
 
