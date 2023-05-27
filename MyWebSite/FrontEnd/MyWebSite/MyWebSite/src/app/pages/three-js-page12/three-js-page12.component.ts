@@ -197,9 +197,10 @@ export class ThreeJsPage12Component implements AfterViewInit {
 
 
       // Tint Pass
-      const TintShader = {
+      const TintShader : any = {
         uniforms: {
-          tDiffuse: {value: null}
+          tDiffuse: { value: null },
+          uTint: {value: null}
 
         },
         vertexShader: `
@@ -218,29 +219,113 @@ export class ThreeJsPage12Component implements AfterViewInit {
             `,
         fragmentShader: `
               uniform sampler2D tDiffuse;
+              uniform vec3 uTint;
               varying vec2 vUv;
               void main()
               {
                 vec4 color = texture2D(tDiffuse, vUv);
+                color.rgb += uTint;
                 gl_FragColor = color;
-
-
               }
               `
       }
 
-      const tintPass = new ShaderPass(TintShader);
+      const tintPass: any = new ShaderPass(TintShader);
+      tintPass.material.uniforms.uTint.value = new THREE.Vector3();
       effectComposer.addPass(tintPass)
 
 
+      // Displacement Pass
+      const DisplacementShader: any = {
+        uniforms: {
+          tDiffuse: { value: null },
+          uTime: {value: 0}
+        },
+        vertexShader: `
+      
+            varying vec2 vUv;
+
+            void main()
+            {
+              vec4 modelPosition = modelMatrix * vec4(position, 1.0);
+              vec4 viewPosition = viewMatrix * modelPosition;
+              vec4 projectedPosition = projectionMatrix * viewPosition;
+
+              gl_Position = projectedPosition;
+              vUv = uv;
+            }
+            `,
+        fragmentShader: `
+              uniform sampler2D tDiffuse;
+              varying vec2 vUv;
+              uniform float uTime;
+
+
+              void main()
+              {
+                vec2 newUv = vec2(
+                vUv.x,
+                vUv.y + sin(vUv.x * 10.0 + uTime) * 0.1
+                );
+                vec4 color = texture2D(tDiffuse, newUv);
+                gl_FragColor = color;
+              }
+              `
+      }
+
+      const displacementPass: any = new ShaderPass(DisplacementShader);
+      displacementPass.material.uniforms.uTime.value = 0;
+      displacementPass.enabled = false;
+      effectComposer.addPass(displacementPass)
 
 
 
+      // Futuristic Pass
+      const FuturisticDisplacementShader: any = {
+        uniforms: {
+          tDiffuse: { value: null },
+          uNormalMap: {value: null}
+        },
+        vertexShader: `
+            varying vec2 vUv;
 
+            void main()
+            {
+              vec4 modelPosition = modelMatrix * vec4(position, 1.0);
+              vec4 viewPosition = viewMatrix * modelPosition;
+              vec4 projectedPosition = projectionMatrix * viewPosition;
 
+              gl_Position = projectedPosition;
+              vUv = uv;
+            }
+            `,
+        fragmentShader: `
+              uniform sampler2D tDiffuse;
+              uniform sampler2D uNormalMap;
+              varying vec2 vUv;
 
+              void main()
+              {
+                vec3 normalColor = (texture2D(uNormalMap, vUv).xyz * 2.0) - 1.0;
+                vec2 newUv = vUv + normalColor.xy * 0.1;
+                vec4 color = texture2D(tDiffuse, newUv);
 
+                vec3 lightDirection = normalize(vec3( -1.0, 1.0, 0.0));
+                float lightness = clamp(dot(normalColor, lightDirection), 0.0, 1.0);
 
+                color.rgb += lightness * 2.0;
+
+                gl_FragColor = color;
+              }
+              `
+      }
+
+      const futuristicDisplacementPass: any = new ShaderPass(FuturisticDisplacementShader);
+      futuristicDisplacementPass.material.uniforms.uNormalMap.value = textureLoader.load(
+        '../../../assets/textures/interfaceNormalMap.png'
+      );
+      futuristicDisplacementPass.enabled = true;
+      effectComposer.addPass(futuristicDisplacementPass)
 
 
 
@@ -268,6 +353,9 @@ export class ThreeJsPage12Component implements AfterViewInit {
       gui.add(unrealBloomPass, "radius").min(0).max(10).step(0.1).name("unrealRadius");
       gui.add(unrealBloomPass, "threshold").min(0).max(10).step(0.1).name("unrealThreshold");
 
+      gui.add(tintPass.material.uniforms.uTint.value, "x").min(-1).max(1).step(0.001).name('red');
+      gui.add(tintPass.material.uniforms.uTint.value, "y").min(-1).max(1).step(0.001).name('green');
+      gui.add(tintPass.material.uniforms.uTint.value, "z").min(-1).max(1).step(0.001).name('blue');
 
       /**
        * Animate
@@ -276,6 +364,8 @@ export class ThreeJsPage12Component implements AfterViewInit {
 
       const tick = () => {
         const elapsedTime = clock.getElapsedTime()
+        displacementPass.material.uniforms.uTime.value = elapsedTime;
+
 
         // Update controls
         controls.update()

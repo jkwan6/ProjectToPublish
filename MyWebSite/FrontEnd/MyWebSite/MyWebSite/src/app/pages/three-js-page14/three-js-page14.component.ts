@@ -9,43 +9,39 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { gsap } from 'gsap';
 
 @Component({
-  selector: 'app-three-js-page13',
-  templateUrl: './three-js-page13.component.html',
-  styleUrls: ['./three-js-page13.component.css']
+  selector: 'app-three-js-page14',
+  templateUrl: './three-js-page14.component.html',
+  styleUrls: ['./three-js-page14.component.css']
 })
-export class ThreeJsPage13Component implements AfterViewInit {
+export class ThreeJsPage14Component implements AfterViewInit {
 
   constructor() { }
     ngAfterViewInit(): void {
-
-     /**
-     * Loaders
-     */
-      const loadingBarElement: any = document.querySelector('.loading-bar');
-      console.log(loadingBarElement)
-
-
+      /**
+* Loaders
+*/
+      const loadingBarElement: any = document.querySelector('.loading-bar')
       const loadingManager = new THREE.LoadingManager(
         // Loaded
         () => {
+          // Wait a little
+          window.setTimeout(() => {
+            // Animate overlay
+            gsap.to(overlayMaterial.uniforms.uAlpha, { duration: 3, value: 0, delay: 1 })
 
-          gsap.delayedCall(0.5, () => {
-            gsap.to(overlayMaterial.uniforms.uAlpha, { duration: 6, value: 0 })
-            loadingBarElement.classList.add("ended");
-            loadingBarElement.style.transform = ``
-          })
+            // Update loadingBarElement
+            loadingBarElement.classList.add('ended')
+            loadingBarElement.style.transform = ''
+          }, 500)
         },
+
         // Progress
-        (itemUrl, itemLoaded, itemsTotal) => {
-          const progressRatio = (itemLoaded / itemsTotal);
+        (itemUrl, itemsLoaded, itemsTotal) => {
+          // Calculate the progress and update the loadingBarElement
+          const progressRatio = itemsLoaded / itemsTotal
           loadingBarElement.style.transform = `scaleX(${progressRatio})`
-
-        },
-        // Error
-        () => {
-
-        },
-      );
+        }
+      )
       const gltfLoader = new GLTFLoader(loadingManager)
       const cubeTextureLoader = new THREE.CubeTextureLoader(loadingManager)
 
@@ -56,45 +52,40 @@ export class ThreeJsPage13Component implements AfterViewInit {
       const debugObject = {
         envMapIntensity: 0,
       }
-
       // Canvas
       const canvas = document.querySelector('canvas.webgl')
 
       // Scene
       const scene = new THREE.Scene()
 
-
-      // Overlay
-
-      const overlayGeometry = new THREE.PlaneGeometry(2, 2, 1, 1);
+      /**
+       * Overlay
+       */
+      const overlayGeometry = new THREE.PlaneGeometry(2, 2, 1, 1)
       const overlayMaterial : any = new THREE.ShaderMaterial({
-        wireframe: false,
+        // wireframe: true,
         transparent: true,
         uniforms:
         {
-          uAlpha: { value: 1 },
+          uAlpha: { value: 1 }
         },
         vertexShader: `
-            void main()
-            {
-              gl_Position = vec4(position, 1.0);
-            }
-            `,
+        void main()
+        {
+            gl_Position = vec4(position, 1.0);
+        }
+    `,
         fragmentShader: `
-              uniform float uAlpha;
-              void main()
-              {
-                gl_FragColor = vec4(0.0, 0.0, 0.0, uAlpha);
-              }
-              `
-      });
-      const overlayMesh = new THREE.Mesh(overlayGeometry, overlayMaterial);
-      scene.add(overlayMesh);
+        uniform float uAlpha;
 
-
-
-
-
+        void main()
+        {
+            gl_FragColor = vec4(0.0, 0.0, 0.0, uAlpha);
+        }
+    `
+      })
+      const overlay = new THREE.Mesh(overlayGeometry, overlayMaterial)
+      scene.add(overlay)
 
       /**
        * Update all materials
@@ -189,7 +180,7 @@ export class ThreeJsPage13Component implements AfterViewInit {
       /**
        * Renderer
        */
-      const renderer: any = new THREE.WebGLRenderer({
+      const renderer : any = new THREE.WebGLRenderer({
         canvas: canvas!,
         antialias: true
       })
@@ -207,6 +198,7 @@ export class ThreeJsPage13Component implements AfterViewInit {
       const controls = new OrbitControls(camera, renderer.domElement)
       controls.enableDamping = true
 
+
       /**
        * Animate
        */
@@ -222,9 +214,6 @@ export class ThreeJsPage13Component implements AfterViewInit {
       }
 
       tick()
-
-
-
     }
 
 }
