@@ -7,22 +7,22 @@ import { ContactInfoComponent } from './pages/sub-pages/contact-info/contact-inf
 import { ExperienceComponent } from './pages/sub-pages/experience/experience.component';
 import { SkillsComponent } from './pages/sub-pages/skills/skills.component';
 import { TimelineComponent } from './pages/sub-pages/timeline/timeline.component';
-import { ThreeJsPageFiveComponent } from './pages/three-js-page-five/three-js-page-five.component';
-import { ThreeJsPageFourComponent } from './pages/three-js-page-four/three-js-page-four.component';
-import { ThreeJsPageSevenComponent } from './pages/three-js-page-seven/three-js-page-seven.component';
-import { ThreeJsPageSixComponent } from './pages/three-js-page-six/three-js-page-six.component';
-import { SubMenu1Component } from './pages/three-js-page-three/sub-menu1/sub-menu1.component';
-import { ThreeJsPageThreeComponent } from './pages/three-js-page-three/three-js-page-three.component';
-import { ThreeJsPageTwoComponent } from './pages/three-js-page-two/three-js-page-two.component';
-import { ThreeJsPageComponent } from './pages/three-js-page/three-js-page.component';
-import { ThreeJsPage10Component } from './pages/three-js-page10/three-js-page10.component';
-import { ThreeJsPage11Component } from './pages/three-js-page11/three-js-page11.component';
-import { ThreeJsPage12Component } from './pages/three-js-page12/three-js-page12.component';
-import { ThreeJsPage13Component } from './pages/three-js-page13/three-js-page13.component';
-import { ThreeJsPage14Component } from './pages/three-js-page14/three-js-page14.component';
-import { ThreeJsPage15Component } from './pages/three-js-page15/three-js-page15.component';
-import { ThreeJsPage8Component } from './pages/three-js-page8/three-js-page8.component';
-import { ThreeJsPage9Component } from './pages/three-js-page9/three-js-page9.component';
+import { ThreeJsPageFiveComponent } from './pages/ThreeJs/three-js-page-five/three-js-page-five.component';
+import { ThreeJsPageFourComponent } from './pages/ThreeJs/three-js-page-four/three-js-page-four.component';
+import { ThreeJsPageSevenComponent } from './pages/ThreeJs/three-js-page-seven/three-js-page-seven.component';
+import { ThreeJsPageSixComponent } from './pages/ThreeJs/three-js-page-six/three-js-page-six.component';
+import { SubMenu1Component } from './pages/ThreeJs/three-js-page-three/sub-menu1/sub-menu1.component';
+import { ThreeJsPageThreeComponent } from './pages/ThreeJs/three-js-page-three/three-js-page-three.component';
+import { ThreeJsPageTwoComponent } from './pages/ThreeJs/three-js-page-two/three-js-page-two.component';
+import { ThreeJsPageComponent } from './pages/ThreeJs/three-js-page/three-js-page.component';
+import { ThreeJsPage10Component } from './pages/ThreeJs/three-js-page10/three-js-page10.component';
+import { ThreeJsPage11Component } from './pages/ThreeJs/three-js-page11/three-js-page11.component';
+import { ThreeJsPage12Component } from './pages/ThreeJs/three-js-page12/three-js-page12.component';
+import { ThreeJsPage13Component } from './pages/ThreeJs/three-js-page13/three-js-page13.component';
+import { ThreeJsPage14Component } from './pages/ThreeJs/three-js-page14/three-js-page14.component';
+import { ThreeJsPage15Component } from './pages/ThreeJs/three-js-page15/three-js-page15.component';
+import { ThreeJsPage8Component } from './pages/ThreeJs/three-js-page8/three-js-page8.component';
+import { ThreeJsPage9Component } from './pages/ThreeJs/three-js-page9/three-js-page9.component';
 
 
 const routes: Routes = [
