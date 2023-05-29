@@ -12,15 +12,20 @@ import * as dat from 'lil-gui'
 export class ThreeJsPageTwoComponent implements AfterViewInit, OnDestroy {
 
   // PROPERTIES
+  requestId: any;
   scene!: THREE.Scene;
-  geometry!: THREE.BoxGeometry;
-  material!: THREE.MeshBasicMaterial;
+  geometry!: THREE.BufferGeometry;
+  materials!: THREE.PointsMaterial;
   mesh!: THREE.Mesh;
   camera!: THREE.PerspectiveCamera;
-  renderer!: THREE.WebGLRenderer;
+  renderer!: THREE.WebGLRenderer | any;
   axesHelper!: THREE.AxesHelper;
+  texture!: THREE.Texture;
   controls!: OrbitControls;
   gui!: dat.GUI;
+  textureLoader!: THREE.TextureLoader;
+  animate!: (() => {}) | any;
+  points!: THREE.Points;
 
   @ViewChild('divElement') divElement: any;
 
@@ -28,7 +33,13 @@ export class ThreeJsPageTwoComponent implements AfterViewInit, OnDestroy {
   constructor() { }
     ngOnDestroy(): void {
       this.gui.destroy();
-    }
+      this.renderer!.dispose();
+      this.renderer.forceContextLoss();
+      this.geometry.dispose();
+      this.materials.dispose();
+  }
+
+
   ngAfterViewInit(): void {
 
     // #region INITIAL DIV SETUP
@@ -60,22 +71,22 @@ export class ThreeJsPageTwoComponent implements AfterViewInit, OnDestroy {
 
 
 
-    let geometry: THREE.BufferGeometry;
-    let materials: THREE.PointsMaterial;
-    let points: THREE.Points;
+    //let geometry: THREE.BufferGeometry;
+    //let materials: THREE.PointsMaterial;
+    //let points: THREE.Points;
 
     const generateGalaxy = () => {
 
 
-      if (points != undefined) {
-        geometry.dispose();
-        materials.dispose();
-        this.scene.remove(points);
+      if (this.points != undefined) {
+        this.geometry.dispose();
+        this.materials.dispose();
+        this.scene.remove(this.points);
       }
 
 
 
-      geometry = new THREE.BufferGeometry();
+      this.geometry = new THREE.BufferGeometry();
       const positions = new Float32Array(parameters.count * 3);
       const colors = new Float32Array(parameters.count * 3);
       const colorInside = new THREE.Color(parameters.insideColor);
@@ -115,18 +126,18 @@ export class ThreeJsPageTwoComponent implements AfterViewInit, OnDestroy {
 
       }
 
-      geometry.setAttribute(
+      this.geometry.setAttribute(
         'position',
         new THREE.BufferAttribute(positions, 3)
       );
 
-      geometry.setAttribute(
+      this.geometry.setAttribute(
         'color',
         new THREE.BufferAttribute(colors, 3)
       );
 
       // Materials
-      materials = new THREE.PointsMaterial(
+      this.materials = new THREE.PointsMaterial(
         {
           size: parameters.size,
           sizeAttenuation: true,
@@ -137,8 +148,8 @@ export class ThreeJsPageTwoComponent implements AfterViewInit, OnDestroy {
       )
 
       // Points
-      points = new THREE.Points(geometry, materials);
-      this.scene.add(points);
+      this.points = new THREE.Points(this.geometry, this.materials);
+      this.scene.add(this.points);
 
     };
     generateGalaxy();
