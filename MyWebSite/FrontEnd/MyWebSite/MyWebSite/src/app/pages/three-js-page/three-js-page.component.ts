@@ -33,7 +33,6 @@ export class ThreeJsPageComponent implements AfterViewInit, OnDestroy{
 
   ngAfterViewInit(): void {
 
-
     // TEXTURES
     const textureLoader = new THREE.TextureLoader();
     const doorColorTexture = textureLoader.load('../../../assets/textures/door/color.jpg');
@@ -65,22 +64,10 @@ export class ThreeJsPageComponent implements AfterViewInit, OnDestroy{
     const material = new THREE.MeshStandardMaterial();
     material.metalness = 0.7;
     material.roughness = 0.2;
-    //material.envMap = environmentMapTexture;
-    //material.map = doorColorTexture;
-    //material.aoMap = doorAmbientOcclusionTexture;
-    //material.aoMapIntensity = 1;
-    //material.displacementMap = doorHeightTexture;
-    //material.displacementScale = 0.05;
-    //material.normalMap = doorNormalTexture;
-    //material.normalScale.set(1, 1)
-    //material.alphaMap = doorAlphaTexture;
-    //material.transparent = true;
-
 
     // PARTICLES
     const particleGeometry = new THREE.BufferGeometry();
     const particleMaterial = new THREE.PointsMaterial({
-/*      color: 'pink',*/
       size: 0.1,
       sizeAttenuation: true
     });
@@ -91,7 +78,6 @@ export class ThreeJsPageComponent implements AfterViewInit, OnDestroy{
 
 
     particleMaterial.alphaMap = particlesTexture;
-    //particleMaterial.alphaTest = 0.001;
     particleMaterial.depthWrite = false;
     particleMaterial.blending = THREE.AdditiveBlending;
     particleMaterial.transparent = true;
@@ -172,15 +158,6 @@ export class ThreeJsPageComponent implements AfterViewInit, OnDestroy{
     this.scene.add(rectAreaLight);
     rectAreaLight.position.set(1, 1, 4)
     rectAreaLight.lookAt(plane.position)
-    //const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-    //this.scene.add(ambientLight);
-
-    //const pointLight = new THREE.PointLight(0xffffff, 0.5);
-    //pointLight.position.x = 2;
-    //pointLight.position.y = 3;
-    //pointLight.position.z = 4;
-
-    //this.scene.add(pointLight)
 
     // CAMERA SETUP
     this.camera = new THREE.PerspectiveCamera(75, aspectRatio);
@@ -214,7 +191,6 @@ export class ThreeJsPageComponent implements AfterViewInit, OnDestroy{
     this.gui.add(pointLight, "distance").min(0).max(10).step(0.5)
     this.gui.add(pointLight, "decay").min(0).max(10).step(0.5)
     this.gui.add(rectAreaLight, "intensity").min(0).max(4).step(0.2);
-    // Finalize Initial View
     this.renderer.setSize(sizes.width, sizes.height);
     this.renderer.render(this.scene, this.camera);
 
@@ -224,15 +200,6 @@ export class ThreeJsPageComponent implements AfterViewInit, OnDestroy{
 
     const tick = () => {
       const elapsedTime = clock.getElapsedTime();
-
-      // Rotations
-      //sphere.rotation.y = 0.1 * elapsedTime;
-      //plane.rotation.y = 0.1 * elapsedTime;
-      //taurus.rotation.y = 0.1 * elapsedTime;
-
-      //sphere.rotation.x = 0.15 * elapsedTime;
-      //plane.rotation.x = 0.15 * elapsedTime;
-      //taurus.rotation.x = 0.15 * elapsedTime;
 
 
       this.controls.update();
@@ -255,23 +222,6 @@ export class ThreeJsPageComponent implements AfterViewInit, OnDestroy{
       this.renderer!.setSize(sizes.width, sizes.height);
       this.renderer.render(this.scene, this.camera);
     }, false);
-
-
-
-    //function animate(
-    //  renderer: THREE.WebGLRenderer,
-    //  scene: THREE.Scene,
-    //  camera: THREE.PerspectiveCamera
-    //): void {
-    //  requestAnimationFrame(() => animate(renderer, scene, camera))
-    //  const elapsedTime = new THREE.Clock().getElapsedTime();
-    //  taurus.rotation.y = 0.1 * elapsedTime;
-
-    ////this.box!.rotation.y += 0.010;
-    ////this.box!.rotation.x += 0.01;
-    //  renderer.render(scene, camera);
-    //}
-
 
   }
 

@@ -49,6 +49,8 @@ export class ThreeJsPage15Component implements AfterViewInit {
        */
 
       const bakedMaterial = new THREE.MeshBasicMaterial({ map: bakedTexture })
+      const poleLightMaterial = new THREE.MeshBasicMaterial({ color: 0xffffe5 })
+      const portalLightMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
       /**
        * Models
        */
@@ -59,6 +61,22 @@ export class ThreeJsPage15Component implements AfterViewInit {
           gltf.scene.traverse((child:any) => {
             child.material = bakedMaterial;
           })
+
+          const poleLightAMesh : any = gltf.scene.children.find((child) => {
+            return child.name === 'lamppaper';
+          })
+
+          const poleLightBMesh: any = gltf.scene.children.find((child) => {
+            return child.name === 'lamppaper001';
+          })
+
+          const portalLight: any = gltf.scene.children.find((child) => {
+            return child.name === 'Circle';
+          })
+
+          poleLightAMesh.material = poleLightMaterial;
+          poleLightBMesh.material = poleLightMaterial;
+          portalLight.material = portalLightMaterial;
 
           scene.add(gltf.scene);
         }
