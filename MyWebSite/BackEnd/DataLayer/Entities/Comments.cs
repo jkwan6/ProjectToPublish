@@ -21,7 +21,7 @@ namespace DataLayer.Entities
         public int Id { get; set; }
         public string Author { get; set; }
 
-        public DateTime CommentsTime;
+        public DateTime CommentsTime { get; }
         public string? CommentsDescription { get; set; }
         public List<SubComments>? SubComments { get; set; }
     }

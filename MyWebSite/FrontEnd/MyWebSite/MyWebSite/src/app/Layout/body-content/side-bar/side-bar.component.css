@@ -3,7 +3,7 @@
 }
 
 .NavBarButton {
-  background-color:whitesmoke;
+  /*background-color:whitesmoke;*/
   width: 100%;
   border-radius:0px;
   text-align:left;
@@ -15,8 +15,8 @@
 }
 
 .NavBarButtonBottom {
-  color:darkblue;
-  background-color: whitesmoke;
+  /*color:darkblue;*/
+  /*background-color: whitesmoke;*/
   width: 100%;
   border-radius: 0px;
   text-align: left;
