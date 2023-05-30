@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "dgSpecHash": "1FVp9lbdJpkreOtstJJLH7zOkjSEJ4y+zARhY2X7jlylhWnyrJ1qDVR6rvD2h2ZcFEGWFic75D8tApnVTg8v+A==",
+  "success": false,
+  "projectFilePath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\AuthenticationBusinessLogic\\AuthenticationBusinessLogic.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\User\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\6.0.0\\microsoft.extensions.configuration.abstractions.6.0.0.nupkg.sha512",
+    "C:\\Users\\User\\.nuget\\packages\\microsoft.extensions.primitives\\6.0.0\\microsoft.extensions.primitives.6.0.0.nupkg.sha512",
+    "C:\\Users\\User\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1104",
+      "level": "Error",
+      "message": "Unable to find project 'C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BackEnd\\DataLayer\\DataLayer.csproj'. Check that the project reference is valid and that the project file exists.",
+      "libraryId": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BackEnd\\DataLayer\\DataLayer.csproj",
+      "targetGraphs": [
+        "net6.0"
+      ]
+    }
+  ]
+}

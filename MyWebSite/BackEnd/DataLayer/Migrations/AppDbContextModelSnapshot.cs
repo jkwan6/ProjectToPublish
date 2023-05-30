@@ -209,6 +209,31 @@ namespace DataLayer.Migrations
                     b.ToTable("Comments");
                 });
 
+            modelBuilder.Entity("DataLayer.Entities.SubComments", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Author")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CommentsDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CommentsID")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentsID");
+
+                    b.ToTable("SubComments");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -383,6 +408,17 @@ namespace DataLayer.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("DataLayer.Entities.SubComments", b =>
+                {
+                    b.HasOne("DataLayer.Entities.Comments", "Comments")
+                        .WithMany("SubComments")
+                        .HasForeignKey("CommentsID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Comments");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -449,6 +485,11 @@ namespace DataLayer.Migrations
                     b.Navigation("AppSessions");
 
                     b.Navigation("RefreshTokens");
+                });
+
+            modelBuilder.Entity("DataLayer.Entities.Comments", b =>
+                {
+                    b.Navigation("SubComments");
                 });
 #pragma warning restore 612, 618
         }

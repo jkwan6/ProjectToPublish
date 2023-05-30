@@ -26,6 +26,7 @@ namespace DataLayer
                 );
         }
         public DbSet<Comments> Comments { get; set; } = null!;
+        public DbSet<SubComments> SubComments { get; set; } = null!;
         public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
         public DbSet<AppSession> AppSessions => Set<AppSession>();
         public DbSet<AccessToken> AccessTokens => Set<AccessToken>();

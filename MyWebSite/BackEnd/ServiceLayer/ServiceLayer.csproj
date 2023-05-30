@@ -7,8 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DTO\" />
-    <Folder Include="QueryObjects\" />
+    <Compile Remove="DTO\**" />
+    <Compile Remove="QueryObjects\**" />
+    <EmbeddedResource Remove="DTO\**" />
+    <EmbeddedResource Remove="QueryObjects\**" />
+    <None Remove="DTO\**" />
+    <None Remove="QueryObjects\**" />
   </ItemGroup>
 
   <ItemGroup>

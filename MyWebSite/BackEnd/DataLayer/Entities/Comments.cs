@@ -23,5 +23,6 @@ namespace DataLayer.Entities
 
         public DateTime CommentsTime;
         public string? CommentsDescription { get; set; }
+        public List<SubComments>? SubComments { get; set; }
     }
 }
