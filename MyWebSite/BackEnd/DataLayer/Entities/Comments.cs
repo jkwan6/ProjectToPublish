@@ -9,10 +9,19 @@ namespace DataLayer.Entities
 {
     public class Comments: IEntityBase
     {
-    [Key]
-    [Required]
-    public new int Id { get; set; }
-    public DateTime CommentsTime => DateTime.UtcNow;
-    public string? CommentsDescription { get; set; }
+
+        public Comments()
+        {
+            CommentsTime = DateTime.UtcNow;
+        }
+
+        [Key]
+        [Required]
+
+        public int Id { get; set; }
+        public string Author { get; set; }
+
+        public DateTime CommentsTime;
+        public string? CommentsDescription { get; set; }
     }
 }

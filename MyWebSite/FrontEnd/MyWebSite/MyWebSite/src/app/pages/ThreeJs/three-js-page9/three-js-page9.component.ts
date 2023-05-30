@@ -7,6 +7,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
 import { vertex } from './shaders/vertex'
 import { fragment } from './shaders/fragment'
+import { ShaderLoader } from '../../../service/ShaderLoader/ShaderLoader.service';
 
 @Component({
   selector: 'app-three-js-page9',
@@ -39,8 +40,12 @@ export class ThreeJsPage9Component implements AfterViewInit {
     const waterGeometry = new THREE.PlaneGeometry(2, 2, 128, 128);
 
     // Material
+
+    const shaderLoader = new ShaderLoader;
+    const vertexShader = shaderLoader.LoadShader('assets/shaders/vertex.glsl')
+
     const waterMaterial : any = new THREE.RawShaderMaterial({
-      vertexShader: vertex,
+      vertexShader,
       fragmentShader: fragment,
       uniforms:
       {

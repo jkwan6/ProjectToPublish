@@ -16,10 +16,9 @@ import { ExperienceComponent } from './pages/sub-pages/experience/experience.com
 import { TimelineComponent } from './pages/sub-pages/timeline/timeline.component';
 import { SkillsComponent } from './pages/sub-pages/skills/skills.component';
 import { LifeInGeneralComponent } from './pages/sub-pages/life-in-general/life-in-general.component';
-import { LogInSignUpComponent } from './pages/log-in-sign-up/log-in-sign-up.component';
+import { AuthenticationComponent } from './pages/Authentication/authentication.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { CommentModuleComponent } from './modules/comment-module/comment-module.component';
-import { SignFaceComponent } from './sign-face/sign-face.component';
 import { CommentTemplateComponent } from './modules/comment-module/comment-template/comment-template.component';
 import { ThreeJsPageComponent } from './pages/ThreeJs/three-js-page1/three-js-page.component';
 import { ThreeJsPageTwoComponent } from './pages/ThreeJs/three-js-page2/three-js-page-two.component';
@@ -38,7 +37,8 @@ import { ThreeJsPage12Component } from './pages/ThreeJs/three-js-page12/three-js
 import { ThreeJsPage13Component } from './pages/ThreeJs/three-js-page13/three-js-page13.component';
 import { ThreeJsPage14Component } from './pages/ThreeJs/three-js-page14/three-js-page14.component';
 import { ThreeJsPage15Component } from './pages/ThreeJs/three-js-page15/three-js-page15.component';
-
+import { LoginComponent } from './pages/Authentication/login/login.component';
+import { SignUpComponent } from './pages/Authentication/sign-up/sign-up.component';
 
 @NgModule({
   declarations: [
@@ -53,10 +53,9 @@ import { ThreeJsPage15Component } from './pages/ThreeJs/three-js-page15/three-js
     TimelineComponent,
     SkillsComponent,
     LifeInGeneralComponent,
-    LogInSignUpComponent,
+    AuthenticationComponent,
     HomePageComponent,
     CommentModuleComponent,
-    SignFaceComponent,
     CommentTemplateComponent,
     ThreeJsPageComponent,
     ThreeJsPageTwoComponent,
@@ -75,6 +74,8 @@ import { ThreeJsPage15Component } from './pages/ThreeJs/three-js-page15/three-js
     ThreeJsPage13Component,
     ThreeJsPage14Component,
     ThreeJsPage15Component,
+    LoginComponent,
+    SignUpComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule, BrowserAnimationsModule, AppRoutingModule, AngularMaterialModule

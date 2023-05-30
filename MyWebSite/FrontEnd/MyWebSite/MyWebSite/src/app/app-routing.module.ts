@@ -1,7 +1,7 @@
 import { Component, NgModule } from '@angular/core';
 import { Routes, RouterModule, Router } from '@angular/router';
 import { HomePageComponent } from './pages/home-page/home-page.component';
-import { LogInSignUpComponent } from './pages/log-in-sign-up/log-in-sign-up.component';
+import { AuthenticationComponent } from './pages/Authentication/authentication.component';
 import { AcademicComponent } from './pages/sub-pages/academic/academic.component';
 import { ContactInfoComponent } from './pages/sub-pages/contact-info/contact-info.component';
 import { ExperienceComponent } from './pages/sub-pages/experience/experience.component';
@@ -27,8 +27,8 @@ import { ThreeJsPage9Component } from './pages/ThreeJs/three-js-page9/three-js-p
 
 const routes: Routes = [
   { path: '', component: HomePageComponent, pathMatch: 'full' },
-  { path: 'login', component: LogInSignUpComponent },
-  { path: 'signup', component: LogInSignUpComponent },
+  { path: 'login', component: AuthenticationComponent },
+  { path: 'signup', component: AuthenticationComponent },
   { path: 'contact', component: ContactInfoComponent },
   { path: 'academic', component: AcademicComponent },
   { path: 'experience', component: ExperienceComponent },

@@ -7,7 +7,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
 import { vertex } from './shaders/vertex'
 import { fragment } from './shaders/fragment'
-
+import { ShaderLoader } from './../../../service/ShaderLoader/ShaderLoader.service'
 
 @Component({
   selector: 'app-three-js-page-seven',
@@ -38,16 +38,9 @@ export class ThreeJsPageSevenComponent implements AfterViewInit {
     const flagTexture = textureLoader.load('../../../assets/textures/flag-french.jpg');
 
 
-    const req = new XMLHttpRequest();
-    req.open('GET', "assets/shaders/fragment.glsl", false);
-    req.overrideMimeType('text/plain');
-    req.send();
-
-    if (req.status === 200) {
-      var x = req.responseText;
-      console.log(x);
-    }
-
+    const x = new ShaderLoader;
+    var stringy = x.LoadShader('assets/shaders/fragment.glsl')
+    console.log(stringy)
 
     /**
      * Test mesh

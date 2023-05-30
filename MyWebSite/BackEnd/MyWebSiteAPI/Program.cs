@@ -30,6 +30,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: "AngularPolicy",
+
         cfg =>
         {
             cfg.SetIsOriginAllowed(origin => true);
