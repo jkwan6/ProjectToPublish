@@ -37,6 +37,18 @@ export class ThreeJsPageSevenComponent implements AfterViewInit {
     const textureLoader = new THREE.TextureLoader()
     const flagTexture = textureLoader.load('../../../assets/textures/flag-french.jpg');
 
+
+    const req = new XMLHttpRequest();
+    req.open('GET', "assets/shaders/fragment.glsl", false);
+    req.overrideMimeType('text/plain');
+    req.send();
+
+    if (req.status === 200) {
+      var x = req.responseText;
+      console.log(x);
+    }
+
+
     /**
      * Test mesh
      */

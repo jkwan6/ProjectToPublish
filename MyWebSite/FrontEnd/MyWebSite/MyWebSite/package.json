@@ -23,14 +23,17 @@
     "@angular/router": "~13.0.0",
     "@types/estree": "^1.0.0",
     "esbuild-plugin-glsl": "^1.1.0",
+    "glslify-loader": "^2.0.0",
     "jest-editor-support": "*",
     "lil-gui": "^0.18.1",
+    "raw-loader": "^4.0.2",
     "rxjs": "~7.4.0",
     "three": "^0.152.2",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
+    "@angular-builders/custom-webpack": "^15.0.0",
     "@angular-devkit/build-angular": "~13.0.1",
     "@angular/cli": "~13.0.1",
     "@angular/compiler-cli": "~13.0.0",
