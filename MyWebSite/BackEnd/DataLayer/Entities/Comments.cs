@@ -17,12 +17,14 @@ namespace DataLayer.Entities
 
         [Key]
         [Required]
-
         public int Id { get; set; }
         public string Author { get; set; }
-
         public DateTime CommentsTime { get; }
         public string? CommentsDescription { get; set; }
-        public List<SubComments>? SubComments { get; set; }
+
+        public int? ParentId { get; set; }
+        public Comments? ParentComment { get; set; }
+
+        public List<Comments>? ChildrenComment { get; set; }
     }
 }

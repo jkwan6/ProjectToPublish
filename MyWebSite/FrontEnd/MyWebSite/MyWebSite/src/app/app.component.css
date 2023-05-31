@@ -1,11 +1,11 @@
 /*CSS Styles for Overall Layout*/
 
 
-.LayoutFlexContainer{
-    display:flex;
-    flex-direction:column;
-    height:100%;
-
+.LayoutFlexContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #424242;
 }
 
 .NavBarStyles {

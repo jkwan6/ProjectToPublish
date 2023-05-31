@@ -23,7 +23,7 @@ builder.Services.AddControllers();
 // DBCONTEXT CONFIGS
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection")
+        builder.Configuration.GetConnectionString("DefaultConnection") // Options Sent to the Constructor of the DbContext
         ).LogTo(Console.WriteLine, new[] { DbLoggerCategory.Query.Name })
     );
 

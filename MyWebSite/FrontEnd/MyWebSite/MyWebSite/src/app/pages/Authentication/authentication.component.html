@@ -2,16 +2,15 @@
 
   <div class="filler1"></div>
 
-  <div class="log-in-body" *ngIf="loginCheck">
-    <app-login></app-login>
+  <div>
+    <div *ngIf="loginCheck">
+      <app-login></app-login>
+    </div>
+
+    <div *ngIf="!loginCheck">
+      <app-sign-up></app-sign-up>
+    </div>
   </div>
-
-
-
-  <div class="log-in-body" *ngIf="!loginCheck">
-    <app-sign-up></app-sign-up>
-  </div>
-
 
   <div class="filler2"></div>
 

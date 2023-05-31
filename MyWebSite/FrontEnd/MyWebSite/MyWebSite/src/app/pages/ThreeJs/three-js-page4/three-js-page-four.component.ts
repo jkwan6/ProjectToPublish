@@ -59,7 +59,7 @@ export class ThreeJsPageFourComponent implements AfterViewInit {
      * Base
      */
     // Canvas
-    const canvas = document.querySelector('canvas.webgl')
+    const canvas = document.querySelector('canvas.webgl4')
 
     // Scene
     const scene = new THREE.Scene()

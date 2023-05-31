@@ -15,6 +15,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessDbAccess", "Busines
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiTests", "ApiTests\ApiTests.csproj", "{28DF029F-2CD8-4B47-89D8-EE27750F0692}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthenticationServices", "..\AuthenticationServices\AuthenticationServices.csproj", "{656B6D0E-2CE0-4C76-901A-80ADE050D75C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthenticationDbAccess", "..\AuthenticationDbAccess\AuthenticationDbAccess.csproj", "{BFD6075F-4831-4838-BB0A-617D6D2BD79B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthenticationBusinessLogic", "..\AuthenticationBusinessLogic\AuthenticationBusinessLogic.csproj", "{DAB51530-B9AE-4BE8-A8DC-C135F668FC72}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +51,18 @@ Global
 		{28DF029F-2CD8-4B47-89D8-EE27750F0692}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28DF029F-2CD8-4B47-89D8-EE27750F0692}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28DF029F-2CD8-4B47-89D8-EE27750F0692}.Release|Any CPU.Build.0 = Release|Any CPU
+		{656B6D0E-2CE0-4C76-901A-80ADE050D75C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{656B6D0E-2CE0-4C76-901A-80ADE050D75C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{656B6D0E-2CE0-4C76-901A-80ADE050D75C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{656B6D0E-2CE0-4C76-901A-80ADE050D75C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFD6075F-4831-4838-BB0A-617D6D2BD79B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFD6075F-4831-4838-BB0A-617D6D2BD79B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFD6075F-4831-4838-BB0A-617D6D2BD79B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFD6075F-4831-4838-BB0A-617D6D2BD79B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAB51530-B9AE-4BE8-A8DC-C135F668FC72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAB51530-B9AE-4BE8-A8DC-C135F668FC72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAB51530-B9AE-4BE8-A8DC-C135F668FC72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAB51530-B9AE-4BE8-A8DC-C135F668FC72}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

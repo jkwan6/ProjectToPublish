@@ -18,19 +18,30 @@ import gsap from 'gsap';
 export class SubMenu1Component implements AfterViewInit, OnDestroy {
 
   // PROPERTIES
+  requestId: any;
   scene!: THREE.Scene;
   geometry!: THREE.BoxGeometry;
-  material!: THREE.MeshBasicMaterial;
-  mesh!: THREE.Mesh;
+  material!: THREE.MeshToonMaterial;
+  mesh1!: THREE.Mesh;
+  mesh2!: THREE.Mesh;
+  mesh3!: THREE.Mesh;
   camera!: THREE.PerspectiveCamera;
   renderer!: THREE.WebGLRenderer;
   axesHelper!: THREE.AxesHelper;
   controls!: OrbitControls;
+  gui!: dat.GUI;
   @ViewChild('divElement') divElement: any;
 
   constructor(private scrollService: ScrollService) { }
+
+
+
     ngOnDestroy(): void {
-        throw new Error('Method not implemented.');
+      window.cancelAnimationFrame(this.requestId)
+      this.gui.destroy();
+      this.renderer!.dispose();
+      this.renderer.forceContextLoss();
+      this.material.dispose();
   }
 
 
@@ -69,44 +80,44 @@ export class SubMenu1Component implements AfterViewInit, OnDestroy {
     const textureLoader = new THREE.TextureLoader();
     const gradientTexture = textureLoader.load('../../../assets/textures/gradients/3.jpg');
 
-    const material = new THREE.MeshToonMaterial({
+    this.material = new THREE.MeshToonMaterial({
       color: parameters.materialColor,
       gradientMap: gradientTexture
     });
 
     gradientTexture.magFilter = THREE.NearestFilter;
 
-    const mesh1 = new THREE.Mesh(
+    this.mesh1 = new THREE.Mesh(
       new THREE.TorusGeometry(1, 0.4, 16, 60),
-      material
+      this.material
     )
-    mesh1.position.x = 1;
-    mesh1.scale.set(0.5, 0.5, 0.5)
+    this.mesh1.position.x = 1;
+    this.mesh1.scale.set(0.5, 0.5, 0.5)
 
-    const mesh2 = new THREE.Mesh(
+    this.mesh2 = new THREE.Mesh(
       new THREE.ConeGeometry(1, 2, 32),
-      material
+      this.material
     );
-    mesh2.position.x = -1;
-    mesh2.scale.set(0.5, 0.5, 0.5)
+    this.mesh2.position.x = -1;
+    this.mesh2.scale.set(0.5, 0.5, 0.5)
 
-    const mesh3 = new THREE.Mesh(
+    this.mesh3 = new THREE.Mesh(
       new THREE.TorusKnotGeometry(0.8, 0.35, 100, 16),
-      material
+      this.material
     );
-    mesh3.scale.set(0.5, 0.5, 0.5)
-    mesh3.position.x = 1;
+    this.mesh3.scale.set(0.5, 0.5, 0.5)
+    this.mesh3.position.x = 1;
 
-    mesh1.position.y = - objectsDistance * 0;
-    mesh2.position.y = - objectsDistance * 1;
-    mesh3.position.y = - objectsDistance * 2;
-
-
+    this.mesh1.position.y = - objectsDistance * 0;
+    this.mesh2.position.y = - objectsDistance * 1;
+    this.mesh3.position.y = - objectsDistance * 2;
 
 
-    this.scene.add(mesh1, mesh2, mesh3)
 
-    const sectionMeshes = [mesh1, mesh2, mesh3];
+
+    this.scene.add(this.mesh1, this.mesh2, this.mesh3)
+
+    const sectionMeshes = [this.mesh1, this.mesh2, this.mesh3];
 
 
     // #endregion
@@ -184,11 +195,11 @@ export class SubMenu1Component implements AfterViewInit, OnDestroy {
     // #endregion
 
     // #region DAT GUI
-    const gui = new dat.GUI({ width: 360 });
+    this.gui = new dat.GUI({ width: 360 });
 
-    gui.addColor(parameters, `materialColor`)
+    this.gui.addColor(parameters, `materialColor`)
       .onChange(() => {
-        material.color.set(parameters.materialColor)
+        this.material.color.set(parameters.materialColor)
         
       })
 

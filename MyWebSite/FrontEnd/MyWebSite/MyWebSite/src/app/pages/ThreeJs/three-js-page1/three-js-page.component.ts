@@ -95,7 +95,7 @@ export class ThreeJsPageComponent implements AfterViewInit, OnDestroy{
     this.scene.add(this.camera);
 
     // RENDERER
-    const canvas = document.querySelector('.webgl');
+    const canvas = document.querySelector('.webgl1');
     this.renderer = new THREE.WebGLRenderer({
       canvas: canvas!
     });

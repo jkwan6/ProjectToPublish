@@ -163,7 +163,7 @@ export class ThreeJsPageTwoComponent implements AfterViewInit, OnDestroy {
     // #endregion
 
     // #region RENDERER
-    const canvas = document.querySelector('.webgl1');
+    const canvas = document.querySelector('.webgl2');
     this.renderer = new THREE.WebGLRenderer({
       canvas: canvas!
     });

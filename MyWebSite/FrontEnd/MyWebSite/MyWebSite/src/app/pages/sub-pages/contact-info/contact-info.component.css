@@ -20,17 +20,14 @@
     margin-top:8px;
     font-weight:500;
     text-decoration:none;
-    color:black;
 }
 
 .link-styles:visited {
   text-decoration: none;
-  color: black;
 }
 
 .link-styles:hover {
   text-decoration: underline;
-  color: black;
 }
 
 

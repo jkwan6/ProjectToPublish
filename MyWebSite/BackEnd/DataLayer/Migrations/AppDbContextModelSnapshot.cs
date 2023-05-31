@@ -204,34 +204,14 @@ namespace DataLayer.Migrations
                     b.Property<string>("CommentsDescription")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
-
-                    b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("DataLayer.Entities.SubComments", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Author")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CommentsDescription")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CommentsID")
+                    b.Property<int?>("ParentId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CommentsID");
+                    b.HasIndex("ParentId");
 
-                    b.ToTable("SubComments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -408,15 +388,14 @@ namespace DataLayer.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("DataLayer.Entities.SubComments", b =>
+            modelBuilder.Entity("DataLayer.Entities.Comments", b =>
                 {
-                    b.HasOne("DataLayer.Entities.Comments", "Comments")
-                        .WithMany("SubComments")
-                        .HasForeignKey("CommentsID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("DataLayer.Entities.Comments", "ParentComment")
+                        .WithMany("ChildrenComment")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
-                    b.Navigation("Comments");
+                    b.Navigation("ParentComment");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -489,7 +468,7 @@ namespace DataLayer.Migrations
 
             modelBuilder.Entity("DataLayer.Entities.Comments", b =>
                 {
-                    b.Navigation("SubComments");
+                    b.Navigation("ChildrenComment");
                 });
 #pragma warning restore 612, 618
         }
