@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
@@ -31,7 +32,10 @@ namespace ServiceLayer
 
         public async Task<ActionResult<IEnumerable<T>>> GetAllAsync()
         {
-            var result = await table.ToListAsync();
+            var test = new QueryComposer<T>();
+            var x = test.BuildQuery(table);
+
+            var result = await x.ToDynamicListAsync<T>();
             return result;
         }
 

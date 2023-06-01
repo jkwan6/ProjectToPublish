@@ -9,14 +9,19 @@ namespace ApiTests
     public class RepositoryTest
     {
         [Fact]
-        public void PagingShouldWork()
+        public async void PagingShouldWork()
         {
             // AAA
 
             using (AppDbContext context = new DbSetup().getDbContext())
             {
-                var x = context.Comments.Where(x => x.Id == 1).Include(x => x.ChildrenComment).Single();
-                var y = x.ChildrenComment;
+                var repo = new CommentsRepository(context);
+
+
+                var x = await repo.GetAllAsync();
+                var y = x.Value.Count();
+
+                Assert.NotEqual(0, y);
             }
 
         }

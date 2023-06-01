@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "KDORw8yW28j60ZW/IMUeKk7E1TNfJkYSSSCPIWyG0usSxI2zvesmQSGHFtiFWt9L6kbpj6gRyBib9S4TKWEmvw==",
+  "dgSpecHash": "nm7/fmgozil8Z6KxA7gfGYIX9+xZS1XI2lDuHrrihQvW9s8eqeNTvz91fnvBB+h+0upWRSfUtq+n4SO6sA8hXQ==",
   "success": true,
   "projectFilePath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\MyWebSiteAPI\\MyWebSiteApi.csproj",
   "expectedPackageFiles": [
@@ -124,6 +124,7 @@
     "C:\\Users\\User\\.nuget\\packages\\system.io.filesystem\\4.3.0\\system.io.filesystem.4.3.0.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\system.io.filesystem.primitives\\4.3.0\\system.io.filesystem.primitives.4.3.0.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\system.linq\\4.3.0\\system.linq.4.3.0.nupkg.sha512",
+    "C:\\Users\\User\\.nuget\\packages\\system.linq.dynamic.core\\1.3.2\\system.linq.dynamic.core.1.3.2.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\system.linq.expressions\\4.3.0\\system.linq.expressions.4.3.0.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\system.memory\\4.5.4\\system.memory.4.5.4.nupkg.sha512",
     "C:\\Users\\User\\.nuget\\packages\\system.net.http\\4.3.0\\system.net.http.4.3.0.nupkg.sha512",
