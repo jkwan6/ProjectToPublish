@@ -17,13 +17,13 @@ export class CommentModuleComponent implements OnInit {
 
   constructor(private client: HttpClient) { }
 
-  public displayedColumns: string[] = ["id", "commentsDescription", "commentsTime"];
+  public displayedColumns: string[] = ["id"];
   public Comments!: IComments[];  // Generic Class from AngMat Table
   defaultPageIndex: number = 0;
   defaultPageSize: number = 10;
-  public defaultSortColumn: string = "name";
+  public defaultSortColumn: string = "Author";
   public defaultSortOrder: "asc" | "desc" = "asc";
-  defaultFilterColumn: string = "name";
+  defaultFilterColumn: string = "Author";
   filterQuery?: string;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;

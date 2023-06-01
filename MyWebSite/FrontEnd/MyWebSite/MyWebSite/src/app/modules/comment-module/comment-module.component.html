@@ -3,50 +3,38 @@
 
 <div class="comment-container">
 
-
-  <h1>Lorem ipsum</h1>
-
-
-
-
-    <table mat-table
-           [dataSource]="Comments">
-      matSort (matSortChange)="loadData()"
-      [matSortActive]="defaultSortColumn"
-      [matSortDirection]="defaultSortOrder"
-      matSortDisableClear>
-
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef> Comment ID </th>
-        <td mat-cell *matCellDef="let IComments"> {{ IComments.id}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="commentsDescription">
-        <th mat-header-cell *matHeaderCellDef> Comment Description </th>
-        <td mat-cell *matCellDef="let IComments"> {{ IComments.commentsDescription}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="commentsTime">
-        <th mat-header-cell *matHeaderCellDef> Comment Date </th>
-        <td mat-cell *matCellDef="let IComments"> {{ IComments.commentsTime}} </td>
-      </ng-container>
+  <table mat-table
+         [dataSource]="Comments">
+    matSort (matSortChange)="loadData()"
+    [matSortActive]="defaultSortColumn"
+    [matSortDirection]="defaultSortOrder"
+    matSortDisableClear>
 
 
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>-->
-      <!--<tr mat-her-rmatHeaderRowDef="displayedColumns"></tr>
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> Leave a Comment </th>
+      <td mat-cell *matCellDef="let IComments">   <app-comment-template></app-comment-template> </td>
+    </ng-container>
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>-->
+    <!--<tr mat-her-rmatHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>-->
 
 
-    </table>
+  </table>
+
+
 
 
   <mat-divider></mat-divider>
 
+  <!--<p></p>
   <app-comment-template></app-comment-template>
 
-
+  <p></p>-->
 
 
 
