@@ -1,6 +1,7 @@
 ﻿using DataLayer;
 using DataLayer.Entities;
 using Microsoft.AspNetCore.Mvc;
+using ServiceLayer.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,9 +19,9 @@ namespace ServiceLayer.CommentsService
             _repository = repository;
         }
 
-        public async Task<ActionResult<IEnumerable<Comments>>> GetAllAsync()
+        public async Task<ActionResult<IEnumerable<Comments>>> GetAllAsync(PageParameters pageParams)
         {
-            var results = await _repository.GetAllAsync();
+            var results = await _repository.GetAllAsync(pageParams);
             return results;
         }
 
@@ -32,12 +33,14 @@ namespace ServiceLayer.CommentsService
 
         public async Task<HttpResponseMessage> PutAsync(int id, Comments comment)
         {
+            comment.CommentsTime = DateTime.UtcNow;
             var results = await _repository.PutAsync(id, comment);
             return results!;
         }
 
         public async Task<HttpResponseMessage> PostAsync(Comments comment)
         {
+            comment.CommentsTime = DateTime.UtcNow;
             var results = await _repository.PostAsync(comment);
             return results!;
         }

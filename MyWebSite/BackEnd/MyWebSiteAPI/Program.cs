@@ -19,7 +19,13 @@ var builder = WebApplication.CreateBuilder(args);
 //////// <--- INFRASTRUCTURE SERVICE ---> //////////
 
 // CONTROLLER CONFIGS
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.WriteIndented = true;
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+        //options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    });
 // DBCONTEXT CONFIGS
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(

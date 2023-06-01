@@ -6,28 +6,29 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq.Dynamic.Core;
+using ServiceLayer.DTO;
 
 namespace ServiceLayer
 {
     // Should be all the way to the bottom
     public class QueryComposer<T>
     {
-        public QueryComposer()
+        public QueryComposer(PageParameters pageParams)
         {
-
-
+            pageIndex = pageParams.PageIndex;
+            pageSize = pageParams.PageSize;
+            sortColumn = pageParams.SortColumn;
+            sortOrder = pageParams.SortOrder;
+            filterColumn = pageParams.FilterColumn;
+            filterQuery = pageParams.FilterQuery;
         }
-        public QueryComposer(int pageIndex, int pageSize)
-        {
 
-        }
-
-        public int pageIndex { get; set; } = 0;     // Defaults
-        public int pageSize { get; set; } = 10;     // Defaults
-        public string? sortColumn { get; set; } = "CommentsDescription";
-        public string? sortOrder { get; set; } = "ASC";
-        public string? filterColumn { get; set; } = "CommentsDescription";
-        public string? filterQuery { get; set; } = "a";
+        public int pageIndex { get; set; }
+        public int pageSize { get; set; }
+        public string? sortColumn { get; set; }
+        public string? sortOrder { get; set; }
+        public string? filterColumn { get; set; }
+        public string? filterQuery { get; set; }
 
         public IQueryable BuildQuery(IQueryable queryable)
         {
@@ -61,14 +62,14 @@ namespace ServiceLayer
 
 
         public static bool IsValidProperty(
-        string propertyName,                            // propertyName is the name of the parameter
-        bool throwExceptionIfNotFound = true)           // throwExceptionIfNotFound is the name of the parameter
+        string propertyName,                                        // propertyName is the name of the parameter
+        bool throwExceptionIfNotFound = true)                       // throwExceptionIfNotFound is the name of the parameter
         {
-            var prop = typeof(T).GetProperty(               // T is the class type that is passsed into ApiResult
-                propertyName,                               // Will if propertyName matches a property in <T>
-                BindingFlags.IgnoreCase |                       // To Ignore the case of the name
-                BindingFlags.Public |                           // To Include Public Properties in the Search
-                BindingFlags.Instance);                         // Must specify Instance or Static to get a return
+            var prop = typeof(T).GetProperty(                       // T is the class type that is passsed into ApiResult
+                propertyName,                                       // Will if propertyName matches a property in <T>
+                BindingFlags.IgnoreCase |                           // To Ignore the case of the name
+                BindingFlags.Public |                               // To Include Public Properties in the Search
+                BindingFlags.Instance);                             // Must specify Instance or Static to get a return
 
             if (prop == null && throwExceptionIfNotFound)
                 throw new NotSupportedException(

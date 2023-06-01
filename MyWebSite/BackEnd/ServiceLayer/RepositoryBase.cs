@@ -2,6 +2,7 @@
 using DataLayer.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ServiceLayer.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,9 +31,9 @@ namespace ServiceLayer
         #endregion
 
 
-        public async Task<ActionResult<IEnumerable<T>>> GetAllAsync()
+        public async Task<ActionResult<IEnumerable<T>>> GetAllAsync(PageParameters pageParams)
         {
-            var test = new QueryComposer<T>();
+            var test = new QueryComposer<T>(pageParams);
             var x = test.BuildQuery(table);
 
             var result = await x.ToDynamicListAsync<T>();

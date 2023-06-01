@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ServiceLayer.CommentsService;
+using ServiceLayer.DTO;
+using SQLitePCL;
 
 namespace MyWebSiteApi.Controllers
 {
@@ -21,9 +23,9 @@ namespace MyWebSiteApi.Controllers
         }
         #endregion
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Comments>>> GetAllAsync()
+        public async Task<ActionResult<IEnumerable<Comments>>> GetAllAsync([FromQuery] PageParameters pageParams)
         {
-            var result = await _service.GetAllAsync();
+            var result = await _service.GetAllAsync(pageParams);
             return result;
         }
 
@@ -37,12 +39,13 @@ namespace MyWebSiteApi.Controllers
         [HttpPut("{id}")]
         public async Task<HttpResponseMessage> PutAsync(int id, Comments comment)
         {
+            comment.Id = id;
             var results = await _service.PutAsync(id, comment);
             return results;
         }
 
         [HttpPost]
-        public async Task<HttpResponseMessage> PostAsync(Comments comment)
+        public async Task<HttpResponseMessage> PostAsync([FromBody] Comments comment)
         {
             var results = await _service.PostAsync(comment);
             return results;
