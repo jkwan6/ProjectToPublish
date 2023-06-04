@@ -45,7 +45,9 @@ export class CommentModuleComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
 
 
-
+  // Load Data
+  // Create a Page Event
+  // Get Data
   ngOnInit(): void {
     var url: string = "api/comments";
 
@@ -66,6 +68,13 @@ export class CommentModuleComponent implements OnInit {
     }, error => console.error(error));
 
   };
+
+
+  loadData(query?: string) {
+    var pageEvent = new PageEvent(); // Class from Paginator
+    pageEvent.pageIndex = this.defaultPageIndex;
+    pageEvent.pageSize = this.defaultPageSize;
+  }
 
   getData(event: PageEvent) {
     var sortColumn = (this.sort)
