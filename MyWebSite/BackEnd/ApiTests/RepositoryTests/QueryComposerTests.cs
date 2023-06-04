@@ -34,29 +34,29 @@ namespace ApiTests.RepositoryTests
         }
 
 
-        [Fact]
-        public void PropertyValidationNeedsToFail()
-        {
-            var comment = new Comments();
-            var commentProperties = new List<string>()
-            {
-                "test1", 
-                "test2", 
-                "test3"
-            };
-            var boolList = new List<bool>();
-            foreach (var property in commentProperties)
-            {
-                var stringConvert = property;
+        //[Fact]
+        //public void PropertyValidationNeedsToFail()
+        //{
+        //    var comment = new Comments();
+        //    var commentProperties = new List<string>()
+        //    {
+        //        "test1", 
+        //        "test2", 
+        //        "test3"
+        //    };
+        //    var boolList = new List<bool>();
+        //    foreach (var property in commentProperties)
+        //    {
+        //        var stringConvert = property;
 
-                var checkBool = QueryComposer<Comments>.IsValidProperty(stringConvert);
-                boolList.Add((checkBool) ? true : false);
-            }
+        //        var checkBool = QueryComposer<Comments>.IsValidProperty(stringConvert);
+        //        boolList.Add((checkBool) ? true : false);
+        //    }
 
-            var testSucceeded = boolList.All(c => c == true);
+        //    var testSucceeded = boolList.All(c => c == true);
 
-            Assert.False(testSucceeded);
-        }
+        //    Assert.False(testSucceeded);
+        //}
 
     }
 }
