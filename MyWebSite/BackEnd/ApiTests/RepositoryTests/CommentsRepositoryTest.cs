@@ -63,6 +63,19 @@ namespace ApiTests
 
         }
 
+
+        [Fact]
+        public async void DbSetShouldOnlyLoadParentEntities()
+        {
+            // AAA
+            using (AppDbContext context = new DbSetup().getDbContext())
+            {
+                var dbSet = context.Set<Comments>();
+
+            }
+
+        }
+
         //[Fact]
         //public async void ShouldReturnOneEntity()
         //{

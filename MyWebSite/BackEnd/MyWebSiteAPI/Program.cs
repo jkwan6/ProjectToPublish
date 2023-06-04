@@ -28,10 +28,10 @@ builder.Services.AddControllers()
     });
 // DBCONTEXT CONFIGS
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection") // Options Sent to the Constructor of the DbContext
-        ).LogTo(Console.WriteLine, new[] { DbLoggerCategory.Query.Name })
-    );
+    options
+    .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))   // Options sent to the constructor of the DbContext
+    .LogTo(Console.WriteLine, new[] { DbLoggerCategory.Query.Name })
+    .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));                   // No tracking by default
 
 builder.Services.AddCors(options =>
 {
