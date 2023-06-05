@@ -13,11 +13,12 @@ import { BaseRepository } from '../../repository/BaseRepository';
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
-  styleUrls: ['./home-page.component.css']
+  styleUrls: ['./home-page.component.css'],
+  providers: [BaseRepository]
 })
 export class HomePageComponent implements OnInit {
 
-  constructor(private client: HttpClient, private repository: BaseRepository<Comment>) { }
+  constructor(private client: HttpClient, private repository: BaseRepository<IComments[]>) { }
 
   public displayedColumns: string[] = ["id", "commentsDescription", "commentsTime"];
   public Comments!: IComments[];  // Generic Class from AngMat Table
@@ -37,13 +38,13 @@ export class HomePageComponent implements OnInit {
   ngOnInit(): void {
     var url: string = "api/comments";
     url = this.getUrl(url);
-    var observable = this.testMethod(url);
+/*    var observable = this.testMethod(url);*/
 
-    observable.subscribe(results => {
-      var test = results;
-      this.Comments = test
-/*      console.log(this.Comments);*/
-    }, error => console.error(error));
+//    observable.subscribe(results => {
+//      var test = results;
+//      this.Comments = test
+///*      console.log(this.Comments);*/
+//    }, error => console.error(error));
 
     console.log(this.Comments)
 
@@ -57,8 +58,11 @@ export class HomePageComponent implements OnInit {
     };
 
 
-    var x = this.repository.GetAll(url, y);
-
+    var obs = this.repository.GetAll(url, y);
+    obs.subscribe(results => {
+      var x = results;
+      this.Comments = x;
+    })
 
   };
 

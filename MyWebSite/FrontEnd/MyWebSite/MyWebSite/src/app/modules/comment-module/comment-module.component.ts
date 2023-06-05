@@ -8,16 +8,21 @@ import { map, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { IComments } from '../../interface/IComments';
 import { IPageParams } from '../../interface/IPageParams';
+import { BaseRepository } from '../../repository/BaseRepository';
 
 
 @Component({
   selector: 'app-comment-module',
   templateUrl: './comment-module.component.html',
-  styleUrls: ['./comment-module.component.css']
+  styleUrls: ['./comment-module.component.css'],
+  providers: [BaseRepository]
 })
 export class CommentModuleComponent implements OnInit {
 
-  constructor(private client: HttpClient) { }
+  constructor(
+    private client: HttpClient,
+    private repository: BaseRepository<IComments[]>
+  ) { }
 
 
   Params: IPageParams | any =
@@ -59,13 +64,21 @@ export class CommentModuleComponent implements OnInit {
     }
 
     url = this.getUrl(url);
-    var observable = this.testMethod(url, paramsTest);
+    const y: IPageParams = {
+      pageSize: "30",
+      filterColumn: "Author",
+      filterQuery: "",
+      sortColumn: "Author",
+      sortOrder: "asc",
+      pageIndex: "0"
+    };
 
-    observable.subscribe(results => {
-      var test = results;
+
+    var obs = this.repository.GetAll(url, y);
+    obs.subscribe(results => {
+      var x = results;
       this.Comments = new MatTableDataSource<IComments>(results);
-      console.log(this.Comments);
-    }, error => console.error(error));
+    })
 
   };
 
@@ -91,18 +104,44 @@ export class CommentModuleComponent implements OnInit {
     var url: string = "api/comments";
     url = this.getUrl(url);
 
-    let paramsTest = new HttpParams();
-    for (var key in this.Params) {
-      if (this.Params.hasOwnProperty(key)) {
-        paramsTest = paramsTest.set(key, this.Params[key]);
-      }
-    }
-    var observable = this.testMethod(url, paramsTest);
+    //let paramsTest = new HttpParams();
+    //for (var key in this.Params) {
+    //  if (this.Params.hasOwnProperty(key)) {
+    //    paramsTest = paramsTest.set(key, this.Params[key]);
+    //  }
+    //}
+    //var observable = this.testMethod(url, paramsTest);
 
-    observable.subscribe(results => {
-      this.paginator.length = results.length;
+    //observable.subscribe(results => {
+    //  this.paginator.length = results.length;
+    //  this.Comments = new MatTableDataSource<IComments>(results);
+    //}, error => console.error(error));
+
+
+
+    const y: IPageParams = {
+      pageSize: "5",
+      filterColumn: "",
+      filterQuery: "",
+      sortColumn: "author",
+      sortOrder: "asc",
+      pageIndex: "0"
+    };
+
+
+    var obs = this.repository.GetAll(url, y);
+    obs.subscribe(results => {
+      var x = results;
       this.Comments = new MatTableDataSource<IComments>(results);
-    }, error => console.error(error));
+    })
+
+
+
+
+
+
+
+
   }
 
 
