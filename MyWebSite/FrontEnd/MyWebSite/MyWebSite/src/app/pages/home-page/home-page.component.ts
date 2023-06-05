@@ -7,6 +7,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.prod';
 import { IComments } from '../../interface/IComments';
+import { IPageParams } from '../../interface/IPageParams';
+import { BaseRepository } from '../../repository/BaseRepository';
 
 @Component({
   selector: 'app-home-page',
@@ -15,7 +17,7 @@ import { IComments } from '../../interface/IComments';
 })
 export class HomePageComponent implements OnInit {
 
-  constructor(private client: HttpClient) { }
+  constructor(private client: HttpClient, private repository: BaseRepository<Comment>) { }
 
   public displayedColumns: string[] = ["id", "commentsDescription", "commentsTime"];
   public Comments!: IComments[];  // Generic Class from AngMat Table
@@ -25,6 +27,8 @@ export class HomePageComponent implements OnInit {
   public defaultSortOrder: "asc" | "desc" = "asc";
   defaultFilterColumn: string = "name";
   filterQuery?: string;
+
+  public pageParams!: IPageParams;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -40,6 +44,21 @@ export class HomePageComponent implements OnInit {
       this.Comments = test
 /*      console.log(this.Comments);*/
     }, error => console.error(error));
+
+    console.log(this.Comments)
+
+    const y: IPageParams = {
+      pageSize: "5",
+      filterColumn : "",
+      filterQuery : "",
+      sortColumn : "author",
+      sortOrder : "asc",
+      pageIndex: "0"
+    };
+
+
+    var x = this.repository.GetAll(url, y);
+
 
   };
 

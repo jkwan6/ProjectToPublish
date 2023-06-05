@@ -1,49 +1,63 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { IPageParams } from '../interface/IPageParams';
 
-// Generic Abstract Class
+@Injectable({
+  providedIn: 'root'    // Singleton bcz Injected in Root
+}) // DI Decorator
 export class BaseRepository<T> {
 
   // DI Injection
-  constructor(private url: string, protected httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) { }
 
-  GetAll(pageParams: IPageParams): any {
+  queryResults: any;
 
-    var params = new HttpParams();
-    params.set(typeof (pageParams.pageIndex), pageParams.pageIndex);
-    params.set(typeof (pageParams.pageSize), pageParams.pageSize);
-    params.set(typeof (pageParams.sortColumn), pageParams.sortColumn);
-    params.set(typeof (pageParams.sortOrder), pageParams.sortOrder);
+
+  GetAll(url: string, pageParams: IPageParams): any {
+
+    var params = new HttpParams()
+    .set(nameof(pageParams, x => x.pageIndex), pageParams.pageIndex)
+    .set(nameof(pageParams, x => x.pageSize), pageParams.pageSize)
+    .set(nameof(pageParams, x => x.sortColumn), pageParams.sortColumn)
+    .set(nameof(pageParams, x => x.sortOrder), pageParams.sortOrder);
 
     if (pageParams.filterColumn && pageParams.filterQuery) {
-      params.set(typeof (pageParams.filterColumn), pageParams.filterColumn);
-      params.set(typeof (pageParams.filterQuery), pageParams.filterQuery);
+      params = params.set(nameof(pageParams, x => x.filterColumn), pageParams.filterColumn);
+      params = params.set(nameof(pageParams, x => x.filterQuery), pageParams.filterQuery);
     }
 
-    var queryable = this.httpClient.get<T>(this.url, { params });
+    var queryable = this.httpClient.get<any>(url, { params });
+
+    let queryResult;
 
     queryable.subscribe(result => {
-      this.paginator.length = result.count;
-      this.paginator.pageIndex = result.pageIndex;
-      this.paginator.pageSize = result.pageSize;
-      this.Cities = new MatTableDataSource<ICity>(result.data);
+      this.queryResults = result;
+
+      return this.queryResults;
     }, error => console.error(error));
+
+
+    function nameof<T>(obj: T, expression: (x: { [Property in keyof T]: () => string }) => () => string): string {
+      const res: { [Property in keyof T]: () => string } = {} as { [Property in keyof T]: () => string };
+      Object.keys(obj).map(k => res[k as keyof T] = () => k);
+      return expression(res)();
+    }
 
   }
 
 
-  GetById(id: number): Observable<T>;
+  //GetById(id: number): Observable<T>;
 
 
-  Put(item: T): Observable<T>;
+  //Put(item: T): Observable<T>;
 
 
-  Post(item: T): Observable<T>;
+  //Post(item: T): Observable<T>;
 
 
-  Delete(item: T): Observable<T>;
+  //Delete(item: T): Observable<T>;
 
 
 
