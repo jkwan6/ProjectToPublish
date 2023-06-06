@@ -30,7 +30,7 @@ namespace ServiceLayer
         }
         #endregion
 
-
+        #region GetAll
         public async Task<ActionResult<IEnumerable<T>>> GetAllAsync(PageParameters pageParams)
         {
             var queryComposer = new QueryComposer<T>(pageParams);
@@ -39,14 +39,14 @@ namespace ServiceLayer
             var result = await x.ToDynamicListAsync<T>();
             return result;
         }
+        #endregion
 
         public async Task<HttpResponseMessage> GetByIdAsync(int id)
         {
             var result = await table.FindAsync(id);
-            if (result == null)
-            {
-                return new HttpResponseMessage(HttpStatusCode.NotFound);
-            }
+
+            if (result is null) return new HttpResponseMessage(HttpStatusCode.NotFound);
+
             var response = new HttpResponseMessage(HttpStatusCode.OK);
             response.Content = new ObjectContent<T>(result, new JsonMediaTypeFormatter());
             return response;

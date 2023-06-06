@@ -22,8 +22,11 @@ export class CommentModuleComponent implements OnInit {
   constructor(
     private client: HttpClient,
     private repository: BaseRepository<IComments[]>
-  ) { }
+  ) {
+    this.test$ = this.repository.GetAll("url", this.Params)
+  }
 
+  test$: Observable<IComments[]>
 
   Params: IPageParams | any =
     {

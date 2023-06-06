@@ -30,10 +30,15 @@ namespace MyWebSiteApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<HttpResponseMessage> GetByIdAsync(int id)
+        public async Task<ActionResult<Comments>> GetByIdAsync(int id)
         {
             var result = await _service.GetByIdAsync(id);
-            return result;
+            var parsedResult = result.Content.ReadAsAsync<Comments>();
+            var test = new ObjectResult(result) {
+                StatusCode = ((int)result.StatusCode),
+                Value = result.Content.ReadAsAsync<Comments>()
+            };
+            return test;
         }
 
         [HttpPut("{id}")]

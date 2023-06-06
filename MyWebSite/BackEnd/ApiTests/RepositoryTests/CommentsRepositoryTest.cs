@@ -3,6 +3,7 @@ using DataLayer;
 using DataLayer.Entities;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using ServiceLayer;
 using ServiceLayer.CommentsService;
 using ServiceLayer.DTO;
 
@@ -65,7 +66,8 @@ namespace ApiTests
 
 
         [Fact]
-        public async void DbSetShouldOnlyLoadParentEntities()
+        // This works but because of making the DbContext AsNoTracking
+        public async void DbSetShouldOnlyLoadParentEntities()  
         {
             // AAA
             using (AppDbContext context = new DbSetup().getDbContext())
@@ -76,25 +78,25 @@ namespace ApiTests
 
         }
 
-        //[Fact]
-        //public async void ShouldReturnOneEntity()
-        //{
-        //    // AAA
-        //    using (AppDbContext context = new DbSetup().getDbContext())
-        //    {
-        //        var repo = new CommentsRepository(context);
+        [Fact]
+        public async void ConvertHttpResponseMessageToEntity()
+        {
+            // AAA
 
-        //        var entityId = 5;
+            using (AppDbContext context = new DbSetup().getDbContext())
+            {
+                var commentsRepository = new RepositoryBase<Comments>(context);
 
-        //        var entity = await repo.GetByIdAsync(entityId);
-        //        var test = entity.Content;
-        //        Assert.NotNull(test);
+                var commentsService = new CommentsService(commentsRepository);
+                var entity = await commentsService.GetByIdAsync(1);
+                var test = entity.Content.ReadAsAsync<Comments>();
+                var y = test.Result;
 
 
-        //        Assert.True(authorCheck && descriptionCheck);
-        //    }
+                Assert.True(y is Comments);
+            }
 
-        //}
+        }
 
     }
 }
