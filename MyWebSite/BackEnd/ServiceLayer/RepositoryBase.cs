@@ -34,9 +34,9 @@ namespace ServiceLayer
         public async Task<ActionResult<IEnumerable<T>>> GetAllAsync(PageParameters pageParams)
         {
             var queryComposer = new QueryComposer<T>(pageParams);
-            var x = queryComposer.BuildQuery(table);
+            var queryable = queryComposer.BuildQuery(table);
 
-            var result = await x.ToDynamicListAsync<T>();
+            var result = await queryable.ToDynamicListAsync<T>();
             return result;
         }
         #endregion

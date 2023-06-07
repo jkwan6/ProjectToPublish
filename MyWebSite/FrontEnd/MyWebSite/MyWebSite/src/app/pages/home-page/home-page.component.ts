@@ -64,6 +64,16 @@ export class HomePageComponent implements OnInit {
       this.Comments = x;
     })
 
+
+    var test = this.repository.GetById(url, 5);
+    test.subscribe(results => {
+      var test1 : any = results
+      console.log(test1)
+      var test2 = test1.result as IComments;
+      console.log(test2.author);
+    });
+
+
   };
 
   public getUrl(url: string): string {

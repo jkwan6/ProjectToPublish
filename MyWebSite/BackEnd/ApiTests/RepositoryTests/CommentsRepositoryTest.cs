@@ -39,6 +39,32 @@ namespace ApiTests
         }
 
         [Fact]
+        public async void QueryShouldFail()
+        {
+            // AAA
+
+            using (AppDbContext context = new DbSetup().getDbContext())
+            {
+                var commentsRepository = new RepositoryBase<Comments>(context);
+
+                var commentsService = new CommentsService(commentsRepository);
+                var pageParams = new PageParameters()
+                {
+                    FilterColumn = "545454",
+                    FilterQuery = "545454",
+                    PageIndex = 43,
+                    PageSize = 2,
+                    SortColumn = "545454",
+                    SortOrder = "545454",
+                };
+                var entity = await commentsService.GetAllAsync(pageParams);
+
+
+            }
+
+        }
+
+        [Fact]
         public async void ShouldAddEntity()
         {
             // AAA

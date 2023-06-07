@@ -35,7 +35,12 @@ export class BaseRepository<T> {
   }
 
 
-  //GetById(id: number): Observable<T>;
+  GetById(baseUrl:string, id: number): Observable<T> {
+    var url = baseUrl + "/" + id;
+    var queryable = this.httpClient.get<T>(url);
+    return queryable;
+
+  }
 
 
   //Put(item: T): Observable<T>;

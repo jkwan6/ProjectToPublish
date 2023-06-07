@@ -60,7 +60,7 @@ namespace ServiceLayer
 
 
 
-
+        // Compare the property provided with the <T> Class
         public static bool IsValidProperty(
         string propertyName,                                        // propertyName is the name of the parameter
         bool throwExceptionIfNotFound = true)                       // throwExceptionIfNotFound is the name of the parameter

@@ -34,11 +34,11 @@ namespace MyWebSiteApi.Controllers
         {
             var result = await _service.GetByIdAsync(id);
             var parsedResult = result.Content.ReadAsAsync<Comments>();
-            var test = new ObjectResult(result) {
+            var returnObject = new ObjectResult(result) {
                 StatusCode = ((int)result.StatusCode),
                 Value = result.Content.ReadAsAsync<Comments>()
             };
-            return test;
+            return returnObject;
         }
 
         [HttpPut("{id}")]

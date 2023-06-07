@@ -13,3 +13,16 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
   border-bottom-width: 1px;
   border-bottom-style: none;
 }
+
+
+.comment-row{
+    display: flex;
+    flex-direction:column;
+    width:100%;
+    color:red;
+}
+
+.test {
+    background-color: red;
+    color:red;
+}

@@ -5,34 +5,35 @@
 
   <!--TABLE BEGINS-->
   <table mat-table
+
          [dataSource]="Comments"
          matSortDisableClear>
 
 
-    <tr>
+    <tr class="test">
       <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef> Leave a Comment </th>
+        <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let IComments">
           {{IComments.id}}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="author">
-        <th mat-header-cell *matHeaderCellDef> Leave a Comment </th>
+        <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let IComments">
           {{IComments.author}}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="commentsDescription">
-        <th mat-header-cell *matHeaderCellDef> Leave a Comment </th>
+        <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let IComments">
           {{IComments.commentsDescription}}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="commentsTime">
-        <th mat-header-cell *matHeaderCellDef> Leave a Comment </th>
+        <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let IComments">
           {{IComments.commentsTime}}
         </td>
