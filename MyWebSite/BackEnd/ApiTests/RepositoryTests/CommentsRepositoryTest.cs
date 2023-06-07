@@ -12,62 +12,36 @@ namespace ApiTests
     public class CommentsRepositoryTest
     {
         [Fact]
-        public async void ShouldReturnSomething()
+        public async void GetAllShouldReturnSomething()
         {
-            // AAA
-
             using (AppDbContext context = new DbSetup().getDbContext())
             {
                 var repo = new CommentsRepository(context);
 
                 var pageParams = new PageParameters()
-                {
-                    PageSize = 10,
-                    PageIndex = 0,
-                    //FilterColumn = "Author",
-                    //FilterQuery = "a",
-                    //SortColumn = "Author",
-                    //SortOrder = "ASC"
+                { 
+                    PageSize = 10, PageIndex = 0, 
+                    FilterColumn = "Author", FilterQuery = "a", 
+                    SortColumn = "Author", SortOrder = "ASC" 
                 };
 
                 var x = await repo.GetAllAsync(pageParams);
-                var y = x.Value.Count();
+                var y = x.Value!.Count();
 
                 Assert.NotEqual(0, y);
             }
-
         }
 
         [Fact]
-        public async void QueryShouldFail()
+        public void GetAllShouldOnlyLoadParentEntities()
         {
-            // AAA
-
-            using (AppDbContext context = new DbSetup().getDbContext())
-            {
-                var commentsRepository = new RepositoryBase<Comments>(context);
-
-                var commentsService = new CommentsService(commentsRepository);
-                var pageParams = new PageParameters()
-                {
-                    FilterColumn = "545454",
-                    FilterQuery = "545454",
-                    PageIndex = 43,
-                    PageSize = 2,
-                    SortColumn = "545454",
-                    SortOrder = "545454",
-                };
-                var entity = await commentsService.GetAllAsync(pageParams);
-
-
-            }
-
+            // This works but because of making the DbContext AsNoTracking
+            // Doesnt work in Unit Tests
         }
 
         [Fact]
         public async void ShouldAddEntity()
         {
-            // AAA
             using (AppDbContext context = new DbSetup().getDbContext())
             {
                 var repo = new CommentsRepository(context);
@@ -87,42 +61,21 @@ namespace ApiTests
 
                 Assert.True(authorCheck && descriptionCheck);
             }
-
-        }
-
-
-        [Fact]
-        // This works but because of making the DbContext AsNoTracking
-        public async void DbSetShouldOnlyLoadParentEntities()  
-        {
-            // AAA
-            using (AppDbContext context = new DbSetup().getDbContext())
-            {
-                var dbSet = context.Set<Comments>();
-
-            }
-
         }
 
         [Fact]
-        public async void ConvertHttpResponseMessageToEntity()
+        public async void ExtractObjectFromHttpResponseMessage()
         {
-            // AAA
-
             using (AppDbContext context = new DbSetup().getDbContext())
             {
                 var commentsRepository = new RepositoryBase<Comments>(context);
-
                 var commentsService = new CommentsService(commentsRepository);
-                var entity = await commentsService.GetByIdAsync(1);
-                var test = entity.Content.ReadAsAsync<Comments>();
-                var y = test.Result;
+                var httpMessage = await commentsService.GetByIdAsync(1);
+                var httpMessageContent = httpMessage.Content.ReadAsAsync<Comments>();
+                var entity = httpMessageContent.Result;
 
-
-                Assert.True(y is Comments);
+                Assert.True(entity is Comments);
             }
-
         }
-
     }
 }

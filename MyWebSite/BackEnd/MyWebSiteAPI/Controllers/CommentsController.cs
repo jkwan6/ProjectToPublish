@@ -26,7 +26,13 @@ namespace MyWebSiteApi.Controllers
         public async Task<ActionResult<IEnumerable<Comments>>> GetAllAsync([FromQuery] PageParameters pageParams)
         {
             var result = await _service.GetAllAsync(pageParams);
-            return result;
+            var parsedResult = result.Content.ReadAsAsync<GenericReturnObject<Comments>>();
+            var test = new ObjectResult(result)
+            {
+                StatusCode = ((int)result.StatusCode),
+                Value = parsedResult
+            };
+            return test;
         }
 
         [HttpGet("{id}")]
@@ -34,11 +40,11 @@ namespace MyWebSiteApi.Controllers
         {
             var result = await _service.GetByIdAsync(id);
             var parsedResult = result.Content.ReadAsAsync<Comments>();
-            var returnObject = new ObjectResult(result) {
+            var test = new ObjectResult(result) {
                 StatusCode = ((int)result.StatusCode),
-                Value = result.Content.ReadAsAsync<Comments>()
+                Value = parsedResult
             };
-            return returnObject;
+            return test;
         }
 
         [HttpPut("{id}")]

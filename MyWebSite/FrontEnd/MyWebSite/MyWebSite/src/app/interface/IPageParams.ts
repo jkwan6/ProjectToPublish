@@ -1,2 +1,2 @@
-export interface IPageParams {  pageIndex: string;
-  pageSize: string;  sortColumn: string;  sortOrder: string;  filterColumn: string;  filterQuery: string;}
+export interface IPageParams {  pageIndex: number;
+  pageSize: number;  sortColumn: string;  sortOrder: string;  filterColumn: string;  filterQuery: string;}

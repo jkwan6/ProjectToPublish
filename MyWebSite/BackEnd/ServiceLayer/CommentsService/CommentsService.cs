@@ -19,10 +19,8 @@ namespace ServiceLayer.CommentsService
             _repository = repository;
         }
 
-        public async Task<ActionResult<IEnumerable<Comments>>> GetAllAsync(PageParameters pageParams)
+        public async Task<HttpResponseMessage> GetAllAsync(PageParameters pageParams)
         {
-
-
             var results = await _repository.GetAllAsync(pageParams);
             return results;
         }

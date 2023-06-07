@@ -31,13 +31,24 @@ namespace ServiceLayer
         #endregion
 
         #region GetAll
-        public async Task<ActionResult<IEnumerable<T>>> GetAllAsync(PageParameters pageParams)
+        public async Task<HttpResponseMessage> GetAllAsync(PageParameters pageParams)
         {
             var queryComposer = new QueryComposer<T>(pageParams);
-            var queryable = queryComposer.BuildQuery(table);
+            var x = queryComposer.BuildQuery(table);
 
-            var result = await queryable.ToDynamicListAsync<T>();
-            return result;
+            var result = await x.ToDynamicListAsync<T>();
+            if (result is null) return new HttpResponseMessage(HttpStatusCode.NotFound);    // Early Return
+
+            var count = await table.CountAsync();
+            var objectToReturn = new GenericReturnObject<T>()
+            {
+                Objects = result,
+                Count = count
+            };
+
+            var response = new HttpResponseMessage(HttpStatusCode.OK);
+            response.Content = new ObjectContent<GenericReturnObject<T>>(objectToReturn, new JsonMediaTypeFormatter());
+            return response;
         }
         #endregion
 

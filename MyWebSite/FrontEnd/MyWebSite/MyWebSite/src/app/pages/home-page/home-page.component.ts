@@ -36,52 +36,52 @@ export class HomePageComponent implements OnInit {
 
 
   ngOnInit(): void {
-    var url: string = "api/comments";
-    url = this.getUrl(url);
-/*    var observable = this.testMethod(url);*/
+//    var url: string = "api/comments";
+//    url = this.getUrl(url);
+///*    var observable = this.testMethod(url);*/
 
-//    observable.subscribe(results => {
-//      var test = results;
-//      this.Comments = test
-///*      console.log(this.Comments);*/
-//    }, error => console.error(error));
+////    observable.subscribe(results => {
+////      var test = results;
+////      this.Comments = test
+/////*      console.log(this.Comments);*/
+////    }, error => console.error(error));
 
-    console.log(this.Comments)
+//    console.log(this.Comments)
 
-    const y: IPageParams = {
-      pageSize: "5",
-      filterColumn : "",
-      filterQuery : "",
-      sortColumn : "author",
-      sortOrder : "asc",
-      pageIndex: "0"
-    };
-
-
-    var obs = this.repository.GetAll(url, y);
-    obs.subscribe(results => {
-      var x = results;
-      this.Comments = x;
-    })
+//    const y: IPageParams = {
+//      pageSize: 5,
+//      filterColumn : "",
+//      filterQuery : "",
+//      sortColumn : "author",
+//      sortOrder : "asc",
+//      pageIndex: 0
+//    };
 
 
-    var test = this.repository.GetById(url, 5);
-    test.subscribe(results => {
-      var test1 : any = results
-      console.log(test1)
-      var test2 = test1.result as IComments;
-      console.log(test2.author);
-    });
+//    var obs = this.repository.GetAll(url, y);
+//    obs.subscribe(results => {
+//      var x = results;
+//      this.Comments = x;
+//    })
+
+
+//    var test = this.repository.GetById(url, 5);
+//    test.subscribe(results => {
+//      var test1 : any = results
+//      console.log(test1)
+//      var test2 = test1.result as IComments;
+//      console.log(test2.author);
+//    });
 
 
   };
 
-  public getUrl(url: string): string {
-    return environment.baseUrl + url;
-  }
+  //public getUrl(url: string): string {
+  //  return environment.baseUrl + url;
+  //}
 
-  public testMethod(url: string): Observable<IComments[]> {
-    var observable: Observable<IComments[]> = this.client.get<IComments[]>(url);
-    return observable;
-  }
+  //public testMethod(url: string): Observable<IComments[]> {
+  //  var observable: Observable<IComments[]> = this.client.get<IComments[]>(url);
+  //  return observable;
+  //}
 }

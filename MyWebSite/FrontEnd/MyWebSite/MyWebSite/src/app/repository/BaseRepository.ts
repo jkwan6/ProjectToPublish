@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { IComments } from '../interface/IComments';
 import { IPageParams } from '../interface/IPageParams';
 
 @Injectable(
@@ -39,10 +40,10 @@ export class BaseRepository<T> {
     var url = baseUrl + "/" + id;
     var queryable = this.httpClient.get<T>(url);
     return queryable;
-
   }
 
-
+  PutItem(baseUrl: string, object: T) {
+  }
   //Put(item: T): Observable<T>;
 
 

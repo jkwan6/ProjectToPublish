@@ -6,6 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { IApiObject } from '../../interface/IApiObject';
 import { IComments } from '../../interface/IComments';
 import { IPageParams } from '../../interface/IPageParams';
 import { BaseRepository } from '../../repository/BaseRepository';
@@ -21,17 +22,18 @@ export class CommentModuleComponent implements OnInit {
 
   constructor(
     private client: HttpClient,
-    private repository: BaseRepository<IComments[]>
+    private repository: BaseRepository<IApiObject<IComments[]>>
   ) {
-    this.test$ = this.repository.GetAll("url", this.Params)
+    this.commentRepo$ = this.repository.GetAll("url", this.params)
   }
 
-  test$: Observable<IComments[]>
+  commentRepo$: Observable<IApiObject<IComments[]>>
 
-  Params: IPageParams | any =
+  // Setting Default Values
+  params: IPageParams =
     {
-      pageIndex : "0",
-      pageSize: "10",
+      pageIndex : 0,
+      pageSize: 5,
       filterColumn: "Author",
       sortColumn: "Author",
       sortOrder: "asc",
@@ -40,121 +42,84 @@ export class CommentModuleComponent implements OnInit {
 
 
   // Angular Material Table Setup
-  public displayedColumns: string[] = ["id", "author", "commentsDescription", "commentsTime"];
-  public Comments!: MatTableDataSource<IComments>;   // Generic Class from AngMat Table
-  defaultPageIndex: number = 0;
-  defaultPageSize: number = 10;
-  public defaultSortColumn: string = "Author";
-  public defaultSortOrder: "asc" | "desc" = "asc";
-  defaultFilterColumn: string = "Author";
-  filterQuery?: string;
-
+  public displayedColumns: string[] = ["test"];       // Not sure why we need that
+  public Comments!: MatTableDataSource<IComments>;    // Generic Class from AngMat Table
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
 
-  // Load Data
-  // Create a Page Event
-  // Get Data
-  ngOnInit(): void {
-    var url: string = "api/comments";
 
-    let paramsTest = new HttpParams();
-    for (var key in this.Params) {
-      if (this.Params.hasOwnProperty(key)) {
-        paramsTest = paramsTest.set(key, this.Params[key]);
-      }
-    }
+  ngOnInit(): void {
+    var url: string = "api/comments"; // Gotta Refactor
 
     url = this.getUrl(url);
-    const y: IPageParams = {
-      pageSize: "30",
-      filterColumn: "Author",
-      filterQuery: "",
-      sortColumn: "Author",
-      sortOrder: "asc",
-      pageIndex: "0"
-    };
 
-
-    var obs = this.repository.GetAll(url, y);
-    obs.subscribe(results => {
-      var x = results;
-      this.Comments = new MatTableDataSource<IComments>(results);
-    })
-
+    this.loadData();
   };
 
 
   loadData(query?: string) {
     var pageEvent = new PageEvent(); // Class from Paginator
-    pageEvent.pageIndex = this.defaultPageIndex;
-    pageEvent.pageSize = this.defaultPageSize;
+    pageEvent.pageIndex = this.params.pageIndex;
+    pageEvent.pageSize = this.params.pageSize;
+
+
+    var url: string = "api/comments";
+    url = this.getUrl(url);
+    var obs = this.repository.GetAll(url, this.params);
+    obs.subscribe(results => {
+      this.paginator.length = results.result.count;
+      this.Comments = new MatTableDataSource<IComments>(results.result.objects);
+    })
+
+
   }
 
   getData(event: PageEvent) {
     var sortColumn = (this.sort)
-      ? this.sort.active : this.Params.sortColumn;      // Active is the Current string
+      ? this.sort.active : this.params.sortColumn;      // Active is the Current string
     var sortOrder = (this.sort)
-      ? this.sort.direction : this.Params.sortOrder;    // Direction is Ascending/Descending
-    var filterQuery = (this.Params.filterQuery)
-      ? this.Params.filterQuery : null;
-    var filterColumn = (this.Params.filterColumn)
-      ? this.Params.filterColumn : null;
+      ? this.sort.direction : this.params.sortOrder;    // Direction is Ascending/Descending
+    var filterQuery = (this.params.filterQuery)
+      ? this.params.filterQuery : null;
+    var filterColumn = (this.params.filterColumn)
+      ? this.params.filterColumn : null;
 
+    this.params.sortOrder = sortOrder;
+    this.params.sortColumn = sortColumn;
+    this.params.filterQuery = (filterQuery) ? filterQuery : "";
+    this.params.sortColumn = filterColumn ? filterColumn : "";
+    this.params.pageSize = this.paginator.pageSize;
+    this.params.pageIndex = this.paginator.pageIndex;
 
 
     var url: string = "api/comments";
     url = this.getUrl(url);
 
-    //let paramsTest = new HttpParams();
-    //for (var key in this.Params) {
-    //  if (this.Params.hasOwnProperty(key)) {
-    //    paramsTest = paramsTest.set(key, this.Params[key]);
-    //  }
-    //}
-    //var observable = this.testMethod(url, paramsTest);
-
-    //observable.subscribe(results => {
-    //  this.paginator.length = results.length;
-    //  this.Comments = new MatTableDataSource<IComments>(results);
-    //}, error => console.error(error));
-
-
-
-    const y: IPageParams = {
-      pageSize: "5",
-      filterColumn: "",
-      filterQuery: "",
-      sortColumn: "author",
-      sortOrder: "asc",
-      pageIndex: "0"
-    };
-
-
-    var obs = this.repository.GetAll(url, y);
+    var obs = this.repository.GetAll(url, this.params);
     obs.subscribe(results => {
-      var x = results;
-      this.Comments = new MatTableDataSource<IComments>(results);
+      this.paginator.length = results.result.count;
+      this.paginator.pageIndex = this.params.pageIndex;
+      this.paginator.pageSize = this.params.pageSize;
+      this.Comments = new MatTableDataSource<IComments>(results.result.objects);
     })
-
-
-
-
-
-
-
-
   }
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+  // Private Method
   public getUrl(url: string): string {
     return environment.baseUrl + url;
-  }
-
-  public testMethod(url: string, params: any): Observable<IComments[]> {
-    var observable: Observable<IComments[]> = this.client.get<IComments[]>(url, {params});
-    return observable;
   }
 }
