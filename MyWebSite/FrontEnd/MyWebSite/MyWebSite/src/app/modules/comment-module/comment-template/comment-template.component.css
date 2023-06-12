@@ -10,13 +10,14 @@
 }
 
 .author-box {
-    padding-left: 10px;
+    padding-left: 8px;
+    text-decoration:underline;
 }
 
 .comment-container {
   display: flex;
   flex-direction:column;
-  background-color: #424242;
+  background-color: inherit;
   border-radius: 5px;
   padding: 5px;
   padding-bottom:0px;
@@ -30,4 +31,6 @@
 .date-box{
     align-self:flex-end;
     padding-right:5px;
+    font-size:0.7em;
+    font-style:italic;
 }

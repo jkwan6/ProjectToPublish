@@ -1,10 +1,12 @@
 .comment-container {
+  margin:30px;
   border: solid;
   border-width: thin;
   border-color: rgba(128, 128, 128, 0.6);
   border-radius: 20px;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 8px;
+  padding-right: 8px;
+  min-width: 300px;
 }
 
 
@@ -22,7 +24,10 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
     color:red;
 }
 
-.test {
-    background-color: red;
-    color:red;
+.comments-table {
+    width:100%;
+}
+
+.color-management{
+    background-color:inherit;
 }

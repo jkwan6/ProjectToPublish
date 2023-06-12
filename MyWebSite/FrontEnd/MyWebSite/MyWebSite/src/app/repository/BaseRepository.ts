@@ -1,16 +1,10 @@
-import { query } from '@angular/animations';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
-import { IComments } from '../interface/IComments';
+import { environment } from '../../environments/environment'
 import { IPageParams } from '../interface/IPageParams';
 
-@Injectable(
-//  {
-//  /*  providedIn: 'root'    // Singleton bcz Injected in Root*/
-//}
-) // DI Decorator
+@Injectable() // DI Decorator
 export class BaseRepository<T> {
 
   // DI Injection
@@ -44,17 +38,17 @@ export class BaseRepository<T> {
     return queryable;
   }
 
-  Post(baseUrl: string, object: T): Observable<T> {
+  PostItem(baseUrl: string, object: T): Observable<T> {
     var url = baseUrl;
     var queryable = this.httpClient.post<T>(url, object);
     return queryable;
   };
 
-
-  //Delete(item: T): Observable<T>;
-
-
-
+  DeleteItem(baseUrl: string, id: number): Observable<T> {
+    var url = baseUrl + "/" + id;
+    var queryable = this.httpClient.delete<T>(url);
+    return queryable;
+  }
 
   // INTERNAL FUNCTION TO REPLICATE C# TYPEOF FUNCTION
   private nameof<T>(obj: T, expression: (x: { [Property in keyof T]: () => string }) => () => string): string {
@@ -62,5 +56,4 @@ export class BaseRepository<T> {
     Object.keys(obj).map(k => res[k as keyof T] = () => k);
     return expression(res)();
   }
-
 }

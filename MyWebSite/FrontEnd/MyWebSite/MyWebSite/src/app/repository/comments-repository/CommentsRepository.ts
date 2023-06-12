@@ -19,21 +19,21 @@ enum ModelBinding {
 
 export class CommentsRepository extends BaseRepository<IComments>{
 
-  GetAll() {
-      throw new Error("Method not implemented.");
-  }
-  GetById(id: number): Observable<any> {
-      throw new Error("Method not implemented.");
-  }
-  Put(item: any): Observable<any> {
-      throw new Error("Method not implemented.");
-  }
-  Post(item: any): Observable<any> {
-      throw new Error("Method not implemented.");
-  }
-  Delete(item: any): Observable<any> {
-      throw new Error("Method not implemented.");
-  }
+  //GetAll() {
+  //    throw new Error("Method not implemented.");
+  //}
+  //GetById(id: number): Observable<any> {
+  //    throw new Error("Method not implemented.");
+  //}
+  //Put(item: any): Observable<any> {
+  //    throw new Error("Method not implemented.");
+  //}
+  //Post(item: any): Observable<any> {
+  //    throw new Error("Method not implemented.");
+  //}
+  //Delete(item: any): Observable<any> {
+  //    throw new Error("Method not implemented.");
+  //}
 
 
   constructor(private http: HttpClient) { super(http); }

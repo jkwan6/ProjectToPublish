@@ -20,19 +20,19 @@ export class HomePageComponent implements OnInit {
 
   constructor(private client: HttpClient, private repository: BaseRepository<IComments[]>) { }
 
-  public displayedColumns: string[] = ["id", "commentsDescription", "commentsTime"];
-  public Comments!: IComments[];  // Generic Class from AngMat Table
-  defaultPageIndex: number = 0;
-  defaultPageSize: number = 10;
-  public defaultSortColumn: string = "name";
-  public defaultSortOrder: "asc" | "desc" = "asc";
-  defaultFilterColumn: string = "name";
-  filterQuery?: string;
+  //public displayedColumns: string[] = ["id", "commentsDescription", "commentsTime"];
+  //public Comments!: IComments[];  // Generic Class from AngMat Table
+  //defaultPageIndex: number = 0;
+  //defaultPageSize: number = 10;
+  //public defaultSortColumn: string = "name";
+  //public defaultSortOrder: "asc" | "desc" = "asc";
+  //defaultFilterColumn: string = "name";
+  //filterQuery?: string;
 
-  public pageParams!: IPageParams;
+  //public pageParams!: IPageParams;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+  //@ViewChild(MatPaginator) paginator!: MatPaginator;
+  //@ViewChild(MatSort) sort!: MatSort;
 
 
   ngOnInit(): void {

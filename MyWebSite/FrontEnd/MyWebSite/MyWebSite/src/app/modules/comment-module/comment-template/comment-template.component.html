@@ -1,17 +1,16 @@
 <div class="module-container">
-  <div class="author-box">
-    Author
+  <div class="author-box"
+       [textContent]="comments.author">
   </div>
 
   <div class="comment-container">
-    <div class="comment-box">
-
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-
+    <div class="comment-box"
+         [textContent]="comments.commentsDescription">
     </div>
 
-    <div class="date-box">
-      Time
+    <div class="date-box"
+
+         [textContent]="comments.commentsTime">
     </div>
   </div>
 </div>

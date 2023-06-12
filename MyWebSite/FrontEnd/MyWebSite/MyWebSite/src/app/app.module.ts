@@ -39,6 +39,11 @@ import { ThreeJsPage14Component } from './pages/ThreeJs/three-js-page14/three-js
 import { ThreeJsPage15Component } from './pages/ThreeJs/three-js-page15/three-js-page15.component';
 import { LoginComponent } from './pages/Authentication/login/login.component';
 import { SignUpComponent } from './pages/Authentication/sign-up/sign-up.component';
+import { DatePipe } from '@angular/common';
+import { MatPaginatorGotoComponent } from './modules/comment-module/mat-paginator-goto/mat-paginator-goto.component';
+import { FormsModule } from '@angular/forms';
+import { PaginatorTest } from './modules/comment-module/paginator-test/paginator-test';
+import { PaginatorDirective } from './modules/comment-module/paginator-test/pagination.directive';
 
 @NgModule({
   declarations: [
@@ -76,11 +81,14 @@ import { SignUpComponent } from './pages/Authentication/sign-up/sign-up.componen
     ThreeJsPage15Component,
     LoginComponent,
     SignUpComponent,
+    MatPaginatorGotoComponent,
+    PaginatorTest,
+    PaginatorDirective
   ],
   imports: [
-    BrowserModule, HttpClientModule, BrowserAnimationsModule, AppRoutingModule, AngularMaterialModule
+    BrowserModule, HttpClientModule, BrowserAnimationsModule, AppRoutingModule, AngularMaterialModule, FormsModule
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
