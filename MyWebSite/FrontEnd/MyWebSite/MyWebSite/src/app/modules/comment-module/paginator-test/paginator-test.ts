@@ -13,7 +13,7 @@ export class PaginatorTest implements OnInit {
 
     //// Test states
     EmitResult = { pageNumber: '', pageSize: '' };
-    testPaginator = { length: 1000, pageSize: 10, pageIndex: 1 };
+    testPaginator = { length: 1000, pageSize: 10, pageIndex: 0 };
 
     //// states
     //tableData: any;

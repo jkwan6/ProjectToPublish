@@ -103,33 +103,31 @@ export class PaginatorDirective implements DoCheck, AfterViewInit {
 
 
   private buildPageNumbers = () => {
-    let dots: {
-      first: boolean,
-      last: boolean
-    };
+    //let dots: { first: boolean, last: boolean };
+    let dots = { first: false, last: false };
     let page: number;
     let pageDifference: number;
     let startIndex: number;
-    let totalPagesFromPaginator: number;
+    let totalPagesFromPaginator: number = this.customPaginator.getNumberOfPages();                    // Get Number of Pages from Paginator
 
-
-    totalPagesFromPaginator = this.customPaginator.getNumberOfPages();                                             // Get Number of Pages from Paginator
     const actionContainer: HTMLElement =
       this.ViewContainer.element.nativeElement.querySelector('div.mat-paginator-range-actions');      // Container div with paginator elements
     const nextPageNode: HTMLElement =
       this.ViewContainer.element.nativeElement.querySelector('button.mat-paginator-navigation-next'); // Button that triggers the next page action
-    const pageRange =
-      this.ViewContainer.element.nativeElement.querySelector('div.mat-paginator-range-label');        // Label showing the page range
-
-    let prevButtonCount = this.buttons.length;
 
     // Reset Previous Buttons
-    if (prevButtonCount > 0) {
-      this.buttons.forEach(button => {
+    let prevButtonCount = this.buttons.length;
+    if (prevButtonCount > 0)
+    {
+      this.buttons.forEach(button =>
+      {
         this.renderer.removeChild(actionContainer, button);
       });
       prevButtonCount = 0;
     }
+
+    const pageRange =
+      this.ViewContainer.element.nativeElement.querySelector('div.mat-paginator-range-label');        // Label showing the page range
 
     this.renderer.addClass(pageRange, 'custom-paginator-counter');
     this.renderer.addClass(actionContainer, 'custom-paginator-container');
@@ -157,11 +155,7 @@ export class PaginatorDirective implements DoCheck, AfterViewInit {
       });
     }
 
-    dots = {
-      first: false,
-      last: false
-    }
-
+    // First Index
     if (totalPagesFromPaginator > 0) {
       this.renderer.insertBefore(
         actionContainer,
@@ -176,26 +170,25 @@ export class PaginatorDirective implements DoCheck, AfterViewInit {
 
     for (let index = startIndex; index < totalPagesFromPaginator - 1; index = index + 1) {
       if (
-        (index < page && this.currentPage <= this.numberDisplayButtons)
-        ||
-        (index >= this.pageRange.start && index <= this.pageRange.end)
-        ||
-        (this.currentPage > pageDifference && index >= pageDifference)
-        ||
+        (index < page && this.currentPage <= this.numberDisplayButtons) ||
+        (index >= this.pageRange.start && index <= this.pageRange.end)  ||
+        (this.currentPage > pageDifference && index >= pageDifference)  ||
         (totalPagesFromPaginator < this.numberDisplayButtons + page)
-      ) {
+      )
+      {
         this.renderer.insertBefore(
           actionContainer,
           this.createButton(`${index}`, this.customPaginator.pageIndex),
-          nextPageNode
-        );
-      } else {
-        if (index > this.pageRange.end && !dots.first) {
+          nextPageNode);
+      }
+      else
+      {
+        if (index > this.pageRange.end && !dots.first)
+        {
           this.renderer.insertBefore(
             actionContainer,
             this.createButton(this.pageGap.first, this.customPaginator.pageIndex),
-            nextPageNode
-          );
+            nextPageNode);
           dots.first = true;
           break;
         }
@@ -203,13 +196,13 @@ export class PaginatorDirective implements DoCheck, AfterViewInit {
           this.renderer.insertBefore(
             actionContainer,
             this.createButton(this.pageGap.last, this.customPaginator.pageIndex),
-            nextPageNode
-          );
+            nextPageNode);
           dots.last = true;
         }
       }
     }
 
+    // Last Index
     if (totalPagesFromPaginator > 1) {
       this.renderer.insertBefore(
         actionContainer,
