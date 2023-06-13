@@ -3,8 +3,9 @@
     [length]="testPaginator.length"
     [pageSize]="testPaginator.pageSize"
     [pageIndex]='testPaginator.pageIndex'
-    [hidePageSize]='true'
+    [hidePageSize]='false'
     [showFirstLastButtons]="true"
+                                  [pageSizeOptions]="[5, 10, 15]"
     (page)="showTestEmit($event)">
   </mat-paginator>
   <div>

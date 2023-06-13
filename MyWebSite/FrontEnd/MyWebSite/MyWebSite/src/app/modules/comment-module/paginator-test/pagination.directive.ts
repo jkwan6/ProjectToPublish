@@ -9,13 +9,11 @@ import { MatButton } from '@angular/material/button';
 export class PaginatorDirective implements DoCheck, AfterViewInit {
 
   private currentPage!: number;
-
-  private pageGap!: { first: string; last: string; };
+  private pageGap!:   { first: string, last: string };
   private pageRange!: { start: number, end: number };
+  private checkPage!: { length: number, pageSize: number, pageIndex: number };
   private buttons: MatButton[] = [];
   private numberDisplayButtons!: number;
-/*  private checkPage: number[];*/
-  private checkPage!: { length: number; pageSize: number; pageIndex: number; };
 
   constructor(
     private readonly customPaginator: MatPaginator,
@@ -32,7 +30,7 @@ export class PaginatorDirective implements DoCheck, AfterViewInit {
   initializePaginatorFromConstructor() {
     this.currentPage = 0;
     this.pageGap = { first: '•••', last: '•••' };
-    this.numberDisplayButtons = 3;
+    this.numberDisplayButtons = 10;
     this.checkPage = { length: 0, pageIndex: 0, pageSize: 0 }
 
     // Display custom range label text
@@ -51,6 +49,8 @@ export class PaginatorDirective implements DoCheck, AfterViewInit {
     };
 
     // Subscribe to rerender buttons when next page and last page button is used
+    // When a page event happens on CustomPaginator, the function will be triggered
+    // Will create buttons from the Constructor
     this.customPaginator.page.subscribe((results: PageEvent) =>
     {
       this.currentPage = results.pageIndex;
@@ -59,30 +59,21 @@ export class PaginatorDirective implements DoCheck, AfterViewInit {
     });
   }
 
-  public ngAfterViewInit(): void {
-    this.pageRange = {
-      start: 0,
-      end: this.numberDisplayButtons - 1
-    };
-    this.initPageRange();
-  }
+  public ngAfterViewInit(): void {}
 
   ngDoCheck(): void {
-    // Reset paginator if the pageSize, pageIndex, length changes
-    if (
-      this.customPaginator?.length !== this.checkPage.length
-      ||
-      this.customPaginator?.pageSize !== this.checkPage.pageSize
-      ||
+    if // Re-Build paginator if the pageSize, pageIndex, length changes
+    (
+      this.customPaginator?.length !== this.checkPage.length        ||
+      this.customPaginator?.pageSize !== this.checkPage.pageSize    ||
       this.customPaginator?.pageIndex !== this.checkPage.pageIndex
-    ) {
-      const pageCount = this.customPaginator.getNumberOfPages();
-      if (this.currentPage > pageCount && pageCount !== 0) {
-        this.currentPage = 1;
-        this.customPaginator.pageIndex = 0;
-      }
+    )
+    {
       this.currentPage = this.customPaginator.pageIndex;
-      this.initPageRange();
+
+      this.initPageRange();     // Build up Buttons based on whether things changed
+
+      // Re-assign Checkpage Values
       this.checkPage = {
         length: this.customPaginator.length,
         pageSize: this.customPaginator.pageSize,
@@ -156,60 +147,67 @@ export class PaginatorDirective implements DoCheck, AfterViewInit {
     }
 
     // First Index
-    if (totalPagesFromPaginator > 0) {
-      this.renderer.insertBefore(
-        actionContainer,
-        this.createButton('0', this.customPaginator.pageIndex),
-        nextPageNode
-      );
-    }
+    //if (totalPagesFromPaginator > 0) {
+    //  this.renderer.insertBefore(
+    //    actionContainer,
+    //    this.createButton('0', this.customPaginator.pageIndex),
+    //    nextPageNode
+    //  );
+    //}
 
-    page = this.numberDisplayButtons + 2;
-    pageDifference = totalPagesFromPaginator - page;
-    startIndex = Math.max(this.currentPage - this.numberDisplayButtons - 2, 1);
+    var pageToDisplay = this.numberDisplayButtons;
+    pageDifference = totalPagesFromPaginator - pageToDisplay;
+    startIndex = Math.max(this.currentPage - this.numberDisplayButtons, 0);
 
-    for (let index = startIndex; index < totalPagesFromPaginator - 1; index = index + 1) {
+    for (let index = startIndex; index < totalPagesFromPaginator; index++) {
       if (
-        (index < page && this.currentPage <= this.numberDisplayButtons) ||
-        (index >= this.pageRange.start && index <= this.pageRange.end)  ||
-        (this.currentPage > pageDifference && index >= pageDifference)  ||
-        (totalPagesFromPaginator < this.numberDisplayButtons + page)
+        (index < pageToDisplay + 0 && this.currentPage < this.numberDisplayButtons - 4) ||    // Substracted 2
+        (index >= this.pageRange.start && index <= this.pageRange.end - 1)  ||
+        (this.currentPage > pageDifference + 4 && index >= pageDifference + 0)  ||            // Added 1
+        (totalPagesFromPaginator < this.numberDisplayButtons + pageToDisplay)
       )
       {
         this.renderer.insertBefore(
           actionContainer,
           this.createButton(`${index}`, this.customPaginator.pageIndex),
           nextPageNode);
+
       }
       else
       {
-        if (index > this.pageRange.end && !dots.first)
-        {
-          this.renderer.insertBefore(
-            actionContainer,
-            this.createButton(this.pageGap.first, this.customPaginator.pageIndex),
-            nextPageNode);
-          dots.first = true;
-          break;
-        }
-        if (index < this.pageRange.end && !dots.last) {
-          this.renderer.insertBefore(
-            actionContainer,
-            this.createButton(this.pageGap.last, this.customPaginator.pageIndex),
-            nextPageNode);
-          dots.last = true;
-        }
+        //if (index > this.pageRange.end && !dots.first)
+        //{
+        //  this.renderer.insertBefore(
+        //    actionContainer,
+        //    this.createButton(this.pageGap.first, this.customPaginator.pageIndex),
+        //    nextPageNode);
+        //  dots.first = true;
+        //  break;
+        //}
+        //if (index < this.pageRange.end && !dots.last) {
+        //  this.renderer.insertBefore(
+        //    actionContainer,
+        //    this.createButton(this.pageGap.last, this.customPaginator.pageIndex),
+        //    nextPageNode);
+        //  dots.last = true;
+        //}
       }
-    }
 
-    // Last Index
-    if (totalPagesFromPaginator > 1) {
-      this.renderer.insertBefore(
-        actionContainer,
-        this.createButton(`${totalPagesFromPaginator - 1}`, this.customPaginator.pageIndex),
-        nextPageNode
-      );
+
     }
+    const linkBtn: MatButton = this.renderer.createElement('button');
+    const text = this.renderer.createText('...');
+    this.renderer.appendChild(linkBtn, text);
+    this.renderer.insertBefore(actionContainer, linkBtn, nextPageNode);
+    this.buttons.push(linkBtn);
+    // Last Index
+    //if (totalPagesFromPaginator > 1) {
+    //  this.renderer.insertBefore(
+    //    actionContainer,
+    //    this.createButton(`${totalPagesFromPaginator - 1}`, this.customPaginator.pageIndex),
+    //    nextPageNode
+    //  );
+    //}
   }
 
   private createButton(index: string, pageIndex: number): MatButton {
