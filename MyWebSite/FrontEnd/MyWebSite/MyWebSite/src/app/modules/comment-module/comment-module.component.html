@@ -19,20 +19,14 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <mat-paginator [hidden]="!Comments"
+  <mat-divider></mat-divider>
+
+  <mat-paginator appPagination [hidden]="!Comments"
                  (page)="loadData()"
-                 [pageSize]="5"
+                 [pageSize]="10"
                  [pageSizeOptions]="[5, 10, 15]"
+                 [hidePageSize]='false'
                  showFirstLastButtons
                  class="color-management">
   </mat-paginator>
-
-  <!--<mat-paginator-goto 
-                      [length] ="100"
-                      [pageIndex] = "0"
-                      [pageSize]="10"
-                      [pageSizeOptions]="[5, 10, 25,100]">
-
-  </mat-paginator-goto>-->
-
 </div>

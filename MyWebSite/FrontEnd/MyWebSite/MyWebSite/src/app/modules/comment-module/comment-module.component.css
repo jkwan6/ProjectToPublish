@@ -1,5 +1,8 @@
 .comment-container {
+  display:flex;
+  flex-grow:1;
   margin:30px;
+  flex-direction:column;
   border: solid;
   border-width: thin;
   border-color: rgba(128, 128, 128, 0.6);
@@ -32,3 +35,6 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
     background-color:inherit;
 }
 
+.mat-divider{
+    margin-top:auto;
+}

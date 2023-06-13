@@ -1,6 +1,7 @@
-import { AfterViewInit, Directive, DoCheck, Host, Optional, Renderer2, Self, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Directive, DoCheck, Host, Optional, Renderer2, Self, ViewChild, ViewContainerRef } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatButton } from '@angular/material/button';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 @Directive({
   selector: '[appPagination]'
@@ -8,6 +9,7 @@ import { MatButton } from '@angular/material/button';
 
 export class PaginatorDirective implements DoCheck, AfterViewInit {
 
+  @ViewChild(MatMenuTrigger) trigger!: MatMenuTrigger;
   private currentPage!: number;
   private pageGap!:   { first: string, last: string };
   private pageRange!: { start: number, end: number };
@@ -146,15 +148,6 @@ export class PaginatorDirective implements DoCheck, AfterViewInit {
       });
     }
 
-    // First Index
-    //if (totalPagesFromPaginator > 0) {
-    //  this.renderer.insertBefore(
-    //    actionContainer,
-    //    this.createButton('0', this.customPaginator.pageIndex),
-    //    nextPageNode
-    //  );
-    //}
-
     var pageToDisplay = this.numberDisplayButtons;
     pageDifference = totalPagesFromPaginator - pageToDisplay;
     startIndex = Math.max(this.currentPage - this.numberDisplayButtons, 0);
@@ -164,49 +157,22 @@ export class PaginatorDirective implements DoCheck, AfterViewInit {
         (index < pageToDisplay + 0 && this.currentPage < this.numberDisplayButtons - 4) ||    // Substracted 2
         (index >= this.pageRange.start && index <= this.pageRange.end - 1)  ||
         (this.currentPage > pageDifference + 4 && index >= pageDifference + 0)  ||            // Added 1
-        (totalPagesFromPaginator < this.numberDisplayButtons + pageToDisplay)
+        (totalPagesFromPaginator + this.customPaginator.pageSize + 3 < this.numberDisplayButtons + pageToDisplay)
       )
       {
         this.renderer.insertBefore(
           actionContainer,
           this.createButton(`${index}`, this.customPaginator.pageIndex),
           nextPageNode);
-
       }
-      else
-      {
-        //if (index > this.pageRange.end && !dots.first)
-        //{
-        //  this.renderer.insertBefore(
-        //    actionContainer,
-        //    this.createButton(this.pageGap.first, this.customPaginator.pageIndex),
-        //    nextPageNode);
-        //  dots.first = true;
-        //  break;
-        //}
-        //if (index < this.pageRange.end && !dots.last) {
-        //  this.renderer.insertBefore(
-        //    actionContainer,
-        //    this.createButton(this.pageGap.last, this.customPaginator.pageIndex),
-        //    nextPageNode);
-        //  dots.last = true;
-        //}
-      }
-
-
     }
-    const linkBtn: MatButton = this.renderer.createElement('button');
-    const text = this.renderer.createText('...');
-    this.renderer.appendChild(linkBtn, text);
-    this.renderer.insertBefore(actionContainer, linkBtn, nextPageNode);
-    this.buttons.push(linkBtn);
-    // Last Index
-    //if (totalPagesFromPaginator > 1) {
-    //  this.renderer.insertBefore(
-    //    actionContainer,
-    //    this.createButton(`${totalPagesFromPaginator - 1}`, this.customPaginator.pageIndex),
-    //    nextPageNode
-    //  );
+
+    //if (totalPagesFromPaginator > 20) {
+    //  const linkBtn: MatButton = this.renderer.createElement('button');
+    //  const text = this.renderer.createText('...');
+    //  this.renderer.appendChild(linkBtn, text);
+    //  this.renderer.insertBefore(actionContainer, linkBtn, nextPageNode);
+    //  this.buttons.push(linkBtn);
     //}
   }
 
@@ -249,14 +215,9 @@ export class PaginatorDirective implements DoCheck, AfterViewInit {
         break;
     }
     this.renderer.appendChild(linkBtn, text);
-    // Add button to private array for state
     this.buttons.push(linkBtn);
     return linkBtn;
   }
-
-  /**
-   * @description calculates the button range based on class input parameters and based on current page index value.
-   */
 
   private switchPage(index: number): void {
     this.customPaginator.pageIndex = index;
