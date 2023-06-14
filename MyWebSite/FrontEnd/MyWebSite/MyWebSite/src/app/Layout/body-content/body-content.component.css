@@ -4,11 +4,26 @@
 }
 
 
-.body-height {
+/*.body-height {
   height: 100%;
   overflow: auto;
-}
+}*/
 
 .body-padding{
-  height:inherit;
+  flex-grow:2;
+}
+
+.flex-class{
+    /*height:inherit;*/
+    display:flex;
+    flex-direction:column;
+    flex-grow:1;
+}
+
+.test{
+    flex-grow:1;
+}
+
+.height-inherit{
+    height:inherit;
 }

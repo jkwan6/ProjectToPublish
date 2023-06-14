@@ -18,70 +18,8 @@ import { BaseRepository } from '../../repository/BaseRepository';
 })
 export class HomePageComponent implements OnInit {
 
-  constructor(private client: HttpClient, private repository: BaseRepository<IComments[]>) { }
-
-  //public displayedColumns: string[] = ["id", "commentsDescription", "commentsTime"];
-  //public Comments!: IComments[];  // Generic Class from AngMat Table
-  //defaultPageIndex: number = 0;
-  //defaultPageSize: number = 10;
-  //public defaultSortColumn: string = "name";
-  //public defaultSortOrder: "asc" | "desc" = "asc";
-  //defaultFilterColumn: string = "name";
-  //filterQuery?: string;
-
-  //public pageParams!: IPageParams;
-
-  //@ViewChild(MatPaginator) paginator!: MatPaginator;
-  //@ViewChild(MatSort) sort!: MatSort;
-
+  constructor() { }
 
   ngOnInit(): void {
-//    var url: string = "api/comments";
-//    url = this.getUrl(url);
-///*    var observable = this.testMethod(url);*/
-
-////    observable.subscribe(results => {
-////      var test = results;
-////      this.Comments = test
-/////*      console.log(this.Comments);*/
-////    }, error => console.error(error));
-
-//    console.log(this.Comments)
-
-//    const y: IPageParams = {
-//      pageSize: 5,
-//      filterColumn : "",
-//      filterQuery : "",
-//      sortColumn : "author",
-//      sortOrder : "asc",
-//      pageIndex: 0
-//    };
-
-
-//    var obs = this.repository.GetAll(url, y);
-//    obs.subscribe(results => {
-//      var x = results;
-//      this.Comments = x;
-//    })
-
-
-//    var test = this.repository.GetById(url, 5);
-//    test.subscribe(results => {
-//      var test1 : any = results
-//      console.log(test1)
-//      var test2 = test1.result as IComments;
-//      console.log(test2.author);
-//    });
-
-
   };
-
-  //public getUrl(url: string): string {
-  //  return environment.baseUrl + url;
-  //}
-
-  //public testMethod(url: string): Observable<IComments[]> {
-  //  var observable: Observable<IComments[]> = this.client.get<IComments[]>(url);
-  //  return observable;
-  //}
 }

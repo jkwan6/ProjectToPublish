@@ -1,7 +1,13 @@
+h1 {
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+}
+
 .WelcomeMessage{
-    padding:15px;
+    padding:35px;
     padding-top:15px;
     padding-bottom:0;
+    margin-bottom:0px;
     text-align:left;
     text-decoration:underline;
 }

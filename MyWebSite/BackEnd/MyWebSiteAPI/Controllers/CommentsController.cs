@@ -26,13 +26,12 @@ namespace MyWebSiteApi.Controllers
         public async Task<ActionResult<IEnumerable<Comments>>> GetAllAsync([FromQuery] PageParameters pageParams)
         {
             var result = await _service.GetAllAsync(pageParams);
-            var parsedResult = result.Content.ReadAsAsync<GenericReturnObject<Comments>>();
-            var test = new ObjectResult(result)
-            {
-                StatusCode = ((int)result.StatusCode),
-                Value = parsedResult
-            };
-            return test;
+            var parsedResult = result.Content.ReadAsAsync<PagedObjectsDTO<Comments>>();
+            var parsedObjects = parsedResult.Result;
+
+            var objectResult = new ObjectResult(parsedObjects);
+            objectResult.StatusCode = (int)result.StatusCode;
+            return objectResult;
         }
 
         [HttpGet("{id}")]
@@ -40,33 +39,47 @@ namespace MyWebSiteApi.Controllers
         {
             var result = await _service.GetByIdAsync(id);
             var parsedResult = result.Content.ReadAsAsync<Comments>();
-            var test = new ObjectResult(result) {
-                StatusCode = ((int)result.StatusCode),
-                Value = parsedResult
-            };
-            return test;
+            var parsedObjects = parsedResult.Result;
+
+            var objectResult = new ObjectResult(parsedObjects);
+            objectResult.StatusCode = (int)result.StatusCode;
+            return objectResult;
         }
 
         [HttpPut("{id}")]
-        public async Task<HttpResponseMessage> PutAsync(int id, Comments comment)
+        public async Task<ActionResult<Comments>> PutAsync(int id, Comments comment)
         {
-            comment.Id = id;
-            var results = await _service.PutAsync(id, comment);
-            return results;
+            comment.Id = id;    // Will Override ID set in comments Body if 2 id provided.
+            var result = await _service.PutAsync(id, comment);
+
+            var parsedResult = result.Content.ReadAsAsync<Comments>();
+            var parsedObjects = parsedResult.Result;
+
+            var objectResult = new ObjectResult(parsedObjects);
+            objectResult.StatusCode = (int)result.StatusCode;
+            return objectResult;
         }
 
         [HttpPost]
-        public async Task<HttpResponseMessage> PostAsync([FromBody] Comments comment)
+        public async Task<ActionResult<Comments>> PostAsync([FromBody] Comments comment)
         {
             var results = await _service.PostAsync(comment);
-            return results;
+            var parsedResults = results.Content.ReadAsAsync<Comments>();
+
+            // Nothing in parsedObjects, but could potentially return the posted entity
+            var parsedObjects = parsedResults.Result;
+            var objectResult = new ObjectResult(parsedObjects);
+            objectResult.StatusCode = (int)results.StatusCode;
+            return objectResult;
         }
 
         [HttpDelete("{id}")]
-        public async Task<HttpResponseMessage> DeleteAsync(int id)
+        public async Task<ActionResult<Comments>> DeleteAsync(int id)
         {
-            var response = await _service.DeleteAsync(id);
-            return response;
+            var results = await _service.DeleteAsync(id);
+            var objectResult = new ObjectResult(null);
+            objectResult.StatusCode = (int)results.StatusCode;
+            return objectResult;
         }
     }
 }

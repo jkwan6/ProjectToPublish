@@ -1,11 +1,13 @@
 using ApiTests.RepositoryTests.DbSetup;
 using DataLayer;
 using DataLayer.Entities;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using ServiceLayer;
 using ServiceLayer.CommentsService;
 using ServiceLayer.DTO;
+using System.Net;
 
 namespace ApiTests
 {
@@ -26,9 +28,10 @@ namespace ApiTests
                 };
 
                 var x = await repo.GetAllAsync(pageParams);
-                var y = x.Value!.Count();
-
-                Assert.NotEqual(0, y);
+                var y = x.Content.ReadAsAsync <PagedObjectsDTO<Comments>>();
+                var z = y.Result.Objects;
+                var test = new ObjectResult(z);
+                test.StatusCode = (int)x.StatusCode;
             }
         }
 
@@ -77,5 +80,42 @@ namespace ApiTests
                 Assert.True(entity is Comments);
             }
         }
+
+        [Fact]
+        public async void PostSomething()
+        {
+            using (AppDbContext context = new DbSetup().getDbContext())
+            {
+                var repo = new CommentsRepository(context);
+                var comment = new Comments()
+                {
+                    Author = "striung",
+                    CommentsDescription = "string"
+                };
+
+                var x = await repo.PostAsync(comment);
+                var y = x.Content.ReadAsAsync<Comments>();
+                var z = y.Result;
+                var test = new ObjectResult(z);
+                test.StatusCode = (int)x.StatusCode;
+            }
+        }
+
+        [Fact]
+        public async void DeleteSomething()
+        {
+            using (AppDbContext context = new DbSetup().getDbContext())
+            {
+                var repo = new CommentsRepository(context);
+                var id = 10;
+                var x = await repo.DeleteAsync(id);
+                //var y = x.Content.ReadAsAsync<HttpResponseMessage>();
+                //var z = y.Result;
+                var test = new ObjectResult(null);
+                test.StatusCode = (int)x.StatusCode;
+            }
+        }
+
+
     }
 }

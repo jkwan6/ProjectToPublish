@@ -59,10 +59,10 @@ export class CommentModuleComponent implements AfterViewInit {
 
     var obs = this.repository.GetAll(this.url, this.params);
     obs.subscribe(results => {
-      this.paginator.length = results.result.count;
+      this.paginator.length = results.count;
       this.paginator.pageIndex = this.params.pageIndex;
       this.paginator.pageSize = this.params.pageSize;
-      this.Comments = new MatTableDataSource<IComments>(results.result.objects);
+      this.Comments = new MatTableDataSource<IComments>(results.objects);
     })
   }
 

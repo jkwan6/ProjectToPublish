@@ -11,7 +11,6 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\MyWebSite</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="src\app\modules\comment-module\mat-paginator-goto\" />
     <Folder Include="src\service\" />
   </ItemGroup>
   <ItemGroup>

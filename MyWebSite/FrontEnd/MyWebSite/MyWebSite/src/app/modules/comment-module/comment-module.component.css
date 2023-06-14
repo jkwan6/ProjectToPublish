@@ -1,12 +1,12 @@
 .comment-container {
   display:flex;
   flex-grow:1;
-  margin:30px;
+  margin:20px;
   flex-direction:column;
   border: solid;
   border-width: thin;
   border-color: rgba(128, 128, 128, 0.6);
-  border-radius: 20px;
+  border-radius: 10px;
   padding-left: 8px;
   padding-right: 8px;
   min-width: 300px;
@@ -14,11 +14,18 @@
 
 
 th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
-  padding-bottom: 10px;
+  padding-bottom: 5px;
   border-bottom-width: 1px;
   border-bottom-style: none;
 }
 
+
+.title{
+    font-size:20px;
+    text-decoration:underline;
+    padding-bottom:0px;
+    margin-bottom:0px;
+}
 
 .comment-row{
     display: flex;
@@ -37,4 +44,24 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
 
 .mat-divider{
     margin-top:auto;
+}
+
+.mat-paginator{
+    padding:5px;
+    padding-top:8px;
+}
+
+
+.add-comment-container{
+    flex-grow:1;
+    border:solid;
+    border-width:thin;
+    padding:10px;
+}
+
+
+.flex-class{
+    display:flex;
+    flex-direction:column;
+    flex-wrap:wrap;
 }

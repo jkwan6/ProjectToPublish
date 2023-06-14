@@ -40,18 +40,19 @@ namespace ServiceLayer
             if (result is null) return new HttpResponseMessage(HttpStatusCode.NotFound);    // Early Return
 
             var count = await table.CountAsync();
-            var objectToReturn = new GenericReturnObject<T>()
+            var objectToReturn = new PagedObjectsDTO<T>()
             {
                 Objects = result,
                 Count = count
             };
 
             var response = new HttpResponseMessage(HttpStatusCode.OK);
-            response.Content = new ObjectContent<GenericReturnObject<T>>(objectToReturn, new JsonMediaTypeFormatter());
+            response.Content = new ObjectContent<PagedObjectsDTO<T>>(objectToReturn, new JsonMediaTypeFormatter());
             return response;
         }
         #endregion
 
+        #region GetById
         public async Task<HttpResponseMessage> GetByIdAsync(int id)
         {
             var result = await table.FindAsync(id);
@@ -61,8 +62,10 @@ namespace ServiceLayer
             var response = new HttpResponseMessage(HttpStatusCode.OK);
             response.Content = new ObjectContent<T>(result, new JsonMediaTypeFormatter());
             return response;
-        } 
+        }
+        #endregion
 
+        #region PutAsync
         public async Task<HttpResponseMessage> PutAsync(int id, T entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
@@ -82,16 +85,23 @@ namespace ServiceLayer
                     throw;
                 }
             }
-            return new HttpResponseMessage(HttpStatusCode.NoContent);
+            var response = new HttpResponseMessage(HttpStatusCode.OK);
+            var entityToReturn = await table.FindAsync(id);
+            response.Content = new ObjectContent<T>(entityToReturn, new JsonMediaTypeFormatter());
+            return response;
         }
+        #endregion
 
+        #region PostAsync
         public async Task<HttpResponseMessage> PostAsync(T entity)
         {
             table.Add(entity);
             await _context.SaveChangesAsync();
             return new HttpResponseMessage(HttpStatusCode.Created);
         }
+        #endregion
 
+        #region DeleteAsync
         public async Task<HttpResponseMessage> DeleteAsync(int id)
         {
             var existing = await table.FindAsync(id);
@@ -103,15 +113,17 @@ namespace ServiceLayer
             await _context.SaveChangesAsync();
             return new HttpResponseMessage(HttpStatusCode.NoContent);
         }
+        #endregion
 
+        #region InternalMethods
         public void Save()
         {
             _context.SaveChanges();
         }
-
         private bool EntityExists(int id)
         {
             return table.Any(e => e.Id == id);
         }
+        #endregion
     }
 }

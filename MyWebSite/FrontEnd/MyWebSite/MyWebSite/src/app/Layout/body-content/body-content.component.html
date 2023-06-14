@@ -1,13 +1,15 @@
-<div class="body-width body-height">
-  <mat-drawer-container class="body-height">
+<div class="body-width flex-class">
+  <mat-drawer-container class="flex-class">
 
     <mat-drawer class="sidenav-specs"
                 #drawer mode="side"
                 position="start">
       <app-side-bar></app-side-bar>
     </mat-drawer>
-    <div class="body-padding">
-      <router-outlet></router-outlet>
+
+
+    <div class="height-inherit">
+      <router-outlet class="body-padding flex-class"></router-outlet>
     </div>
 
   </mat-drawer-container>

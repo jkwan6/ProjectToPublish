@@ -19,7 +19,7 @@ import { LifeInGeneralComponent } from './pages/sub-pages/life-in-general/life-i
 import { AuthenticationComponent } from './pages/Authentication/authentication.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { CommentModuleComponent } from './modules/comment-module/comment-module.component';
-import { CommentTemplateComponent } from './modules/comment-module/comment-template/comment-template.component';
+import { CommentRowTemplateComponent } from './modules/comment-module/comment-row-template/comment-template.component';
 import { ThreeJsPageComponent } from './pages/ThreeJs/three-js-page1/three-js-page.component';
 import { ThreeJsPageTwoComponent } from './pages/ThreeJs/three-js-page2/three-js-page-two.component';
 import { ThreeJsPageThreeComponent } from './pages/ThreeJs/three-js-page3/three-js-page-three.component';
@@ -40,7 +40,6 @@ import { ThreeJsPage15Component } from './pages/ThreeJs/three-js-page15/three-js
 import { LoginComponent } from './pages/Authentication/login/login.component';
 import { SignUpComponent } from './pages/Authentication/sign-up/sign-up.component';
 import { DatePipe } from '@angular/common';
-import { MatPaginatorGotoComponent } from './modules/comment-module/mat-paginator-goto/mat-paginator-goto.component';
 import { FormsModule } from '@angular/forms';
 import { PaginatorTest } from './modules/comment-module/paginator-test/paginator-test';
 import { PaginatorDirective } from './modules/comment-module/paginator-test/pagination.directive';
@@ -61,7 +60,7 @@ import { PaginatorDirective } from './modules/comment-module/paginator-test/pagi
     AuthenticationComponent,
     HomePageComponent,
     CommentModuleComponent,
-    CommentTemplateComponent,
+    CommentRowTemplateComponent,
     ThreeJsPageComponent,
     ThreeJsPageTwoComponent,
     ThreeJsPageThreeComponent,
@@ -81,7 +80,6 @@ import { PaginatorDirective } from './modules/comment-module/paginator-test/pagi
     ThreeJsPage15Component,
     LoginComponent,
     SignUpComponent,
-    MatPaginatorGotoComponent,
     PaginatorTest,
     PaginatorDirective
   ],

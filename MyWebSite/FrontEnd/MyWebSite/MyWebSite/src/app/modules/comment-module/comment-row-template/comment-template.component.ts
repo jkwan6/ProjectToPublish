@@ -3,11 +3,11 @@ import { AfterViewInit, Component, Inject, Input, LOCALE_ID, OnInit } from '@ang
 import { IComments } from '../../../interface/IComments';
 
 @Component({
-  selector: 'app-comment-template',
-  templateUrl: './comment-template.component.html',
-  styleUrls: ['./comment-template.component.css']
+  selector: 'app-row-comment-template',
+  templateUrl: './comment-row-template.component.html',
+  styleUrls: ['./comment-row-template.component.css']
 })
-export class CommentTemplateComponent implements OnInit {
+export class CommentRowTemplateComponent implements OnInit {
 
   @Input() comments!: IComments;
 

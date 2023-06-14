@@ -32,7 +32,7 @@ export class BaseRepository<T> {
     return queryable;
   }
 
-  PutItem(baseUrl: string, object: T, id: number) {
+  PutItem(baseUrl: string, object: T, id: number): Observable<T> {
     var url = baseUrl + "/" + id;
     var queryable = this.httpClient.put<T>(url, object);
     return queryable;

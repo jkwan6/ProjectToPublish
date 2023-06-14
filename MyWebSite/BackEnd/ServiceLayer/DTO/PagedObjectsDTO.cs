@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ServiceLayer.DTO
 {
-    public class GenericReturnObject<T>
+    public class PagedObjectsDTO<T>
     {
         public List<T>? Objects { get; set; }
         public int Count { get; set; }

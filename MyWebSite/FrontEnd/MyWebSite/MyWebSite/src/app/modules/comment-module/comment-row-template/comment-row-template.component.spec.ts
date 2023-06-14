@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CommentTemplateComponent } from './comment-template.component';
+import { CommentRowTemplateComponent } from './comment-template.component';
 
-describe('CommentTemplateComponent', () => {
-  let component: CommentTemplateComponent;
-  let fixture: ComponentFixture<CommentTemplateComponent>;
+describe('CommentRowTemplateComponent', () => {
+  let component: CommentRowTemplateComponent;
+  let fixture: ComponentFixture<CommentRowTemplateComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CommentTemplateComponent ]
+      declarations: [ CommentRowTemplateComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CommentTemplateComponent);
+    fixture = TestBed.createComponent(CommentRowTemplateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
