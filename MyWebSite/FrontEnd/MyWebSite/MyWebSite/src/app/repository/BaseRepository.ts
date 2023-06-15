@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment'
 import { IPageParams } from '../interface/IPageParams';
+import { SharedUtils } from '../SharedUtils/SharedUtils';
 
 @Injectable() // DI Decorator
 export class BaseRepository<T> {
@@ -12,14 +13,14 @@ export class BaseRepository<T> {
 
   GetAll(url: string, pageParams: IPageParams): Observable<T> {
     var params = new HttpParams()
-    .set(this.nameof(pageParams, x => x.pageIndex), pageParams.pageIndex)
-    .set(this.nameof(pageParams, x => x.pageSize), pageParams.pageSize)
-    .set(this.nameof(pageParams, x => x.sortColumn), pageParams.sortColumn)
-    .set(this.nameof(pageParams, x => x.sortOrder), pageParams.sortOrder);
+      .set(SharedUtils.nameof(pageParams, x => x.pageIndex), pageParams.pageIndex)
+      .set(SharedUtils.nameof(pageParams, x => x.pageSize), pageParams.pageSize)
+      .set(SharedUtils.nameof(pageParams, x => x.sortColumn), pageParams.sortColumn)
+      .set(SharedUtils.nameof(pageParams, x => x.sortOrder), pageParams.sortOrder);
 
     if (pageParams.filterColumn && pageParams.filterQuery) {
-      params = params.set(this.nameof(pageParams, x => x.filterColumn), pageParams.filterColumn);
-      params = params.set(this.nameof(pageParams, x => x.filterQuery), pageParams.filterQuery);
+      params = params.set(SharedUtils.nameof(pageParams, x => x.filterColumn), pageParams.filterColumn);
+      params = params.set(SharedUtils.nameof(pageParams, x => x.filterQuery), pageParams.filterQuery);
     }
 
     var queryable = this.httpClient.get<T>(url, { params });
@@ -50,10 +51,4 @@ export class BaseRepository<T> {
     return queryable;
   }
 
-  // INTERNAL FUNCTION TO REPLICATE C# TYPEOF FUNCTION
-  private nameof<T>(obj: T, expression: (x: { [Property in keyof T]: () => string }) => () => string): string {
-    const res: { [Property in keyof T]: () => string } = {} as { [Property in keyof T]: () => string };
-    Object.keys(obj).map(k => res[k as keyof T] = () => k);
-    return expression(res)();
-  }
 }

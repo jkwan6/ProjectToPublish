@@ -43,6 +43,7 @@ import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PaginatorTest } from './modules/comment-module/paginator-test/paginator-test';
 import { PaginatorDirective } from './modules/comment-module/paginator-test/pagination.directive';
+import { TestPageComponent } from './modules/comment-module/test-page/test-page.component';
 
 @NgModule({
   declarations: [
@@ -81,7 +82,8 @@ import { PaginatorDirective } from './modules/comment-module/paginator-test/pagi
     LoginComponent,
     SignUpComponent,
     PaginatorTest,
-    PaginatorDirective
+    PaginatorDirective,
+    TestPageComponent
   ],
   imports: [
     BrowserModule, HttpClientModule, BrowserAnimationsModule, AppRoutingModule, AngularMaterialModule, FormsModule

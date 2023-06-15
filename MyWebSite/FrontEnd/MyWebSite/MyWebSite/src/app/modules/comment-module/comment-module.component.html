@@ -1,7 +1,7 @@
 <div class="comment-container">
 
   <!--TABLE BEGINS-->
-  <table mat-table
+  <!--<table mat-table
          class="comments-table color-management"
          [dataSource]="Comments"
          matSortDisableClear>
@@ -17,18 +17,26 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
-  </table>
+  </table>-->
 
+
+  <app-test-page></app-test-page>
+  <!--<div class="add-comment-container">
+    Add Comment
+  </div>-->
   <!--<div class="add-comment-container">test</div>-->
 
   <mat-divider></mat-divider>
-  <div>
+  <div class="flex-class">
+
+
 
     <mat-paginator
                    appPagination [hidden]="!Comments"
                    (page)="loadData()"
                    [pageSize]="10"
                    showFirstLastButtons
+                   [hidePageSize]='true'
                    class="flex-class color-management">
     </mat-paginator>
   </div>

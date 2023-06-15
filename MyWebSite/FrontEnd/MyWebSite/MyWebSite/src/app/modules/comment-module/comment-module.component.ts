@@ -33,6 +33,7 @@ export class CommentModuleComponent implements AfterViewInit {
   public Comments!: MatTableDataSource<IComments>;                  // Generic Class from AngMat Table
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+
   // Setting Default Values
   params: IPageParams =
     {
