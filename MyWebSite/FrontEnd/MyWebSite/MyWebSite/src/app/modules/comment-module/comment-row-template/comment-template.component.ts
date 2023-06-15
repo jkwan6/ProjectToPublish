@@ -11,12 +11,19 @@ export class CommentRowTemplateComponent implements OnInit {
 
   @Input() comments!: IComments;
 
-  constructor(private datePipe: DatePipe, @Inject(LOCALE_ID) private locale: string) {
-  }
+  constructor(
+    private datePipe: DatePipe,
+    @Inject(LOCALE_ID)
+    private locale: string) {}
 
   ngOnInit(): void {
-    this.comments.commentsTime = this.datePipe.transform(this.comments.commentsTime, 'yyyy-MM-dd HH:mm:ss', 'UTC', this.locale)!;
+    this.comments.commentsTime =
+      this.datePipe.transform
+        (
+        this.comments.commentsTime,
+        'yyyy-MM-dd HH:mm:ss',
+        'UTC',
+        this.locale
+      )!
   }
-
-
 }

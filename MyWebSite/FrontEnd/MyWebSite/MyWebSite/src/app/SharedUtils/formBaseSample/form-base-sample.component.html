@@ -23,16 +23,35 @@
       </mat-error>
     </mat-form-field>
 
+    <mat-form-field>
+
+      <mat-label>Array of Test Objects</mat-label>
+
+      <mat-select formControlName="test1">
+
+        <mat-option *ngFor="let test of testArray"
+                    [value]="test">
+          {{test}}
+        </mat-option>
+
+      </mat-select>
+
+    </mat-form-field>
+
+
     <!--SUBMIT/CANCEL BUTTONS-->
     <div>
-      <button mat-flat-button color="primary"
-              type="submit"
-              [disabled]="!form.valid">
+      <button
+          mat-flat-button
+          color="primary"
+          type="submit"
+          [disabled]="!form.valid">
         Save
       </button>
-      <button mat-flat-button
-              color="secondary"
-              [routerLink]="['/home']">
+      <button
+          mat-flat-button
+          color="secondary"
+          [routerLink]="['/home']">
         Cancel
       </button>
     </div>

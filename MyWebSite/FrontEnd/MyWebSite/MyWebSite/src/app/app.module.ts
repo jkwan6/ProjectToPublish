@@ -41,9 +41,9 @@ import { LoginComponent } from './pages/Authentication/login/login.component';
 import { SignUpComponent } from './pages/Authentication/sign-up/sign-up.component';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { PaginatorTest } from './modules/comment-module/paginator-test/paginator-test';
-import { PaginatorDirective } from './modules/comment-module/paginator-test/pagination.directive';
-import { TestPageComponent } from './modules/comment-module/test-page/test-page.component';
+import { PaginatorTest } from './modules/comment-module/paginator-extension/paginator-test';
+import { PaginatorDirective } from './modules/comment-module/paginator-extension/pagination.directive';
+import { FormBaseSample } from './SharedUtils/formBaseSample/form-base-sample.component';
 
 @NgModule({
   declarations: [
@@ -83,7 +83,7 @@ import { TestPageComponent } from './modules/comment-module/test-page/test-page.
     SignUpComponent,
     PaginatorTest,
     PaginatorDirective,
-    TestPageComponent
+    FormBaseSample
   ],
   imports: [
     BrowserModule, HttpClientModule, BrowserAnimationsModule, AppRoutingModule, AngularMaterialModule, FormsModule
