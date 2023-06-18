@@ -14,7 +14,7 @@ namespace MyWebSiteApi.Controllers
 
             var refreshResult = await _authService.RefreshToken(refreshToken, accessToken);
 
-            setTokenCookie(refreshResult.refreshToken);
+            setTokenCookie(refreshResult.refreshToken!);
 
 
             return Ok(refreshResult);

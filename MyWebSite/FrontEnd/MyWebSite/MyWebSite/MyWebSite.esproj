@@ -14,9 +14,9 @@
     <Folder Include="src\service\" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="src\app\pages\ThreeJs\three-js-page7\shaders\fragment.glsl" />
+    <None Remove="src\app\sub-pages\ThreeJs\three-js-page7\shaders\fragment.glsl" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="src\app\pages\ThreeJs\three-js-page7\shaders\vertex.glsl" />
+    <None Remove="src\app\sub-pages\ThreeJs\three-js-page7\shaders\vertex.glsl" />
   </ItemGroup>
 </Project>

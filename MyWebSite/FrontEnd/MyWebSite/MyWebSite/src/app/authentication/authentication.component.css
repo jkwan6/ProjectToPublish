@@ -1,18 +1,29 @@
 .Container{
     display:flex;
+    height:inherit;
     flex-direction:column;
-    height:100%;
+    flex-grow:1;
+    flex-shrink:1;
     width:100%;
     justify-content:center;
     align-items:center;
 }
 
-.filler1{
-    flex-grow:0.5;
+.login-test{
+    flex-shrink:1;
+    flex-grow:1;
 }
 
-.filler2{
+.filler1{
+    flex-shrink:1;
     flex-grow:1;
+    min-height:20px;
+}
+
+.filler2 {
+  flex-shrink: 1;
+  flex-grow: 1;
+  min-height: 20px;
 }
 
 

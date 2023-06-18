@@ -36,19 +36,20 @@ export class PaginatorDirective implements DoCheck, AfterViewInit {
     this.checkPage = { length: 0, pageIndex: 0, pageSize: 0 }
 
     // Display custom range label text
-    this.customPaginator._intl.getRangeLabel = (page: number, pageSize: number, length: number): string =>
-    {
-      const startIndex = page * pageSize;
-      const endIndex =
-        (startIndex < length)
-          ? Math.min(startIndex + pageSize, length)
-          : startIndex + pageSize;
-      var results =
-        (length > 0)
-          ? `Showing ${startIndex + 1} - ${endIndex} of ${length} records`
-          : 'Showing 0 – 0 of 0 records';
-      return results;
-    };
+    this.customPaginator._intl.getRangeLabel =
+      (page: number, pageSize: number, length: number): string =>
+      {
+        const startIndex = page * pageSize;
+        const endIndex =
+          (startIndex < length)
+            ? Math.min(startIndex + pageSize, length)
+            : startIndex + pageSize;
+        var results =
+          (length > 0)
+            ? `Showing ${startIndex + 1} - ${endIndex} of ${length} records`
+            : 'Showing 0 – 0 of 0 records';
+        return results;
+      };
 
     // Subscribe to rerender buttons when next page and last page button is used
     // When a page event happens on CustomPaginator, the function will be triggered
@@ -97,8 +98,6 @@ export class PaginatorDirective implements DoCheck, AfterViewInit {
 
   private buildPageNumbers = () => {
     //let dots: { first: boolean, last: boolean };
-    let dots = { first: false, last: false };
-    let page: number;
     let pageDifference: number;
     let startIndex: number;
     let totalPagesFromPaginator: number = this.customPaginator.getNumberOfPages();                    // Get Number of Pages from Paginator

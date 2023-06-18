@@ -24,7 +24,6 @@ export class FormBaseSample implements OnInit {
   ngOnInit(): void {
     this.InitialializeFormGroup();
     this.testArray = ["string1", "string2", "string3", "string4", "string5"]
-
   }
 
   // #region --> Code Module to Initialize FormGroup

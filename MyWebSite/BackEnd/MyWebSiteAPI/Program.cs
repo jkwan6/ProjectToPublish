@@ -108,6 +108,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+// Check Up Above for Angular Policy CORS
 app.UseCors("AngularPolicy");
 
 app.MapControllers();

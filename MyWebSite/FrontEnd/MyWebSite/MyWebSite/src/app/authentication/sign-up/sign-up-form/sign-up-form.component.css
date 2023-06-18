@@ -1,0 +1,9 @@
+.log-in-field {
+  width: 100%;
+}
+
+.log-in-button {
+  margin-top: 3px;
+  width: 100px;
+  align-self: end;
+}

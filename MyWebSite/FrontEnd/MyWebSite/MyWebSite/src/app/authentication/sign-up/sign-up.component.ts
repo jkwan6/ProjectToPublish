@@ -1,22 +1,19 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { ActivatedRoute, Params } from '@angular/router';
-import { map, Observable } from 'rxjs';
-import { environment } from '../../../environments/environment.prod';
-import { ILoginRequest } from '../../interface/ILoginRequest';
-
-
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { ILoginRequest } from '../../../app/interface/ILoginRequest';
 
 @Component({
-  selector: 'authentication',
-  templateUrl: './authentication.component.html',
-  styleUrls: ['./authentication.component.css']
+  selector: 'app-sign-up',
+  templateUrl: './sign-up.component.html',
+  styleUrls: ['./sign-up.component.css']
 })
-export class AuthenticationComponent implements OnInit {
-
+export class SignUpComponent implements OnInit {
   hide = true
 
   constructor(
@@ -61,19 +58,17 @@ export class AuthenticationComponent implements OnInit {
 
     var observable = this.testMethod(url, user);
 
-    observable.subscribe(results => {
+    observable.subscribe((results: any) => {
       console.log(results)
     }, error => console.error(error));
 
   }
-
   public getUrl(url: string): string {
     return environment.baseUrl + url;
   }
 
-  public testMethod(url: string, loginRequest : ILoginRequest): Observable<any> {
-    var observable: Observable<any> = this.client.post<any>(url, loginRequest, {withCredentials : true });
+  public testMethod(url: string, loginRequest: ILoginRequest): Observable<any> {
+    var observable: Observable<any> = this.client.post<any>(url, loginRequest, { withCredentials: true });
     return observable;
   }
-
 }

@@ -1,0 +1,67 @@
+<div class="Container">
+  <div class="sign-up-body">
+
+    <div class="back-button-row">
+      <div class="back-button"
+           [routerLink]="['/login']">
+        <button mat-fab>
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+      <div class="test">
+        <h4 class="title-style">Sign Up</h4>
+      </div>
+    </div>
+
+    <div class="signup">
+
+      <form class="Login-Block"
+            [formGroup]="form"
+            (ngSubmit)="login()">
+
+        <div class="log-in-details">
+
+          <app-sign-up-form></app-sign-up-form>
+
+          <!--<mat-form-field style="margin-bottom:-1.25em;"
+                        class="log-in-field"
+                        appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email">
+        </mat-form-field>
+
+        <mat-form-field style="margin-bottom: -1.25em;"
+                        class="log-in-field"
+                        appearance="outline">
+          <mat-label>Password</mat-label>
+          <input matInput formControlName="password" [type]="hide ? 'password' : 'text'">
+
+          <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+
+        </mat-form-field>
+
+        <mat-form-field style="margin-bottom: -1.25em;"
+                        class="log-in-field"
+                        appearance="outline">
+          <mat-label>Password</mat-label>
+          <input matInput formControlName="password" [type]="hide ? 'password' : 'text'">
+
+          <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>-->
+          <!--</mat-form-field>-->
+          <!--<button color="primary"
+                class="log-in-button"
+                type="submit"
+                mat-raised-button>
+          Login
+        </button>-->
+
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>
