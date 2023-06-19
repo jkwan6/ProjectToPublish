@@ -2,12 +2,14 @@
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
+    <div class="title-style-1">
+      Insert Username and Password
+    </div>
 
-    Email
     <mat-form-field style="margin-bottom:-1.25em;"
                     class="log-in-field"
                     appearance="outline">
-      <mat-label>Email</mat-label>
+      <mat-label>Username</mat-label>
       <input matInput
              formControlName="email">
     </mat-form-field>
@@ -18,15 +20,54 @@
       <mat-label>Password</mat-label>
       <input matInput
              formControlName="password"
-             [type]="hide ? 'password' : 'text'">
+             [type]="passwordHide ? 'password' : 'text'">
 
       <button type="button"
               mat-icon-button
-              matSuffix (click)="hide = !hide"
+              matSuffix (click)="passwordHide = !passwordHide"
               [attr.aria-label]="'Hide password'"
-              [attr.aria-pressed]="hide">
+              [attr.aria-pressed]="passwordHide">
         <mat-icon>
-          {{hide ? 'visibility_off' : 'visibility'}}
+          {{passwordHide ? 'visibility_off' : 'visibility'}}
+        </mat-icon>
+      </button>
+
+    </mat-form-field>
+
+
+    <div class="title-style-2">
+      Confirm Username and Password
+    </div>
+    <mat-form-field style="margin-bottom:-1.25em;"
+                    class="log-in-field"
+                    appearance="outline">
+      <mat-label>Confirm Username</mat-label>
+      <input matInput
+             formControlName="confirmEmail">
+    </mat-form-field>
+
+
+    <mat-form-field style="margin-bottom: -1.25em;"
+                    class="log-in-field"
+                    appearance="outline">
+      <mat-label>Confirm Password</mat-label>
+      <input matInput
+             formControlName="confirmPassword"
+             [type]="confirmPasswordHide ? 'password' : 'text'">
+
+      <mat-error *ngIf="form.hasError('fieldMatches')">
+        <strong>ERROR</strong>:
+        A city with the same <i>name</i>, <i>lat</i>,
+        <i>lon</i> and <i>country</i> already exists.
+      </mat-error>
+
+      <button type="button"
+              mat-icon-button
+              matSuffix (click)="confirmPasswordHide = !confirmPasswordHide"
+              [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="confirmPasswordHide">
+        <mat-icon>
+          {{confirmPasswordHide ? 'visibility_off' : 'visibility'}}
         </mat-icon>
       </button>
 
@@ -36,7 +77,7 @@
             class="log-in-button"
             type="submit"
             mat-raised-button>
-      Login
+      Sign Up
     </button>
   </form>
 </div>

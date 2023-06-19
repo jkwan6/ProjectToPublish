@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { BehaviorSubject, map, Observable } from 'rxjs';
+import { Pass } from 'three/examples/jsm/postprocessing/Pass';
 import { environment } from '../../../../environments/environment.prod';
 import { IComments } from '../../../interface/IComments';
 import { ILoginRequest } from '../../../interface/ILoginRequest';
@@ -16,9 +18,10 @@ import { SharedUtils } from '../../../SharedUtils/SharedUtils';
 
 export class SignUpFormComponent implements OnInit {
 
-  hide = true                       // Property to Hide/Unhide Password
-  formVariable!: ISignUpRequest;     // Update Type Based on Form Parameters
-  form!: FormGroup;                 // ReactiveForm
+  passwordHide = true                 // Property to Hide/Unhide Password
+  confirmPasswordHide = true;
+  formVariable!: ISignUpRequest;      // Update Type Based on Form Parameters
+  form!: FormGroup;                   // ReactiveForm
   baseUrl: string;
 
   constructor(
@@ -29,12 +32,13 @@ export class SignUpFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.InitialializeFormGroup();
+
   }
 
   // #region --> Code Module to Initialize FormGroup
   private InitialializeFormGroup() {
 
-    this.formVariable = { email: "", password: "" };                  // Gotta initialize First
+    this.formVariable = { email: "", password: "", confirmPassword: "", confirmEmail: "" };                  // Gotta initialize First
 
     this.form = new FormGroup({});
 
@@ -47,6 +51,19 @@ export class SignUpFormComponent implements OnInit {
       SharedUtils.nameof(this.formVariable, x => x.password),         // Update Property Here
       new FormControl("", Validators.required)                        // "" To initialize empty form
     );
+    this.form.addControl(
+      SharedUtils.nameof(this.formVariable, x => x.confirmPassword),  // Update Property Here
+      new FormControl("", Validators.required)                        // "" To initialize empty form
+    );
+    this.form.addControl(
+      SharedUtils.nameof(this.formVariable, x => x.confirmEmail),  // Update Property Here
+      new FormControl("", Validators.required)                        // "" To initialize empty form
+    );
+    this.form.controls['email'].addAsyncValidators(this.fieldMatches('email', 'confirmEmail'));
+    this.form.controls['confirmEmail'].addAsyncValidators(this.fieldMatches('email', 'confirmEmail'));
+
+    this.form.controls['password'].addAsyncValidators(this.fieldMatches('password', 'confirmPassword'));
+    this.form.controls['confirmPassword'].addAsyncValidators(this.fieldMatches('password', 'confirmPassword'));
   }
   // #endregion
 
@@ -57,6 +74,10 @@ export class SignUpFormComponent implements OnInit {
         this.form.controls[SharedUtils.nameof(this.formVariable, x => x.email)].value,
       password:
         this.form.controls[SharedUtils.nameof(this.formVariable, x => x.password)].value,
+      confirmPassword:
+        this.form.controls[SharedUtils.nameof(this.formVariable, x => x.confirmPassword)].value,
+      confirmEmail:
+        this.form.controls[SharedUtils.nameof(this.formVariable, x => x.confirmEmail)].value
     }
     this.sendRequest();
   }
@@ -67,5 +88,20 @@ export class SignUpFormComponent implements OnInit {
     $login.subscribe();
   }
 
+  fieldMatches(field: string, fieldCheck: string): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
+      var behaviourSubject = new BehaviorSubject<boolean>(false);
 
+      var emailCheck = this.form.controls[field].value === this.form.controls[fieldCheck].value;
+
+      var test = (emailCheck) ? behaviourSubject.next(true) : behaviourSubject.next(false);
+
+      var x = behaviourSubject.pipe(map(results => {
+        console.log(results)
+        return (results ? { fieldMatches: test } : null);
+      }));
+      return x;
+    }
+  }
 }
+

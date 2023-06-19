@@ -7,3 +7,15 @@
   width: 100px;
   align-self: end;
 }
+
+.title-style-1{
+    font-weight: 500;
+    padding-top: 0px;
+    padding-bottom: 5px;
+}
+
+.title-style-2 {
+  font-weight: 500;
+  padding-top: 20px;
+  padding-bottom: 5px;
+}
