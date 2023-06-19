@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, of, retry } from 'rxjs';
 import { Pass } from 'three/examples/jsm/postprocessing/Pass';
 import { environment } from '../../../../environments/environment.prod';
 import { IComments } from '../../../interface/IComments';
@@ -59,11 +59,11 @@ export class SignUpFormComponent implements OnInit {
       SharedUtils.nameof(this.formVariable, x => x.confirmEmail),  // Update Property Here
       new FormControl("", Validators.required)                        // "" To initialize empty form
     );
-    this.form.controls['email'].addAsyncValidators(this.fieldMatches('email', 'confirmEmail'));
-    this.form.controls['confirmEmail'].addAsyncValidators(this.fieldMatches('email', 'confirmEmail'));
+    this.form.controls['email'].addAsyncValidators([this.fieldMatches('email', 'confirmEmail')]);
+    this.form.controls['confirmEmail'].addAsyncValidators([this.fieldMatches('email', 'confirmEmail')]);
 
-    this.form.controls['password'].addAsyncValidators(this.fieldMatches('password', 'confirmPassword'));
-    this.form.controls['confirmPassword'].addAsyncValidators(this.fieldMatches('password', 'confirmPassword'));
+    this.form.controls['password'].addAsyncValidators([this.fieldMatches('password', 'confirmPassword')]);
+    this.form.controls['confirmPassword'].addAsyncValidators([this.fieldMatches('password', 'confirmPassword')]);
   }
   // #endregion
 
@@ -89,19 +89,26 @@ export class SignUpFormComponent implements OnInit {
   }
 
   fieldMatches(field: string, fieldCheck: string): AsyncValidatorFn {
-    return (control: AbstractControl): Observable<{ [key: string]: any } | null> => {
+    return (control: AbstractControl): Observable<{ [key: string]: boolean } | null> => {
       var behaviourSubject = new BehaviorSubject<boolean>(false);
 
-      var emailCheck = this.form.controls[field].value === this.form.controls[fieldCheck].value;
+      var fieldValue = this.form.controls[field].value;
+      var fieldCheckValue = this.form.controls[fieldCheck].value;
 
-      var test = (emailCheck) ? behaviourSubject.next(true) : behaviourSubject.next(false);
+      var isMatch = fieldValue === fieldCheckValue;
+      behaviourSubject.next(isMatch);
 
-      var x = behaviourSubject.pipe(map(results => {
-        console.log(results)
-        return (results ? { fieldMatches: test } : null);
-      }));
-      return x;
+      return this.checkFieldsMatch(fieldValue, fieldCheckValue).pipe(
+        map(isMatch => (isMatch ? null : { fieldsDoNotMatch: true }))
+      );
+
+
+
     }
+  }
+
+  private checkFieldsMatch(fieldValue: string, fieldCheckValue: string): Observable<boolean> {
+    return of(fieldValue === fieldCheckValue);
   }
 }
 

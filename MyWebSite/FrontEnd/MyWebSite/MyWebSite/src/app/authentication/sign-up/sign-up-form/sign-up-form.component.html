@@ -1,4 +1,7 @@
 <div>
+  <div *ngIf="this.form.get('email')!.errors?.['fieldsDoNotMatch']">
+    Name is required.
+  </div>
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
@@ -54,12 +57,6 @@
       <input matInput
              formControlName="confirmPassword"
              [type]="confirmPasswordHide ? 'password' : 'text'">
-
-      <mat-error *ngIf="form.hasError('fieldMatches')">
-        <strong>ERROR</strong>:
-        A city with the same <i>name</i>, <i>lat</i>,
-        <i>lon</i> and <i>country</i> already exists.
-      </mat-error>
 
       <button type="button"
               mat-icon-button
