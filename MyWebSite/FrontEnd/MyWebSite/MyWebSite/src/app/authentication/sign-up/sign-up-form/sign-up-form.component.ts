@@ -1,3 +1,4 @@
+import { BooleanInput } from '@angular/cdk/coercion';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { BehaviorSubject, map, Observable, of, retry } from 'rxjs';
@@ -23,6 +24,9 @@ export class SignUpFormComponent implements OnInit {
   formVariable!: ISignUpRequest;      // Update Type Based on Form Parameters
   form!: FormGroup;                   // ReactiveForm
   baseUrl: string;
+
+  passwordCheck!: boolean;
+  emailCheck!: boolean;
 
   constructor(
     private repository: BaseRepository<ISignUpRequest>
@@ -61,7 +65,6 @@ export class SignUpFormComponent implements OnInit {
     );
     this.form.controls['email'].addAsyncValidators([this.fieldMatches('email', 'confirmEmail')]);
     this.form.controls['confirmEmail'].addAsyncValidators([this.fieldMatches('email', 'confirmEmail')]);
-
     this.form.controls['password'].addAsyncValidators([this.fieldMatches('password', 'confirmPassword')]);
     this.form.controls['confirmPassword'].addAsyncValidators([this.fieldMatches('password', 'confirmPassword')]);
   }
@@ -98,17 +101,20 @@ export class SignUpFormComponent implements OnInit {
       var isMatch = fieldValue === fieldCheckValue;
       behaviourSubject.next(isMatch);
 
-      return this.checkFieldsMatch(fieldValue, fieldCheckValue).pipe(
-        map(isMatch => (isMatch ? null : { fieldsDoNotMatch: true }))
-      );
 
-
-
+      // Gotta Refactor
+      return behaviourSubject.pipe(
+        map(results => {
+          console.log(results);
+          (results ? this.passwordCheck = true : this.passwordCheck = false)
+          return (results ? null : { fieldsDoNotMatch: true });
+        }));
     }
   }
 
-  private checkFieldsMatch(fieldValue: string, fieldCheckValue: string): Observable<boolean> {
+  private checkFieldsMatch(fieldValue: any, fieldCheckValue: any): Observable<boolean> {
     return of(fieldValue === fieldCheckValue);
   }
+
 }
 

@@ -37,18 +37,22 @@
 
     </mat-form-field>
 
-
     <div class="title-style-2">
       Confirm Username and Password
     </div>
-    <mat-form-field style="margin-bottom:-1.25em;"
-                    class="log-in-field"
-                    appearance="outline">
-      <mat-label>Confirm Username</mat-label>
-      <input matInput
-             formControlName="confirmEmail">
-    </mat-form-field>
+    <span>
+      <mat-form-field style="margin-bottom:-1.25em;"
+                      class="log-in-field"
+                      appearance="outline">
+        <mat-label>Confirm Username</mat-label>
+        <input matInput
+               formControlName="confirmEmail">
+      </mat-form-field>
 
+      <mat-icon>
+        {{this.passwordCheck ? 'check' : 'close'}}
+      </mat-icon>
+    </span>
 
     <mat-form-field style="margin-bottom: -1.25em;"
                     class="log-in-field"
