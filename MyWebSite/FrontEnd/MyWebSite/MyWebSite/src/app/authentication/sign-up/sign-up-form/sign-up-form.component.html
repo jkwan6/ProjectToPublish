@@ -1,4 +1,4 @@
-<div>
+<div class="container">
   <div *ngIf="this.form.get('email')!.errors?.['fieldsDoNotMatch']">
     Name is required.
   </div>
@@ -9,71 +9,85 @@
       Insert Username and Password
     </div>
 
-    <mat-form-field style="margin-bottom:-1.25em;"
-                    class="log-in-field"
-                    appearance="outline">
-      <mat-label>Username</mat-label>
-      <input matInput
-             formControlName="email">
-    </mat-form-field>
 
-    <mat-form-field style="margin-bottom: -1.25em;"
-                    class="log-in-field"
-                    appearance="outline">
-      <mat-label>Password</mat-label>
-      <input matInput
-             formControlName="password"
-             [type]="passwordHide ? 'password' : 'text'">
+    <div class="test">
+      <mat-form-field style="margin-bottom:-1.25em;"
+                      class="log-in-field"
+                      appearance="outline">
+        <mat-label>Username</mat-label>
+        <input matInput
+               formControlName="email">
+      </mat-form-field>
+    </div>
 
-      <button type="button"
-              mat-icon-button
-              matSuffix (click)="passwordHide = !passwordHide"
-              [attr.aria-label]="'Hide password'"
-              [attr.aria-pressed]="passwordHide">
-        <mat-icon>
-          {{passwordHide ? 'visibility_off' : 'visibility'}}
-        </mat-icon>
-      </button>
+    <div class="test">
+      <mat-form-field style="margin-bottom: -1.25em;"
+                      class="log-in-field"
+                      appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput
+               formControlName="password"
+               [type]="passwordHide ? 'password' : 'text'">
 
-    </mat-form-field>
+        <button type="button"
+                mat-icon-button
+                matSuffix (click)="passwordHide = !passwordHide"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="passwordHide">
+          <mat-icon>
+            {{passwordHide ? 'visibility_off' : 'visibility'}}
+          </mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
 
     <div class="title-style-2">
       Confirm Username and Password
     </div>
-    <span>
+
+    <div class="test">
       <mat-form-field style="margin-bottom:-1.25em;"
                       class="log-in-field"
                       appearance="outline">
         <mat-label>Confirm Username</mat-label>
         <input matInput
                formControlName="confirmEmail">
+
+        <div class="confirm-symbol"
+                matSuffix>
+          <mat-icon>
+            {{this.passwordCheck ? 'check' : 'close'}}
+          </mat-icon>
+        </div>
+
       </mat-form-field>
 
-      <mat-icon>
-        {{this.passwordCheck ? 'check' : 'close'}}
-      </mat-icon>
-    </span>
+    </div>
 
-    <mat-form-field style="margin-bottom: -1.25em;"
-                    class="log-in-field"
-                    appearance="outline">
-      <mat-label>Confirm Password</mat-label>
-      <input matInput
-             formControlName="confirmPassword"
-             [type]="confirmPasswordHide ? 'password' : 'text'">
+    <div class="test">
 
-      <button type="button"
-              mat-icon-button
-              matSuffix (click)="confirmPasswordHide = !confirmPasswordHide"
-              [attr.aria-label]="'Hide password'"
-              [attr.aria-pressed]="confirmPasswordHide">
-        <mat-icon>
-          {{confirmPasswordHide ? 'visibility_off' : 'visibility'}}
-        </mat-icon>
-      </button>
 
-    </mat-form-field>
+      <mat-form-field style="margin-bottom: -1.25em;"
+                      class="log-in-field"
+                      appearance="outline">
+        <mat-label>Confirm Password</mat-label>
+        <input matInput
+               formControlName="confirmPassword"
+               [type]="confirmPasswordHide ? 'password' : 'text'">
 
+        <button type="button"
+                mat-icon-button
+                matSuffix (click)="confirmPasswordHide = !confirmPasswordHide"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="confirmPasswordHide">
+          <mat-icon>
+            {{this.passwordCheck ? 'check' : confirmPasswordHide ? 'visibility_off' : 'visibility'}}
+          </mat-icon>
+        </button>
+
+      </mat-form-field>
+
+    </div>
     <button color="primary"
             class="log-in-button"
             type="submit"

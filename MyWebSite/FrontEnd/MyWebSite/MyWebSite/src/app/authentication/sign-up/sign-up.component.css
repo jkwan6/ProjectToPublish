@@ -6,6 +6,10 @@
   align-items: center;
 }
 
+app-sign-up-form{
+    width: 80%;
+}
+
 .sign-up-body {
   box-sizing: border-box;
   width: 500px;
@@ -56,7 +60,7 @@
 
 
 .log-in-details {
-  width: 80%;
+  width: inherit;
   display: flex;
   flex-direction: column;
   align-items: center;
