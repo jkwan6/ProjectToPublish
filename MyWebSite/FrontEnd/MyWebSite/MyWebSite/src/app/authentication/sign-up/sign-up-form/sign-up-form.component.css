@@ -31,6 +31,14 @@
 }
 
 
+.success{
+    color:green;
+}
+.fail{
+    color:red;
+}
+
+
 .test{
     display: flex;
     flex-direction: row;

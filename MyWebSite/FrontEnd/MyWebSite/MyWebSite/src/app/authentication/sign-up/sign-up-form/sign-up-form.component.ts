@@ -69,10 +69,43 @@ export class SignUpFormComponent implements OnInit {
       SharedUtils.nameof(this.formVariable, x => x.confirmEmail),  // Update Property Here
       new FormControl("", Validators.required)                        // "" To initialize empty form
     );
-    this.form.controls['email'].addAsyncValidators([this.fieldMatches('email', 'confirmEmail', this.emailCheck)]);
-    this.form.controls['confirmEmail'].addAsyncValidators([this.fieldMatches('email', 'confirmEmail', this.emailCheck)]);
-    this.form.controls['password'].addAsyncValidators([this.fieldMatches('password', 'confirmPassword', this.passwordCheck)]);
-    this.form.controls['confirmPassword'].addAsyncValidators([this.fieldMatches('password', 'confirmPassword', this.passwordCheck)]);
+
+    // Add Validators to each form
+    this.form.controls
+    [SharedUtils.nameof(this.formVariable, x => x.email)]
+      .addAsyncValidators(
+        [this.fieldMatches(
+          SharedUtils.nameof(this.formVariable, x => x.email),
+          SharedUtils.nameof(this.formVariable, x => x.confirmEmail),
+          this.emailCheck)]
+      );
+
+    this.form.controls
+    [SharedUtils.nameof(this.formVariable, x => x.confirmEmail)]
+      .addAsyncValidators(
+        [this.fieldMatches(
+          SharedUtils.nameof(this.formVariable, x => x.email),
+          SharedUtils.nameof(this.formVariable, x => x.confirmEmail),
+          this.emailCheck)]
+      );
+
+    this.form.controls
+    [SharedUtils.nameof(this.formVariable, x => x.password)]
+      .addAsyncValidators(
+        [this.fieldMatches(
+          SharedUtils.nameof(this.formVariable, x => x.password),
+          SharedUtils.nameof(this.formVariable, x => x.confirmPassword),
+          this.passwordCheck)]
+      );
+
+    this.form.controls
+    [SharedUtils.nameof(this.formVariable, x => x.confirmPassword)]
+      .addAsyncValidators(
+        [this.fieldMatches(
+          SharedUtils.nameof(this.formVariable, x => x.password),
+          SharedUtils.nameof(this.formVariable, x => x.confirmPassword),
+          this.passwordCheck)]
+      );
   }
   // #endregion
 
@@ -114,22 +147,13 @@ export class SignUpFormComponent implements OnInit {
       var isMatch = fieldValue === fieldCheckValue;
       behaviourSubject.next(isMatch);
 
-
       // Gotta Refactor
       return behaviourSubject.pipe(
         map(results => {
-          console.log(results);
-
           (results ? bool.value = results : bool.value = results);
-          var x = (results ? null : { fieldsDoNotMatch: true });
-
-          return x;
+          return (results ? null : { fieldsDoNotMatch: true });
         }));
     }
-  }
-
-  private checkFieldsMatch(fieldValue: any, fieldCheckValue: any): Observable<boolean> {
-    return of(fieldValue === fieldCheckValue);
   }
 
 }
