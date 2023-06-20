@@ -10,13 +10,17 @@ import { ISignUpRequest } from '../../../interface/ISignUpRequest';
 import { BaseRepository } from '../../../repository/BaseRepository';
 import { SharedUtils } from '../../../SharedUtils/SharedUtils';
 
+
+export interface IBoolObject {
+  value: boolean
+}
+
 @Component({
   selector: 'app-sign-up-form',
   templateUrl: './sign-up-form.component.html',
   styleUrls: ['./sign-up-form.component.css'],
   providers: [BaseRepository]
 })
-
 export class SignUpFormComponent implements OnInit {
 
   passwordHide = true                 // Property to Hide/Unhide Password
@@ -25,12 +29,14 @@ export class SignUpFormComponent implements OnInit {
   form!: FormGroup;                   // ReactiveForm
   baseUrl: string;
 
-  passwordCheck!: boolean;
-  emailCheck!: boolean;
+  passwordCheck!: IBoolObject;
+  emailCheck!: IBoolObject;
 
   constructor(
     private repository: BaseRepository<ISignUpRequest>
   ) {
+    this.passwordCheck = { value: false }
+    this.emailCheck = { value: false }
     this.baseUrl = "api/authentication/login"
   }
 
@@ -63,10 +69,10 @@ export class SignUpFormComponent implements OnInit {
       SharedUtils.nameof(this.formVariable, x => x.confirmEmail),  // Update Property Here
       new FormControl("", Validators.required)                        // "" To initialize empty form
     );
-    this.form.controls['email'].addAsyncValidators([this.fieldMatches('email', 'confirmEmail')]);
-    this.form.controls['confirmEmail'].addAsyncValidators([this.fieldMatches('email', 'confirmEmail')]);
-    this.form.controls['password'].addAsyncValidators([this.fieldMatches('password', 'confirmPassword')]);
-    this.form.controls['confirmPassword'].addAsyncValidators([this.fieldMatches('password', 'confirmPassword')]);
+    this.form.controls['email'].addAsyncValidators([this.fieldMatches('email', 'confirmEmail', this.emailCheck)]);
+    this.form.controls['confirmEmail'].addAsyncValidators([this.fieldMatches('email', 'confirmEmail', this.emailCheck)]);
+    this.form.controls['password'].addAsyncValidators([this.fieldMatches('password', 'confirmPassword', this.passwordCheck)]);
+    this.form.controls['confirmPassword'].addAsyncValidators([this.fieldMatches('password', 'confirmPassword', this.passwordCheck)]);
   }
   // #endregion
 
@@ -91,7 +97,14 @@ export class SignUpFormComponent implements OnInit {
     $login.subscribe();
   }
 
-  fieldMatches(field: string, fieldCheck: string): AsyncValidatorFn {
+
+
+
+  fieldMatches(
+    field: string,
+    fieldCheck: string,
+    bool: IBoolObject
+  ): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: boolean } | null> => {
       var behaviourSubject = new BehaviorSubject<boolean>(false);
 
@@ -106,8 +119,11 @@ export class SignUpFormComponent implements OnInit {
       return behaviourSubject.pipe(
         map(results => {
           console.log(results);
-          (results ? this.passwordCheck = true : this.passwordCheck = false)
-          return (results ? null : { fieldsDoNotMatch: true });
+
+          (results ? bool.value = results : bool.value = results);
+          var x = (results ? null : { fieldsDoNotMatch: true });
+
+          return x;
         }));
     }
   }

@@ -56,7 +56,7 @@
         <div class="confirm-symbol"
                 matSuffix>
           <mat-icon>
-            {{this.passwordCheck ? 'check' : 'close'}}
+            {{this.emailCheck.value ? 'check' : 'close'}}
           </mat-icon>
         </div>
 
@@ -81,7 +81,7 @@
                 [attr.aria-label]="'Hide password'"
                 [attr.aria-pressed]="confirmPasswordHide">
           <mat-icon>
-            {{this.passwordCheck ? 'check' : confirmPasswordHide ? 'visibility_off' : 'visibility'}}
+            {{this.passwordCheck.value ? 'check' : confirmPasswordHide ? 'visibility_off' : 'visibility'}}
           </mat-icon>
         </button>
 
