@@ -29,12 +29,13 @@
                formControlName="password"
                [type]="passwordHide ? 'password' : 'text'">
 
-        <button type="button"
+        <button *ngIf="this.form.controls['password'].dirty"
+                type="button"
                 mat-icon-button
                 matSuffix (click)="passwordHide = !passwordHide"
                 [attr.aria-label]="'Hide password'"
                 [attr.aria-pressed]="passwordHide">
-          <mat-icon *ngIf="this.form.controls['password'].dirty">
+          <mat-icon>
             {{passwordHide ? 'visibility_off' : 'visibility'}}
           </mat-icon>
         </button>
@@ -77,14 +78,14 @@
                formControlName="confirmPassword"
                [type]="confirmPasswordHide ? 'password' : 'text'">
 
-        <button type="button"
+        <button *ngIf ="this.form.controls['confirmPassword'].dirty"
+                type="button"
                 mat-icon-button
                 matSuffix (click)="confirmPasswordHide = !confirmPasswordHide"
                 [attr.aria-label]="'Hide password'"
                 [attr.aria-pressed]="confirmPasswordHide">
           <mat-icon
-                    [ngClass]="{'success': this.passwordCheck.value }"
-                    *ngIf ="this.form.controls['confirmPassword'].dirty">
+                    [ngClass]="{'success': this.passwordCheck.value }">
             {{this.passwordCheck.value ? 'check' : confirmPasswordHide ? 'visibility_off' : 'visibility'}}
           </mat-icon>
         </button>
@@ -95,6 +96,7 @@
     <button color="primary"
             class="log-in-button"
             type="submit"
+            [disabled]="!form.valid"
             mat-raised-button>
       Sign Up
     </button>

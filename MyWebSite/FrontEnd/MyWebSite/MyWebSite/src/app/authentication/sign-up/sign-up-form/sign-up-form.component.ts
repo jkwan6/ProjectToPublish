@@ -37,7 +37,7 @@ export class SignUpFormComponent implements OnInit {
   ) {
     this.passwordCheck = { value: false }
     this.emailCheck = { value: false }
-    this.baseUrl = "api/authentication/login"
+    this.baseUrl = "api/authentication/signin"
   }
 
   ngOnInit(): void {
@@ -128,10 +128,17 @@ export class SignUpFormComponent implements OnInit {
 
       var fieldValue = this.form.controls[field].value;
       var fieldCheckValue = this.form.controls[fieldCheck].value;
-      var isMatch = fieldValue === fieldCheckValue;
 
+      let isMatch : boolean;
+
+      if (fieldValue === "" || fieldCheckValue === "") {
+        isMatch = false;
+      }
+      else {
+        isMatch = fieldValue === fieldCheckValue;
+      }
+      
       var isMatch$ = of(isMatch)
-      isMatch$.subscribe(results => console.log(results));
 
       // Gotta Refactor
       return isMatch$.pipe(

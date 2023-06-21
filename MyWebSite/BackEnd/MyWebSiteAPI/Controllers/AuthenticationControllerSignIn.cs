@@ -17,6 +17,15 @@ namespace MyWebSiteApi.Controllers
         [HttpPost("SignIn")]
         public async Task<IActionResult> SignIn([FromBody] SignInRequest signInRequest)
         {
+            var fieldMatches = 
+                (signInRequest.Email == signInRequest.confirmEmail) && 
+                (signInRequest.Password == signInRequest.confirmPassword);
+
+            if (!fieldMatches) {
+                var signInFail = new SignInResultDTO(SignInResultDTO.PossibleResults.Failed);
+
+                return Unauthorized(signInFail); 
+            };
 
             string? ipAd = ipAdress();
 
