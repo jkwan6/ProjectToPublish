@@ -1,8 +1,7 @@
 import { BooleanInput } from '@angular/cdk/coercion';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { BehaviorSubject, map, Observable, of, retry } from 'rxjs';
-import { Pass } from 'three/examples/jsm/postprocessing/Pass';
+import { BehaviorSubject, from, map, Observable, of, retry } from 'rxjs';
 import { environment } from '../../../../environments/environment.prod';
 import { IComments } from '../../../interface/IComments';
 import { ILoginRequest } from '../../../interface/ILoginRequest';
@@ -29,6 +28,7 @@ export class SignUpFormComponent implements OnInit {
   form!: FormGroup;                   // ReactiveForm
   baseUrl: string;
 
+ 
   passwordCheck!: IBoolObject;
   emailCheck!: IBoolObject;
 
@@ -42,7 +42,6 @@ export class SignUpFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.InitialializeFormGroup();
-
   }
 
   // #region --> Code Module to Initialize FormGroup
@@ -70,16 +69,7 @@ export class SignUpFormComponent implements OnInit {
       new FormControl("", Validators.required)                        // "" To initialize empty form
     );
 
-    // Add Validators to each form
-    this.form.controls
-    [SharedUtils.nameof(this.formVariable, x => x.email)]
-      .addAsyncValidators(
-        [this.fieldMatches(
-          SharedUtils.nameof(this.formVariable, x => x.email),
-          SharedUtils.nameof(this.formVariable, x => x.confirmEmail),
-          this.emailCheck)]
-      );
-
+    // Add Validators to fields
     this.form.controls
     [SharedUtils.nameof(this.formVariable, x => x.confirmEmail)]
       .addAsyncValidators(
@@ -87,16 +77,7 @@ export class SignUpFormComponent implements OnInit {
           SharedUtils.nameof(this.formVariable, x => x.email),
           SharedUtils.nameof(this.formVariable, x => x.confirmEmail),
           this.emailCheck)]
-      );
-
-    this.form.controls
-    [SharedUtils.nameof(this.formVariable, x => x.password)]
-      .addAsyncValidators(
-        [this.fieldMatches(
-          SharedUtils.nameof(this.formVariable, x => x.password),
-          SharedUtils.nameof(this.formVariable, x => x.confirmPassword),
-          this.passwordCheck)]
-      );
+    );
 
     this.form.controls
     [SharedUtils.nameof(this.formVariable, x => x.confirmPassword)]
@@ -105,7 +86,14 @@ export class SignUpFormComponent implements OnInit {
           SharedUtils.nameof(this.formVariable, x => x.password),
           SharedUtils.nameof(this.formVariable, x => x.confirmPassword),
           this.passwordCheck)]
-      );
+    );
+
+    // Update AsyncValidator when primary fields changes
+    this.form.controls[SharedUtils.nameof(this.formVariable, x => x.email)].valueChanges.subscribe(() =>
+      this.form.controls[SharedUtils.nameof(this.formVariable, x => x.confirmEmail)].updateValueAndValidity({ onlySelf: true, emitEvent: false }));
+
+    this.form.controls[SharedUtils.nameof(this.formVariable, x => x.password)].valueChanges.subscribe(() =>
+      this.form.controls[SharedUtils.nameof(this.formVariable, x => x.confirmPassword)].updateValueAndValidity({ onlySelf: true, emitEvent: false }))
   }
   // #endregion
 
@@ -130,31 +118,28 @@ export class SignUpFormComponent implements OnInit {
     $login.subscribe();
   }
 
-
-
-
+  // Custom Async Validator
   fieldMatches(
     field: string,
     fieldCheck: string,
     bool: IBoolObject
   ): AsyncValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: boolean } | null> => {
-      var behaviourSubject = new BehaviorSubject<boolean>(false);
 
       var fieldValue = this.form.controls[field].value;
       var fieldCheckValue = this.form.controls[fieldCheck].value;
-
       var isMatch = fieldValue === fieldCheckValue;
-      behaviourSubject.next(isMatch);
+
+      var isMatch$ = of(isMatch)
+      isMatch$.subscribe(results => console.log(results));
 
       // Gotta Refactor
-      return behaviourSubject.pipe(
+      return isMatch$.pipe(
         map(results => {
           (results ? bool.value = results : bool.value = results);
           return (results ? null : { fieldsDoNotMatch: true });
         }));
     }
   }
-
 }
 
