@@ -1,7 +1,6 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
@@ -16,20 +15,17 @@ import { ExperienceComponent } from './sub-pages/sub-pages/experience/experience
 import { TimelineComponent } from './sub-pages/sub-pages/timeline/timeline.component';
 import { SkillsComponent } from './sub-pages/sub-pages/skills/skills.component';
 import { LifeInGeneralComponent } from './sub-pages/sub-pages/life-in-general/life-in-general.component';
-import { AuthenticationComponent } from './authentication/authentication.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { CommentModuleComponent } from './modules/comment-module/comment-module.component';
 import { CommentRowTemplateComponent } from './modules/comment-module/comment-row-template/comment-template.component';
-import { LoginComponent } from './authentication/login/login.component';
-import { SignUpComponent } from './authentication/sign-up/sign-up.component';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PaginatorTest } from './modules/comment-module/paginator-extension/paginator-test';
 import { PaginatorDirective } from './modules/comment-module/paginator-extension/pagination.directive';
 import { FormBaseSample } from './SharedUtils/formBaseSample/form-base-sample.component';
-import { LoginFormComponent } from './authentication/login/login-form/login-form.component';
-import { SignUpFormComponent } from './authentication/sign-up/sign-up-form/sign-up-form.component';
 import { AngularThreeModule } from './app-three.module';
+import { AuthenticationModule } from './app-authentication-module';
+import { AuthInterceptor } from './interceptors/AuthInterceptor';
 
 @NgModule({
   declarations: [
@@ -44,17 +40,13 @@ import { AngularThreeModule } from './app-three.module';
     TimelineComponent,
     SkillsComponent,
     LifeInGeneralComponent,
-    AuthenticationComponent,
     HomePageComponent,
     CommentModuleComponent,
     CommentRowTemplateComponent,
-    LoginComponent,
-    SignUpComponent,
     PaginatorTest,
     PaginatorDirective,
-    FormBaseSample,
-    LoginFormComponent,
-    SignUpFormComponent
+    FormBaseSample
+
   ],
   imports: [
     BrowserModule,
@@ -63,9 +55,13 @@ import { AngularThreeModule } from './app-three.module';
     AppRoutingModule,
     AngularMaterialModule,
     FormsModule,
-    AngularThreeModule
+    AngularThreeModule,
+    AuthenticationModule
   ],
-  providers: [DatePipe],
+  providers: [
+    DatePipe,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

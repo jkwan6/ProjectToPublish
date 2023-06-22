@@ -12,7 +12,14 @@ export class AuthInterceptor implements HttpInterceptor {
   ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    console.log('interceptor');
 
-    return EMPTY;
+
+
+
+
+
+
+    return next.handle(req);
   }
 }
