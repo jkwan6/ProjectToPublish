@@ -21,7 +21,7 @@ export class LoginFormComponent implements OnInit {
   formVariable!: ILoginRequest;     // Update Type Based on Form Parameters
   form!: FormGroup;                 // ReactiveForm
   baseUrl: string;
-
+  loginFailed!: boolean;
   constructor(
     private repository: BaseRepository<ILoginRequest>,
     private authStateService: AuthStateService,
@@ -73,7 +73,11 @@ export class LoginFormComponent implements OnInit {
       localStorage.setItem("token", castedResults.token);
       this.authStateService.localStoragePresent.next(true);
       this.router.navigate(['/']);
-    });
+    },
+      (error) => {
+        this.loginFailed = true;
+      }
+    );
   }
 
 

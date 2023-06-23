@@ -12,7 +12,7 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(
     private authStateService: AuthStateService
   ) {
-    this.authStateService.$loginState.subscribe(results => console.log(results))
+    //this.authStateService.$loginState.subscribe(results => console.log(results))
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

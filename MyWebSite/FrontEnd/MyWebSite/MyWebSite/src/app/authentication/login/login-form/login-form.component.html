@@ -30,11 +30,17 @@
 
     </mat-form-field>
 
-    <button color="primary"
-            class="log-in-button"
-            type="submit"
-            mat-raised-button>
-      Login
-    </button>
+    <div class="flex-content">
+      <button color="primary"
+              class="log-in-button"
+              type="submit"
+              mat-raised-button>
+        Login
+      </button>
+      <div class="error"
+           *ngIf="this.loginFailed">
+      Log In Failed, Try Again.
+      </div>
+    </div>
   </form>
 </div>
