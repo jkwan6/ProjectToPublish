@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import { IComments } from '../../../interface/IComments';
 import { ILoginRequest } from '../../../interface/ILoginRequest';
+import { ILoginResult } from '../../../interface/ILoginResult';
 import { BaseRepository } from '../../../repository/BaseRepository';
 import { SharedUtils } from '../../../SharedUtils/SharedUtils';
 
@@ -64,7 +65,10 @@ export class LoginFormComponent implements OnInit {
   sendRequest() {
     var url = environment.baseUrl + this.baseUrl;
     var $login = this.repository.PostItem(url, this.formVariable);
-    $login.subscribe(results => console.log(results));
+    $login.subscribe((results: any) => {
+      var castedResults = results as ILoginResult;
+      localStorage.setItem("token", castedResults.token)
+    });
   }
 
 

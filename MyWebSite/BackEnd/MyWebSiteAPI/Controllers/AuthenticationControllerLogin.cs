@@ -35,38 +35,6 @@ namespace MyWebSiteApi.Controllers
             return (isAuthorized) ? Ok(loginResult) : Unauthorized(loginResult);
         }
 
-
-        #region Stuff to develop later
-        //[HttpPost("refreshtoken")]
-        //public async Task<IActionResult> RefreshToken()
-        //{
-        //    var refreshToken = Request.Cookies["refreshToken"];
-
-        //    var loginResult = await _authService.RefreshToken(refreshToken, ipAdress());
-
-        //    setTokenCookie(loginResult.refreshToken);
-
-        //    bool isAuthorized = (loginResult.success) ? true : false;
-
-        //    return (isAuthorized) ? Ok(loginResult) : Unauthorized(loginResult);
-        //}
-
-
-        //[HttpPost("revoketoken")]
-        //public IActionResult RevokeToken()
-        //{
-        //    var refreshToken = Request.Cookies["refreshtoken"];
-
-        //    if (string.IsNullOrEmpty(refreshToken)) { return BadRequest("Token Required"); };
-
-        //    var result = _authService.RevokeToken(refreshToken, ipAdress());
-
-        //    return Ok(result);
-        //}
-
-        #endregion
-
-
         /* <----------  Private Methods ----------> */
         private string? ipAdress()
         {
