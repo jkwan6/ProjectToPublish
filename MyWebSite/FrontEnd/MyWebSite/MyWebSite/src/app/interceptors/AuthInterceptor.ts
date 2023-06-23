@@ -3,23 +3,18 @@ import { Route } from "@angular/compiler/src/core";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { catchError, EMPTY, Observable, throwError } from "rxjs";
+import { AuthStateService } from "../service/AuthStateService/AuthStateService";
 
 @Injectable()
 
 export class AuthInterceptor implements HttpInterceptor {
 
   constructor(
+    private authStateService: AuthStateService
   ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log('interceptor');
-
-
-
-
-
-
-
+    console.log(this.authStateService.loginState);
     return next.handle(req);
   }
 }

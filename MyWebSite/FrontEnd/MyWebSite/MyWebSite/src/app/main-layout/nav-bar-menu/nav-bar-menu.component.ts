@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { AuthStateService } from '../../service/AuthStateService/AuthStateService';
 import { SideNavService } from '../../service/SideNavService/SideNavService';
 
 
@@ -13,15 +14,23 @@ import { SideNavService } from '../../service/SideNavService/SideNavService';
 })
 export class NavBarMenuComponent implements OnInit {
 
-  vm = this;
+
+
+  vm = this;                      // Variable used in the HTML Template
   isPressed: boolean = false;
+  isLoggedIn: boolean;
 
   showDelay = new FormControl(500);
   hideDelay = new FormControl(0);
 
   toggleStatus!: boolean;
   subscription!: Subscription;
-  constructor(private sideNavService: SideNavService) { }
+  constructor(
+    private sideNavService: SideNavService,
+    private authStateService: AuthStateService
+  ) {
+    this.isLoggedIn = authStateService.loginState;
+  }
 
   ngOnInit(): void {
     this.subscription = this.sideNavService.currentToggleStatus$.subscribe(toggleStatus => this.toggleStatus = toggleStatus)

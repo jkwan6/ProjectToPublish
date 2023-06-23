@@ -12,6 +12,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\app\interceptors\" />
+    <Folder Include="src\app\service\AuthStateService\" />
     <Folder Include="src\service\" />
   </ItemGroup>
   <ItemGroup>
