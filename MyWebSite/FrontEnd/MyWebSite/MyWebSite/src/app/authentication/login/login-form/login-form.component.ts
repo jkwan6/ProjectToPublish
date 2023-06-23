@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import { IComments } from '../../../interface/IComments';
 import { ILoginRequest } from '../../../interface/ILoginRequest';
 import { ILoginResult } from '../../../interface/ILoginResult';
 import { BaseRepository } from '../../../repository/BaseRepository';
+import { AuthStateService } from '../../../service/AuthStateService/AuthStateService';
 import { SharedUtils } from '../../../SharedUtils/SharedUtils';
 
 @Component({
@@ -22,7 +23,9 @@ export class LoginFormComponent implements OnInit {
   baseUrl: string;
 
   constructor(
-    private repository: BaseRepository<ILoginRequest>
+    private repository: BaseRepository<ILoginRequest>,
+    private authStateService: AuthStateService,
+    private router: Router
   )
   {
     this.baseUrl = "api/authentication/login"
@@ -67,7 +70,9 @@ export class LoginFormComponent implements OnInit {
     var $login = this.repository.PostItem(url, this.formVariable);
     $login.subscribe((results: any) => {
       var castedResults = results as ILoginResult;
-      localStorage.setItem("token", castedResults.token)
+      localStorage.setItem("token", castedResults.token);
+      this.authStateService.localStoragePresent.next(true);
+      this.router.navigate(['/']);
     });
   }
 

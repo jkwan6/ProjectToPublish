@@ -1,5 +1,5 @@
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { NgModule } from "@angular/core";
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -22,7 +22,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ReactiveFormsModule } from "@angular/forms";
 
-
 @NgModule({
   imports:[
     MatButtonModule,
@@ -44,7 +43,8 @@ import { ReactiveFormsModule } from "@angular/forms";
     MatSelectModule,
     MatMenuModule,
     MatTabsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDialogModule
   ],
   exports: [
     MatButtonModule,
@@ -67,7 +67,8 @@ import { ReactiveFormsModule } from "@angular/forms";
     MatSelectModule,
     MatMenuModule,
     MatTabsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDialogModule
   ]
 })
 export class AngularMaterialModule { }

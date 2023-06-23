@@ -2,7 +2,6 @@
   <div class="sign-up-body">
 
     <div class="back-button-row">
-
       <div class="back-button"
            [routerLink]="['/login']">
         <button mat-fab>
@@ -13,22 +12,12 @@
       <div class="test">
         <h4 class="title-style">Sign Up Form</h4>
       </div>
-
     </div>
 
     <div class="signup">
-
-      <form class="Login-Block"
-            [formGroup]="form"
-            (ngSubmit)="login()">
-
-        <div class="log-in-details">
-
-          <app-sign-up-form></app-sign-up-form>
-
-        </div>
-      </form>
+      <div class="log-in-details">
+        <app-sign-up-form></app-sign-up-form>
+      </div>
     </div>
-
   </div>
 </div>

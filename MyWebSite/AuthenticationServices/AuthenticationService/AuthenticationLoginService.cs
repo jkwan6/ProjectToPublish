@@ -114,28 +114,30 @@ namespace AuthenticationServices.AuthenticationService
         #endregion
 
         #region RevokeToken
-        //public async Task<LoginResult> RevokeToken(string refreshTokenString, string ipAdress)
-        //{
-        //    // Get the Token from the Db
-        //    var refreshTokenEntity = _context.RefreshTokens.Select(x => x)
-        //        .Where(x => x.Token
-        //        .Equals(refreshTokenString))
-        //        .First();
+        public async Task<LoginResult> RevokeToken(string refreshTokenString, string ipAdress)
+        {
+            // Get the Token from the Db
+            var refreshTokenEntity = _context.RefreshTokens.Select(x => x)
+                .Where(x => x.Token
+                .Equals(refreshTokenString))
+                .First();
 
-        //    // Get the User from the Db
-        //    var user = _context.Users
-        //        .Select(x => x)
-        //        .Where(x => x.RefreshTokens
-        //        .Any(x => x.Equals(refreshTokenEntity)));
+            // Get the User from the Db
+            var user = _context.Users
+                .Select(x => x)
+                .Where(x => x.RefreshTokens
+                .Any(x => x.Equals(refreshTokenEntity)));
 
-        //    // From then on you revoke
-        //    if (!refreshTokenEntity.IsActive) return new LoginResult(false);
+            // From then on you revoke
+            if (!refreshTokenEntity.IsActive) return new LoginResult(false);
 
-        //    // Revoking the Token -- What happens to those that were not assigned this?
-        //    refreshTokenEntity.Revoked = DateTime.UtcNow;
+            // Revoking the Token -- What happens to those that were not assigned this?
+            refreshTokenEntity.Revoked = DateTime.UtcNow;
 
-        //    return null;
-        //}
+            _context.SaveChanges();
+
+            return null;
+        }
         #endregion
 
 

@@ -33,6 +33,17 @@
   background: rgb(200, 200, 200, .8);
 }
 
+.Pill-Button3 {
+  border-radius: 100vw;
+  margin: 5px;
+
+}
+
+.Pill-Button3:hover {
+  /*background: rgb(200, 200, 200, .8);*/
+}
+
+
 .NavbarLinks {
   text-decoration: none;
 }

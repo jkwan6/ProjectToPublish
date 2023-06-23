@@ -35,6 +35,20 @@ namespace MyWebSiteApi.Controllers
             return (isAuthorized) ? Ok(loginResult) : Unauthorized(loginResult);
         }
 
+
+
+        [HttpPost("revoke-token")]
+        public async Task<IActionResult> RevokeToken(string? refreshToken)
+        {
+            // accept refresh token in request body or cookie
+            var token = refreshToken ?? Request.Cookies["refreshToken"];
+
+            if (string.IsNullOrEmpty(token))
+                return BadRequest(new { message = "Token is required" });
+            await _authService.RevokeToken(token, ipAdress()!);
+            return Ok(new { message = "Token revoked" });
+        }
+
         /* <----------  Private Methods ----------> */
         private string? ipAdress()
         {

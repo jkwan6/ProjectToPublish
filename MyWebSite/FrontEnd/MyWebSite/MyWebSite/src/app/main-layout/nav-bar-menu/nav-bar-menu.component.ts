@@ -3,9 +3,7 @@ import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { AuthStateService } from '../../service/AuthStateService/AuthStateService';
 import { SideNavService } from '../../service/SideNavService/SideNavService';
-
-
-
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-nav-bar-menu',
@@ -14,11 +12,9 @@ import { SideNavService } from '../../service/SideNavService/SideNavService';
 })
 export class NavBarMenuComponent implements OnInit {
 
-
-
-  vm = this;                      // Variable used in the HTML Template
+  vm = this;  // Variable used in the HTML Template
   isPressed: boolean = false;
-  isLoggedIn: boolean;
+  isLoggedIn!: boolean;
 
   showDelay = new FormControl(500);
   hideDelay = new FormControl(0);
@@ -26,10 +22,12 @@ export class NavBarMenuComponent implements OnInit {
   toggleStatus!: boolean;
   subscription!: Subscription;
   constructor(
+    public dialog: MatDialog,
     private sideNavService: SideNavService,
-    private authStateService: AuthStateService
+    private authStateService: AuthStateService,
+
   ) {
-    this.isLoggedIn = authStateService.loginState;
+    authStateService.$loginState.subscribe(results => this.isLoggedIn = results);
   }
 
   ngOnInit(): void {
@@ -50,4 +48,23 @@ export class NavBarMenuComponent implements OnInit {
     }
   }
 
+  openDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
+    this.dialog.open(DialogAnimationsExampleDialog)
+  }
+}
+
+
+@Component({
+  selector: 'dialog-animations-example-dialog',
+  templateUrl: 'log-out-confirmation-dialog.html',
+})
+export class DialogAnimationsExampleDialog {
+  constructor(
+    public dialogRef: MatDialogRef<DialogAnimationsExampleDialog>,
+    private authStateService: AuthStateService,
+  ) { }
+
+  onLogOut() {
+    this.authStateService.logout();
+  }
 }

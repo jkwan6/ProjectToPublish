@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AngularMaterialModule } from './app-material.module';
-import { NavBarMenuComponent } from './main-layout/nav-bar-menu/nav-bar-menu.component';
+import { DialogAnimationsExampleDialog, NavBarMenuComponent } from './main-layout/nav-bar-menu/nav-bar-menu.component';
 import { FooterBarComponent } from './main-layout/footer-bar/footer-bar.component';
 import { BodyContentComponent } from './main-layout/body-content/body-content.component';
 import { SideBarComponent } from './main-layout/body-content/side-bar/side-bar.component';
@@ -45,7 +45,8 @@ import { AuthInterceptor } from './interceptors/AuthInterceptor';
     CommentRowTemplateComponent,
     PaginatorTest,
     PaginatorDirective,
-    FormBaseSample
+    FormBaseSample,
+    DialogAnimationsExampleDialog
 
   ],
   imports: [

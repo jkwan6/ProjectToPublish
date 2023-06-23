@@ -22,18 +22,28 @@
 
         <span class="flex-container-no-wrap">
           <!--<a mat-button
-             class="Pill-Button1"
-             color="secondary"
-             [routerLink]="['/signup']">
-            Sign Up
-          </a>-->
+     class="Pill-Button1"
+     color="secondary"
+     [routerLink]="['/signup']">
+    Sign Up
+  </a>-->
 
-          <a mat-flat-button
+          <a *ngIf="!this.isLoggedIn"
+             mat-flat-button
              class="Pill-Button2"
              color="secondary"
              [routerLink]="['/login']">
             Log In
           </a>
+
+          <a *ngIf="this.isLoggedIn"
+             mat-flat-button
+             class="Pill-Button3"
+             color="secondary"
+             (click)="openDialog('0ms', '0ms')">
+            Logout
+          </a>
+
         </span>
       </div>
 
