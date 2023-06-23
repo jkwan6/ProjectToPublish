@@ -1,15 +1,6 @@
-﻿using System.Security.Cryptography;
-using DataLayer;
-using Microsoft.AspNetCore.Identity;
-using DataLayer.Entities;
-using System.IdentityModel.Tokens.Jwt;
-using DataLayer.AuthenticationEntities;
-using System.Net;
-using Microsoft.AspNetCore.Http;
+﻿using DataLayer;
 using AuthenticationBusinessLogic.DTO;
 using AuthenticationBusinessLogic.LoginLogic;
-using System.Reflection.Metadata.Ecma335;
-using AuthenticationServices.BusinessLogic;
 using AuthenticationBusinessLogic.SignInLogic;
 using AuthenticationBusinessLogic.RefreshLogic;
 

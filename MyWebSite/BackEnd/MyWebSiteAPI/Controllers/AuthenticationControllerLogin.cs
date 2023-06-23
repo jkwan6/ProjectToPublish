@@ -13,22 +13,11 @@ namespace MyWebSiteApi.Controllers
     [ApiController]
     public partial class AuthenticationController : Controller
     {
-
-        private readonly AppDbContext _context;
         private readonly IAuthenticationService _authService;
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AuthenticationController(
-            AppDbContext context,
-            IAuthenticationService authService,
-            UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager)
+        public AuthenticationController(IAuthenticationService authService)
         {
             _authService = authService;
-            _userManager = userManager;
-            _roleManager = roleManager;
-            _context = context;
         }
 
 
