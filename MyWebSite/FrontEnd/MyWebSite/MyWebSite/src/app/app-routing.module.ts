@@ -23,13 +23,13 @@ import { ThreeJsPage14Component } from './sub-pages/ThreeJs/three-js-page14/thre
 import { ThreeJsPage15Component } from './sub-pages/ThreeJs/three-js-page15/three-js-page15.component';
 import { ThreeJsPage8Component } from './sub-pages/ThreeJs/three-js-page8/three-js-page8.component';
 import { ThreeJsPage9Component } from './sub-pages/ThreeJs/three-js-page9/three-js-page9.component';
-
+import { AuthGuard } from './route-guard/AuthGuard';
 
 const routes: Routes = [
   { path: '', component: HomePageComponent, pathMatch: 'full' },
   { path: 'login', component: AuthenticationComponent },
   { path: 'signup', component: AuthenticationComponent },
-  { path: 'contact', component: ContactInfoComponent },
+  { path: 'contact', component: ContactInfoComponent, canActivate: [AuthGuard] },
   { path: 'academic', component: AcademicComponent },
   { path: 'experience', component: ExperienceComponent },
   { path: 'timeline', component: TimelineComponent },

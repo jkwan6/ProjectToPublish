@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Injectable, OnInit } from '@angular/core';
-import { BehaviorSubject, debounceTime, distinctUntilChanged, map, Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject, debounceTime, distinctUntilChanged, first, map, Observable, of, Subject } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -34,8 +34,8 @@ export class AuthStateService implements OnInit{
     localStorage.removeItem("token");
     const logOutUrl = 'api/Authentication/revoke-token'
     var url = environment.baseUrl + logOutUrl;
-    var queryable = this.httpClient.post<any>(url, null).subscribe();
-    queryable.unsubscribe();
+    var queryable = this.httpClient.post<any>(url, null).pipe(first());
+    queryable.subscribe();
   }
 
 }

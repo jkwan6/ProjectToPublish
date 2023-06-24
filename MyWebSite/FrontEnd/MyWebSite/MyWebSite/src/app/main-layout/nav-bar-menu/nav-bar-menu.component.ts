@@ -57,6 +57,7 @@ export class NavBarMenuComponent implements OnInit {
 @Component({
   selector: 'dialog-animations-example-dialog',
   templateUrl: 'log-out-confirmation-dialog.html',
+  styleUrls: ['./nav-bar-menu.component.css']
 })
 export class DialogAnimationsExampleDialog {
   constructor(

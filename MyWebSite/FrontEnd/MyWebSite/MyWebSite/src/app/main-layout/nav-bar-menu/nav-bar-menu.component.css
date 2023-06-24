@@ -36,7 +36,6 @@
 .Pill-Button3 {
   border-radius: 100vw;
   margin: 5px;
-
 }
 
 .Pill-Button3:hover {
@@ -55,3 +54,15 @@
 .NavbarLinks:hover {
   text-decoration: underline;
 }
+
+.form-buttons{
+    border:solid;
+    border-width:thin;
+}
+
+h1 {
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+  text-decoration: underline;
+}
+
