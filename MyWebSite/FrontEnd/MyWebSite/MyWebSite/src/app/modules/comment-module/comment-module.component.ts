@@ -41,7 +41,7 @@ export class CommentModuleComponent implements AfterViewInit {
       pageSize: 5,
       filterColumn: "id",
       sortColumn: "id",
-      sortOrder: "asc",
+      sortOrder: "desc",
       filterQuery: ""
     }
   // #endregion

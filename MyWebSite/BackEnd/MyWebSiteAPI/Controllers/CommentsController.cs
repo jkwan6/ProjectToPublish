@@ -1,6 +1,7 @@
 ﻿using DataLayer.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ServiceLayer.CommentsService;
@@ -65,6 +66,8 @@ namespace MyWebSiteApi.Controllers
         [Authorize(Roles = "RegisteredUser")]
         public async Task<ActionResult<Comments>> PostAsync([FromBody] Comments comment)
         {
+            var user = User.Identity!.Name;
+            comment.Author = user;
             var results = await _service.PostAsync(comment);
             var parsedResults = results.Content.ReadAsAsync<Comments>();
 

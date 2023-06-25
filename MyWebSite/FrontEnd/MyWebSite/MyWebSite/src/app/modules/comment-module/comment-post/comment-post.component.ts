@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import { IComments } from '../../../interface/IComments';
 import { BaseRepository } from '../../../repository/BaseRepository';
+import { AuthStateService } from '../../../service/AuthStateService/AuthStateService';
 import { SharedUtils } from '../../../SharedUtils/SharedUtils';
 
 @Component({
@@ -17,11 +19,17 @@ export class CommentPostComponent implements OnInit {
   form!: FormGroup;             // ReactiveForm
   testArray!: string[];
   baseUrl: string;
+  textAreaValue: string;
+  isLoggedIn!: boolean;
 
   constructor(
-    private repository: BaseRepository<IComments>
+    private repository: BaseRepository<IComments>,
+    private authStateService: AuthStateService,
+    private router: Router
   ) {
+    authStateService.$loginState.subscribe(results => this.isLoggedIn = results);
     this.baseUrl = "api/comments"
+    this.textAreaValue = "";
   }
 
   ngOnInit(): void {
@@ -54,7 +62,12 @@ export class CommentPostComponent implements OnInit {
   sendRequest() {
     var url = environment.baseUrl + this.baseUrl;
     var $postComment = this.repository.PostItem(url, this.formVariable);
-    $postComment.subscribe((results) => {});
+    $postComment.subscribe((results) => {
+      location.reload();
+    });
   }
 
+  clearTextArea() {
+    this.form.reset();
+  }
 }

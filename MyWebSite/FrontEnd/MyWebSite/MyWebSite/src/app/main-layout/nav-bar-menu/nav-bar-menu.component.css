@@ -55,9 +55,10 @@
   text-decoration: underline;
 }
 
-.form-buttons{
-    border:solid;
-    border-width:thin;
+.form-buttons {
+  border: solid;
+  border-width: thin;
+  border-color: rgb(128, 128, 128, 0.3)
 }
 
 h1 {

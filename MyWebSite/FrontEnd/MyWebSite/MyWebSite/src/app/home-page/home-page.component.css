@@ -26,6 +26,6 @@ h1 {
 
 app-comment-module{
     display:flex;
-    flex-grow:1;
-    height: inherit;
+/*    flex-grow:1;*/
+/*    height: inherit;*/
 }
