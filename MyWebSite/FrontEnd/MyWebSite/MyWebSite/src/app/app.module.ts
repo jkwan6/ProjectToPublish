@@ -26,6 +26,7 @@ import { FormBaseSample } from './SharedUtils/formBaseSample/form-base-sample.co
 import { AngularThreeModule } from './app-three.module';
 import { AuthenticationModule } from './app-authentication-module';
 import { AuthInterceptor } from './interceptors/AuthInterceptor';
+import { CommentPostComponent } from './modules/comment-module/comment-post/comment-post.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { AuthInterceptor } from './interceptors/AuthInterceptor';
     PaginatorTest,
     PaginatorDirective,
     FormBaseSample,
-    DialogAnimationsExampleDialog
+    DialogAnimationsExampleDialog,
+    CommentPostComponent
 
   ],
   imports: [

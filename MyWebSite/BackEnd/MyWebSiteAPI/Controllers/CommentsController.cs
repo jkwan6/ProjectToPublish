@@ -1,4 +1,5 @@
 ﻿using DataLayer.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -61,6 +62,7 @@ namespace MyWebSiteApi.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "RegisteredUser")]
         public async Task<ActionResult<Comments>> PostAsync([FromBody] Comments comment)
         {
             var results = await _service.PostAsync(comment);

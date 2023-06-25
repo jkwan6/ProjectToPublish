@@ -34,7 +34,7 @@ export class FormBaseSample implements OnInit {
     this.form = new FormGroup({});
     // Add Parameters to Form Group
     this.form.addControl(
-      SharedUtils.nameof(this.formVariable, x => x.author),                 // Update Property Here
+      SharedUtils.nameof(this.formVariable, x => x.author!),                 // Update Property Here
       new FormControl("", Validators.required)                              // "" To initialize empty form
     );
     this.form.addControl(
@@ -52,7 +52,7 @@ export class FormBaseSample implements OnInit {
   public onSubmit() {
     this.formVariable = {
       author:
-        this.form.controls[SharedUtils.nameof(this.formVariable, x => x.author)].value,
+        this.form.controls[SharedUtils.nameof(this.formVariable, x => x.author!)].value,
       commentsDescription:
         this.form.controls[SharedUtils.nameof(this.formVariable, x => x.commentsDescription)].value,
     }

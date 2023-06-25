@@ -1,0 +1,27 @@
+<div>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex-container">
+
+    <mat-form-field style="margin-bottom: -1.00em;"
+                    appearance="fill">
+      <mat-label>Post a Comment</mat-label>
+      <textarea matInput
+                formControlName="commentsDescription"
+                cdkTextareaAutosize
+                class="text-area-styles"></textarea>
+    </mat-form-field>
+
+    <!--SUBMIT/CANCEL BUTTONS-->
+    <div class="form-buttons">
+      <button mat-flat-button
+              color="primary"
+              type="submit"
+              [disabled]="!form.valid">
+        Post
+      </button>
+      <button mat-flat-button
+              color="secondary">
+        Clear
+      </button>
+    </div>
+  </form>
+</div>

@@ -10,3 +10,6 @@ C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BusinessLogic\obj\Debug\net6.0\Bu
 C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BusinessLogic\obj\Debug\net6.0\refint\BusinessLogic.dll
 C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BusinessLogic\obj\Debug\net6.0\BusinessLogic.pdb
 C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BusinessLogic\obj\Debug\net6.0\ref\BusinessLogic.dll
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BusinessLogic\bin\Debug\net6.0\BusinessDbAccess.dll
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BusinessLogic\bin\Debug\net6.0\BusinessDbAccess.pdb
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BusinessLogic\obj\Debug\net6.0\BusinessLogic.csproj.CopyComplete

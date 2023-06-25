@@ -43,8 +43,8 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
     background-color:inherit;
 }
 
-.mat-divider{
-    margin-top:auto;
+.paginator-divider {
+  margin-top: auto;
 }
 
 .mat-paginator{
@@ -69,4 +69,8 @@ th.mat-header-cell, td.mat-cell, td.mat-footer-cell {
     display:flex;
     flex-direction:column;
     flex-wrap:wrap;
+}
+
+.comment-divider {
+  margin-top: 5px;
 }

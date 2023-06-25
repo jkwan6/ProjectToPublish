@@ -12,7 +12,7 @@ namespace DataLayer.Entities
         [Key]
         [Required]
         public int Id { get; set; }
-        public string Author { get; set; }
+        public string? Author { get; set; }
         public DateTime CommentsTime { get; set;}
         public string? CommentsDescription { get; set; }
 
