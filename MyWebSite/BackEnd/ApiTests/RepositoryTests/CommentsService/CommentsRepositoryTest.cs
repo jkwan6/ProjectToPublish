@@ -1,4 +1,3 @@
-using ApiTests.RepositoryTests;
 using DataLayer;
 using DataLayer.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -9,34 +8,47 @@ using ServiceLayer.CommentsService;
 using ServiceLayer.DTO;
 using System.Net;
 
-namespace ApiTests.RepositoryTests
+namespace ApiTests.RepositoryTests.CommentsRepo
 {
-    public class CommentsRepositoryTest
+    public class CommentsServiceTest
     {
         [Fact]
-        public async void GetAllShouldReturnSomething()
+        public async void GetAllShouldReturnOnlyParents()
         {
             using (AppDbContext context = new DbSetup().getDbContext())
             {
+                // Arrange
                 var repo = new CommentsRepository(context);
-
                 var pageParams = new PageParameters()
                 {
                     PageSize = 10,
                     PageIndex = 0,
-                    FilterColumn = "Author",
-                    FilterQuery = "a",
-                    SortColumn = "Author",
+                    FilterColumn = "",
+                    FilterQuery = "",
+                    SortColumn = "Id",
                     SortOrder = "ASC"
                 };
+                var service = new CommentsService(repo);
 
-                var x = await repo.GetAllAsync(pageParams);
+                // Act
+                var x = await service.GetAllAsync(pageParams);
                 var y = x.Content.ReadAsAsync<PagedObjectsDTO<Comments>>();
                 var z = y.Result.Objects;
                 var test = new ObjectResult(z);
                 test.StatusCode = (int)x.StatusCode;
             }
         }
+
+
+
+
+
+
+
+
+
+
+
 
         [Fact]
         public void GetAllShouldOnlyLoadParentEntities()

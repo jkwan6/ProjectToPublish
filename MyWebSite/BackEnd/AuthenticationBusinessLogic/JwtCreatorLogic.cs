@@ -32,7 +32,7 @@ namespace AuthenticationBusinessLogic
                 issuer: _config["JwtSettings:Issuer"],
                 audience: _config["JwtSettings:Audience"],
                 claims: await GetClaimsAsync(user, _userManager),
-                expires: DateTime.Now.AddSeconds(Convert.ToDouble(_config["JwtSettings:ExpirationTimeInMinutes"])),
+                expires: DateTime.UtcNow.AddSeconds(10),
                 signingCredentials: GetSigningCredentials()
                 );
 

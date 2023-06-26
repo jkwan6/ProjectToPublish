@@ -24,7 +24,7 @@ namespace ApiTests.RepositoryTests
             foreach (var property in commentProperties)
             {
                 var stringConvert = property.Name;
-                var checkBool = QueryComposer<Comments>.IsValidProperty(stringConvert);
+                var checkBool = QueryComposerBase<Comments>.IsValidProperty(stringConvert);
                 boolList.Add((checkBool) ? true : false); 
             }
 

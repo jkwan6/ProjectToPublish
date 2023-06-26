@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PiranhaCMS", "PiranhaCMS.csproj", "{E6D592D9-CBAF-4872-A6E2-C591B173921F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiTests", "ApiTests\ApiTests.csproj", "{33C7487F-F458-44F6-98AD-BDB5AE58F215}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E6D592D9-CBAF-4872-A6E2-C591B173921F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E6D592D9-CBAF-4872-A6E2-C591B173921F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E6D592D9-CBAF-4872-A6E2-C591B173921F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E6D592D9-CBAF-4872-A6E2-C591B173921F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33C7487F-F458-44F6-98AD-BDB5AE58F215}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33C7487F-F458-44F6-98AD-BDB5AE58F215}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33C7487F-F458-44F6-98AD-BDB5AE58F215}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33C7487F-F458-44F6-98AD-BDB5AE58F215}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

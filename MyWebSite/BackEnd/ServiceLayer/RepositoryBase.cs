@@ -19,7 +19,7 @@ namespace ServiceLayer
     {
         #region Properties
         private readonly AppDbContext _context = null!;
-        private DbSet<T> table = null!;
+        internal DbSet<T> table = null!;
         #endregion
 
         #region Constructor
@@ -31,15 +31,17 @@ namespace ServiceLayer
         #endregion
 
         #region GetAll
-        public async Task<HttpResponseMessage> GetAllAsync(PageParameters pageParams)
+        public virtual async Task<HttpResponseMessage> GetAllAsync(PageParameters pageParams)
         {
-            var queryComposer = new QueryComposer<T>(pageParams);
-            var x = queryComposer.BuildQuery(table);
+            var queryComposer = new QueryComposerBase<T>(pageParams);
+            var resultTuple = queryComposer.BuildQuery(table);
+            var resultObjects = resultTuple.Item1;
+            var resultCount = resultTuple.Item2;
 
-            var result = await x.ToDynamicListAsync<T>();
+            var result = await resultObjects.ToDynamicListAsync<T>();
             if (result is null) return new HttpResponseMessage(HttpStatusCode.NotFound);    // Early Return
 
-            var count = await table.CountAsync();
+            var count = resultCount;
             var objectToReturn = new PagedObjectsDTO<T>()
             {
                 Objects = result,

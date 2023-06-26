@@ -7,13 +7,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq.Dynamic.Core;
 using ServiceLayer.DTO;
+using System.Runtime.CompilerServices;
 
 namespace ServiceLayer
 {
     // Should be all the way to the bottom
-    public class QueryComposer<T>
+    public class QueryComposerBase<T>
     {
-        public QueryComposer(PageParameters pageParams)
+        public QueryComposerBase(PageParameters pageParams)
         {
             pageIndex = pageParams.PageIndex;
             pageSize = pageParams.PageSize;
@@ -30,7 +31,14 @@ namespace ServiceLayer
         public string? filterColumn { get; set; }
         public string? filterQuery { get; set; }
 
-        public IQueryable BuildQuery(IQueryable queryable)
+        // Override This Method for Custom Queries
+        internal virtual IQueryable AddCustomQuery(IQueryable queryable)
+        {
+            return queryable;
+        }
+
+
+        public (IQueryable, int) BuildQuery(IQueryable queryable)
         {
             var sortColumnIsPresent = (string.IsNullOrEmpty(sortColumn)) ? false : true;
             var sortOrderIsPresemt = (string.IsNullOrEmpty(sortOrder)) ? false : true;
@@ -40,6 +48,10 @@ namespace ServiceLayer
             var sortColumnIsValid = (sortColumnIsPresent) ? IsValidProperty(sortColumn) : false;
         
             
+            queryable = this.AddCustomQuery(queryable);
+
+            var count = queryable.Count();
+
             if( filterQueryIsPresent & filterColumnIsValid & filterColumnIsPresent)
             {
                 queryable = queryable.Where(
@@ -54,10 +66,8 @@ namespace ServiceLayer
             queryable = queryable
                         .Skip(pageIndex * pageSize)
                         .Take(pageSize);
-            return queryable;
+            return (queryable, count);
         }
-
-
 
 
         // Compare the property provided with the <T> Class
