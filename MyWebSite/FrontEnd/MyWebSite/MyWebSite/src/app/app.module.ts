@@ -27,6 +27,7 @@ import { AngularThreeModule } from './app-three.module';
 import { AuthenticationModule } from './app-authentication-module';
 import { AuthInterceptor } from './interceptors/AuthInterceptor';
 import { CommentPostComponent } from './modules/comment-module/comment-post/comment-post.component';
+import { UnauthorizedInterceptor } from './interceptors/UnauthorizedInterecptor';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,9 @@ import { CommentPostComponent } from './modules/comment-module/comment-post/comm
   ],
   providers: [
     DatePipe,
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: UnauthorizedInterceptor, multi: true },
+
   ],
   bootstrap: [AppComponent]
 })

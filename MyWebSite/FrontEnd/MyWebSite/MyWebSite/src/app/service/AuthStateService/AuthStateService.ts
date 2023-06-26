@@ -1,3 +1,4 @@
+import { Time } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, Injectable, OnInit } from '@angular/core';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, first, map, Observable, of, Subject } from 'rxjs';
@@ -11,6 +12,7 @@ export class AuthStateService implements OnInit{
   // Subject but with Behaviour = Will send the last Emitted Value to Late Subscribers
   localStoragePresent!: BehaviorSubject<boolean>;
   private _loginState!: BehaviorSubject<boolean>;
+
   public get $loginState() {
     return this._loginState;
   }
