@@ -19,13 +19,14 @@
 
 .comment-container {
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
   background-color: inherit;
   border-radius: 5px;
   padding: 0px;
-  padding-bottom:0px;
+  padding-bottom: 0px;
   padding-left: 8px;
   margin-bottom: 0px;
+  white-space: pre-line;
 }
 
 

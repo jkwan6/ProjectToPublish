@@ -12,7 +12,7 @@ namespace MyWebSiteApi.Controllers
             var refreshToken = Request.Cookies["refreshToken"];
             var accessToken = Request.Headers["token"];
 
-            var refreshResult = await _authService.RefreshToken(refreshToken, accessToken);
+            var refreshResult = await _authService.RefreshToken(refreshToken!, accessToken);
 
             setTokenCookie(refreshResult.refreshToken!);
 

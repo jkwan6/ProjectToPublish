@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -19,7 +19,8 @@ export class CommentModuleComponent implements AfterViewInit {
 
   // #region Constructor
   constructor(
-    private repository: BaseRepository<IApiObject<IComments[]>>
+    private repository: BaseRepository<IApiObject<IComments[]>>,
+    private cdr: ChangeDetectorRef
   ) {
     this.commentRepository$ = this.repository.GetAll("url", this.params)
     this.url = "api/comments" // Gotta Refactor
@@ -47,6 +48,7 @@ export class CommentModuleComponent implements AfterViewInit {
   // #endregion
 
   ngAfterViewInit(): void {
+    this.cdr.detectChanges();
     this.url = environment.baseUrl + this.url;
     this.loadData();
   };

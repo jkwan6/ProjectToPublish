@@ -3,6 +3,7 @@ using AuthenticationBusinessLogic.DTO;
 using AuthenticationBusinessLogic.LoginLogic;
 using AuthenticationBusinessLogic.SignInLogic;
 using AuthenticationBusinessLogic.RefreshLogic;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuthenticationServices.AuthenticationService
 {
@@ -117,16 +118,18 @@ namespace AuthenticationServices.AuthenticationService
         public async Task<LoginResult> RevokeToken(string refreshTokenString, string ipAdress)
         {
             // Get the Token from the Db
-            var refreshTokenEntity = _context.RefreshTokens.Select(x => x)
+            var refreshTokenEntity = await _context.RefreshTokens
+                .Select(x => x)
                 .Where(x => x.Token
                 .Equals(refreshTokenString))
-                .First();
+                .FirstAsync();
 
             // Get the User from the Db
-            var user = _context.Users
+            var user = await _context.Users
                 .Select(x => x)
-                .Where(x => x.RefreshTokens
-                .Any(x => x.Equals(refreshTokenEntity)));
+                .Where(x => x.RefreshTokens!
+                .Any(x => x.Equals(refreshTokenEntity)))
+                .FirstOrDefaultAsync();
 
             // From then on you revoke
             if (!refreshTokenEntity.IsActive) return new LoginResult(false);

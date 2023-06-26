@@ -63,7 +63,6 @@ export class CommentPostComponent implements OnInit {
     var url = environment.baseUrl + this.baseUrl;
     var $postComment = this.repository.PostItem(url, this.formVariable);
     $postComment.subscribe((results) => {
-      location.reload();
     });
   }
 

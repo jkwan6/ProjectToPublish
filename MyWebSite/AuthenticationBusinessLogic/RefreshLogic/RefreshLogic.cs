@@ -44,7 +44,7 @@ namespace AuthenticationBusinessLogic.RefreshLogic
             // Load the refresh token
             var loadInMemory = _context.RefreshTokens.Where(x => x == refreshEntityFromRefresh).Include(x => x.AccessTokens).AsTracking().ToList();
 
-            var accessTokenFromRefreshId = refreshEntityFromRefresh.AccessTokens.Max(x => x.Id);
+            var accessTokenFromRefreshId = refreshEntityFromRefresh!.AccessTokens.Max(x => x.Id);
             var accessTokenFromRefresh = refreshEntityFromRefresh.AccessTokens.SingleOrDefault(x => x.Id == accessTokenFromRefreshId);
 
             // Check if Matches

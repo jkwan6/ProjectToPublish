@@ -20,6 +20,7 @@
     margin-top:8px;
     font-weight:500;
     text-decoration:none;
+    color: black;
 }
 
 .link-styles:visited {
@@ -45,3 +46,10 @@
 .fa-brands{
     padding-left:20px;
 }
+
+
+.address-tab{
+    height:stretch;
+    min-height: 400px;
+}
+

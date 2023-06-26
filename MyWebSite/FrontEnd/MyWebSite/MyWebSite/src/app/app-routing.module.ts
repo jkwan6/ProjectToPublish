@@ -29,7 +29,7 @@ const routes: Routes = [
   { path: '', component: HomePageComponent, pathMatch: 'full' },
   { path: 'login', component: AuthenticationComponent },
   { path: 'signup', component: AuthenticationComponent },
-  { path: 'contact', component: ContactInfoComponent, canActivate: [AuthGuard] },
+  { path: 'contact', component: ContactInfoComponent },
   { path: 'academic', component: AcademicComponent },
   { path: 'experience', component: ExperienceComponent },
   { path: 'timeline', component: TimelineComponent },

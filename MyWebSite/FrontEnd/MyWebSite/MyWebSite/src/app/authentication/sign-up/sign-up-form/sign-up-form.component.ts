@@ -1,6 +1,7 @@
 import { BooleanInput } from '@angular/cdk/coercion';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { BehaviorSubject, from, map, Observable, of, retry } from 'rxjs';
 import { environment } from '../../../../environments/environment.prod';
 import { IComments } from '../../../interface/IComments';
@@ -33,7 +34,8 @@ export class SignUpFormComponent implements OnInit {
   emailCheck!: IBoolObject;
 
   constructor(
-    private repository: BaseRepository<ISignUpRequest>
+    private repository: BaseRepository<ISignUpRequest>,
+    private router: Router
   ) {
     this.passwordCheck = { value: false }
     this.emailCheck = { value: false }
@@ -114,8 +116,10 @@ export class SignUpFormComponent implements OnInit {
 
   sendRequest() {
     var url = environment.baseUrl + this.baseUrl;
-    var $login = this.repository.PostItem(url, this.formVariable);
-    $login.subscribe();
+    var $signup = this.repository.PostItem(url, this.formVariable);
+    $signup.subscribe(results => {
+      this.router.navigate(['/']);
+    });
   }
 
   // Custom Async Validator
