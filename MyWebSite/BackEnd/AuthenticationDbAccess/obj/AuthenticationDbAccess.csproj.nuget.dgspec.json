@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\AuthenticationDbAccess\\AuthenticationDbAccess.csproj": {}
+    "C:\\Projects\\ProjectToPublish\\MyWebSite\\AuthenticationDbAccess\\AuthenticationDbAccess.csproj": {}
   },
   "projects": {
-    "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\AuthenticationDbAccess\\AuthenticationDbAccess.csproj": {
+    "C:\\Projects\\ProjectToPublish\\MyWebSite\\AuthenticationDbAccess\\AuthenticationDbAccess.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\AuthenticationDbAccess\\AuthenticationDbAccess.csproj",
+        "projectUniqueName": "C:\\Projects\\ProjectToPublish\\MyWebSite\\AuthenticationDbAccess\\AuthenticationDbAccess.csproj",
         "projectName": "AuthenticationDbAccess",
-        "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\AuthenticationDbAccess\\AuthenticationDbAccess.csproj",
+        "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\AuthenticationDbAccess\\AuthenticationDbAccess.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\AuthenticationDbAccess\\obj\\",
+        "outputPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\AuthenticationDbAccess\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

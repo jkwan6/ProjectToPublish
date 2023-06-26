@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "nk4OQ4eiBmhv2Dw0bIURJ3RnqupYkDf5N/pAlCSHE/XFvAKj6yxMEatjsZnRUxThCBWkPXCkA5H53o1IBQDG1w==",
+  "dgSpecHash": "blAHc+oSwBBPvHJ9fsnJ2D1nw9lJNMKfsRonTta06eC03PlVrc16LsqZoIm+T4QHNaKl8iLUTPHQutBSqrhIBQ==",
   "success": true,
-  "projectFilePath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\AuthenticationDbAccess\\AuthenticationDbAccess.csproj",
+  "projectFilePath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\AuthenticationDbAccess\\AuthenticationDbAccess.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

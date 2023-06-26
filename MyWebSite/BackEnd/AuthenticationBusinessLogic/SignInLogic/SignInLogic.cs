@@ -1,5 +1,4 @@
-﻿using AuthenticationServices.BusinessLogic;
-using DataLayer.Entities;
+﻿using DataLayer.Entities;
 using DataLayer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Primitives;

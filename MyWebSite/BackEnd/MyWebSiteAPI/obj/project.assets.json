@@ -8938,13 +8938,13 @@
     },
     "AuthenticationBusinessLogic/1.0.0": {
       "type": "project",
-      "path": "../../AuthenticationBusinessLogic/AuthenticationBusinessLogic.csproj",
-      "msbuildProject": "../../AuthenticationBusinessLogic/AuthenticationBusinessLogic.csproj"
+      "path": "../AuthenticationBusinessLogic/AuthenticationBusinessLogic.csproj",
+      "msbuildProject": "../AuthenticationBusinessLogic/AuthenticationBusinessLogic.csproj"
     },
     "AuthenticationServices/1.0.0": {
       "type": "project",
-      "path": "../../AuthenticationServices/AuthenticationServices.csproj",
-      "msbuildProject": "../../AuthenticationServices/AuthenticationServices.csproj"
+      "path": "../AuthenticationServices/AuthenticationServices.csproj",
+      "msbuildProject": "../AuthenticationServices/AuthenticationServices.csproj"
     },
     "DataLayer/1.0.0": {
       "type": "project",
@@ -8961,7 +8961,6 @@
     "net6.0": [
       "AuthenticationBusinessLogic >= 1.0.0",
       "AuthenticationServices >= 1.0.0",
-      "DataLayer >= 1.0.0",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 6.0.4",
       "Microsoft.EntityFrameworkCore.Design >= 6.0.14",
       "Microsoft.EntityFrameworkCore.SqlServer >= 6.0.15",
@@ -9002,14 +9001,11 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Projects\\ProjectToPublish\\MyWebSite\\AuthenticationBusinessLogic\\AuthenticationBusinessLogic.csproj": {
-              "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\AuthenticationBusinessLogic\\AuthenticationBusinessLogic.csproj"
+            "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\AuthenticationBusinessLogic\\AuthenticationBusinessLogic.csproj": {
+              "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\AuthenticationBusinessLogic\\AuthenticationBusinessLogic.csproj"
             },
-            "C:\\Projects\\ProjectToPublish\\MyWebSite\\AuthenticationServices\\AuthenticationServices.csproj": {
-              "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\AuthenticationServices\\AuthenticationServices.csproj"
-            },
-            "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\DataLayer\\DataLayer.csproj": {
-              "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\DataLayer\\DataLayer.csproj"
+            "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\AuthenticationServices\\AuthenticationServices.csproj": {
+              "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\AuthenticationServices\\AuthenticationServices.csproj"
             },
             "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\ServiceLayer\\ServiceLayer.csproj": {
               "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\ServiceLayer\\ServiceLayer.csproj"

@@ -1,5 +1,4 @@
-﻿using AuthenticationServices.BusinessLogic;
-using DataLayer.Entities;
+﻿using DataLayer.Entities;
 using DataLayer;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -35,18 +34,21 @@ namespace AuthenticationBusinessLogic.RefreshLogic
         public async Task<bool> TokenMatches(string currentRefreshToken, string currentAccessToken)
         {
             // Entities from tokens
-            var refreshEntityFromRefresh = await _context.RefreshTokens.Where(x => x.Token == currentRefreshToken).FirstOrDefaultAsync();
+            var refreshEntityFromRefresh = await _context.RefreshTokens.Where(x => x.Token == currentRefreshToken).AsTracking().FirstOrDefaultAsync();
             var accessEntityFromAccess = await _context.AccessTokens.Where(x => x.Token == currentAccessToken).FirstOrDefaultAsync();
 
             // Entity from Relationship 
             var refreshEntityFromAccess = await _context.RefreshTokens.SingleOrDefaultAsync(x => x.AccessTokens.Any(x => x.Token == currentAccessToken));
-            var loadInMemory = _context.RefreshTokens.Where(x => x == refreshEntityFromAccess).Include(x => x.AccessTokens).ToList();
-            var accessTokenFromRefreshId = refreshEntityFromRefresh.AccessTokens.Max(x => x.Id);
+
+            // Load the refresh token
+            var loadInMemory = _context.RefreshTokens.Where(x => x == refreshEntityFromRefresh).Include(x => x.AccessTokens).AsTracking().ToList();
+
+            var accessTokenFromRefreshId = refreshEntityFromRefresh!.AccessTokens.Max(x => x.Id);
             var accessTokenFromRefresh = refreshEntityFromRefresh.AccessTokens.SingleOrDefault(x => x.Id == accessTokenFromRefreshId);
 
             // Check if Matches
-            var refreshTokenMatches = (refreshEntityFromRefresh == refreshEntityFromAccess) ? true : false;
-            var accessTokenMatches = (accessEntityFromAccess == accessTokenFromRefresh) ? true : false;
+            var refreshTokenMatches = (refreshEntityFromRefresh!.Id == refreshEntityFromAccess!.Id) ? true : false;
+            var accessTokenMatches = (accessEntityFromAccess!.Id == accessTokenFromRefresh!.Id) ? true : false;
 
             var bothMatches = (refreshTokenMatches is false || accessTokenMatches is false) ? false : true;
 
@@ -98,7 +100,7 @@ namespace AuthenticationBusinessLogic.RefreshLogic
 
         public async Task<string> RefreshAccessToken(string currentAccessToken, string refreshTokenToUse)
         {
-            var refreshEntityFromRefresh = await _context.RefreshTokens.Where(x => x.Token == refreshTokenToUse).SingleAsync();
+            var refreshEntityFromRefresh = await _context.RefreshTokens.Where(x => x.Token == refreshTokenToUse).AsTracking().SingleAsync();
             var userId = refreshEntityFromRefresh!.ApplicationUserId;
             var _user = await _userManager.FindByIdAsync(userId);
 

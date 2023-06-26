@@ -10,7 +10,6 @@
         "dependencies": {
           "AuthenticationBusinessLogic": "1.0.0",
           "AuthenticationServices": "1.0.0",
-          "DataLayer": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.4",
           "Microsoft.EntityFrameworkCore.Design": "6.0.14",
           "Microsoft.EntityFrameworkCore.SqlServer": "6.0.15",

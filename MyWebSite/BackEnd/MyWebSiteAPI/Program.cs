@@ -10,7 +10,7 @@ using AuthenticationServices.AuthenticationService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using AuthenticationBusinessLogic.LoginLogic;
-using AuthenticationServices.BusinessLogic;
+using AuthenticationBusinessLogic;
 using AuthenticationBusinessLogic.SignInLogic;
 using AuthenticationBusinessLogic.RefreshLogic;
 

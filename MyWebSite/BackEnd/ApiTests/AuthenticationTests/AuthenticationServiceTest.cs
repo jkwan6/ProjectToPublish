@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using AuthenticationServices.AuthenticationService;
 using MyWebSiteApi.Controllers;
 using AuthenticationBusinessLogic.DTO;
-using AuthenticationServices.BusinessLogic;
+using AuthenticationBusinessLogic;
 using Castle.Core.Configuration;
 using Microsoft.Extensions.Configuration;
 using AuthenticationBusinessLogic.RefreshLogic;

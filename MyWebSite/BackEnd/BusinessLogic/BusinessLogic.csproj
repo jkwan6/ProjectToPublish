@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BusinessDbAccess\BusinessDbAccess.csproj" />
   </ItemGroup>
 
 </Project>

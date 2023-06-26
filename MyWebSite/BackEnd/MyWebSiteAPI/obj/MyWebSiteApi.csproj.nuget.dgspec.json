@@ -4,14 +4,14 @@
     "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\MyWebSiteAPI\\MyWebSiteApi.csproj": {}
   },
   "projects": {
-    "C:\\Projects\\ProjectToPublish\\MyWebSite\\AuthenticationBusinessLogic\\AuthenticationBusinessLogic.csproj": {
+    "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\AuthenticationBusinessLogic\\AuthenticationBusinessLogic.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\ProjectToPublish\\MyWebSite\\AuthenticationBusinessLogic\\AuthenticationBusinessLogic.csproj",
+        "projectUniqueName": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\AuthenticationBusinessLogic\\AuthenticationBusinessLogic.csproj",
         "projectName": "AuthenticationBusinessLogic",
-        "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\AuthenticationBusinessLogic\\AuthenticationBusinessLogic.csproj",
+        "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\AuthenticationBusinessLogic\\AuthenticationBusinessLogic.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\AuthenticationBusinessLogic\\obj\\",
+        "outputPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\AuthenticationBusinessLogic\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -73,14 +73,14 @@
         }
       }
     },
-    "C:\\Projects\\ProjectToPublish\\MyWebSite\\AuthenticationServices\\AuthenticationServices.csproj": {
+    "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\AuthenticationServices\\AuthenticationServices.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\ProjectToPublish\\MyWebSite\\AuthenticationServices\\AuthenticationServices.csproj",
+        "projectUniqueName": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\AuthenticationServices\\AuthenticationServices.csproj",
         "projectName": "AuthenticationServices",
-        "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\AuthenticationServices\\AuthenticationServices.csproj",
+        "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\AuthenticationServices\\AuthenticationServices.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\AuthenticationServices\\obj\\",
+        "outputPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\AuthenticationServices\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -101,8 +101,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Projects\\ProjectToPublish\\MyWebSite\\AuthenticationBusinessLogic\\AuthenticationBusinessLogic.csproj": {
-                "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\AuthenticationBusinessLogic\\AuthenticationBusinessLogic.csproj"
+              "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\AuthenticationBusinessLogic\\AuthenticationBusinessLogic.csproj": {
+                "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\AuthenticationBusinessLogic\\AuthenticationBusinessLogic.csproj"
               },
               "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\DataLayer\\DataLayer.csproj": {
                 "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\DataLayer\\DataLayer.csproj"
@@ -260,14 +260,11 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Projects\\ProjectToPublish\\MyWebSite\\AuthenticationBusinessLogic\\AuthenticationBusinessLogic.csproj": {
-                "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\AuthenticationBusinessLogic\\AuthenticationBusinessLogic.csproj"
+              "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\AuthenticationBusinessLogic\\AuthenticationBusinessLogic.csproj": {
+                "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\AuthenticationBusinessLogic\\AuthenticationBusinessLogic.csproj"
               },
-              "C:\\Projects\\ProjectToPublish\\MyWebSite\\AuthenticationServices\\AuthenticationServices.csproj": {
-                "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\AuthenticationServices\\AuthenticationServices.csproj"
-              },
-              "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\DataLayer\\DataLayer.csproj": {
-                "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\DataLayer\\DataLayer.csproj"
+              "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\AuthenticationServices\\AuthenticationServices.csproj": {
+                "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\AuthenticationServices\\AuthenticationServices.csproj"
               },
               "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\ServiceLayer\\ServiceLayer.csproj": {
                 "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\ServiceLayer\\ServiceLayer.csproj"

@@ -9,5 +9,11 @@ namespace AuthenticationBusinessLogic.DTO
 
         [Required(ErrorMessage = "Password is required.")]
         public string Password { get; set; } = null!;
+
+        [Required(ErrorMessage = "Email Confirmation is required.")]
+        public string confirmEmail { get; set; } = null!;
+
+        [Required(ErrorMessage = "Password Confirmation is required.")]
+        public string confirmPassword { get; set; } = null!;
     }
 }

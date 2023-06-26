@@ -1,5 +1,4 @@
 ﻿using AuthenticationBusinessLogic.DTO;
-using AuthenticationServices.BusinessLogic;
 using DataLayer;
 using DataLayer.AuthenticationEntities;
 using DataLayer.Entities;
@@ -47,10 +46,17 @@ namespace AuthenticationBusinessLogic.LoginLogic
         public async Task<AppSession> CreateSession(string userId, string ipAddress)
         {
             // To Do - User Fingerprinting Session
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _context.Users
+                .Where(u => u.Id == userId)
+                .Include(u => u.AppSessions
+                .OrderByDescending(u => u.AppSessionId)
+                .Take(10))
+                .FirstAsync();
+            
             var session = new AppSession(user);
             session.CreatedByIp = ipAddress;
-            _context.AppSessions.Add(session);
+
+            _context.Entry(user).State = EntityState.Modified;
             _context.SaveChanges();
             return session;
         }

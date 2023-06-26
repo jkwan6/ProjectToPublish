@@ -12,7 +12,7 @@ using DataLayer;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
-using AuthenticationServices.BusinessLogic;
+using AuthenticationBusinessLogic;
 using Microsoft.Extensions.Configuration;
 
 namespace ApiTests.RepositoryTests

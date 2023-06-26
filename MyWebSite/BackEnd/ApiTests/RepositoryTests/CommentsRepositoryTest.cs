@@ -1,4 +1,4 @@
-using ApiTests.RepositoryTests.DbSetup;
+using ApiTests.RepositoryTests;
 using DataLayer;
 using DataLayer.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +9,7 @@ using ServiceLayer.CommentsService;
 using ServiceLayer.DTO;
 using System.Net;
 
-namespace ApiTests
+namespace ApiTests.RepositoryTests
 {
     public class CommentsRepositoryTest
     {
@@ -21,14 +21,17 @@ namespace ApiTests
                 var repo = new CommentsRepository(context);
 
                 var pageParams = new PageParameters()
-                { 
-                    PageSize = 10, PageIndex = 0, 
-                    FilterColumn = "Author", FilterQuery = "a", 
-                    SortColumn = "Author", SortOrder = "ASC" 
+                {
+                    PageSize = 10,
+                    PageIndex = 0,
+                    FilterColumn = "Author",
+                    FilterQuery = "a",
+                    SortColumn = "Author",
+                    SortOrder = "ASC"
                 };
 
                 var x = await repo.GetAllAsync(pageParams);
-                var y = x.Content.ReadAsAsync <PagedObjectsDTO<Comments>>();
+                var y = x.Content.ReadAsAsync<PagedObjectsDTO<Comments>>();
                 var z = y.Result.Objects;
                 var test = new ObjectResult(z);
                 test.StatusCode = (int)x.StatusCode;
@@ -59,8 +62,8 @@ namespace ApiTests
 
                 var entity = context.Comments.Where(x => x.CommentsDescription == "Random").First();
 
-                var authorCheck = (entity.Author == "Random") ? true : false;
-                var descriptionCheck = (entity.CommentsDescription == "Random") ? true : false;
+                var authorCheck = entity.Author == "Random" ? true : false;
+                var descriptionCheck = entity.CommentsDescription == "Random" ? true : false;
 
                 Assert.True(authorCheck && descriptionCheck);
             }

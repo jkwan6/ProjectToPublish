@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApiTests.RepositoryTests.DbSetup
+namespace ApiTests.RepositoryTests
 {
     public class DbSetup
     {

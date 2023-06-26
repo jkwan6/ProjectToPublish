@@ -8,10 +8,12 @@
     ".NETCoreApp,Version=v6.0": {
       "ApiTests/1.0.0": {
         "dependencies": {
+          "AuthenticationServices": "1.0.0",
+          "DataLayer": "1.0.0",
+          "Microsoft.Data.Sqlite.Core": "6.0.14",
           "Microsoft.NET.Test.Sdk": "17.1.0",
           "Moq": "4.18.4",
           "MyWebSiteApi": "1.0.0",
-          "ServiceLayer": "1.0.0",
           "xunit": "2.4.1",
           "xunit.runner.visualstudio": "2.4.3"
         },
@@ -2071,7 +2073,6 @@
         "dependencies": {
           "AuthenticationBusinessLogic": "1.0.0",
           "AuthenticationServices": "1.0.0",
-          "DataLayer": "1.0.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.4",
           "Microsoft.EntityFrameworkCore.SqlServer": "6.0.15",
           "ServiceLayer": "1.0.0",
