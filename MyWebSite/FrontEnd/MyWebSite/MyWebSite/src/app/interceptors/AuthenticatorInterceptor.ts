@@ -7,7 +7,7 @@ import { AuthStateService } from "../service/AuthStateService/AuthStateService";
 
 @Injectable()
 
-export class AuthInterceptor implements HttpInterceptor {
+export class AuthenticatorInterceptor implements HttpInterceptor {
 
   constructor(
     private authStateService: AuthStateService

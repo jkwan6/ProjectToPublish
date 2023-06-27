@@ -25,11 +25,15 @@ export class AuthStateService implements OnInit{
     this._loginState = this.localStoragePresent;
   }
 
+  ngOnInit() {
+  }
+
   updateLoginState() {
     this.localStoragePresent.next((localStorage.getItem('token') != null) ? true : false);
   }
 
-  ngOnInit() {
+  login() {
+
   }
 
   logout() {

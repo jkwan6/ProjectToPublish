@@ -25,9 +25,9 @@ import { PaginatorDirective } from './modules/comment-module/paginator-extension
 import { FormBaseSample } from './SharedUtils/formBaseSample/form-base-sample.component';
 import { AngularThreeModule } from './app-three.module';
 import { AuthenticationModule } from './app-authentication-module';
-import { AuthInterceptor } from './interceptors/AuthInterceptor';
+import { AuthenticatorInterceptor } from './interceptors/AuthenticatorInterceptor';
 import { CommentPostComponent } from './modules/comment-module/comment-post/comment-post.component';
-import { UnauthorizedInterceptor } from './interceptors/UnauthorizedInterecptor';
+import { RefreshTokenInterceptor } from './interceptors/RefreshTokenInterceptor';
 
 @NgModule({
   declarations: [
@@ -64,8 +64,8 @@ import { UnauthorizedInterceptor } from './interceptors/UnauthorizedInterecptor'
   ],
   providers: [
     DatePipe,
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: UnauthorizedInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthenticatorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: RefreshTokenInterceptor, multi: true },
 
   ],
   bootstrap: [AppComponent]
