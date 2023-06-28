@@ -98,7 +98,6 @@ export class AuthenticationService implements OnInit{
 
   refreshToken() {
     var url = environment.baseUrl + this.baseUrl + this.endpoints.refresh;
-    console.log('1')
     return this._refreshRepository.PostItem(url, null)
       .pipe(map((results) => {
         var parsedResult = results as any;
@@ -107,7 +106,9 @@ export class AuthenticationService implements OnInit{
         localStorage.setItem("token", token)
         this.startRefreshTokenTimer();
         return results;
-      }));
+      },
+        first()
+      ));
   }
 
   private refreshTokenTimeout?: number;

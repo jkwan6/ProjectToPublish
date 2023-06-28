@@ -20,45 +20,17 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    return next.handle(req);
-
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
+        console.log(1)
+
         if (error.status === 401) {
-          const url = environment.baseUrl + 'api/authentication/refreshtoken';
-          return this.http.post<IRefreshResult>(url, {}).pipe(
-            switchMap((results: IRefreshResult) => {
-              const token = results.accessToken;
-              localStorage.setItem('token', token);
-
-              req = req.clone({
-                setHeaders: {
-                  Authorization: `Bearer ${token}`
-                }
-              });
-              return next.handle(req);
-            }),
-            catchError(() => {
-              // Handle the error silently without propagating it further
-              return EMPTY;
-            }),
-            finalize(() => {
-              return EMPTY;
-              // Perform any cleanup or additional logic after the request is completed
-            })
-          );
+          var authState = this.authStateService.$authState.getValue();
+          if (authState) {
+            this.authStateService.refreshToken().subscribe();
+          }
         }
-
-        // Handle other errors silently without propagating them further
-        return EMPTY;
-      }),
-      tap({
-        error: () => {
-          return EMPTY;
-          // Handle the error silently without logging to the console
-          // This tap operator ensures that the error is not propagated to the subscribers
-        }
-      })
-    );
+        return next.handle(req)
+      }))
   }
 }

@@ -8,7 +8,7 @@ namespace DataLayer.AuthenticationEntities
         public AppSession(ApplicationUser user)
         {
             Created = DateTime.UtcNow;
-            Expires = DateTime.UtcNow.AddDays(7);
+            Expires = DateTime.UtcNow.AddMinutes(7);
             User = user;
         }
 
