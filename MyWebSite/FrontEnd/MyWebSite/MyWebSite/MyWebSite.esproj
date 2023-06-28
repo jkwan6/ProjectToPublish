@@ -12,7 +12,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\app\route-guard\" />
-    <Folder Include="src\app\service\AuthStateService\" />
+    <Folder Include="src\app\sub-pages\sub-pages\" />
     <Folder Include="src\service\" />
   </ItemGroup>
   <ItemGroup>

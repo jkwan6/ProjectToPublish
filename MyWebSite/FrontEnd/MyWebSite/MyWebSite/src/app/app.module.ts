@@ -9,12 +9,12 @@ import { DialogAnimationsExampleDialog, NavBarMenuComponent } from './main-layou
 import { FooterBarComponent } from './main-layout/footer-bar/footer-bar.component';
 import { BodyContentComponent } from './main-layout/body-content/body-content.component';
 import { SideBarComponent } from './main-layout/body-content/side-bar/side-bar.component';
-import { ContactInfoComponent } from './sub-pages/sub-pages/contact-info/contact-info.component';
-import { AcademicComponent } from './sub-pages/sub-pages/academic/academic.component';
-import { ExperienceComponent } from './sub-pages/sub-pages/experience/experience.component';
-import { TimelineComponent } from './sub-pages/sub-pages/timeline/timeline.component';
-import { SkillsComponent } from './sub-pages/sub-pages/skills/skills.component';
-import { LifeInGeneralComponent } from './sub-pages/sub-pages/life-in-general/life-in-general.component';
+import { ContactInfoComponent } from './sub-pages/contact-info/contact-info.component';
+import { AcademicComponent } from './sub-pages/academic/academic.component';
+import { ExperienceComponent } from './sub-pages/experience/experience.component';
+import { TimelineComponent } from './sub-pages/timeline/timeline.component';
+import { SkillsComponent } from './sub-pages/skills/skills.component';
+import { LifeInGeneralComponent } from './sub-pages/life-in-general/life-in-general.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import { CommentModuleComponent } from './modules/comment-module/comment-module.component';
 import { CommentRowTemplateComponent } from './modules/comment-module/comment-row-template/comment-template.component';
@@ -25,9 +25,10 @@ import { PaginatorDirective } from './modules/comment-module/paginator-extension
 import { FormBaseSample } from './SharedUtils/formBaseSample/form-base-sample.component';
 import { AngularThreeModule } from './app-three.module';
 import { AuthenticationModule } from './app-authentication-module';
-import { AuthenticatorInterceptor } from './interceptors/AuthenticatorInterceptor';
+import { TokenHeaderInterceptor } from './interceptors/TokenHeaderInterceptor';
 import { CommentPostComponent } from './modules/comment-module/comment-post/comment-post.component';
 import { RefreshTokenInterceptor } from './interceptors/RefreshTokenInterceptor';
+import { WebsiteDetailsComponent } from './sub-pages/website-details/website-details.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { RefreshTokenInterceptor } from './interceptors/RefreshTokenInterceptor'
     PaginatorDirective,
     FormBaseSample,
     DialogAnimationsExampleDialog,
-    CommentPostComponent
+    CommentPostComponent,
+    WebsiteDetailsComponent
 
   ],
   imports: [
@@ -64,7 +66,7 @@ import { RefreshTokenInterceptor } from './interceptors/RefreshTokenInterceptor'
   ],
   providers: [
     DatePipe,
-    { provide: HTTP_INTERCEPTORS, useClass: AuthenticatorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: TokenHeaderInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: RefreshTokenInterceptor, multi: true },
 
   ],

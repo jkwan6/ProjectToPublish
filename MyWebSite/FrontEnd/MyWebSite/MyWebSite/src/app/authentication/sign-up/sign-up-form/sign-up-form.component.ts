@@ -8,6 +8,7 @@ import { IComments } from '../../../interface/IComments';
 import { ILoginRequest } from '../../../interface/ILoginRequest';
 import { ISignUpRequest } from '../../../interface/ISignUpRequest';
 import { BaseRepository } from '../../../repository/BaseRepository';
+import { AuthenticationService } from '../../../service/AuthenticationService/AuthenticationService';
 import { SharedUtils } from '../../../SharedUtils/SharedUtils';
 
 
@@ -28,14 +29,15 @@ export class SignUpFormComponent implements OnInit {
   formVariable!: ISignUpRequest;      // Update Type Based on Form Parameters
   form!: FormGroup;                   // ReactiveForm
   baseUrl: string;
-
+  signupFailed!: boolean;
  
   passwordCheck!: IBoolObject;
   emailCheck!: IBoolObject;
 
   constructor(
     private repository: BaseRepository<ISignUpRequest>,
-    private router: Router
+    private router: Router,
+    private authenticationService: AuthenticationService
   ) {
     this.passwordCheck = { value: false }
     this.emailCheck = { value: false }
@@ -49,7 +51,7 @@ export class SignUpFormComponent implements OnInit {
   // #region --> Code Module to Initialize FormGroup
   private InitialializeFormGroup() {
 
-    this.formVariable = { email: "", password: "", confirmPassword: "", confirmEmail: "" };                  // Gotta initialize First
+    this.formVariable = { email: "", password: "", confirmPassword: "", confirmEmail: "" }; // Gotta initialize First
 
     this.form = new FormGroup({});
 
@@ -111,18 +113,20 @@ export class SignUpFormComponent implements OnInit {
       confirmEmail:
         this.form.controls[SharedUtils.nameof(this.formVariable, x => x.confirmEmail)].value
     }
-    this.sendRequest();
+    this.signup();
   }
 
-  sendRequest() {
-    var url = environment.baseUrl + this.baseUrl;
-    var $signup = this.repository.PostItem(url, this.formVariable);
-    $signup.subscribe(results => {
+  signup() {
+    // Subscribe and Implement Custom Logic based on Success/Error
+    var $signup =this.authenticationService.$signup(this.formVariable);
+    $signup.subscribe(() => {
       this.router.navigate(['/']);
+    }, (error) => {
+      this.signupFailed = true;
     });
   }
 
-  // Custom Async Validator
+  // #region Custom Async Validator
   fieldMatches(
     field: string,
     fieldCheck: string,
@@ -152,5 +156,6 @@ export class SignUpFormComponent implements OnInit {
         }));
     }
   }
+  // #endregion
 }
 

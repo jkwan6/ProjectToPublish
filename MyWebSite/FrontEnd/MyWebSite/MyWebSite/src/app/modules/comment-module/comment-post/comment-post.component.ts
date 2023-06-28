@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import { IComments } from '../../../interface/IComments';
 import { BaseRepository } from '../../../repository/BaseRepository';
-import { AuthStateService } from '../../../service/AuthStateService/AuthStateService';
+import { AuthenticationService } from '../../../service/AuthenticationService/AuthenticationService';
 import { SharedUtils } from '../../../SharedUtils/SharedUtils';
 
 @Component({
@@ -24,10 +24,10 @@ export class CommentPostComponent implements OnInit {
 
   constructor(
     private repository: BaseRepository<IComments>,
-    private authStateService: AuthStateService,
+    private authStateService: AuthenticationService,
     private router: Router
   ) {
-    authStateService.$loginState.subscribe(results => this.isLoggedIn = results);
+    authStateService.$authState.subscribe(results => this.isLoggedIn = results);
     this.baseUrl = "api/comments"
     this.textAreaValue = "";
   }

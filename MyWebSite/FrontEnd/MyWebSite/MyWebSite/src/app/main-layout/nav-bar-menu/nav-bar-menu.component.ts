@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { AuthStateService } from '../../service/AuthStateService/AuthStateService';
+import { AuthenticationService } from '../../service/AuthenticationService/AuthenticationService';
 import { SideNavService } from '../../service/SideNavService/SideNavService';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
@@ -20,18 +20,18 @@ export class NavBarMenuComponent implements OnInit {
   hideDelay = new FormControl(0);
 
   toggleStatus!: boolean;
-  subscription!: Subscription;
+  subscription: Subscription = new Subscription;
   constructor(
     public dialog: MatDialog,
     private sideNavService: SideNavService,
-    private authStateService: AuthStateService,
-
-  ) {
-    authStateService.$loginState.subscribe(results => this.isLoggedIn = results);
-  }
+    private authStateService: AuthenticationService,
+  ) { };
 
   ngOnInit(): void {
-    this.subscription = this.sideNavService.currentToggleStatus$.subscribe(toggleStatus => this.toggleStatus = toggleStatus)
+    this.subscription.add(
+      this.sideNavService.currentToggleStatus$.subscribe(toggleStatus => this.toggleStatus = toggleStatus))
+    this.subscription.add(
+      this.authStateService.$authState.subscribe(results => this.isLoggedIn = results))
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();
@@ -62,7 +62,7 @@ export class NavBarMenuComponent implements OnInit {
 export class DialogAnimationsExampleDialog {
   constructor(
     public dialogRef: MatDialogRef<DialogAnimationsExampleDialog>,
-    private authStateService: AuthStateService,
+    private authStateService: AuthenticationService,
   ) { }
 
   onLogOut() {

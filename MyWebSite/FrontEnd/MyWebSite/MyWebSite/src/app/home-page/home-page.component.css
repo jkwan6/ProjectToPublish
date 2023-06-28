@@ -29,3 +29,7 @@ app-comment-module{
 /*    flex-grow:1;*/
 /*    height: inherit;*/
 }
+
+.body-text{
+    padding:25px;
+}

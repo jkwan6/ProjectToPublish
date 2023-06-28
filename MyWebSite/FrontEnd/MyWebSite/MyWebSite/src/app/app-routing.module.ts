@@ -2,11 +2,11 @@ import { Component, NgModule } from '@angular/core';
 import { Routes, RouterModule, Router } from '@angular/router';
 import { HomePageComponent } from './home-page/home-page.component';
 import { AuthenticationComponent } from './authentication/authentication.component';
-import { AcademicComponent } from './sub-pages/sub-pages/academic/academic.component';
-import { ContactInfoComponent } from './sub-pages/sub-pages/contact-info/contact-info.component';
-import { ExperienceComponent } from './sub-pages/sub-pages/experience/experience.component';
-import { SkillsComponent } from './sub-pages/sub-pages/skills/skills.component';
-import { TimelineComponent } from './sub-pages/sub-pages/timeline/timeline.component';
+import { AcademicComponent } from './sub-pages/academic/academic.component';
+import { ContactInfoComponent } from './sub-pages/contact-info/contact-info.component';
+import { ExperienceComponent } from './sub-pages/experience/experience.component';
+import { SkillsComponent } from './sub-pages/skills/skills.component';
+import { TimelineComponent } from './sub-pages/timeline/timeline.component';
 import { ThreeJsPageFiveComponent } from './sub-pages/ThreeJs/three-js-page5/three-js-page-five.component';
 import { ThreeJsPageFourComponent } from './sub-pages/ThreeJs/three-js-page4/three-js-page-four.component';
 import { ThreeJsPageSevenComponent } from './sub-pages/ThreeJs/three-js-page7/three-js-page-seven.component';
@@ -24,6 +24,7 @@ import { ThreeJsPage15Component } from './sub-pages/ThreeJs/three-js-page15/thre
 import { ThreeJsPage8Component } from './sub-pages/ThreeJs/three-js-page8/three-js-page8.component';
 import { ThreeJsPage9Component } from './sub-pages/ThreeJs/three-js-page9/three-js-page9.component';
 import { AuthGuard } from './route-guard/AuthGuard';
+import { WebsiteDetailsComponent } from './sub-pages/website-details/website-details.component';
 
 const routes: Routes = [
   { path: '', component: HomePageComponent, pathMatch: 'full' },
@@ -49,6 +50,7 @@ const routes: Routes = [
   { path: 'three-13', component: ThreeJsPage13Component },
   { path: 'three-14', component: ThreeJsPage14Component },
   { path: 'three-15', component: ThreeJsPage15Component },
+  { path: 'website-details', component: WebsiteDetailsComponent },
 
 ]
 

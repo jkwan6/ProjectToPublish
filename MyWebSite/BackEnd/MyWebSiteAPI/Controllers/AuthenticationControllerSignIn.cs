@@ -18,8 +18,8 @@ namespace MyWebSiteApi.Controllers
         public async Task<IActionResult> SignIn([FromBody] SignInRequest signInRequest)
         {
             var fieldMatches = 
-                (signInRequest.Email == signInRequest.confirmEmail) && 
-                (signInRequest.Password == signInRequest.confirmPassword);
+                (signInRequest.Email! == signInRequest.confirmEmail!) && 
+                (signInRequest.Password! == signInRequest.confirmPassword!);
 
             if (!fieldMatches) {
                 var signInFail = new SignInResultDTO(SignInResultDTO.PossibleResults.Failed);

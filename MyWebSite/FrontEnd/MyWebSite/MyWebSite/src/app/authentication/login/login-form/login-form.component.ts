@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { first } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { IComments } from '../../../interface/IComments';
 import { ILoginRequest } from '../../../interface/ILoginRequest';
 import { ILoginResult } from '../../../interface/ILoginResult';
 import { BaseRepository } from '../../../repository/BaseRepository';
-import { AuthStateService } from '../../../service/AuthStateService/AuthStateService';
+import { AuthenticationService } from '../../../service/AuthenticationService/AuthenticationService';
 import { SharedUtils } from '../../../SharedUtils/SharedUtils';
 
 @Component({
@@ -23,9 +24,8 @@ export class LoginFormComponent implements OnInit {
   baseUrl: string;
   loginFailed!: boolean;
   constructor(
-    private repository: BaseRepository<ILoginRequest>,
-    private authStateService: AuthStateService,
-    private router: Router
+    private _authenticationService: AuthenticationService,
+    private _router: Router
   )
   {
     this.baseUrl = "api/authentication/login"
@@ -34,12 +34,10 @@ export class LoginFormComponent implements OnInit {
   ngOnInit(): void {
     this.InitialializeFormGroup();
   }
-
   // #region --> Code Module to Initialize FormGroup
   private InitialializeFormGroup() {
 
     this.formVariable = { email: "", password: "" };                  // Gotta initialize First
-
     this.form = new FormGroup({});
 
     // Add Parameters to Form Group
@@ -62,22 +60,17 @@ export class LoginFormComponent implements OnInit {
       password:
         this.form.controls[SharedUtils.nameof(this.formVariable, x => x.password)].value,
     }
-    this.sendRequest();
+    this.login();
   }
 
-  sendRequest() {
-    var url = environment.baseUrl + this.baseUrl;
-    var $login = this.repository.PostItem(url, this.formVariable);
-    $login.subscribe((results: any) => {
-      var castedResults = results as ILoginResult;
-      localStorage.setItem("token", castedResults.token);
-      this.authStateService.localStoragePresent.next(true);
-      this.router.navigate(['/']);
-    },
-      (error) => {
-        this.loginFailed = true;
-      }
-    );
+  login() {
+    var $login = this._authenticationService.$login(this.formVariable);
+    // Subscribe and Implement Custom Logic based on Success/Error
+    $login.subscribe(() => {
+      this._router.navigate(['/']);
+    }, (error) => {
+      this.loginFailed = true;
+    });
   }
 
 

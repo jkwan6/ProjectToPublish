@@ -5,7 +5,9 @@ import { environment } from '../../environments/environment'
 import { IPageParams } from '../interface/IPageParams';
 import { SharedUtils } from '../SharedUtils/SharedUtils';
 
-@Injectable() // DI Decorator
+@Injectable({
+  providedIn: 'any'
+}) // DI Decorator
 export class BaseRepository<T> {
 
   // DI Injection

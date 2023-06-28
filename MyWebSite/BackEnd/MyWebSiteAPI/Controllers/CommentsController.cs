@@ -25,6 +25,7 @@ namespace MyWebSiteApi.Controllers
         }
         #endregion
         [HttpGet]
+        [Authorize(Roles = "RegisteredUser")]
         public async Task<ActionResult<IEnumerable<Comments>>> GetAllAsync([FromQuery] PageParameters pageParams)
         {
             var result = await _service.GetAllAsync(pageParams);
