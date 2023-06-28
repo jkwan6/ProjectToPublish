@@ -78,11 +78,14 @@ namespace AuthenticationBusinessLogic.RefreshLogic
             var session = await _context.AppSessions.SingleOrDefaultAsync(x => x.RefreshTokens!.Any(x => x.Token == currentRefreshToken));
 
             var _user = await _userManager.FindByIdAsync(userId);
-            var _session = await _context.AppSessions.FindAsync(session!.AppSessionId);
-
+            var _session = await _context.AppSessions.AsTracking().Where(x => x.AppSessionId == session!.AppSessionId).FirstAsync();
+            
             var refreshToken = new RefreshToken(_user);
-            refreshToken.AppSession = session!;
-
+            _context.RefreshTokens.Attach(refreshToken);
+            refreshToken.ApplicationUserId = _user.Id;
+            refreshToken.AppSession = _session!;
+            refreshToken.AppSessionId = _session.AppSessionId;
+            _session.RefreshTokens!.Add(refreshToken);
             using (var rngCryptoServiceProvider = RandomNumberGenerator.Create())
             {
                 var randomBytes = new byte[64];

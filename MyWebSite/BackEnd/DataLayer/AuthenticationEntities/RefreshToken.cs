@@ -8,7 +8,7 @@ namespace DataLayer.AuthenticationEntities
         public RefreshToken(ApplicationUser user)
         {
             User = user;
-            Expires = DateTime.UtcNow.AddMinutes(5);
+            Expires = DateTime.UtcNow.AddMinutes(0.2);
             Created = DateTime.UtcNow;
         }
 
