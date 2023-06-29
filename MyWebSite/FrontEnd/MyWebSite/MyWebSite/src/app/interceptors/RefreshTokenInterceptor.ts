@@ -22,15 +22,23 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
 
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
-        console.log(1)
 
         if (error.status === 401) {
+
           var authState = this.authStateService.$authState.getValue();
+          if (!authState) { console.log(4); this.authStateService.logout(); return EMPTY };   // Early Return
+
+          console.log(2)
           if (authState) {
             this.authStateService.refreshToken().subscribe();
-          }
+
+            return next.handle(req);
+            }
+          return EMPTY;
         }
-        return next.handle(req)
+        return throwError(error);
+
+
       }))
   }
 }
