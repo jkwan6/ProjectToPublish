@@ -8,12 +8,13 @@ import { SharedUtils } from '../SharedUtils/SharedUtils';
 @Injectable({
   providedIn: 'any'
 }) // DI Decorator
-export class BaseRepository<T> {
+export class BaseRepository<TIn, Tout> {
 
   // DI Injection
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {
+  }
 
-  GetAll(url: string, pageParams: IPageParams): Observable<T> {
+  GetAll(url: string, pageParams: IPageParams): Observable<Tout> {
     var params = new HttpParams()
       .set(SharedUtils.nameof(pageParams, x => x.pageIndex), pageParams.pageIndex)
       .set(SharedUtils.nameof(pageParams, x => x.pageSize), pageParams.pageSize)
@@ -25,31 +26,31 @@ export class BaseRepository<T> {
       params = params.set(SharedUtils.nameof(pageParams, x => x.filterQuery), pageParams.filterQuery);
     }
 
-    var queryable = this.httpClient.get<T>(url, { params });
+    var queryable = this.httpClient.get<Tout>(url, { params });
     return queryable;
   }
 
-  GetById(baseUrl:string, id: number): Observable<T> {
+  GetById(baseUrl: string, id: number): Observable<Tout> {
     var url = baseUrl + "/" + id;
-    var queryable = this.httpClient.get<T>(url);
+    var queryable = this.httpClient.get<Tout>(url);
     return queryable;
   }
 
-  PutItem(baseUrl: string, object: T, id: number): Observable<T> {
+  PutItem(baseUrl: string, object: TIn, id: number): Observable<Tout> {
     var url = baseUrl + "/" + id;
-    var queryable = this.httpClient.put<T>(url, object);
+    var queryable = this.httpClient.put<Tout>(url, object);
     return queryable;
   }
 
-  PostItem(baseUrl: string, object: T): Observable<T> {
+  PostItem(baseUrl: string, object: TIn): Observable<Tout> {
     var url = baseUrl;
-    var queryable = this.httpClient.post<T>(url, object);
+    var queryable = this.httpClient.post<Tout>(url, object);
     return queryable;
   };
 
-  DeleteItem(baseUrl: string, id: number): Observable<T> {
+  DeleteItem(baseUrl: string, id: number): Observable<Tout> {
     var url = baseUrl + "/" + id;
-    var queryable = this.httpClient.delete<T>(url);
+    var queryable = this.httpClient.delete<Tout>(url);
     return queryable;
   }
 

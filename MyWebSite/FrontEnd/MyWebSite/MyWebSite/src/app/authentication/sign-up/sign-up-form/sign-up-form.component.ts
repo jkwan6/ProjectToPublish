@@ -35,7 +35,6 @@ export class SignUpFormComponent implements OnInit {
   emailCheck!: IBoolObject;
 
   constructor(
-    private repository: BaseRepository<ISignUpRequest>,
     private router: Router,
     private authenticationService: AuthenticationService
   ) {

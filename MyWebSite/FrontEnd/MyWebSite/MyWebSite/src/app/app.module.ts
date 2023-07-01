@@ -27,7 +27,7 @@ import { AngularThreeModule } from './app-three.module';
 import { AuthenticationModule } from './app-authentication-module';
 import { TokenHeaderInterceptor } from './interceptors/TokenHeaderInterceptor';
 import { CommentPostComponent } from './modules/comment-module/comment-post/comment-post.component';
-import { RefreshTokenInterceptor } from './interceptors/RefreshTokenInterceptor';
+import { RefreshTokenInterceptor } from './interceptors/RefreshTokenErrorInterceptor';
 import { WebsiteDetailsComponent } from './sub-pages/website-details/website-details.component';
 
 @NgModule({

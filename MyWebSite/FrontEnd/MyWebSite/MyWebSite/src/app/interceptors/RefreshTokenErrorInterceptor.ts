@@ -21,7 +21,7 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
   tryAttempts: number = 0;
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (this.tryAttempts > 0) { return next.handle(req); }
+    if (this.tryAttempts > 0) { return next.handle(req); }  // To prevent recursion
     else {
       return next.handle(req).pipe(
         catchError((error: HttpErrorResponse) => {
@@ -38,10 +38,9 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
               return next.handle(req);
             }),
             catchError((refreshError: any) => {
-              // If 401 still keep on getting sent, logs out
-              this.authStateService.logout();
               // Handle any error that occurred during token refreshing
               // For example, redirect to login page or show an error message
+              this.authStateService.logout();
               return throwError(refreshError);
             })
           );

@@ -18,23 +18,23 @@ export class AuthenticationService implements OnInit{
 
   // EMMITTERS
   localStoragePresent!: BehaviorSubject<boolean>;
+
+  // GETTERS
   private _authState!: BehaviorSubject<boolean>;
+  public get $authState() {  // Returning a BehaviourSubject.
+    return this._authState;
+  }
 
   // URL Endpoints
   private baseUrl: string = 'api/authentication/';
   private endpoints: { login: string, signup: string, refresh: string, logout: string } =
     { login: 'login', signup: "signin", refresh: "refreshtoken", logout: "revoke-token" };
 
-  // GETTERS
-  public get $authState() {  // Returning a BehaviourSubject.
-    return this._authState;
-  }
-
   constructor(
-    private _loginRepository: BaseRepository<ILoginRequest>,
-    private _signupRepository: BaseRepository<ISignUpRequest>,
-    private _logoutRepository: BaseRepository<null>,
-    private _refreshRepository: BaseRepository<null>
+    private _loginRepository: BaseRepository<ILoginRequest, ILoginResult>,
+    private _signupRepository: BaseRepository<ISignUpRequest, ISignUpRequest>,
+    private _logoutRepository: BaseRepository<null, null>,
+    private _refreshRepository: BaseRepository<null, IRefreshResult>
   ) {
     this.localStoragePresent = new BehaviorSubject<boolean>(false);
     this.updateLoginState();
@@ -61,14 +61,13 @@ export class AuthenticationService implements OnInit{
     var castedLogin: Observable<ILoginResult> = login
       .pipe(
         map(results => {
-          var castedResults = results as any;
-          castedResults = castedResults as ILoginResult;
+          var castedResults = results;
           localStorage.setItem("token", castedResults.token);
           this.localStoragePresent.next(true);
           this.startRefreshTokenTimer();
           return castedResults;
         }),
-        first()                                                           // Unsubscribes Automatically
+        first()                                                                 // Unsubscribes Automatically
       );
     return castedLogin;
   }
@@ -82,35 +81,19 @@ export class AuthenticationService implements OnInit{
     $logout.subscribe();
   }
 
-  // #region RefreshToken Logic
-  //refresh() {
-  //  var url = environment.baseUrl + this.baseUrl + this.endpoints.refresh;
-  //  var $refresh = this._refreshRepository.PostItem(url, null);
-  //  $refresh.pipe(
-  //    map((results => {
-  //      var parsedResult = results as any;
-  //      parsedResult = parsedResult as IRefreshResult;
-  //      var token = parsedResult.accessToken;
-  //      localStorage.setItem("token", token)
-  //    }),
-  //      first()
-  //    )).subscribe();
-  //}
-
   refreshToken(): Observable<any> {
     var url = environment.baseUrl + this.baseUrl + this.endpoints.refresh;
     return this._refreshRepository.PostItem(url, null)
       .pipe(map((results) => {
-        this.refreshTokenInnerLogic(results as any)
+        this.refreshTokenInnerLogic(results)
         return results;
       },
         first()
       ));
   }
 
-  refreshTokenInnerLogic(accessToken: any) {
-    var parsedResult = accessToken as any;
-    parsedResult = parsedResult as IRefreshResult;
+  refreshTokenInnerLogic(accessToken: IRefreshResult) {
+    var parsedResult = accessToken
     var token = parsedResult.accessToken;
     localStorage.setItem("token", token)
     this.startRefreshTokenTimer();

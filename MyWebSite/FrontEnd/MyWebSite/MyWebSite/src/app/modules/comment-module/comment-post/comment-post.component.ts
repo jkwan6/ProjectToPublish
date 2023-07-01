@@ -23,7 +23,7 @@ export class CommentPostComponent implements OnInit {
   isLoggedIn!: boolean;
 
   constructor(
-    private repository: BaseRepository<IComments>,
+    private repository: BaseRepository<IComments, IComments>,
     private authStateService: AuthenticationService,
     private router: Router
   ) {

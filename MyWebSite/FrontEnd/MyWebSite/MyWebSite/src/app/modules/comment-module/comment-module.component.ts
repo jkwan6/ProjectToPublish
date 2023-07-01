@@ -19,7 +19,7 @@ export class CommentModuleComponent implements AfterViewInit {
 
   // #region Constructor
   constructor(
-    private repository: BaseRepository<IApiObject<IComments[]>>,
+    private repository: BaseRepository<IApiObject<IComments[]>, IApiObject<IComments[]>>,
     private cdr: ChangeDetectorRef
   ) {
     this.commentRepository$ = this.repository.GetAll("url", this.params)
