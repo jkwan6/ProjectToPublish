@@ -101,16 +101,20 @@ export class AuthenticationService implements OnInit{
     var url = environment.baseUrl + this.baseUrl + this.endpoints.refresh;
     return this._refreshRepository.PostItem(url, null)
       .pipe(map((results) => {
-        var parsedResult = results as any;
-        parsedResult = parsedResult as IRefreshResult;
-        var token = parsedResult.accessToken;
-        localStorage.setItem("token", token)
-        this.startRefreshTokenTimer();
-        this.updateLoginState();
+        this.refreshTokenInnerLogic(results as any)
         return results;
       },
         first()
       ));
+  }
+
+  refreshTokenInnerLogic(accessToken: any) {
+    var parsedResult = accessToken as any;
+    parsedResult = parsedResult as IRefreshResult;
+    var token = parsedResult.accessToken;
+    localStorage.setItem("token", token)
+    this.startRefreshTokenTimer();
+    this.updateLoginState();
   }
 
   private refreshTokenTimeout?: number;

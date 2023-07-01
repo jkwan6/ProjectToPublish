@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AuthenticationBusinessLogic.DTO;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MyWebSiteApi.Controllers
 {
@@ -11,7 +12,8 @@ namespace MyWebSiteApi.Controllers
             // RefreshToken from Http-Only Cookie
             var refreshToken = Request.Cookies["refreshToken"];
             string accessToken = Request.Headers["Authorization"];
-            accessToken = accessToken.Substring(7);
+            if(accessToken == null) { return Unauthorized(new RefreshResult()); };
+            accessToken = accessToken!.Substring(7);
 
             var refreshResult = await _authService.RefreshToken(refreshToken!, accessToken);
 

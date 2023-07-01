@@ -18,37 +18,36 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
     //this.authStateService.$loginState.subscribe(results => console.log(results))
   }
 
+  tryAttempts: number = 0;
+
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
-    return next.handle(req).pipe(
-      catchError((error: HttpErrorResponse) => {
-
-        if (error.status === 401) {
-          // Checks if Logged In
-          var authState = this.authStateService.$authState.getValue();
-          if (!authState) { console.log(4); this.authStateService.logout(); return EMPTY };   // Early Return
-
-          console.log(2)
-          // If Logged In
-          if (authState) {
-            return next.handle(req).pipe(switchMap(() => {
-              var x = this.authStateService.refreshToken().subscribe(() => {
-                var token = localStorage.getItem("token");
-                if (!token) { return }; // Early Return
-                console.log(5)
-                req = req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
-              });
+    if (this.tryAttempts > 0) { return next.handle(req); }
+    else {
+      return next.handle(req).pipe(
+        catchError((error: HttpErrorResponse) => {
+          this.tryAttempts++;
+          if (error.status != 401) { return next.handle(req) }    // Early Return
+          if (this.authStateService.$authState.getValue() === false) { throwError(error); }
+          const url = environment.baseUrl + 'api/authentication/refreshtoken';
+          return this.http.post<IRefreshResult>(url, {}).pipe(
+            switchMap((results: IRefreshResult) => {
+              const token = results.accessToken;
+              localStorage.setItem('token', token);
+              req = req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
+              this.authStateService.refreshTokenInnerLogic(results);
               return next.handle(req);
-            }))
-          }
-
-
-          return EMPTY;
-        }
-        return throwError(error);
-
-
-      }))
-
+            }),
+            catchError((refreshError: any) => {
+              // If 401 still keep on getting sent, logs out
+              this.authStateService.logout();
+              // Handle any error that occurred during token refreshing
+              // For example, redirect to login page or show an error message
+              return throwError(refreshError);
+            })
+          );
+        })
+      )
+    }
   }
 }
+
