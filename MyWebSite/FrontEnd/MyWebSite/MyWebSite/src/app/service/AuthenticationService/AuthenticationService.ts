@@ -97,7 +97,7 @@ export class AuthenticationService implements OnInit{
   //    )).subscribe();
   //}
 
-  refreshToken() {
+  refreshToken(): Observable<any> {
     var url = environment.baseUrl + this.baseUrl + this.endpoints.refresh;
     return this._refreshRepository.PostItem(url, null)
       .pipe(map((results) => {
