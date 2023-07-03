@@ -11,21 +11,23 @@ import { AuthenticationService } from "../service/AuthenticationService/Authenti
 
 export class RefreshTokenInterceptor implements HttpInterceptor {
 
+
+  tryAttempts!: number;
+
   constructor(
     private authStateService: AuthenticationService,
     private http: HttpClient
   ) {
-    //this.authStateService.$loginState.subscribe(results => console.log(results))
+    this.tryAttempts = Date.now();
   }
 
-  tryAttempts: number = 0;
-
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (this.tryAttempts > 0) { return next.handle(req); }  // To prevent recursion
+    this.tryAttempts =  Date.now() - this.tryAttempts;
+    if (this.tryAttempts > 0 && this.tryAttempts < 50 * 1000) { return next.handle(req); }  // To prevent recursion
     else {
+      this.tryAttempts = Date.now();
       return next.handle(req).pipe(
         catchError((error: HttpErrorResponse) => {
-          this.tryAttempts++;
           if (error.status != 401) { return next.handle(req) }    // Early Return
           if (this.authStateService.$authState.getValue() === false) { throwError(error); }
           const url = environment.baseUrl + 'api/authentication/refreshtoken';
@@ -35,6 +37,7 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
               localStorage.setItem('token', token);
               req = req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
               this.authStateService.refreshTokenInnerLogic(results);
+              console.log(4);
               return next.handle(req);
             }),
             catchError((refreshError: any) => {

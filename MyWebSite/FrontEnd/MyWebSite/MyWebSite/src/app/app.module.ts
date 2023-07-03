@@ -29,6 +29,7 @@ import { TokenHeaderInterceptor } from './interceptors/TokenHeaderInterceptor';
 import { CommentPostComponent } from './modules/comment-module/comment-post/comment-post.component';
 import { RefreshTokenInterceptor } from './interceptors/RefreshTokenErrorInterceptor';
 import { WebsiteDetailsComponent } from './sub-pages/website-details/website-details.component';
+import { RefreshTokenTimeOutInterceptor } from './interceptors/RefreshTokenTimeOutInterceptor';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { WebsiteDetailsComponent } from './sub-pages/website-details/website-det
   providers: [
     DatePipe,
     { provide: HTTP_INTERCEPTORS, useClass: TokenHeaderInterceptor, multi: true },
+    //{ provide: HTTP_INTERCEPTORS, useClass: RefreshTokenTimeOutInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: RefreshTokenInterceptor, multi: true },
 
   ],
