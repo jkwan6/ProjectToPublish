@@ -12,44 +12,51 @@ import { AuthenticationService } from "../service/AuthenticationService/Authenti
 export class RefreshTokenInterceptor implements HttpInterceptor {
 
 
-  tryAttempts!: number;
+  tries!: {
+    tryAttempt: number;
+    tryTime: number;
+  };
 
   constructor(
     private authStateService: AuthenticationService,
     private http: HttpClient
   ) {
-    this.tryAttempts = Date.now();
+    this.tries = { tryAttempt: 0, tryTime: Date.now() };
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    this.tryAttempts =  Date.now() - this.tryAttempts;
-    if (this.tryAttempts > 0 && this.tryAttempts < 50 * 1000) { return next.handle(req); }  // To prevent recursion
-    else {
-      this.tryAttempts = Date.now();
-      return next.handle(req).pipe(
-        catchError((error: HttpErrorResponse) => {
-          if (error.status != 401) { return next.handle(req) }    // Early Return
-          if (this.authStateService.$authState.getValue() === false) { throwError(error); }
-          const url = environment.baseUrl + 'api/authentication/refreshtoken';
-          return this.http.post<IRefreshResult>(url, {}).pipe(
-            switchMap((results: IRefreshResult) => {
-              const token = results.accessToken;
-              localStorage.setItem('token', token);
-              req = req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
-              this.authStateService.refreshTokenInnerLogic(results);
-              console.log(4);
-              return next.handle(req);
-            }),
-            catchError((refreshError: any) => {
-              // Handle any error that occurred during token refreshing
-              // For example, redirect to login page or show an error message
-              this.authStateService.logout();
-              return throwError(refreshError);
-            })
-          );
-        })
-      )
+    let timeInterval: number = 0;
+    const timeOut: number = 1 * 1000;                                                     // 1 Second of Timeout to prevent Recursion
+
+    if (this.tries.tryAttempt != 0) {
+      timeInterval = Date.now() - this.tries.tryTime;
+      this.tries.tryTime = Date.now();
     }
+    if (this.tries.tryAttempt > 0 && timeInterval < timeOut) { return next.handle(req); } // Early Return to Prevent Recursion
+    this.tries.tryAttempt++;
+
+    // RefreshToken Logic
+    return next.handle(req).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status != 401) { return next.handle(req) }    // Early Return
+        if (this.authStateService.$authState.getValue() === false) { throwError(error); }
+        const url = environment.baseUrl + 'api/authentication/refreshtoken';
+        return this.http.post<IRefreshResult>(url, {}).pipe(
+          switchMap((results: IRefreshResult) => {
+            const token = results.accessToken;
+            localStorage.setItem('token', token);
+            req = req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
+            this.authStateService.refreshTokenInnerLogic(results);
+            console.log(4);
+            return next.handle(req);
+          }),
+          catchError((refreshError: any) => {
+            this.authStateService.logout();
+            return throwError(refreshError);
+          })
+        );
+      })
+    )
   }
 }
 

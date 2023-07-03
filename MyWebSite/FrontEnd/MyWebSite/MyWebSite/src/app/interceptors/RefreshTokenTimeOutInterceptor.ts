@@ -17,7 +17,6 @@ export class RefreshTokenTimeOutInterceptor implements HttpInterceptor {
     private authStateService: AuthenticationService,
     private http: HttpClient
   ) {
-    //this.authStateService.$loginState.subscribe(results => console.log(results))
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

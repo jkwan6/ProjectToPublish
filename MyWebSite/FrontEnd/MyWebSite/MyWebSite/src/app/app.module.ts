@@ -68,7 +68,7 @@ import { RefreshTokenTimeOutInterceptor } from './interceptors/RefreshTokenTimeO
   providers: [
     DatePipe,
     { provide: HTTP_INTERCEPTORS, useClass: TokenHeaderInterceptor, multi: true },
-    //{ provide: HTTP_INTERCEPTORS, useClass: RefreshTokenTimeOutInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: RefreshTokenTimeOutInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: RefreshTokenInterceptor, multi: true },
 
   ],
