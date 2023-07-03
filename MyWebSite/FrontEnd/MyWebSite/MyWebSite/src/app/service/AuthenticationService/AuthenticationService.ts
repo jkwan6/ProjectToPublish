@@ -73,12 +73,14 @@ export class AuthenticationService implements OnInit{
   }
 
   logout() {
-    localStorage.removeItem("token");
-    this.updateLoginState();
     var url = environment.baseUrl + this.baseUrl + this.endpoints.logout;       // Revokes the Refresh Token
     this.stopRefreshTokenTimer();
-    var $logout = this._logoutRepository.PostItem(url, null).pipe(first());     // Unsubscribes Automatically
-    $logout.subscribe();
+    if (localStorage.getItem("token")) {
+      var $logout = this._logoutRepository.PostItem(url, null).pipe(first());   // Unsubscribes Automatically
+      $logout.subscribe();
+      localStorage.removeItem("token");
+      this.updateLoginState();
+    }
   }
 
   refreshToken(): Observable<any> {

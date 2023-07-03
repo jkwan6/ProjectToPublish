@@ -31,17 +31,25 @@ namespace AuthenticationBusinessLogic.RefreshLogic
             _jwtCreator = jwtCreator;
         }
 
-        public async Task<bool> TokenMatches(string currentRefreshToken, string currentAccessToken)
+        public async Task<bool> TokenMatches(string currentRefreshToken, string currentAccessToken) /// TODO - Theres some concurrency issues happening in there because of the Single of Default.  Gotta fix it eventually
         {
             // Entities from tokens
-            var refreshEntityFromRefresh = await _context.RefreshTokens.Where(x => x.Token == currentRefreshToken).AsTracking().FirstOrDefaultAsync();
+            var refreshEntityFromRefresh = await _context.RefreshTokens.Where(x => x.Token == currentRefreshToken).FirstOrDefaultAsync();
             var accessEntityFromAccess = await _context.AccessTokens.Where(x => x.Token == currentAccessToken).FirstOrDefaultAsync();
 
             // Entity from Relationship 
-            var refreshEntityFromAccess = await _context.RefreshTokens.SingleOrDefaultAsync(x => x.AccessTokens.Any(x => x.Token == currentAccessToken));
+            //var refreshEntityFromAccess = await _context.RefreshTokens.SingleOrDefaultAsync(x => x.AccessTokens.Any(x => x.Token == currentAccessToken));
+
+            var refreshEntityFromAccess = await _context.RefreshTokens.Where(x => x.AccessTokens.Any(x => x.Token == currentAccessToken)).SingleAsync();
+
 
             // Load the refresh token
-            var loadInMemory = _context.RefreshTokens.Where(x => x == refreshEntityFromRefresh).Include(x => x.AccessTokens).AsTracking().ToList();
+            refreshEntityFromRefresh!.AccessTokens = _context.AccessTokens
+                .Where(x => x.RefreshToken == refreshEntityFromRefresh)
+                .OrderByDescending(u => u.RefreshTokenId)
+                .Take(10)
+                .ToList();
+            //var loadInMemory = _context.RefreshTokens.Where(x => x == refreshEntityFromRefresh).Include(x => x.AccessTokens).AsTracking().ToList();
 
             var accessTokenFromRefreshId = refreshEntityFromRefresh!.AccessTokens.Max(x => x.Id);
             var accessTokenFromRefresh = refreshEntityFromRefresh.AccessTokens.SingleOrDefault(x => x.Id == accessTokenFromRefreshId);

@@ -57,6 +57,7 @@ namespace AuthenticationBusinessLogic.LoginLogic
             session.CreatedByIp = ipAddress;
 
             _context.Entry(user).State = EntityState.Modified;
+            _context.Entry(session).State = EntityState.Added;
             _context.SaveChanges();
             return session;
         }
@@ -68,7 +69,7 @@ namespace AuthenticationBusinessLogic.LoginLogic
 
             var refreshToken = new RefreshToken(_user);
             refreshToken.CreatedByIp = ipAddress;
-            refreshToken.AppSession = session!;
+            refreshToken.AppSession = _session!;
 
             using (var rngCryptoServiceProvider = RandomNumberGenerator.Create())
             {
@@ -80,6 +81,7 @@ namespace AuthenticationBusinessLogic.LoginLogic
 
 
             await _context.RefreshTokens.AddAsync(refreshToken);
+            _context.Entry(refreshToken).State = EntityState.Added;
             await _context.SaveChangesAsync();
             return refreshToken;
         }
@@ -96,8 +98,8 @@ namespace AuthenticationBusinessLogic.LoginLogic
             accessToken.Token = token;
 
             _context.AccessTokens.Add(accessToken);
+            _context.Entry(accessToken).State = EntityState.Added;
             _context.SaveChanges();
-
             return accessToken;
         }
 
