@@ -1,10 +1,13 @@
-import { Component, OnInit, AfterViewInit, ViewChild, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, OnDestroy, HostListener, ElementRef } from '@angular/core';
 import * as THREE from 'three';
 import { AmbientLight, AxesHelper, Clock, MeshMatcapMaterial, PositionalAudio } from 'three';
 import * as dat from 'lil-gui';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
+import { SideNavService } from '../../../service/SideNavService/SideNavService';
+import { IBodyDimensions } from '../../../interface/IBodyDimensions';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-three-js-page',
@@ -12,6 +15,11 @@ import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
   styleUrls: ['./three-js-page.component.css']
 })
 export class ThreeJsPageComponent implements AfterViewInit, OnDestroy{
+  
+
+  constructor(private sideNavService: SideNavService) {
+    this.bodyDims$ = this.sideNavService.getBodyDims;
+  }
 
   @HostListener('unloaded')
   ngOnDestroy(): void {
@@ -21,6 +29,8 @@ export class ThreeJsPageComponent implements AfterViewInit, OnDestroy{
     this.geometry.dispose();
     this.material.dispose();
     this.texture.dispose();
+
+/*    this.bodyDims$.unsubscribe();*/
   }
 
   // PROPERTIES
@@ -37,18 +47,20 @@ export class ThreeJsPageComponent implements AfterViewInit, OnDestroy{
   gui!: dat.GUI;
   textureLoader!: THREE.TextureLoader;
   animate! : (() => {}) | any;
-
+  bodyDims$!: BehaviorSubject<IBodyDimensions>;
   @ViewChild('divElement') divElement: any;
-
- 
+  @ViewChild('myCanvas') canvasRef!: ElementRef<HTMLCanvasElement>;
 
   ngAfterViewInit(): void {
-
+    let sizes: IBodyDimensions = this.bodyDims$.value;
+    //this.bodyDims$.subscribe(results => {
+    //  sizes = {
+    //    width: results.width,
+    //    height: results.height,
+    //  };
+    //  console.log(results)
+    //})
     // Initial Setup - Sizes and Scene
-    let sizes = {
-      width: this.divElement.nativeElement.offsetWidth,
-      height: this.divElement.nativeElement.offsetHeight,
-    };
     let aspectRatio = sizes.width / sizes.height;
     this.scene = new THREE.Scene();
 
@@ -115,20 +127,40 @@ export class ThreeJsPageComponent implements AfterViewInit, OnDestroy{
     }
     this.animate();
 
+    this.bodyDims$.subscribe(results => {
 
-    // Resize Event Listener
-    window.addEventListener('resize', () => {
-      let sizes = {
-        width: this.divElement.nativeElement.offsetWidth,
-        height: this.divElement.nativeElement.offsetHeight,
+      console.log(canvas?.clientHeight);
+
+      var canvasTest = this.canvasRef.nativeElement;
+      canvasTest.style.height = "0px";
+      console.log(canvasTest.height)
+
+      sizes = {
+        width: results.width,
+        height: results.height,
       };
-      let aspectRatio = sizes.width / sizes.height;
+      aspectRatio = sizes.width / sizes.height;
 
       this.camera!.aspect = aspectRatio;
       this.camera?.updateProjectionMatrix();
       this.renderer!.setSize(sizes.width, sizes.height);
       this.renderer!.render(this.scene, this.camera);
-    }, false);
+    })
+    // Resize Event Listener
+    //window.addEventListener('resize', () => {
+    //  var bodyDims = this.bodyDims$.value;
+    //  console.log(bodyDims)
+    //  let sizes = {
+    //    width: bodyDims.width,
+    //    height: bodyDims.height,
+    //  };
+    //  let aspectRatio = sizes.width / sizes.height;
+
+    //  this.camera!.aspect = aspectRatio;
+    //  this.camera?.updateProjectionMatrix();
+    //  this.renderer!.setSize(sizes.width, sizes.height);
+    //  this.renderer!.render(this.scene, this.camera);
+    //}, false);
 
   }
 }

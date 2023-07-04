@@ -54,7 +54,7 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
             this.authStateService.logout();
             return throwError(refreshError);
           })
-        );
+        )
       })
     )
   }

@@ -112,15 +112,12 @@ export class AuthenticationService implements OnInit{
     // set a timeout to refresh the token a minute before it expires
     const expires = new Date(jwtToken.exp * 1000);
     const timeout = (expires.getTime() - Date.now()) * 0.75;
-    console.log(timeout)
     this.refreshTokenTimeout = Number(setTimeout(() => this.refreshToken().subscribe(), timeout));
   }
 
   private stopRefreshTokenTimer() {
     clearTimeout(this.refreshTokenTimeout);
   }
-
-  // #endregion
 
   // When this gets called, updates loginState based on localStorage
   // Automatically emmits event to subscriber

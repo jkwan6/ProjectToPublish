@@ -41,7 +41,8 @@ export class RefreshTokenTimeOutInterceptor implements HttpInterceptor {
         req = req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
         this.authStateService.refreshTokenInnerLogic(results);
         return next.handle(req);
-      }))
+      })
+    )
   }
 }
 
