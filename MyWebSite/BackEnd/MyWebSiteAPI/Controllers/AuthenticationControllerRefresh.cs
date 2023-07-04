@@ -17,9 +17,9 @@ namespace MyWebSiteApi.Controllers
 
             var refreshResult = await _authService.RefreshToken(refreshToken!, accessToken);
 
+            if(refreshResult.refreshToken == null) { return Unauthorized(refreshResult); }; // Early Return
+
             setTokenCookie(refreshResult.refreshToken!);
-
-
             return Ok(refreshResult);
         }
     }
