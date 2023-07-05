@@ -31,20 +31,24 @@ export class BodyContentComponent implements AfterViewInit {
 
     this.bodyElementDim = { height: this.bodyElement!.nativeElement.offsetHeight, width: this.bodyElement!.nativeElement.offsetWidth };
     this.sideNavService.setBodyDims = this.bodyElementDim;
-
-    console.log(this.bodyElement!.nativeElement.offsetWidth);
-    console.log(this.bodyElement!.nativeElement.offsetHeight);
-
-
     const element: Element = document.getElementById('bodyElement')!;
-
     new ResizeObserver(this.outputsize).observe(element)
+
+    var mouse: { x: number, y: number } = { x: 0, y: 0 };
+
+    //element!.addEventListener('mousemove', (event: any) => {
+    //  //console.log("mosuemove")
+    //  mouse.x = (event.layerX / this.bodyElement!.nativeElement.offsetWidth - 0.5) * 2;
+    //  mouse.y = - (event.layerY / this.bodyElement!.nativeElement.offsetHeight - 0.5) * 2;
+    //  console.log(mouse)
+    //});
+
   }
 
-  outputsize = (): void => {
+  outputsize: () => void = (): void => {
     this.bodyElementDim.height = this.bodyElement!.nativeElement.offsetHeight;
     this.bodyElementDim.width = this.bodyElement!.nativeElement.offsetWidth;
     this.sideNavService.setBodyDims = this.bodyElementDim;
-    console.log(this.bodyElementDim)
   }
+
 }

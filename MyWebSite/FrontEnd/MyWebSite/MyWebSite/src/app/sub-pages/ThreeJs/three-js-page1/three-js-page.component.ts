@@ -7,7 +7,7 @@ import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 import { SideNavService } from '../../../service/SideNavService/SideNavService';
 import { IBodyDimensions } from '../../../interface/IBodyDimensions';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-three-js-page',
@@ -15,11 +15,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
   styleUrls: ['./three-js-page.component.css']
 })
 export class ThreeJsPageComponent implements AfterViewInit, OnDestroy{
-  
-
-  constructor(private sideNavService: SideNavService) {
-    this.bodyDims$ = this.sideNavService.getBodyDims;
-  }
 
   @HostListener('unloaded')
   ngOnDestroy(): void {
@@ -30,7 +25,7 @@ export class ThreeJsPageComponent implements AfterViewInit, OnDestroy{
     this.material.dispose();
     this.texture.dispose();
 
-/*    this.bodyDims$.unsubscribe();*/
+    this.bodyDims$.unsubscribe();
   }
 
   // PROPERTIES
@@ -47,19 +42,15 @@ export class ThreeJsPageComponent implements AfterViewInit, OnDestroy{
   gui!: dat.GUI;
   textureLoader!: THREE.TextureLoader;
   animate! : (() => {}) | any;
-  bodyDims$!: BehaviorSubject<IBodyDimensions>;
+  bodyDims$!: Subscription;
   @ViewChild('divElement') divElement: any;
   @ViewChild('myCanvas') canvasRef!: ElementRef<HTMLCanvasElement>;
 
+  constructor(private sideNavService: SideNavService) {
+  }
+
   ngAfterViewInit(): void {
-    let sizes: IBodyDimensions = this.bodyDims$.value;
-    //this.bodyDims$.subscribe(results => {
-    //  sizes = {
-    //    width: results.width,
-    //    height: results.height,
-    //  };
-    //  console.log(results)
-    //})
+    let sizes: IBodyDimensions = this.sideNavService.getBodyDims.value;
     // Initial Setup - Sizes and Scene
     let aspectRatio = sizes.width / sizes.height;
     this.scene = new THREE.Scene();
@@ -127,7 +118,9 @@ export class ThreeJsPageComponent implements AfterViewInit, OnDestroy{
     }
     this.animate();
 
-    this.bodyDims$.subscribe(results => {
+    // Resize Event
+    this.bodyDims$ =
+      this.sideNavService.getBodyDims.subscribe(results => {
       sizes = {
         width: results.width,
         height: results.height,
