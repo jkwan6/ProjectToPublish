@@ -128,13 +128,6 @@ export class ThreeJsPageComponent implements AfterViewInit, OnDestroy{
     this.animate();
 
     this.bodyDims$.subscribe(results => {
-
-      console.log(canvas?.clientHeight);
-
-      var canvasTest = this.canvasRef.nativeElement;
-      canvasTest.style.height = "0px";
-      console.log(canvasTest.height)
-
       sizes = {
         width: results.width,
         height: results.height,
