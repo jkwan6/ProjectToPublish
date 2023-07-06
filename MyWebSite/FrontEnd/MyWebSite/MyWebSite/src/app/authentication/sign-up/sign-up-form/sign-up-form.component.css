@@ -54,3 +54,10 @@
     padding-right: 4px;
     align-content: center
 }
+
+
+@media (max-width: 599px) {
+  .log-in-body {
+    border: none;
+  }
+}

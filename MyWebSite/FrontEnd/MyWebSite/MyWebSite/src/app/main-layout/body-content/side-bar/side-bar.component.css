@@ -26,10 +26,11 @@
   text-decoration: underline;
 }
 
-.LayoutFlexContainer{
+.SideBarFlexContainer{
     display:flex;
     flex-direction:column;
-    height:100%;
+    flex-grow: 1;
+    height: 100%;
 }
 
 .Flex-Content2{

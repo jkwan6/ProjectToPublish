@@ -1,25 +1,18 @@
 import { Injectable } from '@angular/core';
 import * as THREE from 'three';
 import { Camera } from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { IElementDimensions } from '../../interface/IElementDimensions';
 import { cameraType, ICameraInitialize,  } from '../../interface/ThreeJs/ICameraInitialize';
 
 
 
 @Injectable({
-  providedIn: 'root'    // Singleton bcz Injected in Root
+  providedIn: 'any'   // Singleton bcz Injected in Root
 })
 
 export class ThreeJsService {
-  constructor() {
-    var test: ICameraInitialize =
-    {
-      position : { x: 0, y: 0, z: 0 },
-      aspectRatio: 75,
-      fieldOfView: 75,
-      cameraType: cameraType.PerspectiveCamera
-    }
-  }
+  constructor() { }
 
   public initializeScene(): THREE.Scene {
     return new THREE.Scene();

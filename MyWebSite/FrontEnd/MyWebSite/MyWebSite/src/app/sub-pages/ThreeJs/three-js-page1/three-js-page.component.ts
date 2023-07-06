@@ -1,25 +1,26 @@
-import { Component, OnInit, AfterViewInit, ViewChild, OnDestroy, HostListener, ElementRef } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, OnDestroy, HostListener, ElementRef } from '@angular/core';
 import * as THREE from 'three';
-import { AmbientLight, AxesHelper, Clock, MeshMatcapMaterial, PositionalAudio } from 'three';
 import * as dat from 'lil-gui';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
-import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 import { SideNavService } from '../../../service/SideNavService/SideNavService';
 import { IElementDimensions } from '../../../interface/IElementDimensions';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { ThreeJsService } from './../../../../app/service/ThreeJsService/ThreeJsService';
 import { cameraType, ICameraInitialize } from '../../../interface/ThreeJs/ICameraInitialize';
+import { FloatType } from 'three';
 
 @Component({
   selector: 'app-three-js-page',
   templateUrl: './three-js-page.component.html',
-  styleUrls: ['./three-js-page.component.css']
+  styleUrls: ['./three-js-page.component.css'],
+  providers: [ThreeJsService]
 })
 export class ThreeJsPageComponent implements AfterViewInit, OnDestroy{
 
   // PROPERTIES
-  requestId: any;
+  requestId!: number;
+  sizes!: IElementDimensions;
+  aspectRatio!: number;
   scene!: THREE.Scene;
   geometry!: THREE.BufferGeometry;
   material!: THREE.PointsMaterial;
@@ -40,6 +41,8 @@ export class ThreeJsPageComponent implements AfterViewInit, OnDestroy{
     private sideNavService: SideNavService,
     private threeJsService: ThreeJsService
   ) {
+    this.sizes = this.sideNavService.getBodyDims.value;
+    this.aspectRatio = this.sizes.width / this.sizes.height;
   }
 
   @HostListener('unloaded')
@@ -54,30 +57,55 @@ export class ThreeJsPageComponent implements AfterViewInit, OnDestroy{
   }
 
   ngAfterViewInit(): void {
-    // Arrange
-    let sizes: IElementDimensions = this.sideNavService.getBodyDims.value;
-    let aspectRatio = sizes.width / sizes.height;
-    const cameraInitialValues: ICameraInitialize = {
-      position: { x: 0, y: 0, z: 1 },
-      aspectRatio: aspectRatio,
-      fieldOfView: 75,
-      cameraType: cameraType.PerspectiveCamera
-    }
-    let canvas : HTMLCanvasElement = document.querySelector('.webgl1')!;
 
+    this.threeJsSetup();
+    this.materialSetup();
+
+    // #region EVENTS
+    this.events()
+    this.animate()
+
+    // RESIZE EVENT
+    this.bodyDims$ =
+      this.sideNavService.getBodyDims.subscribe(results => {
+        this.sizes = {
+          width: results.width,
+          height: results.height,
+        };
+        this.aspectRatio = this.sizes.width / this.sizes.height;
+        this.camera!.aspect = this.aspectRatio;
+        this.camera?.updateProjectionMatrix();
+        this.renderer!.setSize(this.sizes.width, this.sizes.height);
+        this.renderer!.render(this.scene, this.camera);
+      })
+    // #endregion
+  }
+
+  threeJsSetup() {
+    var position = { x: 0, y: 0, z: 1 };
+    var aspectRatio = this.aspectRatio;
+    var fieldOfView = 75;
+    const cameraInitialValues: ICameraInitialize =
+      { position, aspectRatio, fieldOfView, cameraType: cameraType.PerspectiveCamera }
+    let canvas: HTMLCanvasElement = document.querySelector('.webgl1')!;
+
+    // Wire Them Up
     this.scene = this.threeJsService.initializeScene();
     this.camera = this.threeJsService.initializePerspectiveCamera(this.camera, cameraInitialValues);
-    this.renderer = this.threeJsService.initializeWebGlRenderer(canvas!, sizes);
+    this.renderer = this.threeJsService.initializeWebGlRenderer(canvas!, this.sizes);
     this.scene.add(this.camera);
     this.renderer.render(this.scene, this.camera);
 
     // CONTROL SETUP
     this.controls = new OrbitControls(this.camera, this.renderer.domElement)
     this.controls.target.set(0, 0, 0);
+    this.controls.enablePan = false;
+    this.controls.maxDistance = 2;
+    this.controls.minDistance = 2;
     this.controls.update();
+  }
 
-    // MATERIALS
-
+  materialSetup() {
     // #region PARTICLES
     this.textureLoader = new THREE.TextureLoader();
     this.texture = this.textureLoader.load('../../../../assets/textures/particles/2.png');
@@ -88,6 +116,9 @@ export class ThreeJsPageComponent implements AfterViewInit, OnDestroy{
       sizeAttenuation: true
     });
     const particlesCount = 20000;
+
+    const axis = new THREE.AxesHelper(3);
+    this.scene.add(axis)
 
     // Material setup
     this.material.alphaMap = this.texture;
@@ -107,36 +138,21 @@ export class ThreeJsPageComponent implements AfterViewInit, OnDestroy{
 
     // Assigning Color and Position to Particles
     this.geometry.setAttribute('position', new THREE.BufferAttribute(position, 3));
-    this.geometry.setAttribute('color',new THREE.BufferAttribute(colors, 3));
+    this.geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
     const particles = new THREE.Points(this.geometry, this.material);
     this.scene.add(particles);
     // #endregion
+  }
 
-
+  events() {
     // ANIMATION EVENT
     this.animate = () => {
       this.controls.update();
       this.renderer!.render(this.scene, this.camera);
       this.requestId = window.requestAnimationFrame(this.animate);
     }
-    this.animate();
 
     // RESIZE EVENT
-    this.bodyDims$ =
-      this.sideNavService.getBodyDims.subscribe(results => {
-        sizes = {
-          width: results.width,
-          height: results.height,
-        };
-        aspectRatio = sizes.width / sizes.height;
-        this.camera!.aspect = aspectRatio;
-        this.camera?.updateProjectionMatrix();
-        this.renderer!.setSize(sizes.width, sizes.height);
-        this.renderer!.render(this.scene, this.camera);
-      })
+    // #endregion
   }
-
-
-
-
 }

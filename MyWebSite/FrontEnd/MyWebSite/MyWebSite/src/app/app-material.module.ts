@@ -21,7 +21,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ReactiveFormsModule } from "@angular/forms";
-import { MatAutocompleteModule } from "@angular/material/autocomplete"
+import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { MatCardModule } from "@angular/material/card";
 
 @NgModule({
   imports:[
@@ -46,7 +47,8 @@ import { MatAutocompleteModule } from "@angular/material/autocomplete"
     MatTabsModule,
     ReactiveFormsModule,
     MatDialogModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatCardModule
   ],
   exports: [
     MatButtonModule,
@@ -71,7 +73,8 @@ import { MatAutocompleteModule } from "@angular/material/autocomplete"
     MatTabsModule,
     ReactiveFormsModule,
     MatDialogModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatCardModule
   ]
 })
 export class AngularMaterialModule { }

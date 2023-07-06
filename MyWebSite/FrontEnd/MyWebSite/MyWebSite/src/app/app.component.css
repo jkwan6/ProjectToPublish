@@ -5,7 +5,8 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  background-color: #424242;
+/*  background-color: #424242;*/
+  padding: 0px;
 }
 
 .NavBarStyles {
@@ -39,4 +40,4 @@
     display:flex;
     flex-direction:column;
     flex-grow:1;
-}
+}

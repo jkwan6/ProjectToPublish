@@ -90,3 +90,11 @@
 .button2:hover {
   text-decoration: underline;
 }
+
+@media (max-width: 599px) {
+  .log-in-body {
+    border: none;
+    height: 470px;
+    width: 95%;
+  }
+}

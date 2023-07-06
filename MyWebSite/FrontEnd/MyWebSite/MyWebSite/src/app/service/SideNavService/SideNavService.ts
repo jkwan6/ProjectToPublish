@@ -12,7 +12,7 @@ export class SideNavService {
   // Subject but with Behaviour = Will send the last Emitted Value to Late Subscribers
   private toggle = new BehaviorSubject<boolean>(false);
   private bodyDims = new BehaviorSubject<IElementDimensions>({ height: 0, width: 0 });
-/*  private verticalViewHeight  = new BehaviorSubject<number>(0);*/
+  private verticalViewHeight  = new BehaviorSubject<number>(0);
   public currentToggleStatus$ = this.toggle.asObservable();
 
   constructor() { }
@@ -30,10 +30,10 @@ export class SideNavService {
   }
 
   // verticalViewHeight Getters & Setters
-  //public set setVerticalViewHeight(height: number) {
-  //  this.verticalViewHeight.next(height);
-  //}
-  //public get getVerticalViewHeight() {
-  //  return this.verticalViewHeight;
-  //}
+  public set setVerticalViewHeight(height: number) {
+    this.verticalViewHeight.next(height);
+  }
+  public get getVerticalViewHeight() {
+    return this.verticalViewHeight;
+  }
 }

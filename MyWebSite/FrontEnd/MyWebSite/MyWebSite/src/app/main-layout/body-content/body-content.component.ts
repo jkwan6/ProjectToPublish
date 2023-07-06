@@ -30,7 +30,7 @@ export class BodyContentComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.subscription = this.sideNavService.currentToggleStatus$.subscribe(x => this.matDrawer.toggle(x.valueOf()))
 
-    //this.verticalViewHeight = this.bodyElement!.nativeElement.offsetHeight / window.innerHeight;
+    this.verticalViewHeight = this.bodyElement!.nativeElement.offsetHeight / window.innerHeight;
     //this.sideNavService.setVerticalViewHeight = this.verticalViewHeight;
 
     this.bodyElementDim = {
@@ -40,7 +40,9 @@ export class BodyContentComponent implements AfterViewInit {
     this.sideNavService.setBodyDims = this.bodyElementDim;
     const element: Element = document.getElementById('bodyElement')!;
     const wholePage: Element = document.documentElement;
-    new ResizeObserver(this.outputsize).observe(element || wholePage);
+    new ResizeObserver(this.outputsize).observe(element);
+    new ResizeObserver(this.outputsize).observe(wholePage);
+
 
   }
 
@@ -49,22 +51,33 @@ export class BodyContentComponent implements AfterViewInit {
     //console.log(elementRect);
 
     let totalHeight = window.innerHeight;
-    let navbarHeight = 64;
-    let footerheight = 64;
-    let bodyHeight = Math.max(totalHeight - navbarHeight - footerheight, 0);
+    let footerHeight!: number;
+    let navbarHeight!: number;
+    if (window.innerWidth >= 599) {
+      footerHeight = 64;
+      navbarHeight = 64;
+    }
+    else {
+      navbarHeight = 56;
+      footerHeight = 56;
+    }
+
+    let visibleBodyHeight = Math.max(totalHeight - navbarHeight - footerHeight, 0);
     //console.log(bodyHeight)
+    const element: Element = document.getElementById('bodyElement')!;
+    var x = element.clientHeight;
+    console.log(x + 64 +64)
 
     //let windowHeight = window.innerHeight || document.documentElement.clientHeight;
     //let visibleHeight = Math.min(elementRect.bottom, windowHeight) - Math.max(elementRect.top, 0);
     //visibleHeight = Math.max(0, visibleHeight);
-    this.bodyElementDim.height = bodyHeight;
+    this.bodyElementDim.height = visibleBodyHeight;
     this.bodyElementDim.width = this.bodyElement!.nativeElement.offsetWidth;
     this.sideNavService.setBodyDims = this.bodyElementDim;
 
 
-    //this.verticalViewHeight = this.bodyElement!.nativeElement.offsetHeight / window.innerHeight;
-    //this.sideNavService.setVerticalViewHeight = this.verticalViewHeight;
-    //console.log(this.verticalViewHeight)
+    this.verticalViewHeight = visibleBodyHeight / window.innerHeight;
+    this.sideNavService.setVerticalViewHeight = this.verticalViewHeight;
   }
 
 }

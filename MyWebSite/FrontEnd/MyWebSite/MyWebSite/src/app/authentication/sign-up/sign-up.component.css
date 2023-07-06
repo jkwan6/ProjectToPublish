@@ -74,3 +74,16 @@ app-sign-up-form{
   margin: 0;
   text-align: center;
 }
+
+
+@media (max-width: 599px) {
+  .sign-up-body {
+    border: none;
+  }
+  .back-button-row {
+    margin-left:80px;
+  }
+  .sign-up-body {
+    height: 470px;
+  }
+}
