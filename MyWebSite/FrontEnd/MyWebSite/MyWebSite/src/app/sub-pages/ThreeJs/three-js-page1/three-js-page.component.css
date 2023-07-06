@@ -8,6 +8,8 @@
   flex-direction: row;
   width: 100%;
   padding: 0;
-  margin:0;
-  height: 0vh;  /*set height to vh to force change div height*/
+  margin: 0;
+
+  /*height: 0vh;*/
+  /*set height to vh to force change div height*/
 }

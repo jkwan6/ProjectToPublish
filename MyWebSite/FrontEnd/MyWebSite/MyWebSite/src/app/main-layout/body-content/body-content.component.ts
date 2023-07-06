@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
-import { Subscription } from 'rxjs';
-import { IBodyDimensions } from '../../interface/IBodyDimensions';
+import { elementAt, Subscription } from 'rxjs';
+import { IElementDimensions } from '../../interface/IElementDimensions';
 import { SideNavService } from '../../service/SideNavService/SideNavService';
 
 
@@ -17,8 +17,9 @@ export class BodyContentComponent implements AfterViewInit {
   @ViewChild('bodyElement') bodyElement!: ElementRef;
   @ViewChild('container') containerElement!: ElementRef;
 
-
-  bodyElementDim!: IBodyDimensions;
+  // PROPERTIES
+  bodyElementDim!: IElementDimensions;
+  verticalViewHeight!: number;
 
   constructor(private sideNavService: SideNavService) {}
 
@@ -29,26 +30,41 @@ export class BodyContentComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.subscription = this.sideNavService.currentToggleStatus$.subscribe(x => this.matDrawer.toggle(x.valueOf()))
 
-    this.bodyElementDim = { height: this.bodyElement!.nativeElement.offsetHeight, width: this.bodyElement!.nativeElement.offsetWidth };
+    //this.verticalViewHeight = this.bodyElement!.nativeElement.offsetHeight / window.innerHeight;
+    //this.sideNavService.setVerticalViewHeight = this.verticalViewHeight;
+
+    this.bodyElementDim = {
+      height: this.bodyElement!.nativeElement.offsetHeight,
+      width: this.bodyElement!.nativeElement.offsetWidth
+    };
     this.sideNavService.setBodyDims = this.bodyElementDim;
     const element: Element = document.getElementById('bodyElement')!;
-    new ResizeObserver(this.outputsize).observe(element)
-
-    var mouse: { x: number, y: number } = { x: 0, y: 0 };
-
-    //element!.addEventListener('mousemove', (event: any) => {
-    //  //console.log("mosuemove")
-    //  mouse.x = (event.layerX / this.bodyElement!.nativeElement.offsetWidth - 0.5) * 2;
-    //  mouse.y = - (event.layerY / this.bodyElement!.nativeElement.offsetHeight - 0.5) * 2;
-    //  console.log(mouse)
-    //});
+    const wholePage: Element = document.documentElement;
+    new ResizeObserver(this.outputsize).observe(element || wholePage);
 
   }
 
   outputsize: () => void = (): void => {
-    this.bodyElementDim.height = this.bodyElement!.nativeElement.offsetHeight;
+    let elementRect = this.bodyElement.nativeElement.getBoundingClientRect();
+    //console.log(elementRect);
+
+    let totalHeight = window.innerHeight;
+    let navbarHeight = 64;
+    let footerheight = 64;
+    let bodyHeight = Math.max(totalHeight - navbarHeight - footerheight, 0);
+    //console.log(bodyHeight)
+
+    //let windowHeight = window.innerHeight || document.documentElement.clientHeight;
+    //let visibleHeight = Math.min(elementRect.bottom, windowHeight) - Math.max(elementRect.top, 0);
+    //visibleHeight = Math.max(0, visibleHeight);
+    this.bodyElementDim.height = bodyHeight;
     this.bodyElementDim.width = this.bodyElement!.nativeElement.offsetWidth;
     this.sideNavService.setBodyDims = this.bodyElementDim;
+
+
+    //this.verticalViewHeight = this.bodyElement!.nativeElement.offsetHeight / window.innerHeight;
+    //this.sideNavService.setVerticalViewHeight = this.verticalViewHeight;
+    //console.log(this.verticalViewHeight)
   }
 
 }

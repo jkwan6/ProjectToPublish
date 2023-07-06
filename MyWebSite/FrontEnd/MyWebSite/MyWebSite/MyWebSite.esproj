@@ -11,6 +11,7 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\MyWebSite</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="src\app\interface\ThreeJs\" />
     <Folder Include="src\app\route-guard\" />
     <Folder Include="src\app\service\ThreeJsService\" />
     <Folder Include="src\app\sub-pages\sub-pages\" />

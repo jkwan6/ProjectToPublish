@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { IBodyDimensions } from '../../interface/IBodyDimensions';
+import * as THREE from 'three';
+import { Camera } from 'three';
+import { IElementDimensions } from '../../interface/IElementDimensions';
+import { cameraType, ICameraInitialize,  } from '../../interface/ThreeJs/ICameraInitialize';
+
 
 
 @Injectable({
@@ -8,22 +11,43 @@ import { IBodyDimensions } from '../../interface/IBodyDimensions';
 })
 
 export class ThreeJsService {
-
-  // Subject but with Behaviour = Will send the last Emitted Value to Late Subscribers
-  private toggle = new BehaviorSubject<boolean>(false);
-  private bodyDims = new BehaviorSubject<IBodyDimensions>({ height: 0, width: 0 });
-  public currentToggleStatus$ = this.toggle.asObservable();
-
-  constructor() { }
-
-  changeToggleStatus(_toggle: boolean) {
-    this.toggle.next(_toggle);
+  constructor() {
+    var test: ICameraInitialize =
+    {
+      position : { x: 0, y: 0, z: 0 },
+      aspectRatio: 75,
+      fieldOfView: 75,
+      cameraType: cameraType.PerspectiveCamera
+    }
   }
 
-  public set setBodyDims(dims: IBodyDimensions) {
-    this.bodyDims.next(dims);
+  public initializeScene(): THREE.Scene {
+    return new THREE.Scene();
   }
-  public get getBodyDims() {
-    return this.bodyDims;
+
+  public initializePerspectiveCamera(
+    camera: THREE.PerspectiveCamera,
+    cameraInitialValues: ICameraInitialize
+  ): THREE.PerspectiveCamera  // Returns THREE.Camera
+  {
+    camera = new THREE.PerspectiveCamera(
+      cameraInitialValues.fieldOfView,
+      cameraInitialValues.aspectRatio
+    );
+    camera.position.x = cameraInitialValues.position.x;
+    camera.position.y = cameraInitialValues.position.y;
+    camera.position.z = cameraInitialValues.position.z;
+    return camera;
+  }
+
+  public initializeWebGlRenderer(
+    canvas: Element,
+    size: IElementDimensions
+  ): THREE.WebGLRenderer {
+    let renderer = new THREE.WebGLRenderer({
+      canvas: canvas!
+    });
+    renderer.setSize(size.width, size.height);
+    return renderer;
   }
 }
