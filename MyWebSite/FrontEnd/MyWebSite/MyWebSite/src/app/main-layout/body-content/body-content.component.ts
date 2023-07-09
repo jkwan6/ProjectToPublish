@@ -42,13 +42,11 @@ export class BodyContentComponent implements AfterViewInit {
     const wholePage: Element = document.documentElement;
     new ResizeObserver(this.outputsize).observe(element);
     new ResizeObserver(this.outputsize).observe(wholePage);
-
-
   }
 
   outputsize: () => void = (): void => {
-    let elementRect = this.bodyElement.nativeElement.getBoundingClientRect();
-    //console.log(elementRect);
+    let elementRect = this.containerElement;
+    console.log(elementRect.nativeElement.offsetHeight);
 
     let totalHeight = window.innerHeight;
     let footerHeight!: number;

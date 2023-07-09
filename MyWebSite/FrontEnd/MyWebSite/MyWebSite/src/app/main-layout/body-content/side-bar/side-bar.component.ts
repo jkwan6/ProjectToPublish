@@ -10,8 +10,11 @@ import { SideNavService } from '../../../service/SideNavService/SideNavService';
 export class SideBarComponent implements OnInit {
 
   viewHeight!: number;
-  constructor(private sideNavService : SideNavService) { }
+  previousIteration!: number;
 
+  constructor(private sideNavService: SideNavService) {
+    this.previousIteration = 0;
+  }
   ngOnInit(): void {
     let sizes: IElementDimensions = this.sideNavService.getBodyDims.value;
     let sideBarContainer: HTMLDivElement = document.querySelector('.SideBarFlexContainer')!;
@@ -22,7 +25,12 @@ export class SideBarComponent implements OnInit {
           width: results.width,
           height: results.height,
         };
-        sideBarContainer.style.height = `${sizes.height}px`;
+        if (sizes.height = this.previousIteration) {
+          sideBarContainer.style.height = `${sizes.height}px`;
+        } else {
+          sideBarContainer.style.height = `100%`;
+        }
+        this.previousIteration = sizes.height;
       }
     );
   }

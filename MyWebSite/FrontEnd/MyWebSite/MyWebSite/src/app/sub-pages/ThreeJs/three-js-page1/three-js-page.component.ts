@@ -4,7 +4,7 @@ import * as dat from 'lil-gui';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { SideNavService } from '../../../service/SideNavService/SideNavService';
 import { IElementDimensions } from '../../../interface/IElementDimensions';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription, tap } from 'rxjs';
 import { ThreeJsService } from './../../../../app/service/ThreeJsService/ThreeJsService';
 import { cameraType, ICameraInitialize } from '../../../interface/ThreeJs/ICameraInitialize';
 import { FloatType } from 'three';
@@ -17,7 +17,7 @@ import { FloatType } from 'three';
 })
 export class ThreeJsPageComponent implements AfterViewInit, OnDestroy{
 
-  // PROPERTIES
+  // #region PROPERTIES
   requestId!: number;
   sizes!: IElementDimensions;
   aspectRatio!: number;
@@ -32,10 +32,9 @@ export class ThreeJsPageComponent implements AfterViewInit, OnDestroy{
   controls!: OrbitControls;
   gui!: dat.GUI;
   textureLoader!: THREE.TextureLoader;
-  animate! : (() => {}) | any;
-  bodyDims$!: Subscription;
-  @ViewChild('divElement') divElement: any;
-  @ViewChild('myCanvas') canvasRef!: ElementRef<HTMLCanvasElement>;
+  animateControls!: (() => {}) | any;
+  animateScreenResize!: Observable<IElementDimensions>;
+  // #endregion
 
   constructor(
     private sideNavService: SideNavService,
@@ -53,34 +52,18 @@ export class ThreeJsPageComponent implements AfterViewInit, OnDestroy{
     this.geometry.dispose();
     this.material.dispose();
     this.texture.dispose();
-    this.bodyDims$.unsubscribe();
   }
 
   ngAfterViewInit(): void {
-
     this.threeJsSetup();
     this.materialSetup();
 
-    // #region EVENTS
-    this.events()
-    this.animate()
-
-    // RESIZE EVENT
-    this.bodyDims$ =
-      this.sideNavService.getBodyDims.subscribe(results => {
-        this.sizes = {
-          width: results.width,
-          height: results.height,
-        };
-        this.aspectRatio = this.sizes.width / this.sizes.height;
-        this.camera!.aspect = this.aspectRatio;
-        this.camera?.updateProjectionMatrix();
-        this.renderer!.setSize(this.sizes.width, this.sizes.height);
-        this.renderer!.render(this.scene, this.camera);
-      })
-    // #endregion
+    this.initializeEvents();
+    this.animateControls();
+    this.animateScreenResize.subscribe();
   }
 
+  // Scene, Camera, Renderer, Controls Setup
   threeJsSetup() {
     var position = { x: 0, y: 0, z: 1 };
     var aspectRatio = this.aspectRatio;
@@ -105,6 +88,7 @@ export class ThreeJsPageComponent implements AfterViewInit, OnDestroy{
     this.controls.update();
   }
 
+  // Material Setup
   materialSetup() {
     // #region PARTICLES
     this.textureLoader = new THREE.TextureLoader();
@@ -144,15 +128,24 @@ export class ThreeJsPageComponent implements AfterViewInit, OnDestroy{
     // #endregion
   }
 
-  events() {
-    // ANIMATION EVENT
-    this.animate = () => {
+  // Event Setup
+  initializeEvents() {
+    this.animateControls = () => {
       this.controls.update();
       this.renderer!.render(this.scene, this.camera);
-      this.requestId = window.requestAnimationFrame(this.animate);
+      this.requestId = window.requestAnimationFrame(this.animateControls);
     }
 
-    // RESIZE EVENT
-    // #endregion
+    this.animateScreenResize = this.sideNavService.getBodyDims.pipe(tap(results => {
+        this.sizes = {
+          width: results.width,
+          height: results.height,
+        };
+        this.aspectRatio = this.sizes.width / this.sizes.height;
+        this.camera!.aspect = this.aspectRatio;
+        this.camera?.updateProjectionMatrix();
+        this.renderer!.setSize(this.sizes.width, this.sizes.height);
+        this.renderer!.render(this.scene, this.camera);
+      }))
   }
 }
