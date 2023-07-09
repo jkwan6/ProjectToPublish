@@ -30,6 +30,7 @@ import { CommentPostComponent } from './modules/comment-module/comment-post/comm
 import { RefreshTokenInterceptor } from './interceptors/RefreshTokenErrorInterceptor';
 import { WebsiteDetailsComponent } from './sub-pages/website-details/website-details.component';
 import { RefreshTokenTimeOutInterceptor } from './interceptors/RefreshTokenTimeOutInterceptor';
+import { HomeThreeComponent } from './home-page/home-three/home-three.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { RefreshTokenTimeOutInterceptor } from './interceptors/RefreshTokenTimeO
     FormBaseSample,
     DialogAnimationsExampleDialog,
     CommentPostComponent,
-    WebsiteDetailsComponent
+    WebsiteDetailsComponent,
+    HomeThreeComponent
 
   ],
   imports: [

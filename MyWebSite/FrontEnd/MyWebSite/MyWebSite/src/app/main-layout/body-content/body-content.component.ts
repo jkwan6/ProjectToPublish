@@ -46,7 +46,7 @@ export class BodyContentComponent implements AfterViewInit {
 
   outputsize: () => void = (): void => {
     let elementRect = this.containerElement;
-    console.log(elementRect.nativeElement.offsetHeight);
+    //console.log(elementRect.nativeElement.offsetHeight);
 
     let totalHeight = window.innerHeight;
     let footerHeight!: number;
@@ -64,7 +64,7 @@ export class BodyContentComponent implements AfterViewInit {
     //console.log(bodyHeight)
     const element: Element = document.getElementById('bodyElement')!;
     var x = element.clientHeight;
-    console.log(x + 64 +64)
+    //console.log(x + 64 +64)
 
     //let windowHeight = window.innerHeight || document.documentElement.clientHeight;
     //let visibleHeight = Math.min(elementRect.bottom, windowHeight) - Math.max(elementRect.top, 0);
