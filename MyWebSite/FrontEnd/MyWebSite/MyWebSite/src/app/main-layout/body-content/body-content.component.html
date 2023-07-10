@@ -1,13 +1,14 @@
 <div #container class="body-width flex-class">
-  <mat-drawer-container
-            [@.disabled]="true"
-            class="flex-class height-inherit">
+
+  <!--[@.disabled]="true"-->
+  <mat-drawer-container [@.disabled]="true"
+                        class="flex-class height-inherit">
 
     <mat-drawer class="sidenav-specs"
                 #drawer mode="side"
                 position="start"
                 style="overflow:unset;">
-                <app-side-bar></app-side-bar>
+      <app-side-bar></app-side-bar>
     </mat-drawer>
 
 

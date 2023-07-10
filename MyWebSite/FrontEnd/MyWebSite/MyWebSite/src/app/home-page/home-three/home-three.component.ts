@@ -35,6 +35,8 @@ export class HomeThreeComponent implements AfterViewInit, OnDestroy {
   textureLoader!: THREE.TextureLoader;
   animateControls!: (() => {}) | any;
   animateScreenResize!: Observable<IElementDimensions>;
+  player!: any;
+  cameras!: any;
   // #endregion
 
   constructor(
@@ -57,27 +59,16 @@ export class HomeThreeComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-
-    const controls = {
-
-      moveForward: false,
-      moveBackward: false,
-      moveLeft: false,
-      moveRight: false
-
-    };
-
-
     this.threeJsSetup();
-    this.materialSetup();
-
+    this.particlesSetup();
+    this.playerSetup();
+    this.controls.target = this.player.position;
     this.initializeEvents();
-    this.animateControls();
     this.animateScreenResize.subscribe();
   }
 
   // Material Setup
-  materialSetup() {
+  particlesSetup() {
 
     const axis = new THREE.AxesHelper(3);
     this.scene.add(axis)
@@ -132,13 +123,38 @@ export class HomeThreeComponent implements AfterViewInit, OnDestroy {
     floor.receiveShadow = true
     floor.rotation.x = - Math.PI * 0.5
     this.scene.add(floor)
-
   }
 
+  playerSetup() {
+    // Player Charachter
+    this.player = new THREE.Group();
+    var bodyGeometry = new THREE.CylinderGeometry(0.5, 0.3, 1.6, 20);
+    var material = new THREE.MeshStandardMaterial({ color: 0xffff00 });
+    var body = new THREE.Mesh(bodyGeometry, material);
+    body.position.y = 0.8;
+    body.scale.z = 0.5;
+    this.player.add(body);
 
+    var headGeometry = new THREE.SphereGeometry(0.3, 20, 15);
+    var head = new THREE.Mesh(headGeometry, material);
+    head.position.y = 2;
+    this.player.add(head);
+
+    this.scene.add(this.player);
+
+    this.addKeyboardControl();
+    this.camera.lookAt(this.player)
+    this.cameras = [];
+    var cameraIndex = 0;
+    var followCam = new THREE.Object3D();
+    followCam.position.copy(this.camera.position);
+    this.player.add(followCam);
+    this.cameras.push(followCam);
+
+  }
   // Scene, Camera, Renderer, Controls Setup
   threeJsSetup() {
-    var position = { x: 0, y: 3, z: 50 };
+    var position = { x: 0, y: 20, z: 100 };
     var aspectRatio = this.aspectRatio;
     var fieldOfView = 75;
     const cameraInitialValues: ICameraInitialize =
@@ -154,20 +170,106 @@ export class HomeThreeComponent implements AfterViewInit, OnDestroy {
 
     // CONTROL SETUP
     this.controls = new OrbitControls(this.camera, this.renderer.domElement)
-    this.controls.target.set(0, 0, 0);
+/*    this.controls.target.set(0, 0, 0);*/
     this.controls.enablePan = false;
-    this.controls.maxDistance = 10;
-    this.controls.minDistance = 10;
+    this.controls.maxDistance = 15;
+    this.controls.minDistance = 5;
     this.controls.maxPolarAngle = Math.PI / 2.08; // radians
     this.controls.update();
   }
+
+
+  addKeyboardControl() {
+
+    document.addEventListener('keydown', (event: KeyboardEvent) => {
+
+      let forward =
+        (this.player.userData !== undefined && this.player.userData['move'] !== undefined)
+          ? this.player.userData['move'].forward
+          : 0;
+      let turn =
+        (this.player.userData != undefined && this.player.userData['move'] !== undefined)
+          ? this.player.userData['move'].turn
+          : 0;
+
+      switch (event.keyCode) {
+        case 87://W
+          forward = -1;
+          break;
+        case 83://S
+          forward = 1;
+          break;
+        case 65://A
+          turn = 1;
+          break;
+        case 68://D
+          turn = -1;
+          break;
+      }
+      this.playerControl(forward, turn);
+    });
+
+    document.addEventListener('keyup', (event: KeyboardEvent) => {
+      let forward =
+        (this.player.userData !== undefined && this.player.userData['move'] !== undefined)
+          ? this.player.userData['move'].forward
+          : 0;
+      let turn =
+        (this.player.userData != undefined && this.player.userData['move'] !== undefined)
+          ? this.player.userData['move'].turn
+          : 0;
+
+      switch (event.keyCode) {
+        case 87://W
+          forward = 0;
+          break;
+        case 83://S
+          forward = 0;
+          break;
+        case 65://A
+          turn = 0;
+          break;
+        case 68://D
+          turn = 0;
+          break;
+      }
+      this.playerControl(forward, turn);
+    });
+  }
+
+  playerControl(forward:any, turn:any) {
+  if (forward == 0 && turn == 0) {
+    delete this.player.userData['move'];
+  } else {
+    if (this.player.userData === undefined) this.player.userData = {};
+    this.player.userData['move'] = { forward, turn };
+  }
+}
+
   // Event Setup
   initializeEvents() {
-    this.animateControls = () => {
-      this.controls.update();
-      this.renderer!.render(this.scene, this.camera);
-      this.requestId = window.requestAnimationFrame(this.animateControls);
+
+    const clock = new THREE.Clock()
+    const tick = () => {
+      const elapsedTime = clock.getDelta()
+      this.controls.update()
+      this.renderer.render(this.scene, this.camera)
+
+
+      if (this.player.userData !== undefined && this.player.userData.move !== undefined) {
+        this.player.translateZ(this.player.userData.move.forward * elapsedTime * 10);
+        this.player.rotateY(this.player.userData.move.turn * elapsedTime);
+      }
+
+      this.camera.position.lerp(this.cameras[0].getWorldPosition(new THREE.Vector3()), 0.05);
+      const pos = this.player.position.clone();
+      pos.y += 5;
+      this.cameras[0].lookAt(pos);
+
+
+      window.requestAnimationFrame(tick)
     }
+    tick();
 
     this.animateScreenResize = this.sideNavService.getBodyDims.pipe(tap(results => {
       this.sizes = {
