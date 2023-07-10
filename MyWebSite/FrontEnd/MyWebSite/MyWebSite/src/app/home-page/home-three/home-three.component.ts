@@ -250,6 +250,7 @@ export class HomeThreeComponent implements AfterViewInit, OnDestroy {
   initializeEvents() {
 
     const clock = new THREE.Clock()
+
     const tick = () => {
       const elapsedTime = clock.getDelta()
       this.controls.update()
@@ -261,12 +262,11 @@ export class HomeThreeComponent implements AfterViewInit, OnDestroy {
         this.player.rotateY(this.player.userData.move.turn * elapsedTime);
       }
 
-      this.camera.position.lerp(this.cameras[0].getWorldPosition(new THREE.Vector3()), 0.05);
       const pos = this.player.position.clone();
       pos.y += 5;
       this.cameras[0].lookAt(pos);
 
-
+      //console.log(this.camera.position)
       window.requestAnimationFrame(tick)
     }
     tick();
