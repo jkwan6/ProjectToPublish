@@ -28,7 +28,7 @@ export class BodyContentComponent implements AfterViewInit {
   toggleStatus!: boolean;
 
   ngAfterViewInit(): void {
-    this.subscription = this.sideNavService.currentToggleStatus$.subscribe(x => this.matDrawer.toggle(x.valueOf()))
+    this.subscription = this.sideNavService.sidebarToggleStatus$.subscribe(x => this.matDrawer.toggle(x.valueOf()))
 
     this.verticalViewHeight = this.bodyElement!.nativeElement.offsetHeight / window.innerHeight;
     //this.sideNavService.setVerticalViewHeight = this.verticalViewHeight;

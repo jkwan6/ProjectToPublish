@@ -28,6 +28,7 @@ export class SideBarComponent implements OnInit {
         if (sizes.height = this.previousIteration) {
           sideBarContainer.style.height = `${sizes.height}px`;
         } else {
+          //sideBarContainer.style.height = `${sizes.height}px`;
           sideBarContainer.style.height = `100%`;
         }
         this.previousIteration = sizes.height;

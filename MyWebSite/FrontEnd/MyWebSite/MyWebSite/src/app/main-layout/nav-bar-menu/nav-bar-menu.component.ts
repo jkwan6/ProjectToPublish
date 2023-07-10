@@ -29,7 +29,7 @@ export class NavBarMenuComponent implements OnInit {
 
   ngOnInit(): void {
     this.subscription.add(
-      this.sideNavService.currentToggleStatus$.subscribe(toggleStatus => this.toggleStatus = toggleStatus))
+      this.sideNavService.sidebarToggleStatus$.subscribe(toggleStatus => this.toggleStatus = toggleStatus))
     this.subscription.add(
       this.authStateService.$authState.subscribe(results => this.isLoggedIn = results))
   }
@@ -39,11 +39,11 @@ export class NavBarMenuComponent implements OnInit {
 
   onToggle() {
     if (this.toggleStatus) {
-      this.sideNavService.changeToggleStatus(false)
+      this.sideNavService.changeSidebarStatus(false)
       this.toggleStatus = false;
     }
     else {
-      this.sideNavService.changeToggleStatus(true)
+      this.sideNavService.changeSidebarStatus(true)
       this.toggleStatus = true;
     }
   }

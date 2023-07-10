@@ -10,16 +10,25 @@ import { IElementDimensions } from '../../interface/IElementDimensions';
 export class SideNavService {
 
   // Subject but with Behaviour = Will send the last Emitted Value to Late Subscribers
-  private toggle = new BehaviorSubject<boolean>(false);
+  private toggleSidebar = new BehaviorSubject<boolean>(false);
   private bodyDims = new BehaviorSubject<IElementDimensions>({ height: 0, width: 0 });
   private verticalViewHeight  = new BehaviorSubject<number>(0);
-  public currentToggleStatus$ = this.toggle.asObservable();
+  public sidebarToggleStatus$ = this.toggleSidebar.asObservable();
+
+  private toggleTheme = new BehaviorSubject<boolean>(false);
+  public themeToggleStatus$ = this.toggleTheme.asObservable();
 
   constructor() { }
 
-  changeToggleStatus(_toggle: boolean) {
-    this.toggle.next(_toggle);
+  changeSidebarStatus(_toggle: boolean) {
+    this.toggleSidebar.next(_toggle);
   }
+
+  changeThemeStatus(_toggle: boolean) {
+    this.toggleTheme.next(_toggle);
+  }
+
+
 
   // bodyDims Getters & Setters
   public set setBodyDims(dims: IElementDimensions) {

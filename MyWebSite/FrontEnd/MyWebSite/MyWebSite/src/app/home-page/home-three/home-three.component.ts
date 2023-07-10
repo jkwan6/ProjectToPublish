@@ -8,7 +8,7 @@ import { Observable, Subscription, tap } from 'rxjs';
 import { ThreeJsService } from './../../../app/service/ThreeJsService/ThreeJsService';
 import { cameraType, ICameraInitialize } from '../../interface/ThreeJs/ICameraInitialize';
 import { FloatType } from 'three';
-import { MaterialSetup } from './MaterialSetup';
+import { HomeThreeHelper } from './home-three.helper';
 
 @Component({
   selector: 'app-home-three',
@@ -42,7 +42,7 @@ export class HomeThreeComponent implements AfterViewInit, OnDestroy {
     private threeJsService: ThreeJsService
   ) {
     this.sizes = this.sideNavService.getBodyDims.value;
-    this.sizes.height = 700;
+    this.sizes.height = 600;
     this.aspectRatio = this.sizes.width / this.sizes.height;
   }
 
@@ -57,38 +57,23 @@ export class HomeThreeComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
+
+    const controls = {
+
+      moveForward: false,
+      moveBackward: false,
+      moveLeft: false,
+      moveRight: false
+
+    };
+
+
     this.threeJsSetup();
     this.materialSetup();
 
     this.initializeEvents();
     this.animateControls();
     this.animateScreenResize.subscribe();
-  }
-
-  // Scene, Camera, Renderer, Controls Setup
-  threeJsSetup() {
-    var position = { x: 0, y: 3, z: 50 };
-    var aspectRatio = this.aspectRatio;
-    var fieldOfView = 75;
-    const cameraInitialValues: ICameraInitialize =
-      { position, aspectRatio, fieldOfView, cameraType: cameraType.PerspectiveCamera }
-    let canvas: HTMLCanvasElement = document.querySelector('.HomeWebgl')!;
-
-    // Wire Them Up
-    this.scene = this.threeJsService.initializeScene();
-    this.camera = this.threeJsService.initializePerspectiveCamera(this.camera, cameraInitialValues);
-    this.renderer = this.threeJsService.initializeWebGlRenderer(canvas!, this.sizes);
-    this.scene.add(this.camera);
-    this.renderer.render(this.scene, this.camera);
-
-    // CONTROL SETUP
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement)
-    this.controls.target.set(0, 0, 0);
-    this.controls.enablePan = false;
-    this.controls.maxDistance = 2;
-    this.controls.minDistance = 2;
-    this.controls.maxPolarAngle = Math.PI/2.08; // radians
-    this.controls.update();
   }
 
   // Material Setup
@@ -114,6 +99,26 @@ export class HomeThreeComponent implements AfterViewInit, OnDestroy {
     this.material.transparent = true;
     this.material.vertexColors = true;
 
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7)
+    this.scene.add(ambientLight)
+
+    const position = new Float32Array(particlesCount * 3);
+    const colors = new Float32Array(particlesCount * 3);
+
+    // Particles Position And Color
+    for (let i = 0; i < particlesCount * 3; i++) {
+      position[i] = (Math.random() - 0.5) * 15
+      colors[i] = Math.random()
+    }
+
+    // Assigning Color and Position to Particles
+    this.geometry.setAttribute('position', new THREE.BufferAttribute(position, 3));
+    this.geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    const particles = new THREE.Points(this.geometry, this.material);
+    this.scene.add(particles);
+    // #endregion
+
+
     const floor = new THREE.Mesh(
       new THREE.PlaneGeometry(120, 120),
       new THREE.MeshStandardMaterial({
@@ -127,26 +132,35 @@ export class HomeThreeComponent implements AfterViewInit, OnDestroy {
     floor.receiveShadow = true
     floor.rotation.x = - Math.PI * 0.5
     this.scene.add(floor)
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7)
-    this.scene.add(ambientLight)
 
-    const position = new Float32Array(particlesCount * 3);
-    const colors = new Float32Array(particlesCount * 3);
-
-    // Particles Position And Color
-    for (let i = 0; i < particlesCount * 3; i++) {
-      position[i] = (Math.random() - 0.5) * 10
-      colors[i] = Math.random()
-    }
-
-    // Assigning Color and Position to Particles
-    this.geometry.setAttribute('position', new THREE.BufferAttribute(position, 3));
-    this.geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-    const particles = new THREE.Points(this.geometry, this.material);
-    this.scene.add(particles);
-    // #endregion
   }
 
+
+  // Scene, Camera, Renderer, Controls Setup
+  threeJsSetup() {
+    var position = { x: 0, y: 3, z: 50 };
+    var aspectRatio = this.aspectRatio;
+    var fieldOfView = 75;
+    const cameraInitialValues: ICameraInitialize =
+      { position, aspectRatio, fieldOfView, cameraType: cameraType.PerspectiveCamera }
+    let canvas: HTMLCanvasElement = document.querySelector('.HomeWebgl')!;
+
+    // Wire Them Up
+    this.scene = this.threeJsService.initializeScene();
+    this.camera = this.threeJsService.initializePerspectiveCamera(this.camera, cameraInitialValues);
+    this.renderer = this.threeJsService.initializeWebGlRenderer(canvas!, this.sizes);
+    this.scene.add(this.camera);
+    this.renderer.render(this.scene, this.camera);
+
+    // CONTROL SETUP
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement)
+    this.controls.target.set(0, 0, 0);
+    this.controls.enablePan = false;
+    this.controls.maxDistance = 10;
+    this.controls.minDistance = 10;
+    this.controls.maxPolarAngle = Math.PI / 2.08; // radians
+    this.controls.update();
+  }
   // Event Setup
   initializeEvents() {
     this.animateControls = () => {
@@ -157,8 +171,8 @@ export class HomeThreeComponent implements AfterViewInit, OnDestroy {
 
     this.animateScreenResize = this.sideNavService.getBodyDims.pipe(tap(results => {
       this.sizes = {
-        width: results.width * 0.9,   // Width
-        height: 700,            // Height - Edit --> Constant
+        width: results.width * 0.925,   // Width
+        height: 600,            // Height - Edit --> Constant
       };
       this.aspectRatio = this.sizes.width / this.sizes.height;
       this.camera!.aspect = this.aspectRatio;
