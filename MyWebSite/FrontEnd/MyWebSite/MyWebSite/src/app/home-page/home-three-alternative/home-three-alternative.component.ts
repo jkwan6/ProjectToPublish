@@ -1,23 +1,15 @@
-import { Component, AfterViewInit, ViewChild, OnDestroy, HostListener, ElementRef } from '@angular/core';
+import { AfterViewInit, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import * as THREE from 'three';
-import * as dat from 'lil-gui';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { SideNavService } from '../../../app/service/SideNavService/SideNavService';
-import { IElementDimensions } from '../../../app/interface/IElementDimensions';
-import { Observable, Subscription, tap } from 'rxjs';
-import { ThreeJsService } from './../../../app/service/ThreeJsService/ThreeJsService';
-import { cameraType, ICameraInitialize } from '../../interface/ThreeJs/ICameraInitialize';
-import { FloatType } from 'three';
+import { SideNavService } from '../../service/SideNavService/SideNavService';
+import { ThreeJsService } from '../../service/ThreeJsService/ThreeJsService';
 import { HomeThreeBase } from './home-three.helper';
-import { ThreeJsBase } from '../../service/ThreeJsService/ThreeJsBase';
 
 @Component({
-  selector: 'app-home-three',
-  templateUrl: './home-three.component.html',
-  styleUrls: ['./home-three.component.css'],
-  providers: [ThreeJsService]
+  selector: 'app-home-three-alternative',
+  templateUrl: './home-three-alternative.component.html',
+  styleUrls: ['./home-three-alternative.component.css']
 })
-export class HomeThreeComponent extends HomeThreeBase implements AfterViewInit, OnDestroy {
+export class HomeThreeAlternativeComponent extends HomeThreeBase implements AfterViewInit, OnDestroy {
 
   // #region PROPERTIES
 
@@ -136,14 +128,14 @@ export class HomeThreeComponent extends HomeThreeBase implements AfterViewInit, 
     });
   }
 
-  playerControl(forward:any, turn:any) {
-  if (forward == 0 && turn == 0) {
-    delete this.player.userData['move'];
-  } else {
-    if (this.player.userData === undefined) this.player.userData = {};
-    this.player.userData['move'] = { forward, turn };
+  playerControl(forward: any, turn: any) {
+    if (forward == 0 && turn == 0) {
+      delete this.player.userData['move'];
+    } else {
+      if (this.player.userData === undefined) this.player.userData = {};
+      this.player.userData['move'] = { forward, turn };
+    }
   }
-}
 
   // Event Setup
   initializeClockAnimationEvent() {
@@ -171,3 +163,4 @@ export class HomeThreeComponent extends HomeThreeBase implements AfterViewInit, 
     tick();
   }
 }
+

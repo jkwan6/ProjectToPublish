@@ -31,6 +31,7 @@ import { RefreshTokenInterceptor } from './interceptors/RefreshTokenErrorInterce
 import { WebsiteDetailsComponent } from './sub-pages/website-details/website-details.component';
 import { RefreshTokenTimeOutInterceptor } from './interceptors/RefreshTokenTimeOutInterceptor';
 import { HomeThreeComponent } from './home-page/home-three/home-three.component';
+import { HomeThreeAlternativeComponent } from './home-page/home-three-alternative/home-three-alternative.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { HomeThreeComponent } from './home-page/home-three/home-three.component'
     DialogAnimationsExampleDialog,
     CommentPostComponent,
     WebsiteDetailsComponent,
-    HomeThreeComponent
+    HomeThreeComponent,
+    HomeThreeAlternativeComponent
 
   ],
   imports: [
