@@ -8,6 +8,7 @@ import { Directive } from "@angular/core";
 import { cameraType, ICameraInitialize } from "../../interface/ThreeJs/ICameraInitialize";
 import * as THREE from "three";
 
+
 export class HomeThreeBase {
   requestId!: number;
   sizes!: IElementDimensions;
@@ -29,6 +30,16 @@ export class HomeThreeBase {
   gui!: dat.GUI;
   // DI Injection
 
+
+  movingForward!: boolean;
+  mousedown!: boolean;
+  cameraOrigin!: THREE.Vector3;
+  container!: THREE.Group;
+  tempCameraVector!: THREE.Vector3 | any;
+  tempModelVector!: THREE.Vector3 | any;
+  xAxis!: THREE.Vector3;
+  model!: THREE.Object3D;
+
   constructor(
     protected sideNavService: SideNavService,
     protected threeJsService: ThreeJsService
@@ -39,7 +50,7 @@ export class HomeThreeBase {
   }
 
   threeJsSetup() {
-    var position = { x: 0, y: 50, z: 100 };
+    var position = { x: 0, y: 20, z: 150 };
     var aspectRatio = this.aspectRatio;
     var fieldOfView = 75;
     const cameraInitialValues: ICameraInitialize =
@@ -48,12 +59,32 @@ export class HomeThreeBase {
 
     // Wire Them Up
     this.scene = this.threeJsService.initializeScene();
-    this.camera = this.threeJsService.initializePerspectiveCamera(this.camera, cameraInitialValues);
+
+
+
+
+    // Camera and controls
+    this.xAxis = new THREE.Vector3(1, 0, 0);
+    this.tempCameraVector = new THREE.Vector3(0, 0, 0);
+    this.tempModelVector = new THREE.Vector3(0, 0, 0);
+    this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.01, 1000);
+    this.camera.position.set(position.x, position.y, position.z);
+    this.cameraOrigin = new THREE.Vector3(0, 1.5, 0);
+    this.camera.lookAt(this.cameraOrigin);
+
+
+
+
+    //this.camera = this.threeJsService.initializePerspectiveCamera(this.camera, cameraInitialValues);
     this.renderer = this.threeJsService.initializeWebGlRenderer(canvas!, this.sizes);
     this.scene.add(this.camera);
     this.renderer.render(this.scene, this.camera);
 
-    // CONTROL SETUP
+
+
+
+
+    //// CONTROL SETUP
     this.controls = new OrbitControls(this.camera, this.renderer.domElement)
     /*    this.controls.target.set(0, 0, 0);*/
     this.controls.enablePan = false;
@@ -62,6 +93,8 @@ export class HomeThreeBase {
     this.controls.maxPolarAngle = Math.PI / 2.08; // radians
     this.controls.update();
   }
+
+
   initializeAnimateScreenResizeEvent() {
     this.animateScreenResize = this.sideNavService.getBodyDims.pipe(tap(results => {
       this.sizes = {
