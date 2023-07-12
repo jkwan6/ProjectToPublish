@@ -35,6 +35,8 @@ export class HomeThreeAlternativeComponent extends HomeThreeBase implements Afte
     this.movingForward = false;
     this.mousedown = false;
 
+
+
     this.sizes = this.sideNavService.getBodyDims.value;
     this.sizes.height = 600;
 
@@ -56,7 +58,8 @@ export class HomeThreeAlternativeComponent extends HomeThreeBase implements Afte
     this.playerSetup();
     this.initializeAnimateScreenResizeEvent();
     this.addKeyboardControl();
-    this.cameraOrigin.set(this.container.position.x, this.container.position.y, this.container.position.z );
+    this.cameraOrigin.set(this.container.position.x, this.container.position.y, this.container.position.z);
+    this.controls.target = this.container.position;
     this.initializeClockAnimationEvent();
   }
 
@@ -176,16 +179,6 @@ export class HomeThreeAlternativeComponent extends HomeThreeBase implements Afte
       const elapsedTime = clock.getDelta();
 /*      this.controls.update()*/
       this.renderer.render(this.scene, this.camera);
-
-
-      //if (this.player.userData !== undefined && this.player.userData['move'] !== undefined) {
-      //  this.player.translateZ(this.player.userData['move'].forward * elapsedTime * 10);
-      //  this.player.rotateY(this.player.userData['move'].turn * elapsedTime);
-      //}
-
-      //const pos = this.player.position.clone();
-      //pos.y += 5;
-      //this.cameras[0].lookAt(pos);
 
       //console.log(this.camera.position)
       window.requestAnimationFrame(tick);

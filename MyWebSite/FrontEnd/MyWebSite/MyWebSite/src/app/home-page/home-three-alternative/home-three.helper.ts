@@ -49,12 +49,11 @@ export class HomeThreeBase {
   initializeControls() {
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enablePan = false;
-    this.controls.maxDistance = 20;
-    this.controls.minDistance = 20;
+    //this.controls.maxDistance = 20;
+    //this.controls.minDistance = 20;
     this.controls.maxPolarAngle = Math.PI / 2.08;
     this.controls.update();
     //this.controls.enableZoom = false;
-    //this.controls.target.set(0, 0, 0);
   }
 
 
