@@ -32,6 +32,7 @@ import { WebsiteDetailsComponent } from './sub-pages/website-details/website-det
 import { RefreshTokenTimeOutInterceptor } from './interceptors/RefreshTokenTimeOutInterceptor';
 import { HomeThreeComponent } from './home-page/home-three/home-three.component';
 import { HomeThreeAlternativeComponent } from './home-page/home-three-alternative/home-three-alternative.component';
+import { HomeThreeAlternativeTwoComponent } from './home-page/home-three-alternative-two/home-three-alternative-two.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { HomeThreeAlternativeComponent } from './home-page/home-three-alternativ
     CommentPostComponent,
     WebsiteDetailsComponent,
     HomeThreeComponent,
-    HomeThreeAlternativeComponent
+    HomeThreeAlternativeComponent,
+    HomeThreeAlternativeTwoComponent
 
   ],
   imports: [

@@ -28,17 +28,15 @@ export class HomeThreeAlternativeComponent extends HomeThreeBase implements Afte
   ) {
     super(sideNavService);
 
+    this.sizes = this.sideNavService.getBodyDims.value;
+    this.sizes.height = 600;
+
     this.xAxis = new THREE.Vector3(1, 0, 0);
     this.cameraOrigin = new THREE.Vector3(0, 1.5, 0);
     this.tempCameraVector = new THREE.Vector3(0, 0, 0);
     this.tempModelVector = new THREE.Vector3(0, 0, 0);
     this.movingForward = false;
     this.mousedown = false;
-
-
-
-    this.sizes = this.sideNavService.getBodyDims.value;
-    this.sizes.height = 600;
 
     this.aspectRatio = this.sizes.width / this.sizes.height;
   }
@@ -59,7 +57,8 @@ export class HomeThreeAlternativeComponent extends HomeThreeBase implements Afte
     this.initializeAnimateScreenResizeEvent();
     this.addKeyboardControl();
     this.cameraOrigin.set(this.container.position.x, this.container.position.y, this.container.position.z);
-    this.controls.target = this.container.position;
+    this.controls.target = this.player.position;
+/*    this.controls.position0.set(this.camera.position.x, this.camera.position.y, this.camera.position.z)*/
     this.initializeClockAnimationEvent();
   }
 
@@ -77,24 +76,20 @@ export class HomeThreeAlternativeComponent extends HomeThreeBase implements Afte
     head.position.y = 2;
     this.player.add(body, head);
 
-
     this.container = new THREE.Group();
-    this.container.add(this.camera);
+    //this.container.add(this.camera);
     this.container.add(this.player);
-
+        this.controls.target = this.player.position;
+    this.container.add(this.controls.object)
     this.scene.add(this.container);
   }
 
   // Scene, Camera, Renderer, Controls Setup
   addKeyboardControl() {
-
+    let canvas: HTMLCanvasElement = document.querySelector('.HomeWebgl')!;
     document.addEventListener("keydown", (e: KeyboardEvent) => {
       const { keyCode } = e;
       if (keyCode === 87 || keyCode === 38) {
-        //baseActions.idle.weight = 0;
-        //baseActions.run.weight = 5;
-        //activateAction(baseActions.run.action);
-        //activateAction(baseActions.idle.action);
         this.movingForward = true;
       };
     });
@@ -102,35 +97,33 @@ export class HomeThreeAlternativeComponent extends HomeThreeBase implements Afte
     document.addEventListener("keyup", (e: KeyboardEvent) => {
       const { keyCode } = e;
       if (keyCode === 87 || keyCode === 38) {
-        //baseActions.idle.weight = 1;
-        //baseActions.run.weight = 0;
-        //activateAction(baseActions.run.action);
-        //activateAction(baseActions.idle.action);
         this.movingForward = false;
       };
     });
 
-    document.addEventListener("pointerdown", (e: PointerEvent) => {
+    canvas.addEventListener("pointerdown", (e: PointerEvent) => {
       this.mousedown = true;
     });
 
-    document.addEventListener("pointerup", (e: PointerEvent) => {
+    canvas.addEventListener("pointerup", (e: PointerEvent) => {
       this.mousedown = false;
     });
 
-    document.addEventListener("pointermove", (e: PointerEvent) => {
-      if (this.mousedown) {
-        const { movementX, movementY } = e;
-        const offset = new THREE.Spherical().setFromVector3(
-          this.camera.position.clone().sub(this.cameraOrigin)
-        );
-        const phi = offset.phi - movementY * 0.02;
-        offset.theta -= movementX * 0.002;
-        offset.phi = Math.max(0.01, Math.min(0.47 * Math.PI, phi));
-        this.camera.position.copy(
-          this.cameraOrigin.clone().add(new THREE.Vector3().setFromSpherical(offset))
-        );
-        this.camera.lookAt(this.container.position.clone().add(this.cameraOrigin));
+    canvas.addEventListener("pointermove", (e: PointerEvent) => {
+
+      if (this.mousedown) { // If Mouse is also being clickedw
+        this.controls.target = this.player.position;
+        //const { movementX, movementY } = e;
+        //const offset = new THREE.Spherical().setFromVector3(
+        //  this.camera.position.clone().sub(this.cameraOrigin)
+        //);
+        //const phi = offset.phi - movementY * 0.02;
+        //offset.theta -= movementX * 0.002;
+        //offset.phi = Math.max(0.01, Math.min(0.47 * Math.PI, phi));
+        //this.camera.position.copy(
+        //  this.cameraOrigin.clone().add(new THREE.Vector3().setFromSpherical(offset))
+        //);
+        //this.camera.lookAt(this.container.position.clone().add(this.cameraOrigin));
       };
     });
   }
@@ -138,11 +131,9 @@ export class HomeThreeAlternativeComponent extends HomeThreeBase implements Afte
 
   // Event Setup
   initializeClockAnimationEvent() {
-
     const clock = new THREE.Clock();
 
     const tick = () => {
-
       if (this.movingForward) {
         // Get the X-Z plane in which camera is looking to move the player
         this.camera.getWorldDirection(this.tempCameraVector);
@@ -172,15 +163,20 @@ export class HomeThreeAlternativeComponent extends HomeThreeBase implements Afte
         this.player.rotateY(
           Math.max(-0.05, Math.min(sanitisedAngle, 0.05))
         );
-        this.container.position.add(cameraDirection.multiplyScalar(0.3));
+
+        var moveSpeed = cameraDirection.multiplyScalar(0.3);
+        this.container.position.add(moveSpeed); // Speed of Charachter
+        //this.camera.position.add(moveSpeed)
+
+        //console.log(this.controls.position0)
         this.camera.lookAt(this.container.position.clone().add(this.cameraOrigin));
       }
+      console.log(this.camera.position.x)
 
-      const elapsedTime = clock.getDelta();
-/*      this.controls.update()*/
+/*    const elapsedTime = clock.getDelta();*/
+      /*      this.controls.update()*/
+      this.controls.target = this.player.position;
       this.renderer.render(this.scene, this.camera);
-
-      //console.log(this.camera.position)
       window.requestAnimationFrame(tick);
     }
     tick();
