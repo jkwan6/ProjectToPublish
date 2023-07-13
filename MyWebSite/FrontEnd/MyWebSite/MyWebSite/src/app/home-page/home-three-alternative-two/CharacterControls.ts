@@ -1,7 +1,11 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { A, D, DIRECTIONS, S, W } from './utils'
-
+const W = 'w'
+const A = 'a'
+const S = 's'
+const D = 'd'
+const SHIFT = 'shift'
+const DIRECTIONS = [W, A, S, D];
 
 export class CharacterControls {
 
@@ -60,6 +64,7 @@ export class CharacterControls {
       play = 'Idle'
     }
 
+    // Update Current Action
     if (this.currentAction != play) {
       const toPlay = this.animationsMap.get(play)
       const current = this.animationsMap.get(this.currentAction)
