@@ -23,7 +23,7 @@ export class CharacterControls {
 
   // constants
   fadeDuration: number = 0.2
-  runVelocity = 10
+  runVelocity = 15
   walkVelocity = 2
 
   constructor(model: THREE.Group,

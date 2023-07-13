@@ -19,7 +19,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit {
     private sideNavService: SideNavService,
   ) {
     this.sizes = this.sideNavService.getBodyDims.value;
-    this.sizes.height = 600;
+    this.sizes.height = 500;
   }
   animateScreenResize!: Observable<IElementDimensions>;
   sizes!: IElementDimensions;
@@ -28,12 +28,12 @@ export class HomeThreeAlternativeTwoComponent implements OnInit {
 
     // SCENE
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xa8def0);
+    //scene.background = new THREE.Color(0xa8def0);
 
     // CAMERA
     const camera = new THREE.PerspectiveCamera(45, this.sizes.width / this.sizes.height, 0.1, 1000);
     camera.position.y = 5;
-    camera.position.z = 5;
+    camera.position.z = 50;
     camera.position.x = 0;
 
 
@@ -51,35 +51,78 @@ export class HomeThreeAlternativeTwoComponent implements OnInit {
     const orbitControls = new OrbitControls(camera, renderer.domElement);
     orbitControls.enableDamping = true
     orbitControls.minDistance = 5
-    orbitControls.maxDistance = 15
+    orbitControls.maxDistance = 20
     orbitControls.enablePan = false
     orbitControls.maxPolarAngle = Math.PI / 2.08;
     orbitControls.update();
 
     // LIGHTS
-    light()
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+    scene.add(ambientLight)
 
     // FLOOR
-    generateFloor()
+
+
+
+    const textureLoader = new THREE.TextureLoader();
+    const placeholder = textureLoader.load("../../../../../assets/textures/placeholder/placeholder.png");
+    const sandBaseColor = textureLoader.load("../../../../../assets/textures/sand/Sand 002_COLOR.jpg");
+    const sandNormalMap = textureLoader.load("../../../../../assets/textures/sand/Sand 002_NRM.jpg");
+    const sandHeightMap = textureLoader.load("../../../../../assets/textures/sand/Sand 002_DISP.jpg");
+    const sandAmbientOcclusion = textureLoader.load("../../../../../assets/textures/sand/Sand 002_OCC.jpg");
+
+    const WIDTH = 80
+    const LENGTH = 80
+
+    const geometry = new THREE.PlaneGeometry(WIDTH, LENGTH, 512, 512);
+    const material = new THREE.MeshStandardMaterial(
+      {
+        map: sandBaseColor, normalMap: sandNormalMap,
+        displacementMap: sandHeightMap, displacementScale: 0.1,
+        aoMap: sandAmbientOcclusion
+      })
+    wrapAndRepeatTexture(material.map!)
+    wrapAndRepeatTexture(material.normalMap!)
+    wrapAndRepeatTexture(material.displacementMap!)
+    wrapAndRepeatTexture(material.aoMap!)
+
+    const floor = new THREE.Mesh(geometry, material)
+    //const floor = new THREE.Mesh(
+    //  new THREE.PlaneGeometry(120, 120),
+    //  new THREE.MeshStandardMaterial({
+    //    color: '#777777',
+    //    metalness: 0.3,
+    //    roughness: 0.4,
+    //    envMapIntensity: 0.5,
+    //    side: THREE.DoubleSide
+    //  })
+    //)
+    floor.receiveShadow = true
+    floor.rotation.x = - Math.PI / 2
+    scene.add(floor)
 
     // MODEL WITH ANIMATIONS
     var characterControls: CharacterControls
-    new GLTFLoader().load('../../../../../assets/models/Soldier.glb', function (gltf) {
-      const model = gltf.scene;
-      model.traverse(function (object: any) {
-        if (object.isMesh) object.castShadow = true;
-      });
-      scene.add(model);
 
-      const gltfAnimations: THREE.AnimationClip[] = gltf.animations;
-      const mixer = new THREE.AnimationMixer(model);
-      const animationsMap: Map<string, THREE.AnimationAction> = new Map()
-      gltfAnimations.filter(a => a.name != 'TPose').forEach((a: THREE.AnimationClip) => {
-        animationsMap.set(a.name, mixer.clipAction(a))
-      })
+    const gltfLoader = new GLTFLoader();
 
-      characterControls = new CharacterControls(model, mixer, animationsMap, orbitControls, camera, 'Idle')
-    });
+    gltfLoader
+      .load('../../../../../assets/models/Soldier.glb',
+        (gltf) => {
+          const model = gltf.scene;
+          model.traverse(function (object: any) {
+            if (object.isMesh) object.castShadow = true;
+          });
+          scene.add(model);
+          const gltfAnimations: THREE.AnimationClip[] = gltf.animations;
+          const mixer = new THREE.AnimationMixer(model);
+          const animationsMap: Map<string, THREE.AnimationAction> = new Map()
+          gltfAnimations.filter(a => a.name != 'TPose').forEach((a: THREE.AnimationClip) => {
+            animationsMap.set(a.name, mixer.clipAction(a))
+          })
+          characterControls = new CharacterControls(model, mixer, animationsMap, orbitControls, camera, 'Idle')
+        }
+      );
 
     // CONTROL KEYS
     const keysPressed = {}
@@ -96,6 +139,9 @@ export class HomeThreeAlternativeTwoComponent implements OnInit {
       keyDisplayQueue.up(event.key);
       (keysPressed as any)[event.key.toLowerCase()] = false
     }, false);
+
+
+
 
     const clock = new THREE.Clock();
     // ANIMATE
@@ -115,7 +161,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit {
 
     this.animateScreenResize = this.sideNavService.getBodyDims.pipe(tap(results => {
       this.sizes.width = results.width * 0.925;                         // Width
-      this.sizes.height = 600;                                          // Height
+      this.sizes.height = 500;                                          // Height
 
       camera.aspect = this.sizes.width / this.sizes.height;
       camera?.updateProjectionMatrix();
@@ -125,67 +171,9 @@ export class HomeThreeAlternativeTwoComponent implements OnInit {
     }))
     this.subscription = this.animateScreenResize.subscribe();
 
-
-    //function onWindowResize() {
-    //  camera.aspect = window.innerWidth / window.innerHeight;
-    //  camera.updateProjectionMatrix();
-    //  renderer.setSize(window.innerWidth, window.innerHeight);
-    //  keyDisplayQueue.updatePosition()
-    //}
-    //window.addEventListener('resize', onWindowResize);
-
-    function generateFloor() {
-      // TEXTURES
-      const textureLoader = new THREE.TextureLoader();
-      const placeholder = textureLoader.load("../../../../../assets/textures/placeholder/placeholder.png");
-      const sandBaseColor = textureLoader.load("../../../../../assets/textures/sand/Sand 002_COLOR.jpg");
-      const sandNormalMap = textureLoader.load("../../../../../assets/textures/sand/Sand 002_NRM.jpg");
-      const sandHeightMap = textureLoader.load("../../../../../assets/textures/sand/Sand 002_DISP.jpg");
-      const sandAmbientOcclusion = textureLoader.load("../../../../../assets/textures/sand/Sand 002_OCC.jpg");
-
-      const WIDTH = 80
-      const LENGTH = 80
-
-      const geometry = new THREE.PlaneGeometry(WIDTH, LENGTH, 512, 512);
-      const material = new THREE.MeshStandardMaterial(
-        {
-          map: sandBaseColor, normalMap: sandNormalMap,
-          displacementMap: sandHeightMap, displacementScale: 0.1,
-          aoMap: sandAmbientOcclusion
-        })
-      wrapAndRepeatTexture(material.map!)
-      wrapAndRepeatTexture(material.normalMap!)
-      wrapAndRepeatTexture(material.displacementMap!)
-      wrapAndRepeatTexture(material.aoMap!)
-      // const material = new THREE.MeshPhongMaterial({ map: placeholder})
-
-      const floor = new THREE.Mesh(geometry, material)
-      floor.receiveShadow = true
-      floor.rotation.x = - Math.PI / 2
-      scene.add(floor)
-    }
-
     function wrapAndRepeatTexture(map: THREE.Texture) {
       map.wrapS = map.wrapT = THREE.RepeatWrapping
       map.repeat.x = map.repeat.y = 10
-    }
-
-    function light() {
-      scene.add(new THREE.AmbientLight(0xffffff, 0.7))
-
-      const dirLight = new THREE.DirectionalLight(0xffffff, 1)
-      dirLight.position.set(- 60, 100, - 10);
-      dirLight.castShadow = true;
-      dirLight.shadow.camera.top = 50;
-      dirLight.shadow.camera.bottom = - 50;
-      dirLight.shadow.camera.left = - 50;
-      dirLight.shadow.camera.right = 50;
-      dirLight.shadow.camera.near = 0.1;
-      dirLight.shadow.camera.far = 200;
-      dirLight.shadow.mapSize.width = 4096;
-      dirLight.shadow.mapSize.height = 4096;
-      scene.add(dirLight);
-      // scene.add( new THREE.CameraHelper(dirLight.shadow.camera))
     }
   }
 
