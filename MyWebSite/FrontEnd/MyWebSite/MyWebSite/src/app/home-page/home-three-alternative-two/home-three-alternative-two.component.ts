@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription, tap } from 'rxjs';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
@@ -12,7 +12,7 @@ import { CharacterControls } from './CharacterControls';
   templateUrl: './home-three-alternative-two.component.html',
   styleUrls: ['./home-three-alternative-two.component.css']
 })
-export class HomeThreeAlternativeTwoComponent implements OnInit {
+export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
 
   constructor(
     private sideNavService: SideNavService,
@@ -29,6 +29,14 @@ export class HomeThreeAlternativeTwoComponent implements OnInit {
   subscription!: Subscription;
   scene: THREE.Scene;
   canvas!: HTMLCanvasElement;
+
+  @HostListener('unloaded')
+  ngOnDestroy(): void {
+    //window.cancelAnimationFrame(this.requestId);
+    //this.renderer!.dispose();
+    //this.renderer.forceContextLoss();
+    this.subscription.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.canvas = document.querySelector('.HomeWebgl')!;
