@@ -1,4 +1,5 @@
 module.exports = {
+  context: __dirname,
   module: {
     rules: [
       {
@@ -10,5 +11,8 @@ module.exports = {
         ]
       }
     ]
+  },
+  node: {
+    fs: 'empty'
   }
 }
