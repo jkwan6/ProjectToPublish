@@ -22,7 +22,7 @@ import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PaginatorTest } from './modules/comment-module/paginator-extension/paginator-test';
 import { PaginatorDirective } from './modules/comment-module/paginator-extension/pagination.directive';
-import { FormBaseSample } from './SharedUtils/formBaseSample/form-base-sample.component';
+import { FormBaseSample } from './shared-utils/formBaseSample/form-base-sample.component';
 import { AngularThreeModule } from './app-three.module';
 import { AuthenticationModule } from './app-authentication-module';
 import { TokenHeaderInterceptor } from './interceptors/TokenHeaderInterceptor';
@@ -32,7 +32,7 @@ import { WebsiteDetailsComponent } from './sub-pages/website-details/website-det
 import { RefreshTokenTimeOutInterceptor } from './interceptors/RefreshTokenTimeOutInterceptor';
 import { HomeThreeComponent } from './home-page/home-three/home-three.component';
 import { HomeThreeAlternativeComponent } from './home-page/home-three-alternative/home-three-alternative.component';
-import { HomeThreeAlternativeTwoComponent } from './home-page/home-three-alternative-two/home-three-alternative-two.component';
+import { HomeThreeAlternativeTwoComponent } from './threeJs/home-three-alternative-two/home-three-alternative-two.component';
 
 @NgModule({
   declarations: [

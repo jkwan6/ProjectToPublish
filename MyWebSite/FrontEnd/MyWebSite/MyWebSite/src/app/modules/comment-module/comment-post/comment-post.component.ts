@@ -5,7 +5,7 @@ import { environment } from '../../../../environments/environment';
 import { IComments } from '../../../interface/IComments';
 import { BaseRepository } from '../../../repository/BaseRepository';
 import { AuthenticationService } from '../../../service/AuthenticationService/AuthenticationService';
-import { SharedUtils } from '../../../SharedUtils/SharedUtils';
+import { SharedUtils } from '../../../shared-utils/SharedUtils';
 
 @Component({
   selector: 'app-comment-post',

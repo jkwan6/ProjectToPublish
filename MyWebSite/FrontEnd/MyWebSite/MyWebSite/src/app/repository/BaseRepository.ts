@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment'
 import { IPageParams } from '../interface/IPageParams';
-import { SharedUtils } from '../SharedUtils/SharedUtils';
+import { SharedUtils } from '../shared-utils/SharedUtils';
 
 @Injectable({
   providedIn: 'any'

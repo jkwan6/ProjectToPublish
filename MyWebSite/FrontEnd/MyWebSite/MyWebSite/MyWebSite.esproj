@@ -14,12 +14,17 @@
     <Folder Include="src\app\route-guard\" />
     <Folder Include="src\app\service\ThreeJsService\" />
     <Folder Include="src\app\sub-pages\sub-pages\" />
-    <Folder Include="src\service\" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="src\app\sub-pages\ThreeJs\three-js-page7\shaders\fragment.glsl" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="src\app\sub-pages\ThreeJs\three-js-page7\shaders\vertex.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptConfiguration Remove="src\service\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\service\**" />
   </ItemGroup>
 </Project>

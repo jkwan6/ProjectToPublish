@@ -20,10 +20,12 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     this.sizes = this.sideNavService.getBodyDims.value;
     this.sizes.height = 500;
     this.scene = new THREE.Scene();
+    this.camera = new THREE.PerspectiveCamera(75, this.sizes.width / this.sizes.height, 0.1, 1000);
     //this.canvas = document.querySelector('.HomeWebgl')!;
   }
 
   // PROPERTIES
+  camera: THREE.PerspectiveCamera;
   animateScreenResize!: Observable<IElementDimensions>;
   sizes: IElementDimensions;
   subscription!: Subscription;
@@ -41,10 +43,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
   ngOnInit(): void {
     this.canvas = document.querySelector('.HomeWebgl')!;
     // CAMERA
-    const camera = new THREE.PerspectiveCamera(75, this.sizes.width / this.sizes.height, 0.1, 1000);
-    camera.position.y = 5;
-    camera.position.z = 50;
-    camera.position.x = 0;
+    this.camera.position.set(0, 5, 50)
 
     // RENDERER
     const renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
@@ -53,7 +52,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     renderer.shadowMap.enabled = true
 
     // CONTROLS
-    const orbitControls = new OrbitControls(camera, renderer.domElement);
+    const orbitControls = new OrbitControls(this.camera, renderer.domElement);
     orbitControls.enableDamping = true
     orbitControls.minDistance = 5
     orbitControls.maxDistance = 10
@@ -104,7 +103,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
           gltfAnimations.filter(a => a.name != 'TPose').forEach((a: THREE.AnimationClip) => {
             animationsMap.set(a.name, mixer.clipAction(a))
           })
-          characterControls = new CharacterControls(model, mixer, animationsMap, orbitControls, camera, 'Idle')
+          characterControls = new CharacterControls(model, mixer, animationsMap, orbitControls, this.camera, 'Idle')
         }
     );
 
@@ -122,8 +121,9 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
       (keysPressed as any)[event.key.toLowerCase()] = false
     }, false);
 
-    const clock = new THREE.Clock();
 
+    // EVENT LISTENER
+    const clock = new THREE.Clock();
     // ANIMATE
     const animate = () => {
       let mixerUpdateDelta = clock.getDelta();
@@ -131,7 +131,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
         characterControls.update(mixerUpdateDelta, keysPressed);
       }
       orbitControls.update()
-      renderer.render(this.scene, camera);
+      renderer.render(this.scene, this.camera);
       requestAnimationFrame(animate);
     }
     animate();
@@ -141,10 +141,10 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
       this.sizes.width = results.width * 0.925;                         // Width
       this.sizes.height = 500;                                          // Height
 
-      camera.aspect = this.sizes.width / this.sizes.height;
-      camera?.updateProjectionMatrix();
+      this.camera.aspect = this.sizes.width / this.sizes.height;
+      this.camera?.updateProjectionMatrix();
       renderer!.setSize(this.sizes.width, this.sizes.height);
-      renderer!.render(this.scene, camera);
+      renderer!.render(this.scene, this.camera);
     }))
     this.subscription = this.animateScreenResize.subscribe();
   }

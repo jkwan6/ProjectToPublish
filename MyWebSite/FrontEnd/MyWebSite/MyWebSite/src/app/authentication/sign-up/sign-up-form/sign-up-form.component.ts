@@ -9,7 +9,7 @@ import { ILoginRequest } from '../../../interface/ILoginRequest';
 import { ISignUpRequest } from '../../../interface/ISignUpRequest';
 import { BaseRepository } from '../../../repository/BaseRepository';
 import { AuthenticationService } from '../../../service/AuthenticationService/AuthenticationService';
-import { SharedUtils } from '../../../SharedUtils/SharedUtils';
+import { SharedUtils } from '../../../shared-utils/SharedUtils';
 
 
 export interface IBoolObject {
