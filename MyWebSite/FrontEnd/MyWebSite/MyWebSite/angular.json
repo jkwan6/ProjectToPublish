@@ -27,18 +27,14 @@
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets",
-              {
-                "glob": "ammo.js",
-                "input": "src/assets",
-                "output": "./"
-              }
+              "src/assets"
             ],
             "styles": [
               "src/my-theme.scss",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+            ]
           },
           "configurations": {
             "production": {

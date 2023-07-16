@@ -41,6 +41,13 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
   }
 
   ngOnInit(): void {
+    //var collisionConfig = new AMMO.default.btDefaultCollisionConfiguration();
+    //var dispatcher = new AMMO.default.btCollisionDispatcher(collisionConfig);
+    //var broadPhase = new AMMO.default.btDbvtBroadphase();
+    //var solver = new AMMO.default.btSequentialImpulseConstraintSolver();
+    //var physicsWorld = new AMMO.default.btDiscreteDynamicsWorld(dispatcher, broadPhase as any, solver, collisionConfig);
+    //physicsWorld.setGravity(new AMMO.default.btVector3(0, -10, 0));
+
     this.canvas = document.querySelector('.HomeWebgl')!;
     // CAMERA
     this.camera.position.set(0, 5, 50)
