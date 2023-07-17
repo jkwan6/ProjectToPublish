@@ -7,7 +7,7 @@ const D = 'd'
 const SHIFT = 'shift'
 const DIRECTIONS = [W, A, S, D];
 import * as RAPIER from '@dimforge/rapier3d'
-
+import { modelAnimation } from './home-three-alternative-two.component'
 export class CharacterControls {
 
   model: THREE.Group
@@ -76,11 +76,11 @@ export class CharacterControls {
 
     var play = '';
     if (directionPressed && this.toggleRun) {
-      play = 'Run'
+      play = modelAnimation.run 
     } else if (directionPressed) {
-      play = 'Walk'
+      play = modelAnimation.walk
     } else {
-      play = 'Idle'
+      play = modelAnimation.idle
     }
 
     if (this.currentAction != play) {
@@ -98,7 +98,7 @@ export class CharacterControls {
     this.walkDirection.x = this.walkDirection.y = this.walkDirection.z = 0
 
     let velocity = 0
-    if (this.currentAction == 'Run' || this.currentAction == 'Walk') {
+    if (this.currentAction == modelAnimation.run || this.currentAction == modelAnimation.walk) {
       // calculate towards camera direction
       var angleYCameraDirection = Math.atan2(
         (this.camera.position.x - this.model.position.x),
@@ -117,7 +117,7 @@ export class CharacterControls {
       this.walkDirection.applyAxisAngle(this.rotateAngle, directionOffset)
 
       // run/walk velocity
-      velocity = this.currentAction == 'Run' ? this.runVelocity : this.walkVelocity
+      velocity = this.currentAction == modelAnimation.run ? this.runVelocity : this.walkVelocity
     }
 
     const translation = this.rigidBody.translation();

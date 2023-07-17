@@ -9,6 +9,21 @@ import { CharacterControls } from './CharacterControls';
 import * as RAPIER from '@dimforge/rapier3d'
 import { RigidBody } from '@dimforge/rapier3d';
 import { Ray } from 'cannon-es';
+import { RapierPhysicsWorld } from './RapierPhysicsWorld';
+import { ThreeJsWorld } from './ThreeJsWorld';
+
+export interface IBoxDimensions {
+  length: number,
+  height: number,
+  width: number
+}
+
+export enum modelAnimation {
+  walk = 'Walk',
+  run = 'Run',
+  idle = 'Idle',
+  TPose = 'TPose'
+}
 
 @Component({
   selector: 'app-home-three-alternative-two',
@@ -19,11 +34,12 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
 
   constructor(
     private sideNavService: SideNavService,
+    private rapierPhysics: RapierPhysicsWorld,
+    private threeJsWorld: ThreeJsWorld
   ) {
-    this.sizes = this.sideNavService.getBodyDims.value;
-    this.sizes.height = 500;
-    this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(75, this.sizes.width / this.sizes.height, 0.1, 1000);
+    this.sizes = this.sideNavService.getBodyDims.value; this.sizes.height = 500;
+    this.scene = this.threeJsWorld.instantiateThreeJsScene();
+    this.camera = this.threeJsWorld.instantiateThreeJsCamera(this.sizes.width / this.sizes.height);
     //this.canvas = document.querySelector('.HomeWebgl')!;
   }
 
@@ -46,135 +62,36 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
   }
 
   ngOnInit(): void {
-    var gravity = new RAPIER.Vector3(0, -9.81, 0);
-    var broadPhase = new RAPIER.BroadPhase();
-    this.world = new RAPIER.World(gravity);
-    this.world.broadPhase = broadPhase;
+    // Creating World and Adding a Reference to Object
+    this.world = this.rapierPhysics.instantiatePhysicsWorld();
 
+    // Box to add
+    var boxPosition = new RAPIER.Vector3(0, 20, 0);
+    var box: IBoxDimensions = { length: 4, height: 5, width: 4};
 
-    var box = { hx: 0.5, hy: 0.5, hz: 0.5 };
-
-    // ThreeJS
-    var boxMesh = new THREE.Mesh(
-      new THREE.BoxGeometry(box.hx * 2, box.hy * 2, box.hz * 2),
-      new THREE.MeshPhongMaterial({ color: 'red' })
-    );
-    this.scene.add(boxMesh);
-
-    // Rapier3D
-    var bodyType = RAPIER.RigidBodyDesc.dynamic();
-    var rigidBody = this.world.createRigidBody(bodyType);
-    rigidBody.setTranslation(new THREE.Vector3(0, 30, 0), true);
-    var colliderType = RAPIER.ColliderDesc.cuboid(box.hx, box.hy, box.hz);
-    this.world.createCollider(colliderType, rigidBody);
+    // Create in both ThreeJs and Physics
+    var boxMesh = this.threeJsWorld.createBoxMesh(box)
+    var boxRigidBody = this.rapierPhysics.createRigidBox(box, boxPosition);
 
     // Store Pairs
-    this.bodies.push({ rigid: rigidBody, mesh: boxMesh });
+    this.bodies.push({ rigid: boxRigidBody, mesh: boxMesh });
 
-
+    // Create Floor
     let heights: number[] = [];
-
-    let scale = new RAPIER.Vector3(70.0, 3.0, 70.0);
+    let scale = new RAPIER.Vector3(50.0, 1, 50.0);
     let nsubdivs = 20;
+    this.threeJsWorld.createFloor(scale, nsubdivs, heights);
+    this.rapierPhysics.createPhysicsFloor(scale, nsubdivs, heights);
 
-    var threeFloor = new THREE.Mesh(
-      new THREE.PlaneGeometry(scale.x, scale.z, nsubdivs, nsubdivs),
-      new THREE.MeshStandardMaterial({
-        color: 'grey'
-      })
-    );
-    threeFloor.rotateX(- Math.PI / 2);
-    threeFloor.receiveShadow = true;
-    threeFloor.castShadow = true;
-    this.scene.add(threeFloor);
-
-
-    const vertices = threeFloor.geometry.attributes['position'].array;
-    const dx = scale.x / nsubdivs;
-    const dy = scale.z / nsubdivs;
-    // store height data in map column-row map
-    const columsRows = new Map();
-    for (let i = 0; i < vertices.length; i += 3) {
-      // translate into colum / row indices
-      let row = Math.floor(Math.abs((vertices as any)[i] + (scale.x / 2)) / dx);
-      let column = Math.floor(Math.abs((vertices as any)[i + 1] - (scale.z / 2)) / dy);
-      // generate height for this column & row
-      const randomHeight = Math.random();
-      (vertices as any)[i + 2] = scale.y * randomHeight;
-      // store height
-      if (!columsRows.get(column)) {
-        columsRows.set(column, new Map());
-      }
-      columsRows.get(column).set(row, randomHeight);
-    }
-    threeFloor.geometry.computeVertexNormals();
-    for (let i = 0; i <= nsubdivs; ++i) {
-      for (let j = 0; j <= nsubdivs; ++j) {
-        heights.push(columsRows.get(j).get(i));
-      }
-    }
-
-    let groundBodyDesc = RAPIER.RigidBodyDesc.fixed();
-    let groundBody = this.world.createRigidBody(groundBodyDesc);
-    let groundCollider = RAPIER.ColliderDesc.heightfield(
-      nsubdivs, nsubdivs, new Float32Array(heights), scale
-    );
-    this.world.createCollider(groundCollider, groundBody);
-
-
-
-
-
-
-    //var collisionConfig = new AMMO.default.btDefaultCollisionConfiguration();
-    //var dispatcher = new AMMO.default.btCollisionDispatcher(collisionConfig);
-    //var broadPhase = new AMMO.default.btDbvtBroadphase();
-    //var solver = new AMMO.default.btSequentialImpulseConstraintSolver();
-    //var physicsWorld = new AMMO.default.btDiscreteDynamicsWorld(dispatcher, broadPhase as any, solver, collisionConfig);
-    //physicsWorld.setGravity(new AMMO.default.btVector3(0, -10, 0));
-
+    // CANVAS & RENDERER
     this.canvas = document.querySelector('.HomeWebgl')!;
-    // CAMERA
-    this.camera.position.set(0, 5, 50)
-
-    // RENDERER
-    const renderer = new THREE.WebGLRenderer({ canvas: this.canvas });
-    renderer.setSize(this.sizes.width, this.sizes.height);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.shadowMap.enabled = true
+    const renderer = this.threeJsWorld.instantiateThreeJsRenderer(this.canvas, this.sizes);
 
     // CONTROLS
-    const orbitControls = new OrbitControls(this.camera, renderer.domElement);
-    orbitControls.enableDamping = true
-    orbitControls.minDistance = 5
-    orbitControls.maxDistance = 10
-    orbitControls.enablePan = false
-    orbitControls.maxPolarAngle = Math.PI / 2.08;
-    orbitControls.update();
+    const orbitControls = this.threeJsWorld.instantiateThreeJsControls();
 
     // LIGHTS
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
-    this.scene.add(ambientLight)
-
-    // FLOOR
-    const textureLoader = new THREE.TextureLoader();
-    const sandBaseColor = textureLoader.load("../../../../../assets/textures/sand/Sand 002_COLOR.jpg");
-    const sandNormalMap = textureLoader.load("../../../../../assets/textures/sand/Sand 002_NRM.jpg");
-    const sandHeightMap = textureLoader.load("../../../../../assets/textures/sand/Sand 002_DISP.jpg");
-    const sandAmbientOcclusion = textureLoader.load("../../../../../assets/textures/sand/Sand 002_OCC.jpg");
-    const floorWidth = 80
-    const floorLength = 80
-    const geometry = new THREE.PlaneGeometry(floorWidth, floorLength, 512, 512);
-    const material = new THREE.MeshStandardMaterial(
-      {
-        map: sandBaseColor, normalMap: sandNormalMap,
-        displacementMap: sandHeightMap, displacementScale: 0.1,
-        aoMap: sandAmbientOcclusion
-      })
-    const floor = new THREE.Mesh(geometry, material)
-    floor.receiveShadow = true
-    floor.rotation.x = - Math.PI / 2
-/*    this.scene.add(floor)*/
+    this.threeJsWorld.instantiateThreeJsLights();
 
     // MODEL WITH ANIMATIONS
     let characterControls: CharacterControls
@@ -182,18 +99,19 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     const gltfLoader = new GLTFLoader();
 
     gltfLoader
-      .load('../../../../../assets/models/Soldier.glb',
+      .load('../../../../../assets/models/XBot/Soldier.glb',
         (gltf) => {
           const model = gltf.scene;
           model.traverse(function (object: any) {
             if (object.isMesh) object.castShadow = true;
           });
+          console.log(gltf);
           model.position.set(0, 3, 0);
           this.scene.add(model);
           const gltfAnimations: THREE.AnimationClip[] = gltf.animations;
           const mixer = new THREE.AnimationMixer(model);
           const animationsMap: Map<string, THREE.AnimationAction> = new Map()
-          gltfAnimations.filter(a => a.name != 'TPose').forEach((a: THREE.AnimationClip) => {
+          gltfAnimations.filter(a => a.name != modelAnimation.TPose).forEach((a: THREE.AnimationClip) => {
             animationsMap.set(a.name, mixer.clipAction(a))
           })
 
@@ -209,7 +127,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
             animationsMap,
             orbitControls,
             this.camera,
-            'Idle',
+            modelAnimation.idle,
             new RAPIER.Ray(
               { x: 0, y: 0, z: 0 },
               { x: 0, y: -1, z: 0 }
@@ -218,6 +136,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
         }
     );
 
+    // EVENT LISTENER
     // CONTROL KEYS
     const keysPressed = {}
     document.addEventListener('keydown', (event) => {
@@ -232,8 +151,6 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
       (keysPressed as any)[event.key.toLowerCase()] = false
     }, false);
 
-
-    // EVENT LISTENER
     const clock = new THREE.Clock();
     // ANIMATE
     const animate = () => {
