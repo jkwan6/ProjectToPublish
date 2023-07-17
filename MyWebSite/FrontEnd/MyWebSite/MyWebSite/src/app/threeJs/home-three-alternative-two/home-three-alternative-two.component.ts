@@ -6,6 +6,9 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { IElementDimensions } from '../../interface/IElementDimensions';
 import { SideNavService } from '../../service/SideNavService/SideNavService';
 import { CharacterControls } from './CharacterControls';
+import * as RAPIER from '@dimforge/rapier3d'
+import { RigidBody } from '@dimforge/rapier3d';
+import { Ray } from 'cannon-es';
 
 @Component({
   selector: 'app-home-three-alternative-two',
@@ -31,6 +34,8 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
   subscription!: Subscription;
   scene: THREE.Scene;
   canvas!: HTMLCanvasElement;
+  world!: RAPIER.World;
+  bodies: { rigid: RigidBody, mesh: THREE.Mesh }[] = [];
 
   @HostListener('unloaded')
   ngOnDestroy(): void {
@@ -41,6 +46,86 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
   }
 
   ngOnInit(): void {
+    var gravity = new RAPIER.Vector3(0, -9.81, 0);
+    var broadPhase = new RAPIER.BroadPhase();
+    this.world = new RAPIER.World(gravity);
+    this.world.broadPhase = broadPhase;
+
+
+    var box = { hx: 0.5, hy: 0.5, hz: 0.5 };
+
+    // ThreeJS
+    var boxMesh = new THREE.Mesh(
+      new THREE.BoxGeometry(box.hx * 2, box.hy * 2, box.hz * 2),
+      new THREE.MeshPhongMaterial({ color: 'red' })
+    );
+    this.scene.add(boxMesh);
+
+    // Rapier3D
+    var bodyType = RAPIER.RigidBodyDesc.dynamic();
+    var rigidBody = this.world.createRigidBody(bodyType);
+    rigidBody.setTranslation(new THREE.Vector3(0, 30, 0), true);
+    var colliderType = RAPIER.ColliderDesc.cuboid(box.hx, box.hy, box.hz);
+    this.world.createCollider(colliderType, rigidBody);
+
+    // Store Pairs
+    this.bodies.push({ rigid: rigidBody, mesh: boxMesh });
+
+
+    let heights: number[] = [];
+
+    let scale = new RAPIER.Vector3(70.0, 3.0, 70.0);
+    let nsubdivs = 20;
+
+    var threeFloor = new THREE.Mesh(
+      new THREE.PlaneGeometry(scale.x, scale.z, nsubdivs, nsubdivs),
+      new THREE.MeshStandardMaterial({
+        color: 'grey'
+      })
+    );
+    threeFloor.rotateX(- Math.PI / 2);
+    threeFloor.receiveShadow = true;
+    threeFloor.castShadow = true;
+    this.scene.add(threeFloor);
+
+
+    const vertices = threeFloor.geometry.attributes['position'].array;
+    const dx = scale.x / nsubdivs;
+    const dy = scale.z / nsubdivs;
+    // store height data in map column-row map
+    const columsRows = new Map();
+    for (let i = 0; i < vertices.length; i += 3) {
+      // translate into colum / row indices
+      let row = Math.floor(Math.abs((vertices as any)[i] + (scale.x / 2)) / dx);
+      let column = Math.floor(Math.abs((vertices as any)[i + 1] - (scale.z / 2)) / dy);
+      // generate height for this column & row
+      const randomHeight = Math.random();
+      (vertices as any)[i + 2] = scale.y * randomHeight;
+      // store height
+      if (!columsRows.get(column)) {
+        columsRows.set(column, new Map());
+      }
+      columsRows.get(column).set(row, randomHeight);
+    }
+    threeFloor.geometry.computeVertexNormals();
+    for (let i = 0; i <= nsubdivs; ++i) {
+      for (let j = 0; j <= nsubdivs; ++j) {
+        heights.push(columsRows.get(j).get(i));
+      }
+    }
+
+    let groundBodyDesc = RAPIER.RigidBodyDesc.fixed();
+    let groundBody = this.world.createRigidBody(groundBodyDesc);
+    let groundCollider = RAPIER.ColliderDesc.heightfield(
+      nsubdivs, nsubdivs, new Float32Array(heights), scale
+    );
+    this.world.createCollider(groundCollider, groundBody);
+
+
+
+
+
+
     //var collisionConfig = new AMMO.default.btDefaultCollisionConfiguration();
     //var dispatcher = new AMMO.default.btCollisionDispatcher(collisionConfig);
     //var broadPhase = new AMMO.default.btDbvtBroadphase();
@@ -89,7 +174,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     const floor = new THREE.Mesh(geometry, material)
     floor.receiveShadow = true
     floor.rotation.x = - Math.PI / 2
-    this.scene.add(floor)
+/*    this.scene.add(floor)*/
 
     // MODEL WITH ANIMATIONS
     let characterControls: CharacterControls
@@ -103,6 +188,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
           model.traverse(function (object: any) {
             if (object.isMesh) object.castShadow = true;
           });
+          model.position.set(0, 3, 0);
           this.scene.add(model);
           const gltfAnimations: THREE.AnimationClip[] = gltf.animations;
           const mixer = new THREE.AnimationMixer(model);
@@ -110,7 +196,25 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
           gltfAnimations.filter(a => a.name != 'TPose').forEach((a: THREE.AnimationClip) => {
             animationsMap.set(a.name, mixer.clipAction(a))
           })
-          characterControls = new CharacterControls(model, mixer, animationsMap, orbitControls, this.camera, 'Idle')
+
+          // Rigid Body
+          let bocyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(-1, 3, 1);
+          let rigidBody = this.world.createRigidBody(bocyDesc);
+          let dynamicColliser = RAPIER.ColliderDesc.ball(0.28);
+          this.world.createCollider(dynamicColliser, rigidBody);
+
+          characterControls = new CharacterControls(
+            model,
+            mixer,
+            animationsMap,
+            orbitControls,
+            this.camera,
+            'Idle',
+            new RAPIER.Ray(
+              { x: 0, y: 0, z: 0 },
+              { x: 0, y: -1, z: 0 }
+            ),
+            rigidBody)
         }
     );
 
@@ -135,11 +239,27 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     const animate = () => {
       let mixerUpdateDelta = clock.getDelta();
       if (characterControls) {
-        characterControls.update(mixerUpdateDelta, keysPressed);
+        characterControls.update(this.world, mixerUpdateDelta, keysPressed);
       }
       orbitControls.update()
       renderer.render(this.scene, this.camera);
       requestAnimationFrame(animate);
+
+      this.world.step();
+      this.bodies.forEach(body => {
+        let position = body.rigid.translation();
+        let rotation = body.rigid.rotation();
+
+        body.mesh.position.x = position.x;
+        body.mesh.position.y = position.y;
+        body.mesh.position.z = position.z;
+
+        body.mesh.setRotationFromQuaternion(
+          new THREE.Quaternion(rotation.x,
+            rotation.y,
+            rotation.z,
+            rotation.w));
+      })
     }
     animate();
 
