@@ -1,4 +1,4 @@
-import { Component, Injectable } from "@angular/core";
+import { Component, Injectable, OnDestroy } from "@angular/core";
 import * as RAPIER from '@dimforge/rapier3d'
 import { IBoxDimensions } from './home-three-alternative-two.component'
 

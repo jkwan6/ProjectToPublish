@@ -11,6 +11,7 @@ import { RigidBody } from '@dimforge/rapier3d';
 import { Ray } from 'cannon-es';
 import { RapierPhysicsWorld } from './RapierPhysicsWorld';
 import { ThreeJsWorld } from './ThreeJsWorld';
+import { WebGLRenderer } from 'three';
 
 export interface IBoxDimensions {
   length: number,
@@ -19,16 +20,17 @@ export interface IBoxDimensions {
 }
 
 export enum modelAnimation {
-  walk = 'Walk',
-  run = 'Run',
-  idle = 'Idle',
+  walk = 'walk',
+  run = 'run',
+  idle = 'idle',
   TPose = 'TPose'
 }
 
 @Component({
   selector: 'app-home-three-alternative-two',
   templateUrl: './home-three-alternative-two.component.html',
-  styleUrls: ['./home-three-alternative-two.component.css']
+  styleUrls: ['./home-three-alternative-two.component.css'],
+  providers: [RapierPhysicsWorld, ThreeJsWorld]
 })
 export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
 
@@ -37,93 +39,92 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     private rapierPhysics: RapierPhysicsWorld,
     private threeJsWorld: ThreeJsWorld
   ) {
+    //this.canvas = document.querySelector('.HomeWebgl')!;
     this.sizes = this.sideNavService.getBodyDims.value; this.sizes.height = 500;
     this.scene = this.threeJsWorld.instantiateThreeJsScene();
     this.camera = this.threeJsWorld.instantiateThreeJsCamera(this.sizes.width / this.sizes.height);
-    //this.canvas = document.querySelector('.HomeWebgl')!;
   }
 
   // PROPERTIES
-  camera: THREE.PerspectiveCamera;
+  camera!: THREE.PerspectiveCamera;
   animateScreenResize!: Observable<IElementDimensions>;
-  sizes: IElementDimensions;
+  sizes!: IElementDimensions;
   subscription!: Subscription;
-  scene: THREE.Scene;
+  scene!: THREE.Scene;
   canvas!: HTMLCanvasElement;
   world!: RAPIER.World;
   bodies: { rigid: RigidBody, mesh: THREE.Mesh }[] = [];
+  animate!: (() => {}) | any;
+  requestId!: number;
+  renderer!: THREE.WebGLRenderer;
+  keyboardUpEvent: (() => {}) | any;
+  keyboardDownEvent: (() => {}) | any;
 
+  // DESTROY
   @HostListener('unloaded')
   ngOnDestroy(): void {
-    //window.cancelAnimationFrame(this.requestId);
-    //this.renderer!.dispose();
-    //this.renderer.forceContextLoss();
+    window.cancelAnimationFrame(this.requestId);
+    this.renderer!.dispose();
+    this.renderer.forceContextLoss();
     this.subscription.unsubscribe();
+    document.removeEventListener('keyup', this.keyboardUpEvent)
+    document.removeEventListener('keydown', this.keyboardDownEvent)
+    this.world.free();
   }
 
   ngOnInit(): void {
-    // Creating World and Adding a Reference to Object
-    this.world = this.rapierPhysics.instantiatePhysicsWorld();
 
-    // Box to add
-    var boxPosition = new RAPIER.Vector3(0, 20, 0);
+    this.world = this.rapierPhysics.instantiatePhysicsWorld();              // Creating Physics World
+
+    var boxPosition = new RAPIER.Vector3(0, 20, 0);                         // Adding Box to Scene
     var box: IBoxDimensions = { length: 4, height: 5, width: 4};
-
-    // Create in both ThreeJs and Physics
     var boxMesh = this.threeJsWorld.createBoxMesh(box)
     var boxRigidBody = this.rapierPhysics.createRigidBox(box, boxPosition);
+    this.bodies.push({ rigid: boxRigidBody, mesh: boxMesh });               // Storing them
 
-    // Store Pairs
-    this.bodies.push({ rigid: boxRigidBody, mesh: boxMesh });
-
-    // Create Floor
-    let heights: number[] = [];
+    let heights: number[] = [];                                             // Creating Floor
     let scale = new RAPIER.Vector3(50.0, 1, 50.0);
     let nsubdivs = 20;
     this.threeJsWorld.createFloor(scale, nsubdivs, heights);
     this.rapierPhysics.createPhysicsFloor(scale, nsubdivs, heights);
 
-    // CANVAS & RENDERER
-    this.canvas = document.querySelector('.HomeWebgl')!;
-    const renderer = this.threeJsWorld.instantiateThreeJsRenderer(this.canvas, this.sizes);
+    this.canvas = document.querySelector('.HomeWebgl')!;                    // Canvas & Renderer
+    this.renderer = this.threeJsWorld.instantiateThreeJsRenderer(this.canvas, this.sizes);
 
-    // CONTROLS
-    const orbitControls = this.threeJsWorld.instantiateThreeJsControls();
+    const orbitControls = this.threeJsWorld.instantiateThreeJsControls();   // Controls
 
-    // LIGHTS
-    this.threeJsWorld.instantiateThreeJsLights();
+    this.threeJsWorld.instantiateThreeJsLights();                           // Light
 
-    // MODEL WITH ANIMATIONS
+    // Charachter
     let characterControls: CharacterControls
-
     const gltfLoader = new GLTFLoader();
 
     gltfLoader
-      .load('../../../../../assets/models/XBot/Soldier.glb',
+      .load('../../../../../assets/models/XBot/XBot2.glb',
         (gltf) => {
-          const model = gltf.scene;
-          model.traverse(function (object: any) {
+          const characterModel = gltf.scene;
+          characterModel.traverse(function (object: any) {
             if (object.isMesh) object.castShadow = true;
           });
           console.log(gltf);
-          model.position.set(0, 3, 0);
-          this.scene.add(model);
+          characterModel.position.set(0, 3, 0);
+          this.scene.add(characterModel);
           const gltfAnimations: THREE.AnimationClip[] = gltf.animations;
-          const mixer = new THREE.AnimationMixer(model);
+          const animationMixer = new THREE.AnimationMixer(characterModel);
           const animationsMap: Map<string, THREE.AnimationAction> = new Map()
           gltfAnimations.filter(a => a.name != modelAnimation.TPose).forEach((a: THREE.AnimationClip) => {
-            animationsMap.set(a.name, mixer.clipAction(a))
+            animationsMap.set(a.name, animationMixer.clipAction(a))
           })
 
           // Rigid Body
           let bocyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(-1, 3, 1);
-          let rigidBody = this.world.createRigidBody(bocyDesc);
-          let dynamicColliser = RAPIER.ColliderDesc.ball(0.28);
-          this.world.createCollider(dynamicColliser, rigidBody);
+          let characterRigidBody = this.world.createRigidBody(bocyDesc);
+          let dynamicColliser = RAPIER.ColliderDesc.cuboid(0.5,1.8,0.5);
+          this.world.createCollider(dynamicColliser, characterRigidBody);
 
           characterControls = new CharacterControls(
-            model,
-            mixer,
+            characterModel,
+            animationMixer,
             animationsMap,
             orbitControls,
             this.camera,
@@ -132,35 +133,38 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
               { x: 0, y: 0, z: 0 },
               { x: 0, y: -1, z: 0 }
             ),
-            rigidBody)
+            characterRigidBody)
         }
     );
 
     // EVENT LISTENER
     // CONTROL KEYS
-    const keysPressed = {}
-    document.addEventListener('keydown', (event) => {
+    this.keyboardDownEvent = (event: any) => {
       if (event.shiftKey && characterControls) {
         characterControls.switchRunToggle()
       } else {
         (keysPressed as any)[event.key.toLowerCase()] = true
         console.log(keysPressed)
       }
-    }, false);
-    document.addEventListener('keyup', (event) => {
+    }
+    this.keyboardUpEvent = (event: any) => {
       (keysPressed as any)[event.key.toLowerCase()] = false
-    }, false);
+    }
+
+    const keysPressed = {}
+    document.addEventListener('keydown', this.keyboardDownEvent, false);
+    document.addEventListener('keyup', this.keyboardUpEvent, false);
 
     const clock = new THREE.Clock();
     // ANIMATE
-    const animate = () => {
+    this.animate = () => {
       let mixerUpdateDelta = clock.getDelta();
       if (characterControls) {
         characterControls.update(this.world, mixerUpdateDelta, keysPressed);
       }
       orbitControls.update()
-      renderer.render(this.scene, this.camera);
-      requestAnimationFrame(animate);
+      this.renderer.render(this.scene, this.camera);
+      this.requestId = window.requestAnimationFrame(this.animate);
 
       this.world.step();
       this.bodies.forEach(body => {
@@ -178,7 +182,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
             rotation.w));
       })
     }
-    animate();
+    this.animate();
 
     // RESIZE HANDLER
     this.animateScreenResize = this.sideNavService.getBodyDims.pipe(tap(results => {
@@ -187,8 +191,8 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
 
       this.camera.aspect = this.sizes.width / this.sizes.height;
       this.camera?.updateProjectionMatrix();
-      renderer!.setSize(this.sizes.width, this.sizes.height);
-      renderer!.render(this.scene, this.camera);
+      this.renderer!.setSize(this.sizes.width, this.sizes.height);
+      this.renderer!.render(this.scene, this.camera);
     }))
     this.subscription = this.animateScreenResize.subscribe();
   }
