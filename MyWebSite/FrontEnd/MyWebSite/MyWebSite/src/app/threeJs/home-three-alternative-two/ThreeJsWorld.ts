@@ -4,18 +4,19 @@ import { IBoxDimensions } from './home-three-alternative-two.component'
 import * as RAPIER from '@dimforge/rapier3d'
 import { IElementDimensions } from "../../interface/IElementDimensions";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+
+
 @Injectable({
   providedIn: 'any'
 }) // DI Decorator
 export class ThreeJsWorld {
 
-
   scene!: THREE.Scene;
   renderer!: THREE.WebGLRenderer;
   camera!: THREE.PerspectiveCamera;
+
   constructor() {
     this.scene = new THREE.Scene();
-
   }
 
   public instantiateThreeJsScene(): THREE.Scene {
@@ -38,8 +39,8 @@ export class ThreeJsWorld {
 
   public instantiateThreeJsControls(): OrbitControls {
     const orbitControls = new OrbitControls(this.camera, this.renderer.domElement);
-    orbitControls.enableDamping = true
-    orbitControls.minDistance = 5
+    //orbitControls.enableDamping = true
+    orbitControls.minDistance = 2
     orbitControls.maxDistance = 15
     orbitControls.enablePan = false
     orbitControls.maxPolarAngle = Math.PI / 2.08;

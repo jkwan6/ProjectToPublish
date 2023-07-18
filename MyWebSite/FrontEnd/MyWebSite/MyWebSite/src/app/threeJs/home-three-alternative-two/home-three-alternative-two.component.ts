@@ -39,13 +39,12 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     private rapierPhysics: RapierPhysicsWorld,
     private threeJsWorld: ThreeJsWorld
   ) {
-    //this.canvas = document.querySelector('.HomeWebgl')!;
     this.sizes = this.sideNavService.getBodyDims.value; this.sizes.height = 500;
     this.scene = this.threeJsWorld.instantiateThreeJsScene();
     this.camera = this.threeJsWorld.instantiateThreeJsCamera(this.sizes.width / this.sizes.height);
   }
 
-  // PROPERTIES
+  // #region PROPERTIES
   camera!: THREE.PerspectiveCamera;
   animateScreenResize!: Observable<IElementDimensions>;
   sizes!: IElementDimensions;
@@ -59,8 +58,14 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
   renderer!: THREE.WebGLRenderer;
   keyboardUpEvent: (() => {}) | any;
   keyboardDownEvent: (() => {}) | any;
+  mouse: THREE.Vector2 = new THREE.Vector2();
+  arrowHelper!: THREE.ArrowHelper;
+  rayCaster!: THREE.Raycaster;
+  characterControls!: CharacterControls;
+  orbitControls!: OrbitControls;
+  // #endregion
 
-  // DESTROY
+  // #region ON DESTROY
   @HostListener('unloaded')
   ngOnDestroy(): void {
     window.cancelAnimationFrame(this.requestId);
@@ -69,8 +74,8 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     this.subscription.unsubscribe();
     document.removeEventListener('keyup', this.keyboardUpEvent)
     document.removeEventListener('keydown', this.keyboardDownEvent)
-    this.world.free();
-  }
+    this.world.free();}
+  // #endregion
 
   ngOnInit(): void {
 
@@ -82,6 +87,27 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     var boxRigidBody = this.rapierPhysics.createRigidBox(box, boxPosition);
     this.bodies.push({ rigid: boxRigidBody, mesh: boxMesh });               // Storing them
 
+
+    var boxPosition = new RAPIER.Vector3(10, 20, 10);                         // Adding Box to Scene
+    var box: IBoxDimensions = { length: 4, height: 5, width: 4 };
+    var boxMesh = this.threeJsWorld.createBoxMesh(box)
+    var boxRigidBody = this.rapierPhysics.createRigidBox(box, boxPosition);
+    this.bodies.push({ rigid: boxRigidBody, mesh: boxMesh });               // Storing them
+
+    var boxPosition = new RAPIER.Vector3(0, 20, 10);                         // Adding Box to Scene
+    var box: IBoxDimensions = { length: 4, height: 5, width: 4 };
+    var boxMesh = this.threeJsWorld.createBoxMesh(box)
+    var boxRigidBody = this.rapierPhysics.createRigidBox(box, boxPosition);
+    this.bodies.push({ rigid: boxRigidBody, mesh: boxMesh });               // Storing them
+
+
+    var boxPosition = new RAPIER.Vector3(10, 20, 0);                         // Adding Box to Scene
+    var box: IBoxDimensions = { length: 4, height: 5, width: 4 };
+    var boxMesh = this.threeJsWorld.createBoxMesh(box)
+    var boxRigidBody = this.rapierPhysics.createRigidBox(box, boxPosition);
+    this.bodies.push({ rigid: boxRigidBody, mesh: boxMesh });               // Storing them
+
+
     let heights: number[] = [];                                             // Creating Floor
     let scale = new RAPIER.Vector3(50.0, 2, 50.0);
     let nsubdivs = 20;
@@ -90,15 +116,14 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
 
     this.canvas = document.querySelector('.HomeWebgl')!;                    // Canvas & Renderer
     this.renderer = this.threeJsWorld.instantiateThreeJsRenderer(this.canvas, this.sizes);
-
-    const orbitControls = this.threeJsWorld.instantiateThreeJsControls();   // Controls
-
+    this.orbitControls = this.threeJsWorld.instantiateThreeJsControls();    // Controls
     this.threeJsWorld.instantiateThreeJsLights();                           // Light
 
-    // Charachter
-    let characterControls: CharacterControls
-    const gltfLoader = new GLTFLoader();
+    this.rayCaster = new THREE.Raycaster();
+    this.arrowHelper = new THREE.ArrowHelper(this.rayCaster.ray.direction, this.rayCaster.ray.origin, 1, 0xff0000)
+    this.scene.add(this.arrowHelper);
 
+    const gltfLoader = new GLTFLoader();
     gltfLoader
       .load('../../../../../assets/models/XBot/XBot2.glb',
         (gltf) => {
@@ -121,11 +146,11 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
           let dynamicCollider = RAPIER.ColliderDesc.cuboid(0.5,1.7,0.5);
           this.world.createCollider(dynamicCollider, characterRigidBody);
 
-          characterControls = new CharacterControls(
+          this.characterControls = new CharacterControls(
             characterModel,
             animationMixer,
             animationsMap,
-            orbitControls,
+            this.orbitControls,
             this.camera,
             modelAnimation.idle,
             new RAPIER.Ray(
@@ -135,52 +160,19 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
             characterRigidBody)
         }
     );
+    this.defineEvents();
+  }
 
-
-    const mouse = new THREE.Vector2();
-
-    this.canvas!.addEventListener('mousemove', (event: MouseEvent) => {
-      var boundingRect = this.canvas.getBoundingClientRect();
-      mouse.x = ((event.pageX - boundingRect.left) > 0)
-        ? (event.pageX - boundingRect.left)
-        : 0
-      mouse.y = boundingRect.bottom - event.pageY  /*- (event.layerY / this.sizes.height - 0.5) * 2;*/
-
-      // Normalize
-      var length = boundingRect.right - boundingRect.left;
-      var height = boundingRect.bottom - boundingRect.top;
-      mouse.x = (-1 * (length / 2 - mouse.x)) / length;
-      mouse.y = (-1 * (height / 2 - mouse.y)) / height;
-    });
-
-
-
-
-    // EVENT LISTENER
-    // CONTROL KEYS
-    this.keyboardDownEvent = (event: any) => {
-      if (event.shiftKey && characterControls) {
-        characterControls.switchRunToggle()
-      } else {
-        (keysPressed as any)[event.key.toLowerCase()] = true
-      }
-    }
-    this.keyboardUpEvent = (event: any) => {
-      (keysPressed as any)[event.key.toLowerCase()] = false
-    }
-
-    const keysPressed = {}
-    document.addEventListener('keydown', this.keyboardDownEvent, false);
-    document.addEventListener('keyup', this.keyboardUpEvent, false);
-
+  defineEvents() {
+    // #region EVENT LISTENERS
+    /* <---------------------- ANIMATE FUNCTION ----------------------> */
     const clock = new THREE.Clock();
-    // ANIMATE
     this.animate = () => {
       let mixerUpdateDelta = clock.getDelta();
-      if (characterControls) {
-        characterControls.update(this.world, mixerUpdateDelta, keysPressed);
+      if (this.characterControls) {
+        this.characterControls.update(this.world, mixerUpdateDelta, keysPressed);
       }
-      orbitControls.update()
+      this.orbitControls.update()
       this.renderer.render(this.scene, this.camera);
       this.requestId = window.requestAnimationFrame(this.animate);
 
@@ -199,10 +191,70 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
             rotation.z,
             rotation.w));
       })
+
+      let objectToTest: THREE.Mesh [] = [];
+
+      this.bodies.forEach(body => {
+        objectToTest.push(body.mesh)
+      })
+
+      const intersects = this.rayCaster.intersectObjects(objectToTest);
+
+      for (let object of objectToTest) {
+        let varX: any;
+        varX = object as unknown as THREE.Object3D;
+        let materialColor = new THREE.Color('red');
+        varX.material.color.set(materialColor)
+        //console.log(varX.object.material)
+      }
+
+      for (let intersect of intersects) {
+        let varX: any;
+        varX = intersect as unknown as THREE.Object3D;
+        let materialColor = new THREE.Color('blue');
+        varX.object.material.color.set(materialColor)
+        //console.log(varX.object.material)
+      }
+
+
+      this.rayCaster.setFromCamera(this.mouse, this.camera);
+      this.arrowHelper.setDirection(this.rayCaster.ray.direction);
+      this.arrowHelper.position.set(this.rayCaster.ray.origin.x, this.rayCaster.ray.origin.y, this.rayCaster.ray.origin.z)
     }
     this.animate();
 
-    // RESIZE HANDLER
+    /* <---------------------- MOUSE POSITION EVENT ----------------------> */
+    this.canvas!.addEventListener('mousemove', (event: MouseEvent) => {
+      var boundingRect = this.canvas.getBoundingClientRect();
+      this.mouse.x = ((event.pageX - boundingRect.left) > 0)
+        ? (event.pageX - boundingRect.left)
+        : 0
+      this.mouse.y = ((boundingRect.bottom - event.pageY) > 0)
+        ? (boundingRect.bottom - event.pageY)
+        : 0
+      var length = boundingRect.right - boundingRect.left;
+      var height = boundingRect.bottom - boundingRect.top;
+      this.mouse.x = (-1 * (length / 2 - this.mouse.x)) / length * 2;
+      this.mouse.y = (-1 * (height / 2 - this.mouse.y)) / height * 2;
+    });
+
+    /* <---------------------- KEYBOARD PRESS EVENT ----------------------> */
+    this.keyboardDownEvent = (event: any) => {
+      if (event.shiftKey && this.characterControls) {
+        this.characterControls.switchRunToggle()
+      } else {
+        (keysPressed as any)[event.key.toLowerCase()] = true
+      }
+    }
+    this.keyboardUpEvent = (event: any) => {
+      (keysPressed as any)[event.key.toLowerCase()] = false
+    }
+
+    const keysPressed = {}
+    document.addEventListener('keydown', this.keyboardDownEvent, false);
+    document.addEventListener('keyup', this.keyboardUpEvent, false);
+
+    /* <---------------------- RESIZE EVENT ----------------------> */
     this.animateScreenResize = this.sideNavService.getBodyDims.pipe(tap(results => {
       this.sizes.width = results.width * 0.925;                         // Width
       this.sizes.height = 500;                                          // Height
@@ -214,5 +266,4 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     }))
     this.subscription = this.animateScreenResize.subscribe();
   }
-
 }
