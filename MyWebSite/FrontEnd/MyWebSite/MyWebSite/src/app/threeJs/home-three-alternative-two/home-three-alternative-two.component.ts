@@ -12,6 +12,7 @@ import { Ray } from 'cannon-es';
 import { RapierPhysicsWorld } from './RapierPhysicsWorld';
 import { ThreeJsWorld } from './ThreeJsWorld';
 import { WebGLRenderer } from 'three';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 
 export interface IBoxDimensions {
   length: number,
@@ -145,18 +146,37 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     );
 
 
+    const gltfloader = new GLTFLoader();
+    const dracroLoader = new DRACOLoader();
+    dracroLoader.setDecoderPath('../../../../../assets/draco/')
+
+    gltfLoader.setDRACOLoader(dracroLoader);
+
+    gltfLoader.load("../../../../../assets/models/AltTower.glb",
+      (gltf) => {
+
+
+        gltf.scene.scale.set(100, 100, 100);
+        gltf.scene.position.set(0, 49, 0);
+        this.scene.add(gltf.scene)
+      },
+      () => { console.log('progress') },
+      () => { console.log('error') }
+    )
+
+
     // Loader
-    var path = "../../../../../assets/models/poly_4.glb"
-    var loader = new GLTFLoader();
-    loader.load
-      (
-        path,
-        object => {
-          object.scene.scale.set(1.2, 1.2, 1.2);
-          object.scene.position.set(0, 2.80, 0);
-          this.scene!.add(object.scene)
-        }
-      )
+    //var path = "../../../../../assets/models/poly_4.glb"
+    //var loader = new GLTFLoader();
+    //loader.load
+    //  (
+    //    path,
+    //    object => {
+    //      object.scene.scale.set(1.2, 1.2, 1.2);
+    //      object.scene.position.set(0, 2.80, 0);
+    //      this.scene!.add(object.scene)
+    //    }
+    //  )
 
     this.defineEvents();
   }

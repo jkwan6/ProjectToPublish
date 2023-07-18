@@ -73,7 +73,7 @@ export class ThreeJsWorld {
     threeFloor.rotateX(- Math.PI / 2);
     threeFloor.receiveShadow = true;
     threeFloor.castShadow = true;
-    this.scene.add(threeFloor);
+    //this.scene.add(threeFloor);
     const vertices = threeFloor.geometry.attributes['position'].array;
     const dx = scale.x / nsubdivs;
     const dy = scale.z / nsubdivs;

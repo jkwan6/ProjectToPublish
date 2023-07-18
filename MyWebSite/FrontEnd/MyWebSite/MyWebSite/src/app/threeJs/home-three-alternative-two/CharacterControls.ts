@@ -29,7 +29,7 @@ export class CharacterControls {
 
   // constants
   fadeDuration: number = 0.2
-  runVelocity = 8
+  runVelocity = 20
   walkVelocity = 2
 
   // Physics
