@@ -25,6 +25,7 @@ import { ThreeJsPage8Component } from './sub-pages/ThreeJs/three-js-page8/three-
 import { ThreeJsPage9Component } from './sub-pages/ThreeJs/three-js-page9/three-js-page9.component';
 import { AuthGuard } from './route-guard/AuthGuard';
 import { WebsiteDetailsComponent } from './sub-pages/website-details/website-details.component';
+import { ScheduleComponent } from './sub-pages/schedule/schedule.component';
 
 const routes: Routes = [
   { path: '', component: HomePageComponent, pathMatch: 'full' },
@@ -51,7 +52,7 @@ const routes: Routes = [
   { path: 'three-14', component: ThreeJsPage14Component },
   { path: 'three-15', component: ThreeJsPage15Component },
   { path: 'website-details', component: WebsiteDetailsComponent },
-
+  { path: 'schedule', component: ScheduleComponent },
 ]
 
 

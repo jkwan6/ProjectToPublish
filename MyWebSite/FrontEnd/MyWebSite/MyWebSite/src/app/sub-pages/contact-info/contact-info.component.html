@@ -28,7 +28,10 @@
   <div class="border">
     <div class="contact-details-block">
 
-      <h4 class="block-title">Contact Details</h4>
+      <h4 class="block-title"
+          [matTooltip]="'No Spam, or Im gonna punch you in da butthole'"
+          [matTooltipShowDelay]="200"
+          [matTooltipHideDelay]="200">Contact Details</h4>
 
       <div>
 
@@ -57,7 +60,7 @@
 
       <div class="social-media">
         <i class="fa-brands fa-twitter fa-2xl"
-           [matTooltip]="'Too controversial to share :)'"
+           [matTooltip]="'Too controversial to share :\')'"
            [matTooltipShowDelay]="200"
            [matTooltipHideDelay]="200"></i>
 
@@ -67,9 +70,9 @@
            [matTooltipHideDelay]="200">
         </a>
 
-        <!--<a href="https://open.spotify.com/user/trip_down_memory_lane"
+        <a href="https://open.spotify.com/user/trip_down_memory_lane"
          target="_blank"
-         class="fa-brands fa-spotify fa-2xl"></a>-->
+         class="fa-brands fa-spotify fa-2xl"></a>
       </div>
     </div>
   </div>

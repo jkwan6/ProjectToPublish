@@ -83,7 +83,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     this.bodies.push({ rigid: boxRigidBody, mesh: boxMesh });               // Storing them
 
     let heights: number[] = [];                                             // Creating Floor
-    let scale = new RAPIER.Vector3(50.0, 1, 50.0);
+    let scale = new RAPIER.Vector3(50.0, 2, 50.0);
     let nsubdivs = 20;
     this.threeJsWorld.createFloor(scale, nsubdivs, heights);
     this.rapierPhysics.createPhysicsFloor(scale, nsubdivs, heights);
@@ -106,7 +106,6 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
           characterModel.traverse(function (object: any) {
             if (object.isMesh) object.castShadow = true;
           });
-          console.log(gltf);
           characterModel.position.set(0, 3, 0);
           this.scene.add(characterModel);
           const gltfAnimations: THREE.AnimationClip[] = gltf.animations;
@@ -117,10 +116,10 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
           })
 
           // Rigid Body
-          let bocyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(-1, 3, 1);
-          let characterRigidBody = this.world.createRigidBody(bocyDesc);
-          let dynamicColliser = RAPIER.ColliderDesc.cuboid(0.5,1.8,0.5);
-          this.world.createCollider(dynamicColliser, characterRigidBody);
+          let bodyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(-1, 3, 1);
+          let characterRigidBody = this.world.createRigidBody(bodyDesc);
+          let dynamicCollider = RAPIER.ColliderDesc.cuboid(0.5,1.7,0.5);
+          this.world.createCollider(dynamicCollider, characterRigidBody);
 
           characterControls = new CharacterControls(
             characterModel,
@@ -137,6 +136,26 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
         }
     );
 
+
+    const mouse = new THREE.Vector2();
+
+    this.canvas!.addEventListener('mousemove', (event: MouseEvent) => {
+      var boundingRect = this.canvas.getBoundingClientRect();
+      mouse.x = ((event.pageX - boundingRect.left) > 0)
+        ? (event.pageX - boundingRect.left)
+        : 0
+      mouse.y = boundingRect.bottom - event.pageY  /*- (event.layerY / this.sizes.height - 0.5) * 2;*/
+
+      // Normalize
+      var length = boundingRect.right - boundingRect.left;
+      var height = boundingRect.bottom - boundingRect.top;
+      mouse.x = (-1 * (length / 2 - mouse.x)) / length;
+      mouse.y = (-1 * (height / 2 - mouse.y)) / height;
+    });
+
+
+
+
     // EVENT LISTENER
     // CONTROL KEYS
     this.keyboardDownEvent = (event: any) => {
@@ -144,7 +163,6 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
         characterControls.switchRunToggle()
       } else {
         (keysPressed as any)[event.key.toLowerCase()] = true
-        console.log(keysPressed)
       }
     }
     this.keyboardUpEvent = (event: any) => {
