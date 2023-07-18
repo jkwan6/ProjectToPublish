@@ -39,7 +39,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     private rapierPhysics: RapierPhysicsWorld,
     private threeJsWorld: ThreeJsWorld
   ) {
-    this.sizes = this.sideNavService.getBodyDims.value; this.sizes.height = 500;
+    this.sizes = this.sideNavService.getBodyDims.value; this.sizes.height = 600;
     this.scene = this.threeJsWorld.instantiateThreeJsScene();
     this.camera = this.threeJsWorld.instantiateThreeJsCamera(this.sizes.width / this.sizes.height);
   }
@@ -60,7 +60,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
   keyboardDownEvent: (() => {}) | any;
   mouse: THREE.Vector2 = new THREE.Vector2();
   arrowHelper!: THREE.ArrowHelper;
-  rayCaster!: THREE.Raycaster;
+  rayCaster: THREE.Raycaster = new THREE.Raycaster();
   characterControls!: CharacterControls;
   orbitControls!: OrbitControls;
   // #endregion
@@ -81,35 +81,19 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
 
     this.world = this.rapierPhysics.instantiatePhysicsWorld();              // Creating Physics World
 
-    var boxPosition = new RAPIER.Vector3(0, 20, 0);                         // Adding Box to Scene
-    var box: IBoxDimensions = { length: 4, height: 5, width: 4};
-    var boxMesh = this.threeJsWorld.createBoxMesh(box)
-    var boxRigidBody = this.rapierPhysics.createRigidBox(box, boxPosition);
-    this.bodies.push({ rigid: boxRigidBody, mesh: boxMesh });               // Storing them
-
-
-    var boxPosition = new RAPIER.Vector3(10, 20, 10);                         // Adding Box to Scene
-    var box: IBoxDimensions = { length: 4, height: 5, width: 4 };
-    var boxMesh = this.threeJsWorld.createBoxMesh(box)
-    var boxRigidBody = this.rapierPhysics.createRigidBox(box, boxPosition);
-    this.bodies.push({ rigid: boxRigidBody, mesh: boxMesh });               // Storing them
-
-    var boxPosition = new RAPIER.Vector3(0, 20, 10);                         // Adding Box to Scene
-    var box: IBoxDimensions = { length: 4, height: 5, width: 4 };
-    var boxMesh = this.threeJsWorld.createBoxMesh(box)
-    var boxRigidBody = this.rapierPhysics.createRigidBox(box, boxPosition);
-    this.bodies.push({ rigid: boxRigidBody, mesh: boxMesh });               // Storing them
-
-
-    var boxPosition = new RAPIER.Vector3(10, 20, 0);                         // Adding Box to Scene
-    var box: IBoxDimensions = { length: 4, height: 5, width: 4 };
-    var boxMesh = this.threeJsWorld.createBoxMesh(box)
-    var boxRigidBody = this.rapierPhysics.createRigidBox(box, boxPosition);
-    this.bodies.push({ rigid: boxRigidBody, mesh: boxMesh });               // Storing them
-
+    for (let i = 0; i < 20; i++) {
+      var rngx = (0.5 - Math.random()) * 50
+      var rngy = Math.random() * 50
+      var rngz = (0.5 - Math.random()) * 50
+      var boxPosition = new RAPIER.Vector3(rngx, rngy, rngz);               // Adding Box to Scene
+      var box: IBoxDimensions = { length: 4, height: 5, width: 4 };
+      var boxMesh = this.threeJsWorld.createBoxMesh(box)
+      var boxRigidBody = this.rapierPhysics.createRigidBox(box, boxPosition);
+      this.bodies.push({ rigid: boxRigidBody, mesh: boxMesh });             // Storing them
+    }
 
     let heights: number[] = [];                                             // Creating Floor
-    let scale = new RAPIER.Vector3(50.0, 2, 50.0);
+    let scale = new RAPIER.Vector3(500.0, 2, 500.0);
     let nsubdivs = 20;
     this.threeJsWorld.createFloor(scale, nsubdivs, heights);
     this.rapierPhysics.createPhysicsFloor(scale, nsubdivs, heights);
@@ -119,9 +103,8 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     this.orbitControls = this.threeJsWorld.instantiateThreeJsControls();    // Controls
     this.threeJsWorld.instantiateThreeJsLights();                           // Light
 
-    this.rayCaster = new THREE.Raycaster();
-    this.arrowHelper = new THREE.ArrowHelper(this.rayCaster.ray.direction, this.rayCaster.ray.origin, 1, 0xff0000)
-    this.scene.add(this.arrowHelper);
+    //this.arrowHelper = new THREE.ArrowHelper(this.rayCaster.ray.direction, this.rayCaster.ray.origin, 1, 0xff0000)
+    //this.scene.add(this.arrowHelper);
 
     const gltfLoader = new GLTFLoader();
     gltfLoader
@@ -160,6 +143,21 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
             characterRigidBody)
         }
     );
+
+
+    // Loader
+    var path = "../../../../../assets/models/poly_4.glb"
+    var loader = new GLTFLoader();
+    loader.load
+      (
+        path,
+        object => {
+          object.scene.scale.set(1.2, 1.2, 1.2);
+          object.scene.position.set(0, 2.80, 0);
+          this.scene!.add(object.scene)
+        }
+      )
+
     this.defineEvents();
   }
 
@@ -218,8 +216,8 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
 
 
       this.rayCaster.setFromCamera(this.mouse, this.camera);
-      this.arrowHelper.setDirection(this.rayCaster.ray.direction);
-      this.arrowHelper.position.set(this.rayCaster.ray.origin.x, this.rayCaster.ray.origin.y, this.rayCaster.ray.origin.z)
+      //this.arrowHelper.setDirection(this.rayCaster.ray.direction);
+      //this.arrowHelper.position.set(this.rayCaster.ray.origin.x, this.rayCaster.ray.origin.y, this.rayCaster.ray.origin.z)
     }
     this.animate();
 
@@ -257,7 +255,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     /* <---------------------- RESIZE EVENT ----------------------> */
     this.animateScreenResize = this.sideNavService.getBodyDims.pipe(tap(results => {
       this.sizes.width = results.width * 0.925;                         // Width
-      this.sizes.height = 500;                                          // Height
+      this.sizes.height = 600;                                          // Height
 
       this.camera.aspect = this.sizes.width / this.sizes.height;
       this.camera?.updateProjectionMatrix();

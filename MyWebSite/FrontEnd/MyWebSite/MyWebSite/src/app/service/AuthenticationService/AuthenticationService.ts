@@ -17,7 +17,7 @@ import { BaseRepository } from '../../repository/BaseRepository';
 export class AuthenticationService implements OnInit{
 
   // EMMITTERS
-  localStoragePresent!: BehaviorSubject<boolean>;
+  tokenPresentInLocalStorage!: BehaviorSubject<boolean>;
 
   // GETTERS
   private _authState!: BehaviorSubject<boolean>;
@@ -36,9 +36,9 @@ export class AuthenticationService implements OnInit{
     private _logoutRepository: BaseRepository<null, null>,
     private _refreshRepository: BaseRepository<null, IRefreshResult>
   ) {
-    this.localStoragePresent = new BehaviorSubject<boolean>(false);
+    this.tokenPresentInLocalStorage = new BehaviorSubject<boolean>(false);
     this.updateLoginState();
-    this._authState = this.localStoragePresent;
+    this._authState = this.tokenPresentInLocalStorage;
   }
 
   ngOnInit() {
@@ -63,7 +63,7 @@ export class AuthenticationService implements OnInit{
         map(results => {
           var castedResults = results;
           localStorage.setItem("token", castedResults.token);
-          this.localStoragePresent.next(true);
+          this.tokenPresentInLocalStorage.next(true);
           this.startRefreshTokenTimer();
           return castedResults;
         }),
@@ -122,7 +122,7 @@ export class AuthenticationService implements OnInit{
   // When this gets called, updates loginState based on localStorage
   // Automatically emmits event to subscriber
   updateLoginState() {
-    this.localStoragePresent.next((localStorage.getItem('token') != null) ? true : false);
+    this.tokenPresentInLocalStorage.next((localStorage.getItem('token') != null) ? true : false);
   }
 
 }

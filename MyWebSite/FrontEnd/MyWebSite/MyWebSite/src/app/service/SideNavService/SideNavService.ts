@@ -28,8 +28,6 @@ export class SideNavService {
     this.toggleTheme.next(_toggle);
   }
 
-
-
   // bodyDims Getters & Setters
   public set setBodyDims(dims: IElementDimensions) {
     this.bodyDims.next(dims);
