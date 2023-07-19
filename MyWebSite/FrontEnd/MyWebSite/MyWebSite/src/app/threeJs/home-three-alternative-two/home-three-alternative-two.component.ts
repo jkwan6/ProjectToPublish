@@ -94,7 +94,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     }
 
     let heights: number[] = [];                                             // Creating Floor
-    let scale = new RAPIER.Vector3(500.0, 2, 500.0);
+    let scale = new RAPIER.Vector3(1000.0, 2, 1000.0);
     let nsubdivs = 20;
     this.threeJsWorld.createFloor(scale, nsubdivs, heights);
     this.rapierPhysics.createPhysicsFloor(scale, nsubdivs, heights);
