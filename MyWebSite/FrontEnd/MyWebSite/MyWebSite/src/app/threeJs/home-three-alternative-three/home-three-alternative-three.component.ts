@@ -28,12 +28,12 @@ export enum modelAnimation {
 }
 
 @Component({
-  selector: 'app-home-three-alternative-two',
-  templateUrl: './home-three-alternative-two.component.html',
-  styleUrls: ['./home-three-alternative-two.component.css'],
+  selector: 'app-home-three-alternative-three',
+  templateUrl: './home-three-alternative-three.component.html',
+  styleUrls: ['./home-three-alternative-three.component.css'],
   providers: [RapierPhysicsWorld, ThreeJsWorld]
 })
-export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
+export class HomeThreeAlternativeThreeComponent implements OnInit, OnDestroy{
 
   constructor(
     private sideNavService: SideNavService,
@@ -173,17 +173,17 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
 
 
     // Loader
-    //var path = "../../../../../assets/models/poly_4.glb"
-    //var loader = new GLTFLoader();
-    //loader.load
-    //  (
-    //    path,
-    //    object => {
-    //      object.scene.scale.set(1.4, 1.4, 1.4);
-    //      object.scene.position.set(0, 2.0, 0);
-    //      this.scene!.add(object.scene)
-    //    }
-    //  )
+    var path = "../../../../../assets/models/poly_4.glb"
+    var loader = new GLTFLoader();
+    loader.load
+      (
+        path,
+        object => {
+          object.scene.scale.set(1.4, 1.4, 1.4);
+          object.scene.position.set(0, 2.0, 0);
+          this.scene!.add(object.scene)
+        }
+      )
 
     this.defineEvents();
   }

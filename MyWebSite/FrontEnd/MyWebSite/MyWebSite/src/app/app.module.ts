@@ -33,6 +33,7 @@ import { RefreshTokenTimeOutInterceptor } from './interceptors/RefreshTokenTimeO
 import { HomeThreeComponent } from './home-page/home-three/home-three.component';
 import { HomeThreeAlternativeComponent } from './home-page/home-three-alternative/home-three-alternative.component';
 import { HomeThreeAlternativeTwoComponent } from './threeJs/home-three-alternative-two/home-three-alternative-two.component';
+import { HomeThreeAlternativeThreeComponent } from './threeJs/home-three-alternative-three/home-three-alternative-three.component';
 import { ScheduleComponent } from './sub-pages/schedule/schedule.component';
 
 @NgModule({
@@ -60,7 +61,8 @@ import { ScheduleComponent } from './sub-pages/schedule/schedule.component';
     HomeThreeComponent,
     HomeThreeAlternativeComponent,
     HomeThreeAlternativeTwoComponent,
-    ScheduleComponent
+    ScheduleComponent,
+    HomeThreeAlternativeThreeComponent
 
   ],
   imports: [

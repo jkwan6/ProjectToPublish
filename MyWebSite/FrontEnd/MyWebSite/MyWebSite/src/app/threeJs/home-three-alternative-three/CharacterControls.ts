@@ -8,7 +8,7 @@ const SPACEBAR = " ";
 const SHIFT = 'shift'
 const DIRECTIONS = [W, A, S, D];
 import * as RAPIER from '@dimforge/rapier3d'
-import { modelAnimation } from './home-three-alternative-two.component'
+import { modelAnimation } from './home-three-alternative-three.component'
 export class CharacterControls {
 
   model: THREE.Group

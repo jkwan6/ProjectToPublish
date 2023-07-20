@@ -1,6 +1,6 @@
 import { Component, Injectable } from "@angular/core";
 import * as THREE from 'three';
-import { IBoxDimensions } from './home-three-alternative-two.component'
+import { IBoxDimensions } from './home-three-alternative-three.component'
 import * as RAPIER from '@dimforge/rapier3d'
 import { IElementDimensions } from "../../interface/IElementDimensions";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
