@@ -24,23 +24,24 @@ export class FooterBarComponent implements OnInit {
     private sideNavService: SideNavService
   ) { };
 
-  ngOnInit(): void {
-    this.subscription.add(
-      this.sideNavService.themeToggleStatus$.subscribe(toggleStatus => this.toggleStatus = toggleStatus))
-  }
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 
+  ngOnInit(): void {
+    //this.subscription.add(
+    //  this.sideNavService.themeToggleStatus$.subscribe(toggleStatus => this.toggleStatus = toggleStatus))
+    this.subscription.add(
+      this.sideNavService.$themeLocalStorage.subscribe(toggleStatus => {
+        this.toggleStatus = toggleStatus
+        console.log(this.toggleStatus)
+      })
+    )
+  }
+
   onToggle() {
-    if (this.toggleStatus) {
-      this.sideNavService.changeThemeStatus(false)
-      this.toggleStatus = false;
-    }
-    else {
-      this.sideNavService.changeThemeStatus(true)
-      this.toggleStatus = true;
-    }
+    console.log(this.toggleStatus)
+    this.sideNavService.changeThemeLocalStorage(this.toggleStatus);
   }
 
 }

@@ -16,8 +16,9 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
 
     let sideBarContainer: HTMLDivElement = document.querySelector('.LayoutFlexContainer')!;
-    this.subscription = this.sideNavService.themeToggleStatus$.subscribe(x => {
-      if (!x) {
+    this.subscription = this.sideNavService.$themeLocalStorage.subscribe(results => {
+      console.log(`results: ${results}`)
+      if (results) {
         sideBarContainer.classList.add('dark-theme');
       }
       else {

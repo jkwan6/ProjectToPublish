@@ -55,10 +55,10 @@ export class ThreeJsPageSixComponent implements AfterViewInit {
       //const origin = new THREE.Vector3(-3, 0, 0);
       //const direction = new THREE.Vector3(10, 0, 0);
       //direction.normalize;
-      //rayCaster.set(origin, direction);
+      //pointerRayCaster.set(origin, direction);
 
-      //const intersect = rayCaster.intersectObject(object2);
-      //const intersects = rayCaster.intersectObjects([object1, object2, object3]);
+      //const intersect = pointerRayCaster.intersectObject(object2);
+      //const intersects = pointerRayCaster.intersectObjects([object1, object2, object3]);
 
       //console.log(intersect)
       //console.log(intersects)
@@ -148,10 +148,10 @@ export class ThreeJsPageSixComponent implements AfterViewInit {
         //const origin = new THREE.Vector3(-3, 0, 0);
         //const direction = new THREE.Vector3(10, 0, 0);
         //direction.normalize();
-        //rayCaster.set(origin, direction)
+        //pointerRayCaster.set(origin, direction)
 
 
-        ////const intersect = rayCaster.intersectObject(object2);
+        ////const intersect = pointerRayCaster.intersectObject(object2);
 
 
         const objectsToTest = [object1, object2, object3]

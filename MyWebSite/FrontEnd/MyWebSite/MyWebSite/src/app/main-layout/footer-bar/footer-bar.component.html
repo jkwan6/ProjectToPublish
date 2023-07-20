@@ -4,10 +4,9 @@
     <!--<span>
     </span>-->
     <div class="Flex-Content1">
-      <mat-icon class="theme-symbol">{{!vm.isPressed ? 'nights_stay' : 'light_mode'}}</mat-icon>
-      <mat-slide-toggle (click)="vm.isPressed = !vm.isPressed; onToggle()"
-                        [ngClass]="{'pressed':vm.isPressed}"
-                        [matTooltip]="!vm.isPressed ? 'Toggle Light Theme' : 'Toggle Dark Theme'"
+      <mat-icon class="theme-symbol">{{(this.toggleStatus) ? 'nights_stay' : 'light_mode'}}</mat-icon>
+      <mat-slide-toggle (click)="onToggle()"
+                        [matTooltip]="(this.toggleStatus) ? 'Toggle Light Theme' : 'Toggle Dark Theme'"
                         [matTooltipShowDelay]="showDelay.value"
                         [matTooltipHideDelay]="hideDelay.value">
       </mat-slide-toggle>

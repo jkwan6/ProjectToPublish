@@ -60,10 +60,14 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
   keyboardUpEvent: (() => {}) | any;
   keyboardDownEvent: (() => {}) | any;
   mouse: THREE.Vector2 = new THREE.Vector2();
-  arrowHelper!: THREE.ArrowHelper;
-  rayCaster: THREE.Raycaster = new THREE.Raycaster();
+  pointerArrowHelper!: THREE.ArrowHelper;
+  bodyArrowHelper!: THREE.ArrowHelper;
+  pointerRayCaster: THREE.Raycaster = new THREE.Raycaster();
+  bodyRayCaster: THREE.Raycaster = new THREE.Raycaster();
   characterControls!: CharacterControls;
   orbitControls!: OrbitControls;
+  characterModel = new THREE.Group;
+  environementWorld = new THREE.Group;
   // #endregion
 
   // #region ON DESTROY
@@ -104,34 +108,37 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     this.orbitControls = this.threeJsWorld.instantiateThreeJsControls();    // Controls
     this.threeJsWorld.instantiateThreeJsLights();                           // Light
 
-    //this.arrowHelper = new THREE.ArrowHelper(this.rayCaster.ray.direction, this.rayCaster.ray.origin, 1, 0xff0000)
-    //this.scene.add(this.arrowHelper);
+    // RAYCASTER
+    this.pointerArrowHelper = new THREE.ArrowHelper(this.pointerRayCaster.ray.direction, this.pointerRayCaster.ray.origin, 1, 0xff0000)
+    this.scene.add(this.pointerArrowHelper);
+
+    this.bodyArrowHelper = new THREE.ArrowHelper(this.bodyRayCaster.ray.direction, this.bodyRayCaster.ray.origin, 5, 0xff0000)
+    this.scene.add(this.bodyArrowHelper);
 
     const gltfLoader = new GLTFLoader();
     gltfLoader
       .load('../../../../../assets/models/XBot/XBot2.glb',
         (gltf) => {
-          const characterModel = gltf.scene;
-          characterModel.traverse(function (object: any) {
+          this.characterModel = gltf.scene;
+          this.characterModel.traverse(function (object: any) {
             if (object.isMesh) object.castShadow = true;
           });
-          characterModel.position.set(0, 3, 0);
-          this.scene.add(characterModel);
+          this.characterModel.position.set(0, 3, 0);
+          this.scene.add(this.characterModel);
           const gltfAnimations: THREE.AnimationClip[] = gltf.animations;
-          const animationMixer = new THREE.AnimationMixer(characterModel);
+          const animationMixer = new THREE.AnimationMixer(this.characterModel);
           const animationsMap: Map<string, THREE.AnimationAction> = new Map()
           gltfAnimations.filter(a => a.name != modelAnimation.TPose).forEach((a: THREE.AnimationClip) => {
             animationsMap.set(a.name, animationMixer.clipAction(a))
           })
 
           // Rigid Body
-          let bodyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(-1, 3, 1);
+          let bodyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(-10, 10, 1);
           let characterRigidBody = this.world.createRigidBody(bodyDesc);
           let dynamicCollider = RAPIER.ColliderDesc.cuboid(0.5,1.7,0.5);
           this.world.createCollider(dynamicCollider, characterRigidBody);
-
           this.characterControls = new CharacterControls(
-            characterModel,
+            this.characterModel,
             animationMixer,
             animationsMap,
             this.orbitControls,
@@ -155,7 +162,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     gltfLoader.load("../../../../../assets/models/AltTower.glb",
       (gltf) => {
 
-
+        this.environementWorld = gltf.scene;
         gltf.scene.scale.set(100, 100, 100);
         gltf.scene.position.set(0, 49, 0);
         this.scene.add(gltf.scene)
@@ -216,7 +223,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
         objectToTest.push(body.mesh)
       })
 
-      const intersects = this.rayCaster.intersectObjects(objectToTest);
+      const intersects = this.pointerRayCaster.intersectObjects(objectToTest);
 
       for (let object of objectToTest) {
         let varX: any;
@@ -235,9 +242,38 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
       }
 
 
-      this.rayCaster.setFromCamera(this.mouse, this.camera);
-      //this.arrowHelper.setDirection(this.rayCaster.ray.direction);
-      //this.arrowHelper.position.set(this.rayCaster.ray.origin.x, this.rayCaster.ray.origin.y, this.rayCaster.ray.origin.z)
+      this.pointerRayCaster.setFromCamera(this.mouse, this.camera);
+      this.pointerArrowHelper.setDirection(this.pointerRayCaster.ray.direction);
+      this.pointerArrowHelper.position.set(
+        this.pointerRayCaster.ray.origin.x,
+        this.pointerRayCaster.ray.origin.y,
+        this.pointerRayCaster.ray.origin.z
+      )
+
+
+      this.bodyRayCaster.set(
+        new THREE.Vector3(
+          this.characterModel.position.x,
+          this.characterModel.position.y,
+          this.characterModel.position.z)
+        , new THREE.Vector3(0, -1, 0))
+
+      this.bodyArrowHelper.setDirection(this.bodyRayCaster.ray.direction);
+      this.bodyArrowHelper.position.set(
+        this.bodyRayCaster.ray.origin.x,
+        this.bodyRayCaster.ray.origin.y,
+        this.bodyRayCaster.ray.origin.z
+      )
+
+
+      if (this.bodyRayCaster.intersectObject(this.environementWorld)[0] !== undefined) { 
+        //console.log(this.bodyRayCaster.intersectObject(this.environementWorld)[0].point);
+        this.characterModel.position.set(
+          this.characterModel.position.x,
+          this.characterModel.position.y,
+          this.characterModel.position.z
+          )
+      }
     }
     this.animate();
 
@@ -263,6 +299,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
       } else {
         (keysPressed as any)[event.key.toLowerCase()] = true
       }
+      console.log(keysPressed);
     }
     this.keyboardUpEvent = (event: any) => {
       (keysPressed as any)[event.key.toLowerCase()] = false

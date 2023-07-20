@@ -4,6 +4,7 @@ const W = 'w'
 const A = 'a'
 const S = 's'
 const D = 'd'
+const SPACEBAR = " ";
 const SHIFT = 'shift'
 const DIRECTIONS = [W, A, S, D];
 import * as RAPIER from '@dimforge/rapier3d'
@@ -29,7 +30,7 @@ export class CharacterControls {
 
   // constants
   fadeDuration: number = 0.2
-  runVelocity = 20
+  runVelocity = 50
   walkVelocity = 2
 
   // Physics
@@ -120,9 +121,13 @@ export class CharacterControls {
       velocity = this.currentAction == modelAnimation.run ? this.runVelocity : this.walkVelocity
     }
 
+
+
     const translation = this.rigidBody.translation();
-    if (translation.y < -1) {
+
+    if (translation.y < -10) {
       // don't fall below ground
+      // To be refactored, since its comparing with absolute coordinates
       this.rigidBody.setNextKinematicTranslation({
         x: 0,
         y: 10,
@@ -130,17 +135,24 @@ export class CharacterControls {
       });
     } else {
       const cameraPositionOffset = this.camera.position.sub(this.model.position);
-      // update model and camera
+
+      // update model to physics coordinates and camera
       this.model.position.x = translation.x
       this.model.position.y = translation.y
       this.model.position.z = translation.z
+
+      // Update Camera Position
       this.updateCameraTarget(cameraPositionOffset)
 
-      this.walkDirection.y += this.lerp(this.storedFall, -9.81 * delta, 0.10)
+      this.walkDirection.y += this.lerp(this.storedFall, -9.81 * delta * 2, 0.10)
       this.storedFall = this.walkDirection.y
+
+
       this.ray.origin.x = translation.x
       this.ray.origin.y = translation.y
       this.ray.origin.z = translation.z
+
+      // Falling Algorithm
       let hit = world.castRay(this.ray, 0.5, false, 0xfffffffff);
       if (hit) {
         const point = this.ray.pointAt(hit.toi);
@@ -151,14 +163,26 @@ export class CharacterControls {
         }
       }
 
+
       this.walkDirection.x = this.walkDirection.x * velocity * delta
       this.walkDirection.z = this.walkDirection.z * velocity * delta
 
-      this.rigidBody.setNextKinematicTranslation({
-        x: translation.x + this.walkDirection.x,
-        y: translation.y + this.walkDirection.y,
-        z: translation.z + this.walkDirection.z
-      });
+
+      if (keysPressed[SPACEBAR]) {
+
+        this.rigidBody.setNextKinematicTranslation({
+          x: translation.x + this.walkDirection.x,
+          y: translation.y + this.walkDirection.y + 2,
+          z: translation.z + this.walkDirection.z
+        });
+      }
+      else {
+        this.rigidBody.setNextKinematicTranslation({
+          x: translation.x + this.walkDirection.x,
+          y: translation.y + this.walkDirection.y,
+          z: translation.z + this.walkDirection.z
+        });
+      }
     }
   }
 
