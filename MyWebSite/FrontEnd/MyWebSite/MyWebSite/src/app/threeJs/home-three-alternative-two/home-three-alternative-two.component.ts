@@ -98,7 +98,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     }
 
     let heights: number[] = [];                                             // Creating Floor
-    let scale = new RAPIER.Vector3(1000, 0, 1000);
+    let scale = new RAPIER.Vector3(70.0, 3.0, 70.0);
     let nsubdivs = 20;
     this.threeJsWorld.createFloor(scale, nsubdivs, heights);
     this.rapierPhysics.createPhysicsFloor(scale, nsubdivs, heights);
@@ -135,7 +135,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
           // Rigid Body
           let bodyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(-10, 10, 1);
           let characterRigidBody = this.world.createRigidBody(bodyDesc);
-          let dynamicCollider = RAPIER.ColliderDesc.cuboid(0.5,1.7,0.5);
+          let dynamicCollider = RAPIER.ColliderDesc.ball(0.5);
           this.world.createCollider(dynamicCollider, characterRigidBody);
           this.characterControls = new CharacterControls(
             this.characterModel,
@@ -153,37 +153,37 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     );
 
 
-    const gltfloader = new GLTFLoader();
-    const dracroLoader = new DRACOLoader();
-    dracroLoader.setDecoderPath('../../../../../assets/draco/')
+    //const gltfloader = new GLTFLoader();
+    //const dracroLoader = new DRACOLoader();
+    //dracroLoader.setDecoderPath('../../../../../assets/draco/')
 
-    gltfLoader.setDRACOLoader(dracroLoader);
+    //gltfLoader.setDRACOLoader(dracroLoader);
 
-    gltfLoader.load("../../../../../assets/models/AltTower.glb",
-      (gltf) => {
+    //gltfLoader.load("../../../../../assets/models/AltTower.glb",
+    //  (gltf) => {
 
-        this.environementWorld = gltf.scene;
-        gltf.scene.scale.set(100, 100, 100);
-        gltf.scene.position.set(0, 49, 0);
-        this.scene.add(gltf.scene)
-      },
-      () => { console.log('progress') },
-      () => { console.log('error') }
-    )
+    //    this.environementWorld = gltf.scene;
+    //    gltf.scene.scale.set(100, 100, 100);
+    //    gltf.scene.position.set(0, 49, 0);
+    //    this.scene.add(gltf.scene)
+    //  },
+    //  () => { console.log('progress') },
+    //  () => { console.log('error') }
+    //)
 
 
     // Loader
-    //var path = "../../../../../assets/models/poly_4.glb"
-    //var loader = new GLTFLoader();
-    //loader.load
-    //  (
-    //    path,
-    //    object => {
-    //      object.scene.scale.set(1.4, 1.4, 1.4);
-    //      object.scene.position.set(0, 2.0, 0);
-    //      this.scene!.add(object.scene)
-    //    }
-    //  )
+    var path = "../../../../../assets/models/poly_4.glb"
+    var loader = new GLTFLoader();
+    loader.load
+      (
+        path,
+        object => {
+          object.scene.scale.set(1.4, 1.4, 1.4);
+          object.scene.position.set(0, 2.0, 0);
+          this.scene!.add(object.scene)
+        }
+      )
 
     this.defineEvents();
   }

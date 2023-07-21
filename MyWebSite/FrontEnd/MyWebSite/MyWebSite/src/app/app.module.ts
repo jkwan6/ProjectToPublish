@@ -35,6 +35,7 @@ import { HomeThreeAlternativeComponent } from './home-page/home-three-alternativ
 import { HomeThreeAlternativeTwoComponent } from './threeJs/home-three-alternative-two/home-three-alternative-two.component';
 import { HomeThreeAlternativeThreeComponent } from './threeJs/home-three-alternative-three/home-three-alternative-three.component';
 import { ScheduleComponent } from './sub-pages/schedule/schedule.component';
+import { CarouselModuleComponent } from './modules/carousel-module/carousel-module.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { ScheduleComponent } from './sub-pages/schedule/schedule.component';
     HomeThreeAlternativeComponent,
     HomeThreeAlternativeTwoComponent,
     ScheduleComponent,
-    HomeThreeAlternativeThreeComponent
+    HomeThreeAlternativeThreeComponent,
+    CarouselModuleComponent
 
   ],
   imports: [

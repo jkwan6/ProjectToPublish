@@ -9,6 +9,8 @@ import { environment } from '../../environments/environment.prod';
 import { IComments } from '../interface/IComments';
 import { IPageParams } from '../interface/IPageParams';
 import { BaseRepository } from '../repository/BaseRepository';
+import { MatCarousel, MatCarouselComponent, Orientation } from '@ngbmodule/material-carousel'
+import { ThemePalette } from '@angular/material/core';
 
 @Component({
   selector: 'app-home-page',
@@ -18,10 +20,16 @@ import { BaseRepository } from '../repository/BaseRepository';
 })
 export class HomePageComponent implements OnInit {
 
+
+
   constructor() { }
 
   ngOnInit(): void {
+  }
 
 
-  };
+
+
+
+
 }

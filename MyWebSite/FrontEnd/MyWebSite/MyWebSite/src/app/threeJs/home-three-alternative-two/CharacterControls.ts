@@ -62,7 +62,6 @@ export class CharacterControls {
     // Physics
     this.ray = ray;
     this.rigidBody = rigidBody;
-
     this.orbitControl = orbitControl
     this.camera = camera
     this.updateCameraTarget(new THREE.Vector3(0, 1, 5))
@@ -73,33 +72,36 @@ export class CharacterControls {
   }
 
   public update(world: RAPIER.World, delta: number, keysPressed: any) {
+
     const directionPressed = DIRECTIONS.some(key => keysPressed[key] == true)
 
+    // Start Animation
     var play = '';
-    if (directionPressed && this.toggleRun) {
-      play = modelAnimation.run 
-    } else if (directionPressed) {
-      play = modelAnimation.walk
-    } else {
-      play = modelAnimation.idle
-    }
-
+    if (directionPressed && this.toggleRun)
+    { play = modelAnimation.run }
+    else if (directionPressed)
+    { play = modelAnimation.walk }
+    else
+    { play = modelAnimation.idle }
     if (this.currentAction != play) {
       const toPlay = this.animationsMap.get(play)
       const current = this.animationsMap.get(this.currentAction)
-
       current!.fadeOut(this.fadeDuration)
       toPlay!.reset().fadeIn(this.fadeDuration).play();
-
       this.currentAction = play
     }
-
     this.mixer.update(delta)
+    // End Animation
 
+    // Resetting Walk Direction
     this.walkDirection.x = this.walkDirection.y = this.walkDirection.z = 0
 
+
     let velocity = 0
-    if (this.currentAction == modelAnimation.run || this.currentAction == modelAnimation.walk) {
+
+    // Calculating Moving Direction as Unit Vector
+    if (this.currentAction == modelAnimation.run || this.currentAction == modelAnimation.walk)
+    {
       // calculate towards camera direction
       var angleYCameraDirection = Math.atan2(
         (this.camera.position.x - this.model.position.x),
@@ -113,40 +115,38 @@ export class CharacterControls {
 
       // calculate direction
       this.camera.getWorldDirection(this.walkDirection)
-      this.walkDirection.y = 0
-      this.walkDirection.normalize()
+      this.walkDirection.y = 0;
+      this.walkDirection.normalize(); // Unit Vector
       this.walkDirection.applyAxisAngle(this.rotateAngle, directionOffset)
 
       // run/walk velocity
       velocity = this.currentAction == modelAnimation.run ? this.runVelocity : this.walkVelocity
     }
 
-
-
+    // Get Translation of RigidBody in relation to origin
     const translation = this.rigidBody.translation();
+    console.log(translation)
 
     if (translation.y < -10) {
       // don't fall below ground
       // To be refactored, since its comparing with absolute coordinates
       this.rigidBody.setNextKinematicTranslation({
-        x: 0,
+        x: translation.x,
         y: 10,
-        z: 0
+        z: translation.z
       });
     } else {
-      // update camera
+      // update camera Position
       const cameraPositionOffset = this.camera.position.sub(this.model.position);
-      this.updateCameraTarget(cameraPositionOffset)
-
       // update model to physics coordinates and camera
       this.model.position.x = translation.x
       this.model.position.y = translation.y
       this.model.position.z = translation.z
+      this.updateCameraTarget(cameraPositionOffset)
 
+      this.walkDirection.y += this.lerp(this.storedFall, -9.81 * delta, 0.10)
+      this.storedFall = this.walkDirection.y
       // Update Camera Position
-
-
-
       this.ray.origin.x = translation.x
       this.ray.origin.y = translation.y
       this.ray.origin.z = translation.z
@@ -155,7 +155,7 @@ export class CharacterControls {
       let hit = world.castRay(this.ray, 0.5, false, 0xfffffffff);
       if (hit) {
         const point = this.ray.pointAt(hit.toi);
-        let diff = translation.y - (point.y + 0.28);
+        let diff = translation.y - (point.y + 0.5);
         if (diff < 0.0) {
           this.storedFall = 0
           this.walkDirection.y = this.lerp(0, Math.abs(diff), 0.5)
@@ -165,8 +165,6 @@ export class CharacterControls {
 
       this.walkDirection.x = this.walkDirection.x * velocity * delta
       this.walkDirection.z = this.walkDirection.z * velocity * delta
-      this.walkDirection.y += this.lerp(this.storedFall, -9.81 * delta * 2, 0.10)
-      this.storedFall = this.walkDirection.y
 
       if (keysPressed[SPACEBAR]) {
 
