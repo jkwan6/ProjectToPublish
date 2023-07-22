@@ -19,7 +19,7 @@ export class CarouselModuleComponent implements OnInit {
     editCSS.style.transform = 'translateX(-100%)';
   }
   onForward() {
-    let editCSS: HTMLDivElement = document.querySelector('.carousel-item')!;
-    editCSS.style.transform = 'translateX(-200%)';
+    let editCSS: HTMLDivElement = document.querySelector('.carousel-test')!;
+    editCSS.style.transform = 'translateX(+00%)';
   }
 }
