@@ -1,20 +1,9 @@
 import * as THREE from 'three'
-import { modelAnimation } from '../../home-three-alternative-two/home-three-alternative-two.component'
 import * as RAPIER from '@dimforge/rapier3d'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { DIRECTIONS, modelAction } from './ControllerUtils'
 
-
-
-const W = 'w'
-const A = 'a'
-const S = 's'
-const D = 'd'
-const SPACEBAR = " ";
-const SHIFT = 'shift'
-const DIRECTIONS = [W, A, S, D];
-
-
-export class CharacterMovement {
+export class CharacterTranslation {
 
   constructor(
     camera: THREE.Camera,
@@ -36,48 +25,20 @@ export class CharacterMovement {
   storedFall = 0;
 
   // constants
-  fadeDuration: number = 0.2
   runVelocity = 10
   walkVelocity = 2
   cameraTarget = new THREE.Vector3()
   orbitControl: OrbitControls
   lerp = (x: number, y: number, a: number) => { return x * (1 - a) + y * a };
+
+
   calculateVelocity(currentAction: string): number {
     let velocity = 0
-    if (currentAction == modelAnimation.run || currentAction == modelAnimation.walk) {
-      velocity = currentAction == modelAnimation.run ? this.runVelocity : this.walkVelocity
+    if (currentAction == modelAction.run || currentAction == modelAction.walk) {
+      velocity = currentAction == modelAction.run ? this.runVelocity : this.walkVelocity
     }
     return velocity
   }
-
-
-  // Resetting Walk Direction
-  calculateWalkDirection(keysPressed : string, currentAction: string): THREE.Vector3 {
-    let walkDirection = new THREE.Vector3(0, 0, 0);
-    let rotateQuarternion = new THREE.Quaternion();
-    let rotateAngle = new THREE.Vector3(0, 1, 0);
-
-    if (currentAction == modelAnimation.run || currentAction == modelAnimation.walk) {
-      // calculate towards camera direction
-      var angleYCameraDirection = Math.atan2(
-        (this.camera.position.x - this.model.position.x),
-        (this.camera.position.z - this.model.position.z))
-      // diagonal movement angle offset
-      var directionOffset = this.directionOffset(keysPressed)
-
-      // rotate model
-      rotateQuarternion.setFromAxisAngle(rotateAngle, angleYCameraDirection + directionOffset)
-      this.model.quaternion.rotateTowards(rotateQuarternion, 0.2)
-
-      // calculate direction
-      this.camera.getWorldDirection(walkDirection)
-      walkDirection.y = 0;
-      walkDirection.normalize(); // Unit Vector
-      walkDirection.applyAxisAngle(rotateAngle, directionOffset)
-    }
-    return walkDirection;
-  }
-
 
   calculateTranslation(
     threeJsModel: THREE.Group,
@@ -131,7 +92,7 @@ export class CharacterMovement {
       walkDirection.x = walkDirection.x * velocity * delta
       walkDirection.z = walkDirection.z * velocity * delta
 
-      if (keysPressed[SPACEBAR]) {
+      if (keysPressed[DIRECTIONS.SPACEBAR]) {
 
         this.rigidBody.setNextKinematicTranslation({
           x: translation.x + walkDirection.x,
@@ -165,44 +126,5 @@ export class CharacterMovement {
     this.cameraTarget.z = rigidTranslation.z
     this.orbitControl.target = this.cameraTarget
   }
-
-  private directionOffset(keysPressed: any) {
-    var directionOffset = 0 // w
-
-    //switch (keysPressed[A]) {
-    //  case (keysPressed[W] && keysPressed[A]): { directionOffset = Math.PI / 4; break; }
-    //  case (keysPressed[W] && keysPressed[D]): { directionOffset = - Math.PI / 4; break; }
-    //  case (keysPressed[S] && keysPressed[A]): { directionOffset = Math.PI / 4 + Math.PI / 2; break; }
-    //  case (keysPressed[S] && keysPressed[D]): { directionOffset = -Math.PI / 4 - Math.PI / 2; break; }
-    //  case (keysPressed[S]): { directionOffset = Math.PI; break; }
-    //  case (keysPressed[A]): { directionOffset = Math.PI / 2; break; }
-    //  case (keysPressed[D]): { directionOffset = - Math.PI / 2; break; }
-    //}
-
-
-
-    if (keysPressed[W]) {
-      if (keysPressed[A]) {
-        directionOffset = Math.PI / 4 // w+a
-      } else if (keysPressed[D]) {
-        directionOffset = - Math.PI / 4 // w+d
-      }
-    } else if (keysPressed[S]) {
-      if (keysPressed[A]) {
-        directionOffset = Math.PI / 4 + Math.PI / 2 // s+a
-      } else if (keysPressed[D]) {
-        directionOffset = -Math.PI / 4 - Math.PI / 2 // s+d
-      } else {
-        directionOffset = Math.PI // s
-      }
-    } else if (keysPressed[A]) {
-      directionOffset = Math.PI / 2 // a
-    } else if (keysPressed[D]) {
-      directionOffset = - Math.PI / 2 // d
-    }
-
-    return directionOffset
-  }
-
 
 }

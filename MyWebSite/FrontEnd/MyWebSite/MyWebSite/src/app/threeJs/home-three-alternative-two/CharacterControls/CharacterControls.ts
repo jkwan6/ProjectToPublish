@@ -1,22 +1,16 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-const W = 'w'
-const A = 'a'
-const S = 's'
-const D = 'd'
-const SPACEBAR = " ";
-const SHIFT = 'shift'
-const DIRECTIONS = [W, A, S, D];
 import * as RAPIER from '@dimforge/rapier3d'
-import { modelAnimation } from '../home-three-alternative-two.component'
-import { CharacterMovement } from './CharacterMovement'
-import { CharacterAnimation } from './CharacterAnimation'
-import { IControllerParams } from './IControllerParams'
+import { CharacterTranslation } from './CharacterControlsDetails/CharacterTranslation'
+import { CharacterAnimation } from './CharacterControlsDetails/CharacterAnimation'
+import { DIRECTIONS, IControllerParams } from './CharacterControlsDetails/ControllerUtils'
+import { CharacterWalkDirection } from './CharacterControlsDetails/CharacterWalkDirection'
 
 
 
 export class CharacterControls {
 
+  // Reference from Parent
   model: THREE.Group;
   mixer: THREE.AnimationMixer;
   animationsMap: Map<string, THREE.AnimationAction>;
@@ -26,18 +20,14 @@ export class CharacterControls {
   rigidBody: RAPIER.RigidBody;
   currentAction: string
 
-  // Walk/Run
+  // Global Variable
   toggleRun: boolean = true
-
-  // temporary data
   walkDirection = new THREE.Vector3()
-  cameraTarget = new THREE.Vector3()
 
-  // constants
-  fadeDuration: number = 0.2
-
-
-  characterMovement!: CharacterMovement;
+  // Can do an DI with those
+  characterWalkDirection: CharacterWalkDirection;
+  animation: CharacterAnimation;
+  characterMovement: CharacterTranslation;
   constructor(params: IControllerParams
   ) {
     this.model = params.model
@@ -50,8 +40,9 @@ export class CharacterControls {
     this.camera = params.camera;
 
     // Constructor Logic
-    this.characterMovement = new CharacterMovement(this.camera, this.currentAction, this.model, this.rigidBody, this.orbitControl)
-
+    this.characterMovement = new CharacterTranslation(this.camera, this.currentAction, this.model, this.rigidBody, this.orbitControl)
+    this.animation = new CharacterAnimation(this.animationsMap, this.mixer);
+    this.characterWalkDirection = new CharacterWalkDirection(this.camera, this.model);
     this.characterMovement.updateCameraTarget(new THREE.Vector3(0, 1, 5))
     this.animationsMap.forEach((value, key) => (key == params.currentAction) ? value.play() : null);
   }
@@ -61,31 +52,17 @@ export class CharacterControls {
   }
 
   public update(world: RAPIER.World, delta: number, keysPressed: any) {
+    // Returns True is WASD is pressed
+    const directionPressed = Object.values(DIRECTIONS).some(key => keysPressed[key] == true)
 
-    const directionPressed = DIRECTIONS.some(key => keysPressed[key] == true)
+    // animation & current action
+    var actions = this.animation.previousAndCurrentAction(this.currentAction, directionPressed, this.toggleRun)
+    var previousAction = actions[0];
+    this.currentAction = actions[1];
+    this.animation.animateCharacter(previousAction, this.currentAction, delta);
 
-    // #region Start Animation
-    var play = '';
-    if (directionPressed && this.toggleRun)
-    { play = modelAnimation.run }
-    else if (directionPressed)
-    { play = modelAnimation.walk }
-    else
-    { play = modelAnimation.idle }
-
-
-    if (this.currentAction != play) {
-      const toPlay = this.animationsMap.get(play)
-      const current = this.animationsMap.get(this.currentAction)
-      current!.fadeOut(this.fadeDuration)
-      toPlay!.reset().fadeIn(this.fadeDuration).play();
-      this.currentAction = play
-    }
-
-    this.mixer.update(delta)
-    // #endregion End Animation
-
-    this.walkDirection = this.characterMovement.calculateWalkDirection(keysPressed, this.currentAction);
+    // walk direction and velocity
+    this.walkDirection = this.characterWalkDirection.calculateWalkDirection(keysPressed, this.currentAction);
     let velocity = this.characterMovement.calculateVelocity(this.currentAction)
 
     // Get Translation of RigidBody in relation to origin

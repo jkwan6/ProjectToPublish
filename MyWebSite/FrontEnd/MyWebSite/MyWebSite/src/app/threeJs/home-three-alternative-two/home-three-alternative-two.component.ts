@@ -8,24 +8,14 @@ import { SideNavService } from '../../service/SideNavService/SideNavService';
 import { CharacterControls } from './CharacterControls/CharacterControls';
 import * as RAPIER from '@dimforge/rapier3d'
 import { RigidBody } from '@dimforge/rapier3d';
-import { Ray } from 'cannon-es';
 import { RapierPhysicsWorld } from './RapierPhysicsWorld';
 import { ThreeJsWorld } from './ThreeJsWorld';
-import { WebGLRenderer } from 'three';
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
-import { IControllerParams } from './CharacterControls/IControllerParams';
+import { IControllerParams, modelAction } from './CharacterControls/CharacterControlsDetails/ControllerUtils';
 
 export interface IBoxDimensions {
   length: number,
   height: number,
   width: number
-}
-
-export enum modelAnimation {
-  walk = 'walk',
-  run = 'run',
-  idle = 'idle',
-  TPose = 'TPose'
 }
 
 @Component({
@@ -129,7 +119,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
           const gltfAnimations: THREE.AnimationClip[] = gltf.animations;
           const animationMixer = new THREE.AnimationMixer(this.characterModel);
           const animationsMap: Map<string, THREE.AnimationAction> = new Map()
-          gltfAnimations.filter(a => a.name != modelAnimation.TPose).forEach((a: THREE.AnimationClip) => {
+          gltfAnimations.filter(a => a.name != modelAction.TPose).forEach((a: THREE.AnimationClip) => {
             animationsMap.set(a.name, animationMixer.clipAction(a))
           })
 
@@ -145,7 +135,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
             animationsMap: animationsMap,
             orbitControl: this.orbitControls,
             camera: this.camera,
-            currentAction: modelAnimation.idle,
+            currentAction: modelAction.idle,
             ray: new RAPIER.Ray(
               { x: 0, y: 0, z: 0 },
               { x: 0, y: -1, z: 0 }
