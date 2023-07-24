@@ -11,16 +11,6 @@ export class CharacterAnimation {
     this.mixer = mixer
   }
 
-  previousAndCurrentAction(currentAction: string, directionPressed: boolean, toggleRun: boolean): [previousAction: string, currentAction: string] {
-    var previousAction = currentAction;
-    var action: string;  // Reset
-    if (directionPressed && toggleRun) { action = modelAction.run }
-    else if (directionPressed) { action = modelAction.walk }
-    else { action = modelAction.idle }
-    (currentAction != action) ? currentAction = action : currentAction;
-    return [previousAction, currentAction];
-  }
-
   animateCharacter(
     previousAction: string,
     currentAction: string,

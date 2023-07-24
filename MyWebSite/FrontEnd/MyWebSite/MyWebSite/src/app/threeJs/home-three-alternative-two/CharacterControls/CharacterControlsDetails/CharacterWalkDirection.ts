@@ -29,7 +29,7 @@ export class CharacterWalkDirection {
 
       // rotate model
       rotateQuarternion.setFromAxisAngle(rotateAngle, angleYCameraDirection + directionOffset)
-      this.model.quaternion.rotateTowards(rotateQuarternion, 0.2)
+      this.model.quaternion.rotateTowards(rotateQuarternion,Math.PI * 0.1)
 
       // calculate direction
       this.camera.getWorldDirection(walkDirection)

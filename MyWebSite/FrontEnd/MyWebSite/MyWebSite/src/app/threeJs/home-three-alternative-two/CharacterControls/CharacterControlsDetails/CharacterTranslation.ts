@@ -17,6 +17,8 @@ export class CharacterTranslation {
     this.model = model;
     this.rigidBody = rigidBody;
     this.orbitControl = orbitControls
+    const rigidTranslation = this.rigidBody.translation();
+/*    this.updateCameraTarget(new THREE.Vector3(0, 1, 5), rigidTranslation)*/
   }
   model: THREE.Group
   camera: THREE.Camera;
@@ -31,15 +33,6 @@ export class CharacterTranslation {
   orbitControl: OrbitControls
   lerp = (x: number, y: number, a: number) => { return x * (1 - a) + y * a };
 
-
-  calculateVelocity(currentAction: string): number {
-    let velocity = 0
-    if (currentAction == modelAction.run || currentAction == modelAction.walk) {
-      velocity = currentAction == modelAction.run ? this.runVelocity : this.walkVelocity
-    }
-    return velocity
-  }
-
   calculateTranslation(
     threeJsModel: THREE.Group,
     translation: RAPIER.Vector3,
@@ -50,6 +43,8 @@ export class CharacterTranslation {
     keysPressed: any,
     walkDirection: THREE.Vector3
   ) {
+
+
     if (translation.y < -10) {
       this.rigidBody.setNextKinematicTranslation({
         x: translation.x,
@@ -58,12 +53,12 @@ export class CharacterTranslation {
       });
     } else {
       // update camera Position
-      const cameraPositionOffset = this.camera.position.sub(this.model.position);
+
+
       // update model to physics coordinates and camera
       this.model.position.x = translation.x
       this.model.position.y = translation.y
       this.model.position.z = translation.z
-      this.updateCameraTarget(cameraPositionOffset)
 
       walkDirection.y += this.lerp(this.storedFall, -9.81 * delta, 0.3)
       this.storedFall = walkDirection.y
@@ -108,23 +103,6 @@ export class CharacterTranslation {
         });
       }
     }
-  }
-
-
-
-
-  public updateCameraTarget(offset: THREE.Vector3) {
-    // move camera
-    const rigidTranslation = this.rigidBody.translation();
-    this.camera.position.x = rigidTranslation.x + offset.x
-    this.camera.position.y = rigidTranslation.y + offset.y
-    this.camera.position.z = rigidTranslation.z + offset.z
-
-    // update camera target
-    this.cameraTarget.x = rigidTranslation.x
-    this.cameraTarget.y = rigidTranslation.y + 1.5
-    this.cameraTarget.z = rigidTranslation.z
-    this.orbitControl.target = this.cameraTarget
   }
 
 }

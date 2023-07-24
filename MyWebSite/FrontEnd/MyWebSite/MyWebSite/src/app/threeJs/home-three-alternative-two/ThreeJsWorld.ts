@@ -40,10 +40,11 @@ export class ThreeJsWorld {
   public instantiateThreeJsControls(): OrbitControls {
     const orbitControls = new OrbitControls(this.camera, this.renderer.domElement);
     //orbitControls.enableDamping = true
-    orbitControls.minDistance = 2
+    orbitControls.minDistance = 0
     orbitControls.maxDistance = 15
     orbitControls.enablePan = false
-    orbitControls.maxPolarAngle = Math.PI / 2.08;
+    orbitControls.maxPolarAngle = Math.PI / 2;
+    orbitControls.zoomSpeed = 5;
     orbitControls.update();
     return orbitControls;
   }

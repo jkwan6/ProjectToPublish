@@ -29,3 +29,27 @@ export enum modelAction {
   idle = 'idle',
   TPose = 'TPose'
 }
+
+export class ControllerUtils{
+
+  static previousAndCurrentAction(currentAction: string, directionPressed: boolean, toggleRun: boolean): [previousAction: string, currentAction: string] {
+    var previousAction = currentAction;
+    var action: string;  // Reset
+    if (directionPressed && toggleRun) { action = modelAction.run }
+    else if (directionPressed) { action = modelAction.walk }
+    else { action = modelAction.idle }
+    (currentAction != action) ? currentAction = action : currentAction;
+    return [previousAction, currentAction];
+  }
+
+  static calculateVelocity(currentAction: string): number {
+    let velocity = 0
+    let runVelocity = 20;
+    let walkVelocity = 5;
+
+    if (currentAction == modelAction.run || currentAction == modelAction.walk) {
+      velocity = currentAction == modelAction.run ? runVelocity : walkVelocity
+    }
+    return velocity
+  }
+}

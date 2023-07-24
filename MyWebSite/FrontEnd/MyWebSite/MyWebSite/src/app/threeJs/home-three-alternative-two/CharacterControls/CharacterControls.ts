@@ -3,13 +3,11 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import * as RAPIER from '@dimforge/rapier3d'
 import { CharacterTranslation } from './CharacterControlsDetails/CharacterTranslation'
 import { CharacterAnimation } from './CharacterControlsDetails/CharacterAnimation'
-import { DIRECTIONS, IControllerParams } from './CharacterControlsDetails/ControllerUtils'
+import { ControllerUtils, DIRECTIONS, IControllerParams } from './CharacterControlsDetails/ControllerUtils'
 import { CharacterWalkDirection } from './CharacterControlsDetails/CharacterWalkDirection'
-
-
+import { CharacterCameraUpdate } from './CharacterControlsDetails/CharacterCameraUpdate'
 
 export class CharacterControls {
-
   // Reference from Parent
   model: THREE.Group;
   mixer: THREE.AnimationMixer;
@@ -27,7 +25,8 @@ export class CharacterControls {
   // Can do an DI with those
   characterWalkDirection: CharacterWalkDirection;
   animation: CharacterAnimation;
-  characterMovement: CharacterTranslation;
+  characterTranslation: CharacterTranslation;
+  characterCameraUpdate: CharacterCameraUpdate;
   constructor(params: IControllerParams
   ) {
     this.model = params.model
@@ -39,11 +38,18 @@ export class CharacterControls {
     this.orbitControl = params.orbitControl
     this.camera = params.camera;
 
-    // Constructor Logic
-    this.characterMovement = new CharacterTranslation(this.camera, this.currentAction, this.model, this.rigidBody, this.orbitControl)
+    // Constructor Future DI
     this.animation = new CharacterAnimation(this.animationsMap, this.mixer);
     this.characterWalkDirection = new CharacterWalkDirection(this.camera, this.model);
-    this.characterMovement.updateCameraTarget(new THREE.Vector3(0, 1, 5))
+    this.characterCameraUpdate = new CharacterCameraUpdate(this.camera, this.orbitControl)
+    this.characterTranslation = new CharacterTranslation(
+      this.camera,
+      this.currentAction,
+      this.model,
+      this.rigidBody,
+      this.orbitControl)
+
+    // Constructor Logic
     this.animationsMap.forEach((value, key) => (key == params.currentAction) ? value.play() : null);
   }
 
@@ -56,19 +62,25 @@ export class CharacterControls {
     const directionPressed = Object.values(DIRECTIONS).some(key => keysPressed[key] == true)
 
     // animation & current action
-    var actions = this.animation.previousAndCurrentAction(this.currentAction, directionPressed, this.toggleRun)
+    var actions = ControllerUtils.previousAndCurrentAction(this.currentAction, directionPressed, this.toggleRun);
+    let velocity = ControllerUtils.calculateVelocity(actions[1])
     var previousAction = actions[0];
     this.currentAction = actions[1];
     this.animation.animateCharacter(previousAction, this.currentAction, delta);
 
-    // walk direction and velocity
+    // walk direction
     this.walkDirection = this.characterWalkDirection.calculateWalkDirection(keysPressed, this.currentAction);
-    let velocity = this.characterMovement.calculateVelocity(this.currentAction)
 
     // Get Translation of RigidBody in relation to origin
     const translation = this.rigidBody.translation();
+    var threeTranslate = new THREE.Vector3;
+    this.model.getWorldPosition(threeTranslate);
+    this.characterCameraUpdate.updateCameraTarget(
+      this.model,
+      translation
+    )
 
-    this.characterMovement.calculateTranslation(
+    this.characterTranslation.calculateTranslation(
       this.model,
       translation,
       delta,
