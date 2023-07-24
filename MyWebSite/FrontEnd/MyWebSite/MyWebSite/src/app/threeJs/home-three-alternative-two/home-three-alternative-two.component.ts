@@ -5,7 +5,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { IElementDimensions } from '../../interface/IElementDimensions';
 import { SideNavService } from '../../service/SideNavService/SideNavService';
-import { CharacterControls } from './CharacterControls';
+import { CharacterControls } from './CharacterControls/CharacterControls';
 import * as RAPIER from '@dimforge/rapier3d'
 import { RigidBody } from '@dimforge/rapier3d';
 import { Ray } from 'cannon-es';
@@ -13,6 +13,7 @@ import { RapierPhysicsWorld } from './RapierPhysicsWorld';
 import { ThreeJsWorld } from './ThreeJsWorld';
 import { WebGLRenderer } from 'three';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
+import { IControllerParams } from './CharacterControls/IControllerParams';
 
 export interface IBoxDimensions {
   length: number,
@@ -137,18 +138,22 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
           let characterRigidBody = this.world.createRigidBody(bodyDesc);
           let dynamicCollider = RAPIER.ColliderDesc.ball(0.5);
           this.world.createCollider(dynamicCollider, characterRigidBody);
-          this.characterControls = new CharacterControls(
-            this.characterModel,
-            animationMixer,
-            animationsMap,
-            this.orbitControls,
-            this.camera,
-            modelAnimation.idle,
-            new RAPIER.Ray(
+
+          var params: IControllerParams = {
+            model:this.characterModel,
+            mixer:animationMixer,
+            animationsMap: animationsMap,
+            orbitControl: this.orbitControls,
+            camera: this.camera,
+            currentAction: modelAnimation.idle,
+            ray: new RAPIER.Ray(
               { x: 0, y: 0, z: 0 },
               { x: 0, y: -1, z: 0 }
             ),
-            characterRigidBody)
+            rigidBody:characterRigidBody
+          }
+
+          this.characterControls = new CharacterControls(params)
         }
     );
 
