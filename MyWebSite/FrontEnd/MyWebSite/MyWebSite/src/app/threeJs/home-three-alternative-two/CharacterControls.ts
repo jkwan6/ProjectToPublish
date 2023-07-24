@@ -30,7 +30,7 @@ export class CharacterControls {
 
   // constants
   fadeDuration: number = 0.2
-  runVelocity = 50
+  runVelocity = 10
   walkVelocity = 2
 
   // Physics
@@ -125,7 +125,6 @@ export class CharacterControls {
 
     // Get Translation of RigidBody in relation to origin
     const translation = this.rigidBody.translation();
-    console.log(translation)
 
     if (translation.y < -10) {
       // don't fall below ground
@@ -144,7 +143,7 @@ export class CharacterControls {
       this.model.position.z = translation.z
       this.updateCameraTarget(cameraPositionOffset)
 
-      this.walkDirection.y += this.lerp(this.storedFall, -9.81 * delta, 0.10)
+      this.walkDirection.y += this.lerp(this.storedFall, -9.81 * delta, 0.3)
       this.storedFall = this.walkDirection.y
       // Update Camera Position
       this.ray.origin.x = translation.x
@@ -154,11 +153,17 @@ export class CharacterControls {
       // Falling Algorithm
       let hit = world.castRay(this.ray, 0.5, false, 0xfffffffff);
       if (hit) {
-        const point = this.ray.pointAt(hit.toi);
-        let diff = translation.y - (point.y + 0.5);
+        console.log(hit.toi)  //Distance from ray to impact
+        // Ray is attached to Charachter
+        // Origin of Ray similar to origin of Character
+        // Compare translation of Ray vs Point Hit
+
+        const pointOfImpact = this.ray.pointAt(hit.toi);
+        let diff = translation.y - (pointOfImpact.y + 0.5);
+/*        console.log(translation.y - (pointOfImpact.y + 0.5))*/
         if (diff < 0.0) {
           this.storedFall = 0
-          this.walkDirection.y = this.lerp(0, Math.abs(diff), 0.5)
+          this.walkDirection.y = this.lerp(this.storedFall, Math.abs(diff), 0.5)
         }
       }
 

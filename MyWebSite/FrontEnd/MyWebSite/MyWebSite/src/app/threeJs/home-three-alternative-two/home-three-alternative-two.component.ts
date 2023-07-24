@@ -86,16 +86,16 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
 
     this.world = this.rapierPhysics.instantiatePhysicsWorld();              // Creating Physics World
 
-    for (let i = 0; i < 20; i++) {
-      var rngx = (0.5 - Math.random()) * 50
-      var rngy = Math.random() * 50
-      var rngz = (0.5 - Math.random()) * 50
-      var boxPosition = new RAPIER.Vector3(rngx, rngy, rngz);               // Adding Box to Scene
-      var box: IBoxDimensions = { length: 4, height: 5, width: 4 };
-      var boxMesh = this.threeJsWorld.createBoxMesh(box)
-      var boxRigidBody = this.rapierPhysics.createRigidBox(box, boxPosition);
-      this.bodies.push({ rigid: boxRigidBody, mesh: boxMesh });             // Storing them
-    }
+    //for (let i = 0; i < 20; i++) {
+    //  var rngx = (0.5 - Math.random()) * 50
+    //  var rngy = Math.random() * 50
+    //  var rngz = (0.5 - Math.random()) * 50
+    //  var boxPosition = new RAPIER.Vector3(rngx, rngy, rngz);               // Adding Box to Scene
+    //  var box: IBoxDimensions = { length: 4, height: 5, width: 4 };
+    //  var boxMesh = this.threeJsWorld.createBoxMesh(box)
+    //  var boxRigidBody = this.rapierPhysics.createRigidBox(box, boxPosition);
+    //  this.bodies.push({ rigid: boxRigidBody, mesh: boxMesh });             // Storing them
+    //}
 
     let heights: number[] = [];                                             // Creating Floor
     let scale = new RAPIER.Vector3(70.0, 3.0, 70.0);
