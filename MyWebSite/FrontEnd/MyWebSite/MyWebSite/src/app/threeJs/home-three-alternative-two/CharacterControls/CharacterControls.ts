@@ -6,6 +6,7 @@ import { CharacterAnimation } from './CharacterControlsDetails/CharacterAnimatio
 import { ControllerUtils, DIRECTIONS, IControllerParams } from './CharacterControlsDetails/ControllerUtils'
 import { CharacterWalkDirection } from './CharacterControlsDetails/CharacterWalkDirection'
 import { CharacterCameraUpdate } from './CharacterControlsDetails/CharacterCameraUpdate'
+import { GravitySimulation } from './CharacterControlsDetails/GravitySimulation'
 
 export class CharacterControls {
   // Reference from Parent
@@ -37,6 +38,7 @@ export class CharacterControls {
     this.rigidBody = params.rigidBody;
     this.orbitControl = params.orbitControl
     this.camera = params.camera;
+    
 
     // Constructor Future DI
     this.animation = new CharacterAnimation(this.animationsMap, this.mixer);
@@ -47,7 +49,9 @@ export class CharacterControls {
       this.currentAction,
       this.model,
       this.rigidBody,
-      this.orbitControl)
+      this.orbitControl,
+      this.ray
+    )
 
     // Constructor Logic
     this.animationsMap.forEach((value, key) => (key == params.currentAction) ? value.play() : null);
@@ -75,11 +79,9 @@ export class CharacterControls {
     const translation = this.rigidBody.translation();
     var threeTranslate = new THREE.Vector3;
     this.model.getWorldPosition(threeTranslate);
-    this.characterCameraUpdate.updateCameraTarget(
-      this.model,
-      translation
-    )
+    this.characterCameraUpdate.updateCameraTarget(this.model,translation)
 
+    // Translation
     this.characterTranslation.calculateTranslation(
       this.model,
       translation,

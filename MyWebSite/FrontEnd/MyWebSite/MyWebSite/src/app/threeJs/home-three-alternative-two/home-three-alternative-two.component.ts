@@ -175,7 +175,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
         path,
         object => {
           object.scene.scale.set(1.4, 1.4, 1.4);
-          object.scene.position.set(0, 2.0, 0);
+          object.scene.position.set(0, 3.0, 0);
           this.scene!.add(object.scene)
         }
       )
