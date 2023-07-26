@@ -17,7 +17,7 @@ export class CharacterControls {
   ray: RAPIER.Ray;
   rigidBody: RAPIER.RigidBody;
   currentAction: string
-
+  feetCollider: THREE.Raycaster[];
   // Global Variable
   toggleRun: boolean = true
   walkDirection = new THREE.Vector3()
@@ -37,6 +37,7 @@ export class CharacterControls {
     this.rigidBody = params.rigidBody;
     this.orbitControl = params.orbitControl
     this.camera = params.camera;
+    this.feetCollider = params.feetCollider;
     
 
     // Constructor Future DI
@@ -48,7 +49,8 @@ export class CharacterControls {
       this.model,
       this.rigidBody,
       this.orbitControl,
-      this.ray
+      this.ray,
+      this.feetCollider
     )
 
     // Constructor Logic
@@ -94,6 +96,7 @@ export class CharacterControls {
       world,
       velocity,
       keysPressed,
-      this.walkDirection)
+      this.walkDirection,
+    )
   }
 }

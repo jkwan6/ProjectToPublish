@@ -59,11 +59,12 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
   orbitControls!: OrbitControls;
   characterModel = new THREE.Group;
   environementWorld = new THREE.Group;
-  rayArray: { ray: THREE.ArrowHelper }[] = [];
+  rayAndArrowArray: { ray: THREE.Raycaster, arrow: THREE.ArrowHelper }[] = [];
+  rayArray: THREE.Raycaster[] = [];
   testArray = new THREE.Group;
   // #endregion
 
-  boxBody = new THREE.Mesh;
+  tempCoordinate = new THREE.Vector3(0,0,0);
   planeTest = new THREE.Mesh;
   groupTest = new THREE.Group;
   // #region ON DESTROY
@@ -93,15 +94,8 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     //  this.bodies.push({ rigid: boxRigidBody, mesh: boxMesh });               // Storing them
     //}
 
-    var boxPosition = new RAPIER.Vector3(1, 1, 1);                 // Adding Box to Scene
-    var box: IBoxDimensions = { length: 0.5, height: 1, width: 0.5 };
-    var boxMesh = this.threeJsWorld.createBoxMesh(box)
-    this.boxBody = boxMesh
-    var boxRigidBody = this.rapierPhysics.createRigidBox(box, boxPosition);
-
     var planeWidth: number = 0.5;
     var planeLength: number = 0.5;
-
     this.planeTest = new THREE.Mesh(
       new THREE.PlaneGeometry(planeWidth, planeLength, 1, 1),
       new THREE.MeshStandardMaterial({
@@ -111,55 +105,30 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     this.planeTest.rotateX(- Math.PI / 2);
     this.scene.add(this.planeTest)
 
-    // RAYCASTER
-    var rayray: THREE.Group = new THREE.Group();
-    var ray = new THREE.ArrowHelper(
-      new THREE.Vector3(0, -1, 0),
-      new THREE.Vector3(-planeWidth / 2, 0, -planeLength /2),
-      5,
-      0xff0000)
-    rayray.add(ray);
-    var ray = new THREE.ArrowHelper(
-      new THREE.Vector3(0, -1, 0),
-      new THREE.Vector3(-planeWidth / 2, 0, +planeLength / 2),
-      5,
-      0xff0000)
-    rayray.add(ray);
-    var ray = new THREE.ArrowHelper(
-      new THREE.Vector3(0, -1, 0),
-      new THREE.Vector3(0, 0, 0),
-      5,
-      0xff0000)
-    rayray.add(ray);
-    var ray = new THREE.ArrowHelper(
-      new THREE.Vector3(0, -1, 0),
-      new THREE.Vector3(planeWidth / 2, 0, +planeLength / 2),
-      5,
-      0xff0000)
-    rayray.add(ray);
-    var ray = new THREE.ArrowHelper(
-      new THREE.Vector3(0, -1, 0),
-      new THREE.Vector3(planeWidth / 2, 0, -planeLength / 2),
-      5,
-      0xff0000)
-    rayray.add(ray);
-    this.scene.add(rayray)
-    this.groupTest = rayray
 
+    // FeetCollider
+    var rayOrigin: THREE.Vector3[] =
+      [
+        new THREE.Vector3(-planeWidth / 2, 0, -planeLength / 2),
+        new THREE.Vector3(-planeWidth / 2, 0, +planeLength / 2),
+        new THREE.Vector3(0, 0, 0),
+        new THREE.Vector3(planeWidth / 2, 0, +planeLength / 2),
+        new THREE.Vector3(planeWidth / 2, 0, -planeLength / 2)
+      ];
+    var rayDirection = new THREE.Vector3(0, -1, 0);
 
-    for (let i = 0; i < 5; i++) {
-      var rngx = (0.5 - Math.random()) * 50
-      var rngy = Math.random() * 50
-      var rngz = (0.5 - Math.random()) * 50
-      var arrayPosition = new THREE.Vector3(rngx, rngy, rngz);                 // Adding Box to Scene
-      var ray = new THREE.ArrowHelper(new THREE.Vector3(0, -1, 0), arrayPosition, 5, 0xff0000)
-
-      this.testArray.add(ray);
-      this.rayArray.push({ ray: ray });               // Storing them
-    }
-    this.scene.add(this.testArray);
-
-
+    rayOrigin.forEach(arrowOrigin => {
+      var rayCaster = new THREE.Raycaster(arrowOrigin, rayDirection, 0, 1);
+      var ray = new THREE.ArrowHelper(
+        rayCaster.ray.direction,
+        rayCaster.ray.origin,
+        1,
+        0xff0000);
+      this.rayAndArrowArray.push({ ray: rayCaster, arrow: ray })
+      this.rayArray.push( rayCaster )
+      this.groupTest.add(ray)
+    })
+    this.scene.add(this.groupTest)
 
 
     let heights: number[] = [];                                                 // Creating Floor
@@ -216,32 +185,13 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
               { x: 0, y: 0, z: 0 },
               { x: 0, y: -5, z: 0 }
             ),
-            rigidBody:characterRigidBody
+            rigidBody: characterRigidBody,
+            feetCollider: this.rayArray
           }
 
           this.characterControls = new CharacterControls(params)
         }
     );
-
-
-    //const gltfloader = new GLTFLoader();
-    //const dracroLoader = new DRACOLoader();
-    //dracroLoader.setDecoderPath('../../../../../assets/draco/')
-
-    //gltfLoader.setDRACOLoader(dracroLoader);
-
-    //gltfLoader.load("../../../../../assets/models/AltTower.glb",
-    //  (gltf) => {
-
-    //    this.environementWorld = gltf.scene;
-    //    gltf.scene.scale.set(100, 100, 100);
-    //    gltf.scene.position.set(0, 49, 0);
-    //    this.scene.add(gltf.scene)
-    //  },
-    //  () => { console.log('progress') },
-    //  () => { console.log('error') }
-    //)
-
 
     // Loader
     var path = "../../../../../assets/models/poly_4.glb"
@@ -256,12 +206,11 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
         }
       )
 
-
-
-
-
     this.defineEvents();
   }
+
+
+  // EVENTS
 
   defineEvents() {
     // #region EVENT LISTENERS
@@ -352,11 +301,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
       //  this.characterModel.position.z
       //)
 
-      this.planeTest.position.set(
-        this.characterModel.position.x,
-        this.characterModel.position.y,
-        this.characterModel.position.z
-      )
+
 
       this.groupTest.position.set(
         this.characterModel.position.x,
@@ -364,11 +309,18 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
         this.characterModel.position.z
       )
 
-      console.log(this.characterModel.position.y)
+      this.rayAndArrowArray.forEach((rayAndArrow) => {
+        rayAndArrow.arrow.getWorldPosition(this.tempCoordinate);
+        rayAndArrow.ray.ray.origin.set(
+          this.tempCoordinate.x,
+          this.tempCoordinate.y,
+          this.tempCoordinate.z,
+        )
+      })
+      /*console.log(this.rayArray[0].ray.ray.origin)*/
 
 
-
-      //this.rayArray.forEach((ray) => {
+      //this.rayAndArrowArray.forEach((ray) => {
       //  ray.ray.position.set(
       //    this.characterModel.position.x,
       //    this.characterModel.position.y,

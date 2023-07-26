@@ -10,20 +10,22 @@ export class CharacterTranslation {
     model: THREE.Group,
     rigidBody: RAPIER.RigidBody,
     orbitControls: OrbitControls,
-    ray: RAPIER.Ray
+    ray: RAPIER.Ray,
+    feetCollider: THREE.Raycaster[]
   ) {
     this.camera = camera;
     this.model = model;
     this.rigidBody = rigidBody;
     this.orbitControl = orbitControls
     this.ray = ray
+    this.feetCollider = feetCollider
   }
   model: THREE.Group
   camera: THREE.Camera;
   rigidBody: RAPIER.RigidBody;
   ray: RAPIER.Ray;
   orbitControl: OrbitControls;
-
+  feetCollider: THREE.Raycaster[]
   // constants
   gravity = new THREE.Vector3(0, -9.81, 0);
   variableToKnowIfFallingOrNot = 0;

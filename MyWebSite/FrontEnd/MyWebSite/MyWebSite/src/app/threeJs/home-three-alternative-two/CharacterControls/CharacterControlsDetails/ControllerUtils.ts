@@ -12,6 +12,7 @@ export interface IControllerParams {
   currentAction: string,
   ray: RAPIER.Ray,
   rigidBody: RAPIER.RigidBody,
+  feetCollider: THREE.Raycaster[];
 }
 
 export enum DIRECTIONS {
