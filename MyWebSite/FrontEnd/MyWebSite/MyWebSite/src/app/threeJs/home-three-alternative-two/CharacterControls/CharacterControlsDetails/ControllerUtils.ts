@@ -19,8 +19,11 @@ export enum DIRECTIONS {
   LEFT = 'a',
   BACKWARD = 's',
   RIGHT = 'd',
-  SPACEBAR = " ",
   SHIFT = 'shift'
+}
+
+export enum SPACEBAR {
+  SPACEBAR = " "
 }
 
 export enum modelAction {

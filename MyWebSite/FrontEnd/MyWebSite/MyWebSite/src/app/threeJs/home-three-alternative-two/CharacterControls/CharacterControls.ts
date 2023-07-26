@@ -1,12 +1,12 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import * as RAPIER from '@dimforge/rapier3d'
-import { CharacterTranslation } from './CharacterControlsDetails/CharacterTranslation'
+import { CharacterTranslation } from './CharacterControlsDetails/CharacterTranslation/CharacterTranslation'
 import { CharacterAnimation } from './CharacterControlsDetails/CharacterAnimation'
 import { ControllerUtils, DIRECTIONS, IControllerParams } from './CharacterControlsDetails/ControllerUtils'
 import { CharacterWalkDirection } from './CharacterControlsDetails/CharacterWalkDirection'
 import { CharacterCameraUpdate } from './CharacterControlsDetails/CharacterCameraUpdate'
-import { GravitySimulation } from './CharacterControlsDetails/GravitySimulation'
+import { GravitySimulation } from './CharacterControlsDetails/CharacterTranslation/GravitySimulation'
 
 export class CharacterControls {
   // Reference from Parent
@@ -62,26 +62,33 @@ export class CharacterControls {
   }
 
   public update(world: RAPIER.World, delta: number, keysPressed: any) {
-    // Returns True is WASD is pressed
-    const directionPressed = Object.values(DIRECTIONS).some(key => keysPressed[key] == true)
+    // RETURNS TRUE IF WASD IS PRESSED
+    var directionPressed = Object.values(DIRECTIONS).some(key => keysPressed[key] == true);
 
-    // animation & current action
-    var actions = ControllerUtils.previousAndCurrentAction(this.currentAction, directionPressed, this.toggleRun);
-    let velocity = ControllerUtils.calculateVelocity(actions[1])
+    // ANIMATION AND CURRENT ANIMATION
+    var actions = ControllerUtils.previousAndCurrentAction(
+      this.currentAction,
+      directionPressed,
+      this.toggleRun);
+
+    // ACTIONS
     var previousAction = actions[0];
     this.currentAction = actions[1];
     this.animation.animateCharacter(previousAction, this.currentAction, delta);
+    let velocity = ControllerUtils.calculateVelocity(this.currentAction)
 
-    // walk direction
-    this.walkDirection = this.characterWalkDirection.calculateWalkDirection(keysPressed, this.currentAction);
+    // WALK DIRECTION
+    this.walkDirection = this.characterWalkDirection.calculateWalkDirection(
+      keysPressed,
+      this.currentAction);
 
-    // Get Translation of RigidBody in relation to origin
+    // UPDATE CAMERA POSITION
+    //var threeTranslate = new THREE.Vector3;
+    //this.model.getWorldPosition(threeTranslate);
     const translation = this.rigidBody.translation();
-    var threeTranslate = new THREE.Vector3;
-    this.model.getWorldPosition(threeTranslate);
-    this.characterCameraUpdate.updateCameraTarget(this.model,translation)
+    this.characterCameraUpdate.updateCameraTarget(this.model, translation)
 
-    // Translation
+    // TRANSLATE BODY POSITION
     this.characterTranslation.calculateTranslation(
       this.model,
       translation,

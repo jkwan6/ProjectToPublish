@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import * as RAPIER from '@dimforge/rapier3d'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { DIRECTIONS, modelAction } from './ControllerUtils'
+import { DIRECTIONS, modelAction, SPACEBAR } from '../ControllerUtils'
 import { GravitySimulation } from './GravitySimulation';
 
 export class CharacterTranslation {
@@ -85,6 +85,7 @@ export class CharacterTranslation {
 
 
       walkDirection.y += this.fallLerpFunction(this.storedFall, -9.81 * delta, 0.3)
+      //walkDirection.y += -9.81 * 3 * delta
       //walkDirection.y -= this.gravitySimulation.getDisplacement(delta);
 
 
@@ -109,11 +110,11 @@ export class CharacterTranslation {
 
       walkDirection.x = walkDirection.x * velocity * delta
       walkDirection.z = walkDirection.z * velocity * delta
-      this.rigidBody.setNextKinematicTranslation({
-        x: translation.x + walkDirection.x,
-        y: translation.y + walkDirection.y,
-        z: translation.z + walkDirection.z
-      });
+      //this.rigidBody.setNextKinematicTranslation({
+      //  x: translation.x + walkDirection.x,
+      //  y: translation.y + walkDirection.y,
+      //  z: translation.z + walkDirection.z
+      //});
 
 
 
@@ -132,21 +133,21 @@ export class CharacterTranslation {
 
 
 
-      //if (keysPressed[DIRECTIONS.SPACEBAR]) {
+      if (keysPressed[SPACEBAR.SPACEBAR]) {
 
-      //  this.rigidBody.setNextKinematicTranslation({
-      //    x: translation.x + walkDirection.x,
-      //    y: translation.y + walkDirection.y + 2,
-      //    z: translation.z + walkDirection.z
-      //  });
-      //}
-      //else {
-      //  this.rigidBody.setNextKinematicTranslation({
-      //    x: translation.x + walkDirection.x,
-      //    y: translation.y + walkDirection.y,
-      //    z: translation.z + walkDirection.z
-      //  });
-      //}
+        this.rigidBody.setNextKinematicTranslation({
+          x: translation.x + walkDirection.x,
+          y: translation.y + walkDirection.y + 2,
+          z: translation.z + walkDirection.z
+        });
+      }
+      else {
+        this.rigidBody.setNextKinematicTranslation({
+          x: translation.x + walkDirection.x,
+          y: translation.y + walkDirection.y,
+          z: translation.z + walkDirection.z
+        });
+      }
     }
   }
 

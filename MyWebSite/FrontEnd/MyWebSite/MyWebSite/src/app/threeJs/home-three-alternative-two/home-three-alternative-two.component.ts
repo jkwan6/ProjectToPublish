@@ -180,6 +180,10 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
         }
       )
 
+
+
+
+
     this.defineEvents();
   }
 
