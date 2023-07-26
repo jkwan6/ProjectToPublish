@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import * as RAPIER from '@dimforge/rapier3d'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { SPACEBAR } from '../ControllerUtils'
+import { SPACEBAR } from './ControllerUtils'
 
 export class CharacterTranslation {
 
@@ -11,7 +11,8 @@ export class CharacterTranslation {
     rigidBody: RAPIER.RigidBody,
     orbitControls: OrbitControls,
     ray: RAPIER.Ray,
-    feetCollider: THREE.Raycaster[]
+    feetCollider: THREE.Raycaster[],
+    threeJsEnv: THREE.Group
   ) {
     this.camera = camera;
     this.model = model;
@@ -19,6 +20,7 @@ export class CharacterTranslation {
     this.orbitControl = orbitControls
     this.ray = ray
     this.feetCollider = feetCollider
+    this.threeJsEnv = threeJsEnv
   }
   model: THREE.Group
   camera: THREE.Camera;
@@ -29,6 +31,8 @@ export class CharacterTranslation {
   // constants
   gravity = new THREE.Vector3(0, -9.81, 0);
   variableToKnowIfFallingOrNot = 0;
+  threeJsEnv: THREE.Group
+
 
   calculateTranslation(
     translation: RAPIER.Vector3,
@@ -37,15 +41,27 @@ export class CharacterTranslation {
     world: RAPIER.World,
     velocity: number,
     keysPressed: any,
-    walkDirection: THREE.Vector3
+    walkDirection: THREE.Vector3,
   ) {
 
     if (translation.y < -10) {
       this.resetPosition(translation);
     } else {
 
+
+      this.feetCollider.forEach((ray) => {
+        var intersects = ray.intersectObject(this.threeJsEnv);
+        for (let intersect of intersects) {
+          let varX: any;
+          varX = intersect as unknown as THREE.Object3D;
+          console.log(intersect.distance)
+          //console.log(varX.object.material)
+        }
+      })
+
+
       this.update3JsModelToPhysicsModel(translation)
-      walkDirection.y += this.fallLerpFunction(this.variableToKnowIfFallingOrNot, -9.81 * 2.5 * delta, 0.3)
+      walkDirection.y += this.fallLerpFunction(this.variableToKnowIfFallingOrNot, -9.81 * 2.0 * delta, 0.3)
       this.variableToKnowIfFallingOrNot = walkDirection.y
 
       // Falling Algorithm
@@ -95,7 +111,7 @@ export class CharacterTranslation {
     // update 3js model to physics coordinates
     this.model.position.set(
       translation.x,
-      translation.y,
+      translation.y - 0.5,
       translation.z,
     )
     // Update Ray Position to new coord

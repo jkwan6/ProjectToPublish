@@ -22,7 +22,8 @@ export class CharacterCameraUpdate {
 
     // move camera
     this.camera.position.x = translation.x + cameraOffset.x
-    this.camera.position.y = translation.y + cameraOffset.y
+    // Remove this 0.5 Factor if the factor is gonna be removed in Translation Code
+    this.camera.position.y = translation.y + cameraOffset.y - 0.5
     this.camera.position.z = translation.z + cameraOffset.z
 
     // update camera target

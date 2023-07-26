@@ -13,6 +13,7 @@ export interface IControllerParams {
   ray: RAPIER.Ray,
   rigidBody: RAPIER.RigidBody,
   feetCollider: THREE.Raycaster[];
+  threeJsEnv: THREE.Group;
 }
 
 export enum DIRECTIONS {

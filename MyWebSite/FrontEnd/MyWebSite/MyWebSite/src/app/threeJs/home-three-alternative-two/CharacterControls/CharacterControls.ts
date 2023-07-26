@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import * as RAPIER from '@dimforge/rapier3d'
-import { CharacterTranslation } from './CharacterControlsDetails/CharacterTranslation/CharacterTranslation'
+import { CharacterTranslation } from './CharacterControlsDetails/CharacterTranslation'
 import { CharacterAnimation } from './CharacterControlsDetails/CharacterAnimation'
 import { ControllerUtils, DIRECTIONS, IControllerParams } from './CharacterControlsDetails/ControllerUtils'
 import { CharacterWalkDirection } from './CharacterControlsDetails/CharacterWalkDirection'
@@ -21,6 +21,7 @@ export class CharacterControls {
   // Global Variable
   toggleRun: boolean = true
   walkDirection = new THREE.Vector3()
+  threeJsEnv: THREE.Group;
 
   // Can do an DI with those
   characterWalkDirection: CharacterWalkDirection;
@@ -38,6 +39,7 @@ export class CharacterControls {
     this.orbitControl = params.orbitControl
     this.camera = params.camera;
     this.feetCollider = params.feetCollider;
+    this.threeJsEnv = params.threeJsEnv;
     
 
     // Constructor Future DI
@@ -50,7 +52,8 @@ export class CharacterControls {
       this.rigidBody,
       this.orbitControl,
       this.ray,
-      this.feetCollider
+      this.feetCollider,
+      this.threeJsEnv
     )
 
     // Constructor Logic
