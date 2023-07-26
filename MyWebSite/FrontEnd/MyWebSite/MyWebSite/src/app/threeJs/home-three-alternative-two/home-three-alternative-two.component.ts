@@ -59,8 +59,13 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
   orbitControls!: OrbitControls;
   characterModel = new THREE.Group;
   environementWorld = new THREE.Group;
+  rayArray: { ray: THREE.ArrowHelper }[] = [];
+  testArray = new THREE.Group;
   // #endregion
 
+  boxBody = new THREE.Mesh;
+  planeTest = new THREE.Mesh;
+  groupTest = new THREE.Group;
   // #region ON DESTROY
   @HostListener('unloaded')
   ngOnDestroy(): void {
@@ -75,36 +80,107 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
 
   ngOnInit(): void {
 
-    this.world = this.rapierPhysics.instantiatePhysicsWorld();              // Creating Physics World
+    this.world = this.rapierPhysics.instantiatePhysicsWorld();                  // Creating Physics World
 
     //for (let i = 0; i < 20; i++) {
     //  var rngx = (0.5 - Math.random()) * 50
     //  var rngy = Math.random() * 50
     //  var rngz = (0.5 - Math.random()) * 50
-    //  var boxPosition = new RAPIER.Vector3(rngx, rngy, rngz);               // Adding Box to Scene
+    //  var boxPosition = new RAPIER.Vector3(rngx, rngy, rngz);                 // Adding Box to Scene
     //  var box: IBoxDimensions = { length: 4, height: 5, width: 4 };
     //  var boxMesh = this.threeJsWorld.createBoxMesh(box)
     //  var boxRigidBody = this.rapierPhysics.createRigidBox(box, boxPosition);
-    //  this.bodies.push({ rigid: boxRigidBody, mesh: boxMesh });             // Storing them
+    //  this.bodies.push({ rigid: boxRigidBody, mesh: boxMesh });               // Storing them
     //}
 
-    let heights: number[] = [];                                             // Creating Floor
+    var boxPosition = new RAPIER.Vector3(1, 1, 1);                 // Adding Box to Scene
+    var box: IBoxDimensions = { length: 0.5, height: 1, width: 0.5 };
+    var boxMesh = this.threeJsWorld.createBoxMesh(box)
+    this.boxBody = boxMesh
+    var boxRigidBody = this.rapierPhysics.createRigidBox(box, boxPosition);
+
+    var planeWidth: number = 0.5;
+    var planeLength: number = 0.5;
+
+    this.planeTest = new THREE.Mesh(
+      new THREE.PlaneGeometry(planeWidth, planeLength, 1, 1),
+      new THREE.MeshStandardMaterial({
+        color: 'red'
+      })
+    );
+    this.planeTest.rotateX(- Math.PI / 2);
+    this.scene.add(this.planeTest)
+
+    // RAYCASTER
+    var rayray: THREE.Group = new THREE.Group();
+    var ray = new THREE.ArrowHelper(
+      new THREE.Vector3(0, -1, 0),
+      new THREE.Vector3(-planeWidth / 2, 0, -planeLength /2),
+      5,
+      0xff0000)
+    rayray.add(ray);
+    var ray = new THREE.ArrowHelper(
+      new THREE.Vector3(0, -1, 0),
+      new THREE.Vector3(-planeWidth / 2, 0, +planeLength / 2),
+      5,
+      0xff0000)
+    rayray.add(ray);
+    var ray = new THREE.ArrowHelper(
+      new THREE.Vector3(0, -1, 0),
+      new THREE.Vector3(0, 0, 0),
+      5,
+      0xff0000)
+    rayray.add(ray);
+    var ray = new THREE.ArrowHelper(
+      new THREE.Vector3(0, -1, 0),
+      new THREE.Vector3(planeWidth / 2, 0, +planeLength / 2),
+      5,
+      0xff0000)
+    rayray.add(ray);
+    var ray = new THREE.ArrowHelper(
+      new THREE.Vector3(0, -1, 0),
+      new THREE.Vector3(planeWidth / 2, 0, -planeLength / 2),
+      5,
+      0xff0000)
+    rayray.add(ray);
+    this.scene.add(rayray)
+    this.groupTest = rayray
+
+
+    for (let i = 0; i < 5; i++) {
+      var rngx = (0.5 - Math.random()) * 50
+      var rngy = Math.random() * 50
+      var rngz = (0.5 - Math.random()) * 50
+      var arrayPosition = new THREE.Vector3(rngx, rngy, rngz);                 // Adding Box to Scene
+      var ray = new THREE.ArrowHelper(new THREE.Vector3(0, -1, 0), arrayPosition, 5, 0xff0000)
+
+      this.testArray.add(ray);
+      this.rayArray.push({ ray: ray });               // Storing them
+    }
+    this.scene.add(this.testArray);
+
+
+
+
+    let heights: number[] = [];                                                 // Creating Floor
     let scale = new RAPIER.Vector3(70.0, 3.0, 70.0);
     let nsubdivs = 20;
     this.threeJsWorld.createFloor(scale, nsubdivs, heights);
     this.rapierPhysics.createPhysicsFloor(scale, nsubdivs, heights);
 
-    this.canvas = document.querySelector('.HomeWebgl')!;                    // Canvas & Renderer
+    this.canvas = document.querySelector('.HomeWebgl')!;                        // Canvas & Renderer
     this.renderer = this.threeJsWorld.instantiateThreeJsRenderer(this.canvas, this.sizes);
-    this.orbitControls = this.threeJsWorld.instantiateThreeJsControls();    // Controls
-    this.threeJsWorld.instantiateThreeJsLights();                           // Light
+    this.orbitControls = this.threeJsWorld.instantiateThreeJsControls();        // Controls
+    this.threeJsWorld.instantiateThreeJsLights();                               // Light
 
     // RAYCASTER
     this.pointerArrowHelper = new THREE.ArrowHelper(this.pointerRayCaster.ray.direction, this.pointerRayCaster.ray.origin, 1, 0xff0000)
     this.scene.add(this.pointerArrowHelper);
 
+    // RAYCASTER
     this.bodyArrowHelper = new THREE.ArrowHelper(this.bodyRayCaster.ray.direction, this.bodyRayCaster.ray.origin, 5, 0xff0000)
     this.scene.add(this.bodyArrowHelper);
+
 
     const gltfLoader = new GLTFLoader();
     gltfLoader
@@ -126,7 +202,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
           // Rigid Body
           let bodyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(-10, 10, 1);
           let characterRigidBody = this.world.createRigidBody(bodyDesc);
-          let dynamicCollider = RAPIER.ColliderDesc.ball(0.5);
+          let dynamicCollider = RAPIER.ColliderDesc.cuboid(0.5,0.5,0.5);
           this.world.createCollider(dynamicCollider, characterRigidBody);
 
           var params: IControllerParams = {
@@ -138,7 +214,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
             currentAction: modelAction.idle,
             ray: new RAPIER.Ray(
               { x: 0, y: 0, z: 0 },
-              { x: 0, y: -1, z: 0 }
+              { x: 0, y: -5, z: 0 }
             ),
             rigidBody:characterRigidBody
           }
@@ -264,6 +340,40 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
         this.bodyRayCaster.ray.origin.z
       )
 
+      this.testArray.position.set(
+          this.characterModel.position.x,
+          this.testArray.position.y,
+          this.characterModel.position.z
+        )
+
+      //this.boxBody.position.set(
+      //  this.characterModel.position.x,
+      //  this.characterModel.position.y,
+      //  this.characterModel.position.z
+      //)
+
+      this.planeTest.position.set(
+        this.characterModel.position.x,
+        this.characterModel.position.y,
+        this.characterModel.position.z
+      )
+
+      this.groupTest.position.set(
+        this.characterModel.position.x,
+        this.characterModel.position.y,
+        this.characterModel.position.z
+      )
+
+      console.log(this.characterModel.position.y)
+
+
+
+      //this.rayArray.forEach((ray) => {
+      //  ray.ray.position.set(
+      //    this.characterModel.position.x,
+      //    this.characterModel.position.y,
+      //    this.characterModel.position.z
+      //  )})
 
       if (this.bodyRayCaster.intersectObject(this.environementWorld)[0] !== undefined) { 
         //console.log(this.bodyRayCaster.intersectObject(this.environementWorld)[0].point);

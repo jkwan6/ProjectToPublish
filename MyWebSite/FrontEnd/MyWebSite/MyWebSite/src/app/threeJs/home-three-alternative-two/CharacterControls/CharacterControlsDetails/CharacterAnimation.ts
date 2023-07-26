@@ -1,5 +1,4 @@
 import * as THREE from 'three'
-import { modelAction } from './ControllerUtils'
 
 export class CharacterAnimation {
   fadeDuration: number = 0.2

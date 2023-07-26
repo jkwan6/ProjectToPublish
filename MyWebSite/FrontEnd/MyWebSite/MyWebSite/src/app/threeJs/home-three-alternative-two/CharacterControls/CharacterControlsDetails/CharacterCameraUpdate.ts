@@ -1,7 +1,6 @@
 import * as THREE from 'three'
 import * as RAPIER from '@dimforge/rapier3d'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { DIRECTIONS, modelAction } from './ControllerUtils'
 
 export class CharacterCameraUpdate {
   camera: THREE.Camera;

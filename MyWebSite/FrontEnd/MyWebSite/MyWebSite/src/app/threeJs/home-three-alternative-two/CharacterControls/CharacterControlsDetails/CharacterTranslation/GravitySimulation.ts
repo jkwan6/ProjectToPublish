@@ -1,8 +1,5 @@
 import RAPIER from "@dimforge/rapier3d";
 
-
-
-
 export class GravitySimulation{
   timeElapsed: number;
   previousYTranslate!: number;
@@ -34,7 +31,7 @@ export class GravitySimulation{
     else {
       displacement = 68 * (currentTime - previousTime);
     }
-    console.log(displacement)
+/*    console.log(displacement)*/
     this.timeElapsed += deltaTime;
     return displacement
   }

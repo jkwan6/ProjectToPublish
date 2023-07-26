@@ -6,7 +6,6 @@ import { CharacterAnimation } from './CharacterControlsDetails/CharacterAnimatio
 import { ControllerUtils, DIRECTIONS, IControllerParams } from './CharacterControlsDetails/ControllerUtils'
 import { CharacterWalkDirection } from './CharacterControlsDetails/CharacterWalkDirection'
 import { CharacterCameraUpdate } from './CharacterControlsDetails/CharacterCameraUpdate'
-import { GravitySimulation } from './CharacterControlsDetails/CharacterTranslation/GravitySimulation'
 
 export class CharacterControls {
   // Reference from Parent
@@ -46,7 +45,6 @@ export class CharacterControls {
     this.characterCameraUpdate = new CharacterCameraUpdate(this.camera, this.orbitControl)
     this.characterTranslation = new CharacterTranslation(
       this.camera,
-      this.currentAction,
       this.model,
       this.rigidBody,
       this.orbitControl,
@@ -90,7 +88,6 @@ export class CharacterControls {
 
     // TRANSLATE BODY POSITION
     this.characterTranslation.calculateTranslation(
-      this.model,
       translation,
       delta,
       this.ray,
