@@ -53,8 +53,9 @@ export class CharacterTranslation {
         var intersects = ray.intersectObject(this.threeJsEnv);
         for (let intersect of intersects) {
           let varX: any;
-          varX = intersect as unknown as THREE.Object3D;
-          console.log(intersect.distance)
+          varX = intersect as unknown as THREE.Object3D; 
+
+          //console.log(intersect.distance)
           //console.log(varX.object.material)
         }
       })
@@ -64,21 +65,43 @@ export class CharacterTranslation {
       walkDirection.y += this.fallLerpFunction(this.variableToKnowIfFallingOrNot, -9.81 * 2.0 * delta, 0.3)
       this.variableToKnowIfFallingOrNot = walkDirection.y
 
-      // Falling Algorithm
-      let hit = world.castRay(ray, 0.5, false, 0xfffffffff);
-      if (hit) {
+
+
+      let test = this.feetCollider[0] as THREE.Raycaster;
+      let hit2 = test.intersectObject(this.threeJsEnv);
+
+      if (hit2[0]) {
         /*console.log(hit.toi)*/  //Distance from ray to impact
         // Ray is attached to Charachter
         // Origin of Ray similar to origin of Character
         // Compare translation of Ray vs Point Hit
-
-        const pointOfImpact = ray.pointAt(hit.toi);
+        const pointOfImpact = hit2[0].point;
+        //console.log(pointOfImpact.y)
         let diff = translation.y - (pointOfImpact.y + 0.5);
         if (diff < 0.0) {
           this.variableToKnowIfFallingOrNot = 0
           walkDirection.y = this.fallLerpFunction(this.variableToKnowIfFallingOrNot, Math.abs(diff), 0.5)
         }
       }
+
+
+
+
+      //// Falling Algorithm
+      //let hit = world.castRay(ray, 20, false, 0xfffffffff);
+      //if (hit) {
+      //  /*console.log(hit.toi)*/  //Distance from ray to impact
+      //  // Ray is attached to Charachter
+      //  // Origin of Ray similar to origin of Character
+      //  // Compare translation of Ray vs Point Hit
+      //  const pointOfImpact = ray.pointAt(hit.toi);
+      //  //console.log(pointOfImpact.y)
+      //  let diff = translation.y - (pointOfImpact.y + 0.5);
+      //  if (diff < 0.0) {
+      //    this.variableToKnowIfFallingOrNot = 0
+      //    walkDirection.y = this.fallLerpFunction(this.variableToKnowIfFallingOrNot, Math.abs(diff), 0.5)
+      //  }
+      //}
 
       walkDirection.x = walkDirection.x * velocity * delta
       walkDirection.z = walkDirection.z * velocity * delta
@@ -111,7 +134,7 @@ export class CharacterTranslation {
     // update 3js model to physics coordinates
     this.model.position.set(
       translation.x,
-      translation.y - 0.5,
+      translation.y,
       translation.z,
     )
     // Update Ray Position to new coord

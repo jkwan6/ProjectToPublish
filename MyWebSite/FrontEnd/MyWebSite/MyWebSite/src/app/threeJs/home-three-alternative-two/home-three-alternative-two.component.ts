@@ -11,6 +11,7 @@ import { RigidBody } from '@dimforge/rapier3d';
 import { RapierPhysicsWorld } from './RapierPhysicsWorld';
 import { ThreeJsWorld } from './ThreeJsWorld';
 import { IControllerParams, modelAction } from './CharacterControls/CharacterControlsDetails/ControllerUtils';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 
 export interface IBoxDimensions {
   length: number,
@@ -137,8 +138,8 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     let scale = new RAPIER.Vector3(70.0, 3.0, 70.0);
     let nsubdivs = 20;
     var x = this.threeJsWorld.createFloor(scale, nsubdivs, heights);
-    this.threeJsEnvironment.add(x);
-    this.scene.add(this.threeJsEnvironment)
+    //this.threeJsEnvironment.add(x);
+    //this.scene.add(this.threeJsEnvironment)
     this.rapierPhysics.createPhysicsFloor(scale, nsubdivs, heights);
 
     this.canvas = document.querySelector('.HomeWebgl')!;                        // Canvas & Renderer
@@ -198,6 +199,29 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
         }
     );
 
+
+    const gltfloader = new GLTFLoader();
+    const dracroLoader = new DRACOLoader();
+    dracroLoader.setDecoderPath('../../../../../assets/draco/')
+
+    gltfLoader.setDRACOLoader(dracroLoader);
+
+    gltfLoader.load("../../../../../assets/models/AltTower.glb",
+      (gltf) => {
+
+        this.environementWorld = gltf.scene;
+        gltf.scene.scale.set(100, 100, 100);
+        gltf.scene.position.set(0, 49, 0);
+        this.scene.add(gltf.scene)
+        this.threeJsEnvironment.add(gltf.scene);
+        this.scene.add(this.threeJsEnvironment)
+
+      },
+      () => { console.log('progress') },
+      () => { console.log('error') }
+    )
+
+
     // Loader
     var path = "../../../../../assets/models/poly_4.glb"
     var loader = new GLTFLoader();
@@ -208,9 +232,10 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
           object.scene.scale.set(1.2, 1.2, 1.2);
           object.scene.position.set(0, 3.2, 0);
           this.scene!.add(object.scene)
+          this.threeJsEnvironment.add(object.scene);
+          this.scene.add(this.threeJsEnvironment)
         }
       )
-
     this.defineEvents();
   }
 
@@ -266,7 +291,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
         let varX: any;
         varX = intersect as unknown as THREE.Object3D;
         let materialColor = new THREE.Color('blue');
-        varX.object.material.color.set(materialColor)
+        varX.object.material.color.set(materialColor);
         //console.log(varX.object.material)
       }
 
