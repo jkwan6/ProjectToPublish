@@ -12,7 +12,8 @@ export class CharacterTranslation {
     orbitControls: OrbitControls,
     ray: RAPIER.Ray,
     feetCollider: THREE.Raycaster[],
-    threeJsEnv: THREE.Group
+    threeJsEnv: THREE.Group,
+    feetRayStepper: THREE.Raycaster[]
   ) {
     this.camera = camera;
     this.model = model;
@@ -21,6 +22,7 @@ export class CharacterTranslation {
     this.ray = ray
     this.feetCollider = feetCollider
     this.threeJsEnv = threeJsEnv
+    this.feetRayStepper = feetRayStepper
   }
   model: THREE.Group
   camera: THREE.Camera;
@@ -32,7 +34,8 @@ export class CharacterTranslation {
   gravity = new THREE.Vector3(0, -9.81, 0);
   variableToKnowIfFallingOrNot = 0;
   threeJsEnv: THREE.Group
-
+  feetRayStepper: THREE.Raycaster[];
+  tempRayPoints: THREE.Vector3[] = [];
 
   calculateTranslation(
     translation: RAPIER.Vector3,
@@ -44,29 +47,29 @@ export class CharacterTranslation {
     walkDirection: THREE.Vector3,
   ) {
 
+    this.tempRayPoints = [];
+
     if (translation.y < -10) {
       this.resetPosition(translation);
     } else {
 
+      this.update3JsModelToPhysicsModel(translation)
+      walkDirection.y += this.fallLerpFunction(this.variableToKnowIfFallingOrNot, -9.81 * 2.5 * delta, 0.3)
+      this.variableToKnowIfFallingOrNot = walkDirection.y
 
       this.feetCollider.forEach((ray) => {
         var intersects = ray.intersectObject(this.threeJsEnv);
-        for (let intersect of intersects) {
-          let varX: any;
-          varX = intersect as unknown as THREE.Object3D; 
-
-          //console.log(intersect.distance)
-          //console.log(varX.object.material)
+        if (intersects[0]) {
+          this.tempRayPoints.push(intersects[0].point)
         }
+        //this.tempRayPoints.push(intersects[0].point);
       })
+      var x = this.tempRayPoints.some((vector => { return (vector) ? true : false; }));
+      if (x) {
 
 
-      this.update3JsModelToPhysicsModel(translation)
-      walkDirection.y += this.fallLerpFunction(this.variableToKnowIfFallingOrNot, -9.81 * 2.0 * delta, 0.3)
-      this.variableToKnowIfFallingOrNot = walkDirection.y
-
-
-
+      }
+      //this.tempRayPoints.some(x => x!);
       let test = this.feetCollider[0] as THREE.Raycaster;
       let hit2 = test.intersectObject(this.threeJsEnv);
 
@@ -77,10 +80,10 @@ export class CharacterTranslation {
         // Compare translation of Ray vs Point Hit
         const pointOfImpact = hit2[0].point;
         //console.log(pointOfImpact.y)
-        let diff = translation.y - (pointOfImpact.y + 0.5);
+        let diff = translation.y - (pointOfImpact.y + 0.0);
         if (diff < 0.0) {
           this.variableToKnowIfFallingOrNot = 0
-          walkDirection.y = this.fallLerpFunction(this.variableToKnowIfFallingOrNot, Math.abs(diff), 0.5)
+          walkDirection.y = this.fallLerpFunction(this.variableToKnowIfFallingOrNot, Math.abs(diff), 0.2)
         }
       }
 

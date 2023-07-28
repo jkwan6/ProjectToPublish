@@ -13,6 +13,8 @@ export interface IControllerParams {
   ray: RAPIER.Ray,
   rigidBody: RAPIER.RigidBody,
   feetCollider: THREE.Raycaster[];
+  feetArrowGroup: THREE.Group;
+  feetRayStepper: THREE.Raycaster[];
   threeJsEnv: THREE.Group;
 }
 

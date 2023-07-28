@@ -18,16 +18,21 @@ export class CharacterControls {
   rigidBody: RAPIER.RigidBody;
   currentAction: string
   feetCollider: THREE.Raycaster[];
+  feetArrowGroup: THREE.Group;
   // Global Variable
   toggleRun: boolean = true
   walkDirection = new THREE.Vector3()
   threeJsEnv: THREE.Group;
-
+  feetRayStepper: THREE.Raycaster[];
   // Can do an DI with those
   characterWalkDirection: CharacterWalkDirection;
   animation: CharacterAnimation;
   characterTranslation: CharacterTranslation;
   characterCameraUpdate: CharacterCameraUpdate;
+  threeRayCasterTempValues: THREE.Vector3[] = [];
+
+
+
   constructor(params: IControllerParams
   ) {
     this.model = params.model
@@ -40,11 +45,12 @@ export class CharacterControls {
     this.camera = params.camera;
     this.feetCollider = params.feetCollider;
     this.threeJsEnv = params.threeJsEnv;
-    
+    this.feetArrowGroup = params.feetArrowGroup;
+    this.feetRayStepper = params.feetRayStepper;
 
     // Constructor Future DI
     this.animation = new CharacterAnimation(this.animationsMap, this.mixer);
-    this.characterWalkDirection = new CharacterWalkDirection(this.camera, this.model);
+    this.characterWalkDirection = new CharacterWalkDirection(this.camera, this.model, this.feetArrowGroup);
     this.characterCameraUpdate = new CharacterCameraUpdate(this.camera, this.orbitControl)
     this.characterTranslation = new CharacterTranslation(
       this.camera,
@@ -53,7 +59,8 @@ export class CharacterControls {
       this.orbitControl,
       this.ray,
       this.feetCollider,
-      this.threeJsEnv
+      this.threeJsEnv,
+      this.feetRayStepper
     )
 
     // Constructor Logic

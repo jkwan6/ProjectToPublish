@@ -49,7 +49,6 @@ export class ThreeJsWorld {
     return orbitControls;
   }
 
-
   instantiateThreeJsLights() {
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
     this.scene.add(ambientLight)
@@ -101,5 +100,6 @@ export class ThreeJsWorld {
     }
     return threeFloor;
   }
+
 
 }

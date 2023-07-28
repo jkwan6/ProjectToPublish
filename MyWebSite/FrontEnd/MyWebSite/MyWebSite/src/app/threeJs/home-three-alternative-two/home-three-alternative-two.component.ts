@@ -52,23 +52,25 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
   keyboardUpEvent: (() => {}) | any;
   keyboardDownEvent: (() => {}) | any;
   mouse: THREE.Vector2 = new THREE.Vector2();
-  pointerArrowHelper!: THREE.ArrowHelper;
+  mouseArrowHelper!: THREE.ArrowHelper;
   bodyArrowHelper!: THREE.ArrowHelper;
-  pointerRayCaster: THREE.Raycaster = new THREE.Raycaster();
+  mouseRayCaster: THREE.Raycaster = new THREE.Raycaster();
   bodyRayCaster: THREE.Raycaster = new THREE.Raycaster();
   characterControls!: CharacterControls;
   orbitControls!: OrbitControls;
   characterModel = new THREE.Group;
   environementWorld = new THREE.Group;
-  rayAndArrowArray: { ray: THREE.Raycaster, arrow: THREE.ArrowHelper }[] = [];
-  rayArray: THREE.Raycaster[] = [];
+  feetRayAndArrowArray: { ray: THREE.Raycaster, arrow: THREE.ArrowHelper }[] = [];
+  feetRayArray: THREE.Raycaster[] = [];
+  walkDirectionRayCasters: THREE.Raycaster[] = [];
+  walkDirectionArrowHelpers: THREE.ArrowHelper[] = [];
   testArray = new THREE.Group;
   threeJsEnvironment = new THREE.Group;
   // #endregion
-
+  feetRayStepper: THREE.Raycaster[] = [];
   tempCoordinate = new THREE.Vector3(0,0,0);
-  planeTest = new THREE.Mesh;
-  groupTest = new THREE.Group;
+  feetPlane = new THREE.Mesh;
+  feetArrowGroup = new THREE.Group;
   // #region ON DESTROY
   @HostListener('unloaded')
   ngOnDestroy(): void {
@@ -89,27 +91,27 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
       var rngx = (0.5 - Math.random()) * 50
       var rngy = Math.random() * 50
       var rngz = (0.5 - Math.random()) * 50
-      var boxPosition = new RAPIER.Vector3(rngx, rngy, rngz);                 // Adding Box to Scene
+      var boxposition = new RAPIER.Vector3(rngx, rngy, rngz);                 // adding box to scene
       var box: IBoxDimensions = { length: 4, height: 5, width: 4 };
-      var boxMesh = this.threeJsWorld.createBoxMesh(box)
-      var boxRigidBody = this.rapierPhysics.createRigidBox(box, boxPosition);
-      this.bodies.push({ rigid: boxRigidBody, mesh: boxMesh });               // Storing them
+      var boxmesh = this.threeJsWorld.createBoxMesh(box)
+      var boxrigidbody = this.rapierPhysics.createRigidBox(box, boxposition);
+      this.bodies.push({ rigid: boxrigidbody, mesh: boxmesh });               // storing them
     }
 
     var planeWidth: number = 0.5;
     var planeLength: number = 0.5;
-    this.planeTest = new THREE.Mesh(
+    this.feetPlane = new THREE.Mesh(
       new THREE.PlaneGeometry(planeWidth, planeLength, 1, 1),
       new THREE.MeshStandardMaterial({
         color: 'red'
       })
     );
-    this.planeTest.rotateX(- Math.PI / 2);
-    this.scene.add(this.planeTest)
+    this.feetPlane.rotateX(- Math.PI / 2);
+    this.scene.add(this.feetPlane)
 
 
     // FeetCollider
-    var rayOrigin: THREE.Vector3[] =
+    var FeetColliderPlane: THREE.Vector3[] =
       [
         new THREE.Vector3(-planeWidth / 2, 0, -planeLength / 2),
         new THREE.Vector3(-planeWidth / 2, 0, +planeLength / 2),
@@ -119,28 +121,48 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
       ];
     var rayDirection = new THREE.Vector3(0, -1, 0);
 
-    rayOrigin.forEach(arrowOrigin => {
-      var rayCaster = new THREE.Raycaster(arrowOrigin, rayDirection, 0, 1);
-      var ray = new THREE.ArrowHelper(
+    FeetColliderPlane.forEach(arrowOrigin => {
+      var rayCaster = new THREE.Raycaster(arrowOrigin, rayDirection, 0, 10);
+      var arrowHelper = new THREE.ArrowHelper(
         rayCaster.ray.direction,
         rayCaster.ray.origin,
         1,
         0xff0000);
-      rayCaster.intersectObject(this.threeJsEnvironment);
-      this.rayAndArrowArray.push({ ray: rayCaster, arrow: ray })
-      this.rayArray.push( rayCaster )
-      this.groupTest.add(ray)
+      this.feetRayAndArrowArray.push({ ray: rayCaster, arrow: arrowHelper })
+      this.feetRayArray.push( rayCaster )
+      this.feetArrowGroup.add(arrowHelper)
     })
-    this.scene.add(this.groupTest)
+    this.scene.add(this.feetArrowGroup)
 
+    // feetCollider Additional Arrows
+    var FeetColliderPlane: THREE.Vector3[] =
+      [
+        new THREE.Vector3(-planeWidth / 2, 0.1, -planeLength / 2),
+        new THREE.Vector3(0, 0.1, -planeLength / 2),
+        new THREE.Vector3(planeWidth / 2, 0.1, -planeLength / 2)
+      ];
+    var rayDirection = new THREE.Vector3(0, -0.8, -1);
 
+    FeetColliderPlane.forEach(arrowOrigin => {
+      var rayCaster = new THREE.Raycaster(arrowOrigin, rayDirection, 0, 1);
+      var arrowHelper = new THREE.ArrowHelper(
+        rayCaster.ray.direction,
+        rayCaster.ray.origin,
+        1,
+        0xff0000);
+      this.feetRayAndArrowArray.push({ ray: rayCaster, arrow: arrowHelper })
+      this.feetRayStepper.push(rayCaster)
+      this.feetArrowGroup.add(arrowHelper)
+    })
+
+    // Floor
     let heights: number[] = [];                                                 // Creating Floor
     let scale = new RAPIER.Vector3(70.0, 3.0, 70.0);
     let nsubdivs = 20;
-    var x = this.threeJsWorld.createFloor(scale, nsubdivs, heights);
-    //this.threeJsEnvironment.add(x);
-    //this.scene.add(this.threeJsEnvironment)
+    var threeJsFloor = this.threeJsWorld.createFloor(scale, nsubdivs, heights);
     this.rapierPhysics.createPhysicsFloor(scale, nsubdivs, heights);
+    this.threeJsEnvironment.add(threeJsFloor);
+    this.scene.add(this.threeJsEnvironment)
 
     this.canvas = document.querySelector('.HomeWebgl')!;                        // Canvas & Renderer
     this.renderer = this.threeJsWorld.instantiateThreeJsRenderer(this.canvas, this.sizes);
@@ -148,12 +170,8 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     this.threeJsWorld.instantiateThreeJsLights();                               // Light
 
     // RAYCASTER
-    this.pointerArrowHelper = new THREE.ArrowHelper(this.pointerRayCaster.ray.direction, this.pointerRayCaster.ray.origin, 1, 0xff0000)
-    this.scene.add(this.pointerArrowHelper);
-
-    // RAYCASTER
-    this.bodyArrowHelper = new THREE.ArrowHelper(this.bodyRayCaster.ray.direction, this.bodyRayCaster.ray.origin, 5, 0xff0000)
-    this.scene.add(this.bodyArrowHelper);
+    this.mouseArrowHelper = new THREE.ArrowHelper(this.mouseRayCaster.ray.direction, this.mouseRayCaster.ray.origin, 1, 0xff0000)
+    this.scene.add(this.mouseArrowHelper);
 
 
     const gltfLoader = new GLTFLoader();
@@ -174,7 +192,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
           })
 
           // Rigid Body
-          let bodyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(-10, 10, 1);
+          let bodyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(-10, 100, 1);
           let characterRigidBody = this.world.createRigidBody(bodyDesc);
           let dynamicCollider = RAPIER.ColliderDesc.cuboid(0.5,0.5,0.5);
           this.world.createCollider(dynamicCollider, characterRigidBody);
@@ -191,7 +209,9 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
               { x: 0, y: -5, z: 0 }
             ),
             rigidBody: characterRigidBody,
-            feetCollider: this.rayArray,
+            feetCollider: this.feetRayArray,
+            feetArrowGroup: this.feetArrowGroup,
+            feetRayStepper: this.feetRayStepper,
             threeJsEnv: this.threeJsEnvironment
           }
 
@@ -232,8 +252,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
           object.scene.scale.set(1.2, 1.2, 1.2);
           object.scene.position.set(0, 3.2, 0);
           this.scene!.add(object.scene)
-          this.threeJsEnvironment.add(object.scene);
-          this.scene.add(this.threeJsEnvironment)
+          this.threeJsEnvironment.add(object.scene)
         }
       )
     this.defineEvents();
@@ -256,91 +275,52 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
       this.requestId = window.requestAnimationFrame(this.animate);
 
       this.world.step();
+
+      // Moving ThreeJs Cubes To Position of Rapier Cubes
       this.bodies.forEach(body => {
         let position = body.rigid.translation();
         let rotation = body.rigid.rotation();
 
-        body.mesh.position.x = position.x;
-        body.mesh.position.y = position.y;
-        body.mesh.position.z = position.z;
-
+        body.mesh.position.set(position.x, position.y, position.z);
         body.mesh.setRotationFromQuaternion(
-          new THREE.Quaternion(rotation.x,
-            rotation.y,
-            rotation.z,
-            rotation.w));
+          new THREE.Quaternion(rotation.x, rotation.y, rotation.z, rotation.w));
       })
 
+      // Mouse Pointer Arrow and Ray
       let objectToTest: THREE.Mesh [] = [];
-
       this.bodies.forEach(body => {
         objectToTest.push(body.mesh)
       })
-
-      const intersects = this.pointerRayCaster.intersectObjects(objectToTest);
-
+      const intersects = this.mouseRayCaster.intersectObjects(objectToTest);
       for (let object of objectToTest) {
         let varX: any;
         varX = object as unknown as THREE.Object3D;
         let materialColor = new THREE.Color('red');
         varX.material.color.set(materialColor)
-        //console.log(varX.object.material)
       }
-
       for (let intersect of intersects) {
         let varX: any;
         varX = intersect as unknown as THREE.Object3D;
         let materialColor = new THREE.Color('blue');
         varX.object.material.color.set(materialColor);
-        //console.log(varX.object.material)
       }
-
-
-      this.pointerRayCaster.setFromCamera(this.mouse, this.camera);
-      this.pointerArrowHelper.setDirection(this.pointerRayCaster.ray.direction);
-      this.pointerArrowHelper.position.set(
-        this.pointerRayCaster.ray.origin.x,
-        this.pointerRayCaster.ray.origin.y,
-        this.pointerRayCaster.ray.origin.z
+      // Moving Mouse Pointer Arrow And Ray
+      this.mouseRayCaster.setFromCamera(this.mouse, this.camera);
+      this.mouseArrowHelper.setDirection(this.mouseRayCaster.ray.direction);
+      this.mouseArrowHelper.position.set(
+        this.mouseRayCaster.ray.origin.x,
+        this.mouseRayCaster.ray.origin.y,
+        this.mouseRayCaster.ray.origin.z
       )
 
 
-      this.bodyRayCaster.set(
-        new THREE.Vector3(
-          this.characterModel.position.x,
-          this.characterModel.position.y,
-          this.characterModel.position.z)
-        , new THREE.Vector3(0, -1, 0))
-
-
-      this.bodyArrowHelper.setDirection(this.bodyRayCaster.ray.direction);
-      this.bodyArrowHelper.position.set(
-        this.bodyRayCaster.ray.origin.x,
-        this.bodyRayCaster.ray.origin.y,
-        this.bodyRayCaster.ray.origin.z
-      )
-
-      this.testArray.position.set(
-          this.characterModel.position.x,
-          this.testArray.position.y,
-          this.characterModel.position.z
-        )
-
-      //this.boxBody.position.set(
-      //  this.characterModel.position.x,
-      //  this.characterModel.position.y,
-      //  this.characterModel.position.z
-      //)
-
-
-
-      this.groupTest.position.set(
+      // Moving FeetCollidersWithCharacter
+      this.feetArrowGroup.position.set(
         this.characterModel.position.x,
-        this.characterModel.position.y,
+        this.characterModel.position.y + 2,
         this.characterModel.position.z
       )
-
-      this.rayAndArrowArray.forEach((rayAndArrow) => {
+      this.feetRayAndArrowArray.forEach((rayAndArrow) => {
         rayAndArrow.arrow.getWorldPosition(this.tempCoordinate);
         rayAndArrow.ray.ray.origin.set(
           this.tempCoordinate.x,
@@ -348,24 +328,6 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
           this.tempCoordinate.z,
         )
       })
-      /*console.log(this.rayArray[0].ray.ray.origin)*/
-
-
-      //this.rayAndArrowArray.forEach((ray) => {
-      //  ray.ray.position.set(
-      //    this.characterModel.position.x,
-      //    this.characterModel.position.y,
-      //    this.characterModel.position.z
-      //  )})
-
-      if (this.bodyRayCaster.intersectObject(this.environementWorld)[0] !== undefined) { 
-        //console.log(this.bodyRayCaster.intersectObject(this.environementWorld)[0].point);
-        this.characterModel.position.set(
-          this.characterModel.position.x,
-          this.characterModel.position.y,
-          this.characterModel.position.z
-          )
-      }
     }
     this.animate();
 
