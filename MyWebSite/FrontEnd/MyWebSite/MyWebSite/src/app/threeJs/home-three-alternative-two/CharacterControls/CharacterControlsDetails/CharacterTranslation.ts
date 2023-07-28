@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import * as RAPIER from '@dimforge/rapier3d'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { SPACEBAR } from './ControllerUtils'
+import { GravitySimulation } from './Superseded/GravitySimulation'
 
 export class CharacterTranslation {
 
@@ -23,7 +24,9 @@ export class CharacterTranslation {
     this.feetCollider = feetCollider
     this.threeJsEnv = threeJsEnv
     this.feetRayStepper = feetRayStepper
+    this.gravitySim = new GravitySimulation(this.rigidBody);
   }
+  gravitySim: GravitySimulation;
   model: THREE.Group
   camera: THREE.Camera;
   rigidBody: RAPIER.RigidBody;
@@ -51,10 +54,22 @@ export class CharacterTranslation {
 
     if (translation.y < -10) {
       this.resetPosition(translation);
-    } else {
+    }
+    else
+    {
 
       this.update3JsModelToPhysicsModel(translation)
-      walkDirection.y += this.fallLerpFunction(this.variableToKnowIfFallingOrNot, -9.81 * 2.5 * delta, 0.3)
+
+      if (translation.y < 1) {
+        walkDirection.y += this.fallLerpFunction(this.variableToKnowIfFallingOrNot, -9.81 * 2.5 * delta, 0.3)
+      } else {
+        walkDirection.y -= this.gravitySim.getDisplacement(delta);
+      }
+
+      //walkDirection.y += this.fallLerpFunction(this.variableToKnowIfFallingOrNot, -9.81 * 2.5 * delta, 0.3)
+
+
+
       this.variableToKnowIfFallingOrNot = walkDirection.y
 
       this.feetCollider.forEach((ray) => {
