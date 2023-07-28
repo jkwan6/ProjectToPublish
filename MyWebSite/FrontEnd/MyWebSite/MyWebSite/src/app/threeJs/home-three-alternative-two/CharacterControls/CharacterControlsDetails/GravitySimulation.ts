@@ -15,6 +15,7 @@ export class GravitySimulation{
 
   resetGravitySimulation() {
     this.timeElapsed = 0;
+    this.displacement = 0;
   }
 
   getDisplacement(deltaTime: number): number {
@@ -23,25 +24,33 @@ export class GravitySimulation{
     let previousTime: number;
     let currentTime: number;
 
-    if (this.currentYTranslate > this.previousYTranslate) {
-      this.timeElapsed = 0;
-      this.displacement = 0;
+    var translationDifference = Math.abs(this.currentYTranslate - this.previousYTranslate);
+    if (translationDifference < 0.9 * this.displacement) {
+      this.resetGravitySimulation();
     }
+
+
+
+
+
+    //if (this.currentYTranslate > this.previousYTranslate) {
+    //  this.resetGravitySimulation();
+    //}
 
     previousTime = this.timeElapsed;
     currentTime = this.timeElapsed + deltaTime;
 
-    if (currentTime < 10) {
+    if (currentTime < 8) {
       this.displacement =
-        0.3 + (9.81 * currentTime * currentTime) -
+        0.4 + (9.81 * currentTime * currentTime) -
         (9.81 * previousTime * previousTime);
     }
     else {
-      this.displacement = 96 * (currentTime - previousTime);
+      this.displacement = 0.4 + 76 *  2 * (currentTime - previousTime);
     }
 /*    console.log(displacement)*/
     this.timeElapsed += deltaTime;
-    console.log(this.displacement)
+/*    console.log(this.displacement)*/
     return this.displacement
   }
 }

@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import * as RAPIER from '@dimforge/rapier3d'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { SPACEBAR } from './ControllerUtils'
-import { GravitySimulation } from './Superseded/GravitySimulation'
+import { GravitySimulation } from './GravitySimulation'
 
 export class CharacterTranslation {
 
@@ -50,95 +50,66 @@ export class CharacterTranslation {
     walkDirection: THREE.Vector3,
   ) {
 
+    this.update3JsModelToPhysicsModel(translation)
     this.tempRayPoints = [];
 
     if (translation.y < -10) {
       this.resetPosition(translation);
+      return
     }
-    else
-    {
 
-      this.update3JsModelToPhysicsModel(translation)
+    this.variableToKnowIfFallingOrNot = walkDirection.y
 
-      if (translation.y < 1) {
-        walkDirection.y += this.fallLerpFunction(this.variableToKnowIfFallingOrNot, -9.81 * 2.5 * delta, 0.3)
-      } else {
-        walkDirection.y -= this.gravitySim.getDisplacement(delta);
+    this.feetCollider.forEach((ray) => {
+      var intersects = ray.intersectObject(this.threeJsEnv);
+      if (intersects[0]) {
+        this.tempRayPoints.push(intersects[0].point)
       }
-
-      //walkDirection.y += this.fallLerpFunction(this.variableToKnowIfFallingOrNot, -9.81 * 2.5 * delta, 0.3)
-
-
-
-      this.variableToKnowIfFallingOrNot = walkDirection.y
-
-      this.feetCollider.forEach((ray) => {
-        var intersects = ray.intersectObject(this.threeJsEnv);
-        if (intersects[0]) {
-          this.tempRayPoints.push(intersects[0].point)
-        }
-        //this.tempRayPoints.push(intersects[0].point);
-      })
-      var x = this.tempRayPoints.some((vector => { return (vector) ? true : false; }));
-      if (x) {
+      //this.tempRayPoints.push(intersects[0].point);
+    })
+    var x = this.tempRayPoints.some((vector => { return (vector) ? true : false; }));
+    if (x) {
 
 
-      }
-      //this.tempRayPoints.some(x => x!);
-      let test = this.feetCollider[0] as THREE.Raycaster;
-      let hit2 = test.intersectObject(this.threeJsEnv);
+    }
+    //this.tempRayPoints.some(x => x!);
+    let firstRay = this.feetCollider[0] as THREE.Raycaster;
+    let hit = firstRay.intersectObject(this.threeJsEnv);
+    let distanceFromIntersection: number;
+    if (hit[0]) {
+      const pointOfImpact = hit[0].point;
+      distanceFromIntersection = translation.y - (pointOfImpact.y + 0.0);
+    }
 
-      if (hit2[0]) {
-        /*console.log(hit.toi)*/  //Distance from ray to impact
-        // Ray is attached to Charachter
-        // Origin of Ray similar to origin of Character
-        // Compare translation of Ray vs Point Hit
-        const pointOfImpact = hit2[0].point;
-        //console.log(pointOfImpact.y)
-        let diff = translation.y - (pointOfImpact.y + 0.0);
-        if (diff < 0.0) {
-          this.variableToKnowIfFallingOrNot = 0
-          walkDirection.y = this.fallLerpFunction(this.variableToKnowIfFallingOrNot, Math.abs(diff), 0.2)
-        }
-      }
+    if (distanceFromIntersection! < 0.0) {
+      this.variableToKnowIfFallingOrNot = 0
+      walkDirection.y = this.fallLerpFunction(this.variableToKnowIfFallingOrNot, Math.abs(distanceFromIntersection!), 0.2)
+    }
+    else if (distanceFromIntersection! < 0.5) {
+      this.gravitySim.resetGravitySimulation();
+      walkDirection.y += this.fallLerpFunction(this.variableToKnowIfFallingOrNot, -9.81 * 2.5 * delta, 0.3)
+    }
+    else {
+      walkDirection.y -= this.gravitySim.getDisplacement(delta);
+    }
 
+    walkDirection.x = walkDirection.x * velocity * delta
+    walkDirection.z = walkDirection.z * velocity * delta
 
+    if (keysPressed[SPACEBAR.SPACEBAR]) {
 
-
-      //// Falling Algorithm
-      //let hit = world.castRay(ray, 20, false, 0xfffffffff);
-      //if (hit) {
-      //  /*console.log(hit.toi)*/  //Distance from ray to impact
-      //  // Ray is attached to Charachter
-      //  // Origin of Ray similar to origin of Character
-      //  // Compare translation of Ray vs Point Hit
-      //  const pointOfImpact = ray.pointAt(hit.toi);
-      //  //console.log(pointOfImpact.y)
-      //  let diff = translation.y - (pointOfImpact.y + 0.5);
-      //  if (diff < 0.0) {
-      //    this.variableToKnowIfFallingOrNot = 0
-      //    walkDirection.y = this.fallLerpFunction(this.variableToKnowIfFallingOrNot, Math.abs(diff), 0.5)
-      //  }
-      //}
-
-      walkDirection.x = walkDirection.x * velocity * delta
-      walkDirection.z = walkDirection.z * velocity * delta
-
-      if (keysPressed[SPACEBAR.SPACEBAR]) {
-
-        this.rigidBody.setNextKinematicTranslation({
-          x: translation.x + walkDirection.x,
-          y: translation.y + walkDirection.y + 1,
-          z: translation.z + walkDirection.z
-        });
-      }
-      else {
-        this.rigidBody.setNextKinematicTranslation({
-          x: translation.x + walkDirection.x,
-          y: translation.y + walkDirection.y,
-          z: translation.z + walkDirection.z
-        });
-      }
+      this.rigidBody.setNextKinematicTranslation({
+        x: translation.x + walkDirection.x,
+        y: translation.y + walkDirection.y + 1,
+        z: translation.z + walkDirection.z
+      });
+    }
+    else {
+      this.rigidBody.setNextKinematicTranslation({
+        x: translation.x + walkDirection.x,
+        y: translation.y + walkDirection.y,
+        z: translation.z + walkDirection.z
+      });
     }
   }
 
@@ -149,16 +120,11 @@ export class CharacterTranslation {
     };
 
   update3JsModelToPhysicsModel(translation: RAPIER.Vector3) {
-    // update 3js model to physics coordinates
     this.model.position.set(
       translation.x,
       translation.y,
       translation.z,
     )
-    // Update Ray Position to new coord
-    this.ray.origin.x = translation.x
-    this.ray.origin.y = translation.y
-    this.ray.origin.z = translation.z
   }
 
   resetPosition(translation: RAPIER.Vector3) {

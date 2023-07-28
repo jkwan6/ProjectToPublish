@@ -192,7 +192,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
           })
 
           // Rigid Body
-          let bodyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(-10, 1000, 1);
+          let bodyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(20, 2000, 1);
           let characterRigidBody = this.world.createRigidBody(bodyDesc);
           let dynamicCollider = RAPIER.ColliderDesc.cuboid(0.5,0.5,0.5);
           this.world.createCollider(dynamicCollider, characterRigidBody);
