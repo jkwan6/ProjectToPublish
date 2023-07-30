@@ -49,53 +49,52 @@ export class CharacterTranslation {
     keysPressed: any,
     walkDirection: THREE.Vector3,
   ) {
-
-    this.update3JsModelToPhysicsModel(translation)
-    this.tempRayPoints = [];
-
+    // Method Initialization
     if (translation.y < -10) {
       this.resetPosition(translation);
       return
     }
-
+    this.update3JsModelToPhysicsModel(translation)
+    this.tempRayPoints = [];
     this.variableToKnowIfFallingOrNot = walkDirection.y
 
+
+    // Gets intercept of each Ray Caster with Environment
     this.feetCollider.forEach((ray) => {
       var intersects = ray.intersectObject(this.threeJsEnv);
       if (intersects[0]) {
         this.tempRayPoints.push(intersects[0].point)
       }
-      //this.tempRayPoints.push(intersects[0].point);
     })
-    var x = this.tempRayPoints.some((vector => { return (vector) ? true : false; }));
-    if (x) {
 
-
-    }
-    //this.tempRayPoints.some(x => x!);
-    let firstRay = this.feetCollider[0] as THREE.Raycaster;
-    let hit = firstRay.intersectObject(this.threeJsEnv);
+    // Get the first successful raycaster.
+    let firstSuccesfulIntercept = this.tempRayPoints[0];
     let distanceFromIntersection: number;
-    if (hit[0]) {
-      const pointOfImpact = hit[0].point;
+    if (firstSuccesfulIntercept) {
+      const pointOfImpact = firstSuccesfulIntercept;
       distanceFromIntersection = translation.y - (pointOfImpact.y + 0.0);
     }
 
-    if (distanceFromIntersection! < 0.0) {
+    // Use different fall algorithm depending on distance from fall
+    if (distanceFromIntersection! < 0.0)
+    {
       this.variableToKnowIfFallingOrNot = 0
-      walkDirection.y = this.fallLerpFunction(this.variableToKnowIfFallingOrNot, Math.abs(distanceFromIntersection!), 0.2)
+      walkDirection.y = this.fallLerp(this.variableToKnowIfFallingOrNot, Math.abs(distanceFromIntersection!), 0.2)
     }
-    else if (distanceFromIntersection! < 0.5) {
+    else if (distanceFromIntersection! < 0.5)
+    {
       this.gravitySim.resetGravitySimulation();
-      walkDirection.y += this.fallLerpFunction(this.variableToKnowIfFallingOrNot, -9.81 * 2.5 * delta, 0.3)
+      walkDirection.y += this.fallLerp(this.variableToKnowIfFallingOrNot, -9.81 * 2.5 * delta, 0.3)
     }
-    else {
+    else
+    {
       walkDirection.y -= this.gravitySim.getDisplacement(delta);
     }
 
     walkDirection.x = walkDirection.x * velocity * delta
     walkDirection.z = walkDirection.z * velocity * delta
 
+    // Jump
     if (keysPressed[SPACEBAR.SPACEBAR]) {
 
       this.rigidBody.setNextKinematicTranslation({
@@ -113,7 +112,7 @@ export class CharacterTranslation {
     }
   }
 
-  fallLerpFunction =
+  fallLerp =
     (storedFall: number, displacement: number, factor: number) => {
       var x = storedFall * (1 - factor) + displacement * factor
       return x;
@@ -133,5 +132,11 @@ export class CharacterTranslation {
       y: 10,
       z: translation.z
     });
+  }
+
+  checkIfModelIsFallingBeneathWorld(translation: RAPIER.Vector3) {
+    if (translation.y < -10) {
+      this.resetPosition(translation);
+    }
   }
 }

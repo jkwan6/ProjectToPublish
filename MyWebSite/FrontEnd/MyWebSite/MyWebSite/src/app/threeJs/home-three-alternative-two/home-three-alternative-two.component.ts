@@ -122,7 +122,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     var rayDirection = new THREE.Vector3(0, -1, 0);
 
     FeetColliderPlane.forEach(arrowOrigin => {
-      var rayCaster = new THREE.Raycaster(arrowOrigin, rayDirection, 0, 10);
+      var rayCaster = new THREE.Raycaster(arrowOrigin, rayDirection, 0, 15);
       var arrowHelper = new THREE.ArrowHelper(
         rayCaster.ray.direction,
         rayCaster.ray.origin,
@@ -144,7 +144,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     var rayDirection = new THREE.Vector3(0, -0.8, -1);
 
     FeetColliderPlane.forEach(arrowOrigin => {
-      var rayCaster = new THREE.Raycaster(arrowOrigin, rayDirection, 0, 1);
+      var rayCaster = new THREE.Raycaster(arrowOrigin, rayDirection, 0, 1.0);
       var arrowHelper = new THREE.ArrowHelper(
         rayCaster.ray.direction,
         rayCaster.ray.origin,
@@ -317,7 +317,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
       // Moving FeetCollidersWithCharacter
       this.feetArrowGroup.position.set(
         this.characterModel.position.x,
-        this.characterModel.position.y + 2,
+        this.characterModel.position.y + 4,
         this.characterModel.position.z
       )
       this.feetRayAndArrowArray.forEach((rayAndArrow) => {
