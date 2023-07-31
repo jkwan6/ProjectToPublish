@@ -36,6 +36,9 @@ namespace DataLayer
         public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
         public DbSet<AppSession> AppSessions => Set<AppSession>();
         public DbSet<AccessToken> AccessTokens => Set<AccessToken>();
+        public DbSet<Page> Pages => Set<Page>();
+        public DbSet<PageContent> PageContents => Set<PageContent>();
+
 
     }
 }
