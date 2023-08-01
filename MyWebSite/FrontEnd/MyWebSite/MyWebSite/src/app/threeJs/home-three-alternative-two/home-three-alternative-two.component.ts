@@ -69,12 +69,16 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
   // #endregion
   feetRayStepper: THREE.Raycaster[] = [];
   tempCoordinate = new THREE.Vector3(0,0,0);
+  tempCoordinate2 = new THREE.Vector3(0,0,0);
   feetPlane = new THREE.Mesh;
   feetArrowGroup = new THREE.Group;
 
   //
-
-
+  bodyCollider : THREE.Raycaster[] = [];
+  bodyPlane!: THREE.Mesh;
+  bodyRayAndArrowArray: { ray: THREE.Raycaster, arrow: THREE.ArrowHelper }[] = [];
+  bodyArrowGroup = new THREE.Group;
+  bodyRayArray: THREE.Raycaster[] = [];
   // #region ON DESTROY
   @HostListener('unloaded')
   ngOnDestroy(): void {
@@ -102,6 +106,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     //  this.bodies.push({ rigid: boxrigidbody, mesh: boxmesh });               // storing them
     //}
 
+    // #region FeetColliders
     var planeWidth: number = 0.5;
     var planeLength: number = 0.5;
     this.feetPlane = new THREE.Mesh(
@@ -113,8 +118,6 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     this.feetPlane.rotateX(- Math.PI / 2);
     this.scene.add(this.feetPlane)
 
-
-    // FeetCollider
     var FeetColliderPlane: THREE.Vector3[] =
       [
         new THREE.Vector3(-planeWidth / 2, 0, -planeLength / 2),
@@ -158,6 +161,45 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
       this.feetRayStepper.push(rayCaster)
       this.feetArrowGroup.add(arrowHelper)
     })
+    // #endregion
+
+    // #region BodyColliders
+    var planeWidth: number = 0.5;
+    var planeLength: number = 1;
+    this.bodyPlane = new THREE.Mesh(
+      new THREE.PlaneGeometry(planeWidth, planeLength, 1, 1),
+      new THREE.MeshStandardMaterial({
+        color: 'red'
+      })
+    );
+/*    this.bodyPlane.rotateX(- Math.PI / 2);*/
+    this.bodyArrowGroup.add(this.bodyPlane)
+
+    var BodyColliderPlane: THREE.Vector3[] =
+      [
+        new THREE.Vector3(-planeWidth / 2, -planeLength / 2, 0),
+        new THREE.Vector3(+planeWidth / 2, -planeLength / 2, 0),
+        new THREE.Vector3(0, 0, 0),
+        new THREE.Vector3(+planeWidth / 2, planeLength / 2, 0),
+        new THREE.Vector3(-planeWidth / 2, planeLength / 2, 0)
+      ];
+    var rayDirection = new THREE.Vector3(0, 0, -1);
+
+    BodyColliderPlane.forEach(arrowOrigin => {
+      var rayCaster = new THREE.Raycaster(arrowOrigin, rayDirection, 0, 15);
+      var arrowHelper = new THREE.ArrowHelper(
+        rayCaster.ray.direction,
+        rayCaster.ray.origin,
+        1,
+        0xff0000);
+      this.bodyRayAndArrowArray.push({ ray: rayCaster, arrow: arrowHelper })
+      this.bodyRayArray.push(rayCaster)
+      this.bodyArrowGroup.add(arrowHelper)
+    })
+/*    this.bodyArrowGroup.rotateX(-Math.PI /2)*/
+    this.scene.add(this.bodyArrowGroup)
+    // #endregion
+
 
     // Floor
     let heights: number[] = [];                                                 // Creating Floor
@@ -216,7 +258,9 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
             feetCollider: this.feetRayArray,
             feetArrowGroup: this.feetArrowGroup,
             feetRayStepper: this.feetRayStepper,
-            threeJsEnv: this.threeJsEnvironment
+            threeJsEnv: this.threeJsEnvironment,
+            bodyArrowGroup: this.bodyArrowGroup,
+            bodyCollider: this.bodyCollider
           }
 
           this.characterControls = new CharacterControls(params)
@@ -331,6 +375,22 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
           this.tempCoordinate.y,
           this.tempCoordinate.z,
         )
+      })
+
+      // Moving BodyCollidersWithCharacter
+      this.bodyArrowGroup.position.set(
+        this.characterModel.position.x,
+        this.characterModel.position.y + 1,
+        this.characterModel.position.z
+      )
+      this.bodyRayAndArrowArray.forEach((rayAndArrow) => {
+        rayAndArrow.arrow.getWorldPosition(this.tempCoordinate2);
+        rayAndArrow.ray.ray.origin.set(
+          this.tempCoordinate2.x,
+          this.tempCoordinate2.y,
+          this.tempCoordinate2.z,
+        )
+
       })
     }
     this.animate();

@@ -6,15 +6,18 @@ export class CharacterWalkDirection {
   constructor(
     camera: THREE.Camera,
     model: THREE.Group,
-    feetArrowGroup: THREE.Group
+    feetArrowGroup: THREE.Group,
+    bodyArrowGroup: THREE.Group
   ) {
     this.camera = camera;
     this.model = model;
     this.feetArrowGroup = feetArrowGroup
+    this.bodyArrowGroup = bodyArrowGroup
   }
   model: THREE.Group
   camera: THREE.Camera;
   feetArrowGroup: THREE.Group;
+  bodyArrowGroup: THREE.Group;
   // Resetting Walk Direction
   calculateWalkDirection(keysPressed: string, currentAction: string): THREE.Vector3 {
     let walkDirection = new THREE.Vector3(0, 0, 0);
@@ -33,6 +36,13 @@ export class CharacterWalkDirection {
       rotateQuarternion.setFromAxisAngle(rotateAngle, angleYCameraDirection + directionOffset)
       this.model.quaternion.rotateTowards(rotateQuarternion, Math.PI * 0.1)
       this.feetArrowGroup.quaternion.rotateTowards(rotateQuarternion, Math.PI * 0.1)
+      this.bodyArrowGroup.quaternion.rotateTowards(rotateQuarternion, Math.PI * 0.1)
+      //this.bodyArrowGroup.quaternion.rotateTowards(new THREE.Quaternion(
+      //  rotateQuarternion.x,
+      //  rotateQuarternion.y,
+      //  rotateQuarternion.z,
+      //  rotateQuarternion.w
+      //), Math.PI * 0.1)
       // rotate feet colliders
 
       // calculate direction

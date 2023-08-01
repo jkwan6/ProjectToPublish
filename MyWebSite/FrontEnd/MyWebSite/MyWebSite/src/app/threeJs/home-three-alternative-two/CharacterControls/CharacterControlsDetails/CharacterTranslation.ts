@@ -14,7 +14,8 @@ export class CharacterTranslation {
     ray: RAPIER.Ray,
     feetCollider: THREE.Raycaster[],
     threeJsEnv: THREE.Group,
-    feetRayStepper: THREE.Raycaster[]
+    feetRayStepper: THREE.Raycaster[],
+    bodyCollider: THREE.Raycaster[]
   ) {
     this.camera = camera;
     this.model = model;
@@ -25,6 +26,7 @@ export class CharacterTranslation {
     this.threeJsEnv = threeJsEnv
     this.feetRayStepper = feetRayStepper
     this.gravitySim = new GravitySimulation(this.rigidBody);
+    this.bodyCollider = bodyCollider
   }
   gravitySim: GravitySimulation;
   model: THREE.Group
@@ -39,6 +41,7 @@ export class CharacterTranslation {
   threeJsEnv: THREE.Group
   feetRayStepper: THREE.Raycaster[];
   tempRayPoints: THREE.Vector3[] = [];
+  bodyCollider: THREE.Raycaster[];
 
   calculateTranslation(
     translation: RAPIER.Vector3,

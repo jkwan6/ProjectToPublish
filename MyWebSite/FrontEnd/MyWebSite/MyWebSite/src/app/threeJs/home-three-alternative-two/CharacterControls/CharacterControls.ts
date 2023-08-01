@@ -30,8 +30,8 @@ export class CharacterControls {
   characterTranslation: CharacterTranslation;
   characterCameraUpdate: CharacterCameraUpdate;
   threeRayCasterTempValues: THREE.Vector3[] = [];
-
-
+  bodyCollider: THREE.Raycaster[];
+  bodyArrowGroup: THREE.Group;
 
   constructor(params: IControllerParams
   ) {
@@ -47,10 +47,13 @@ export class CharacterControls {
     this.threeJsEnv = params.threeJsEnv;
     this.feetArrowGroup = params.feetArrowGroup;
     this.feetRayStepper = params.feetRayStepper;
+    this.bodyCollider = params.bodyCollider;
+    this.bodyArrowGroup = params.bodyArrowGroup;
+
 
     // Constructor Future DI
     this.animation = new CharacterAnimation(this.animationsMap, this.mixer);
-    this.characterWalkDirection = new CharacterWalkDirection(this.camera, this.model, this.feetArrowGroup);
+    this.characterWalkDirection = new CharacterWalkDirection(this.camera, this.model, this.feetArrowGroup, this.bodyArrowGroup);
     this.characterCameraUpdate = new CharacterCameraUpdate(this.camera, this.orbitControl)
     this.characterTranslation = new CharacterTranslation(
       this.camera,
@@ -60,7 +63,8 @@ export class CharacterControls {
       this.ray,
       this.feetCollider,
       this.threeJsEnv,
-      this.feetRayStepper
+      this.feetRayStepper,
+      this.bodyCollider
     )
 
     // Constructor Logic

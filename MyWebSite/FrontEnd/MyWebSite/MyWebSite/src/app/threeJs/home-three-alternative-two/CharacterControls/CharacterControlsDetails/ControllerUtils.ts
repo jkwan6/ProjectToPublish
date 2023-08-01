@@ -16,7 +16,26 @@ export interface IControllerParams {
   feetArrowGroup: THREE.Group;
   feetRayStepper: THREE.Raycaster[];
   threeJsEnv: THREE.Group;
+  bodyCollider: THREE.Raycaster[];
+  bodyArrowGroup: THREE.Group;
 }
+
+export interface ICharacterColliders
+{
+  model: THREE.Group,
+  mixer: THREE.AnimationMixer,
+  animationsMap: Map<string, THREE.AnimationAction>,
+  orbitControl: OrbitControls,
+  camera: THREE.Camera,
+  currentAction: string,
+  ray: RAPIER.Ray,
+  rigidBody: RAPIER.RigidBody,
+  feetCollider: THREE.Raycaster[];
+  feetArrowGroup: THREE.Group;
+  feetRayStepper: THREE.Raycaster[];
+  threeJsEnv: THREE.Group;
+}
+
 
 export enum DIRECTIONS {
   FORWARD = 'w',
