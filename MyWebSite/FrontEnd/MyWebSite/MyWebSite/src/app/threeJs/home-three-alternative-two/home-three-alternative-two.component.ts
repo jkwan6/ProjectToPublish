@@ -71,6 +71,10 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
   tempCoordinate = new THREE.Vector3(0,0,0);
   feetPlane = new THREE.Mesh;
   feetArrowGroup = new THREE.Group;
+
+  //
+
+
   // #region ON DESTROY
   @HostListener('unloaded')
   ngOnDestroy(): void {
@@ -87,16 +91,16 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
 
     this.world = this.rapierPhysics.instantiatePhysicsWorld();                  // Creating Physics World
 
-    for (let i = 0; i < 20; i++) {
-      var rngx = (0.5 - Math.random()) * 50
-      var rngy = Math.random() * 50
-      var rngz = (0.5 - Math.random()) * 50
-      var boxposition = new RAPIER.Vector3(rngx, rngy, rngz);                 // adding box to scene
-      var box: IBoxDimensions = { length: 4, height: 5, width: 4 };
-      var boxmesh = this.threeJsWorld.createBoxMesh(box)
-      var boxrigidbody = this.rapierPhysics.createRigidBox(box, boxposition);
-      this.bodies.push({ rigid: boxrigidbody, mesh: boxmesh });               // storing them
-    }
+    //for (let i = 0; i < 20; i++) {
+    //  var rngx = (0.5 - Math.random()) * 50
+    //  var rngy = Math.random() * 50
+    //  var rngz = (0.5 - Math.random()) * 50
+    //  var boxposition = new RAPIER.Vector3(rngx, rngy, rngz);                 // adding box to scene
+    //  var box: IBoxDimensions = { length: 4, height: 5, width: 4 };
+    //  var boxmesh = this.threeJsWorld.createBoxMesh(box)
+    //  var boxrigidbody = this.rapierPhysics.createRigidBox(box, boxposition);
+    //  this.bodies.push({ rigid: boxrigidbody, mesh: boxmesh });               // storing them
+    //}
 
     var planeWidth: number = 0.5;
     var planeLength: number = 0.5;
@@ -192,7 +196,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
           })
 
           // Rigid Body
-          let bodyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(20, 2000, 1);
+          let bodyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(20, 10, 1);
           let characterRigidBody = this.world.createRigidBody(bodyDesc);
           let dynamicCollider = RAPIER.ColliderDesc.cuboid(0.5,0.5,0.5);
           this.world.createCollider(dynamicCollider, characterRigidBody);
