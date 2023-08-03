@@ -70,6 +70,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
   feetRayStepper: THREE.Raycaster[] = [];
   tempCoordinate = new THREE.Vector3(0,0,0);
   tempCoordinate2 = new THREE.Vector3(0,0,0);
+  tempCoordinate3 = new THREE.Vector3(0,0,0);
   feetPlane = new THREE.Mesh;
   feetArrowGroup = new THREE.Group;
 
@@ -260,7 +261,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
             feetRayStepper: this.feetRayStepper,
             threeJsEnv: this.threeJsEnvironment,
             bodyArrowGroup: this.bodyArrowGroup,
-            bodyCollider: this.bodyCollider
+            bodyCollider: this.bodyRayArray
           }
 
           this.characterControls = new CharacterControls(params)
@@ -385,10 +386,16 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
       )
       this.bodyRayAndArrowArray.forEach((rayAndArrow) => {
         rayAndArrow.arrow.getWorldPosition(this.tempCoordinate2);
+        rayAndArrow.arrow.getWorldDirection(this.tempCoordinate3)
         rayAndArrow.ray.ray.origin.set(
           this.tempCoordinate2.x,
           this.tempCoordinate2.y,
           this.tempCoordinate2.z,
+        )
+        rayAndArrow.ray.ray.direction.set(
+          this.tempCoordinate3.x,
+          this.tempCoordinate3.y,
+          this.tempCoordinate3.z,
         )
 
       })
