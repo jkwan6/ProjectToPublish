@@ -269,26 +269,26 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     );
 
 
-    const gltfloader = new GLTFLoader();
-    const dracroLoader = new DRACOLoader();
-    dracroLoader.setDecoderPath('../../../../../assets/draco/')
+    //const gltfloader = new GLTFLoader();
+    //const dracroLoader = new DRACOLoader();
+    //dracroLoader.setDecoderPath('../../../../../assets/draco/')
 
-    gltfLoader.setDRACOLoader(dracroLoader);
+    //gltfLoader.setDRACOLoader(dracroLoader);
 
-    gltfLoader.load("../../../../../assets/models/AltTower.glb",
-      (gltf) => {
+    //gltfLoader.load("../../../../../assets/models/AltTower.glb",
+    //  (gltf) => {
 
-        this.environementWorld = gltf.scene;
-        gltf.scene.scale.set(100, 100, 100);
-        gltf.scene.position.set(0, 49, 0);
-        this.scene.add(gltf.scene)
-        this.threeJsEnvironment.add(gltf.scene);
-        this.scene.add(this.threeJsEnvironment)
+    //    this.environementWorld = gltf.scene;
+    //    gltf.scene.scale.set(100, 100, 100);
+    //    gltf.scene.position.set(0, 49, 0);
+    //    this.scene.add(gltf.scene)
+    //    this.threeJsEnvironment.add(gltf.scene);
+    //    this.scene.add(this.threeJsEnvironment)
 
-      },
-      () => { console.log('progress') },
-      () => { console.log('error') }
-    )
+    //  },
+    //  () => { console.log('progress') },
+    //  () => { console.log('error') }
+    //)
 
 
     // Loader
@@ -298,8 +298,8 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
       (
         path,
         object => {
-          object.scene.scale.set(1.2, 1.2, 1.2);
-          object.scene.position.set(0, 3.2, 0);
+          object.scene.scale.set(120, 120, 120);
+          object.scene.position.set(0, 150, 0);
           this.scene!.add(object.scene)
           this.threeJsEnvironment.add(object.scene)
         }
