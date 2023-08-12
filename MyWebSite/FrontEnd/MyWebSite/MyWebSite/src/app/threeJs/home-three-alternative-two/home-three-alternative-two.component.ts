@@ -277,11 +277,11 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
 
     gltfLoader.load("../../../../../assets/models/AltTower.glb",
       (gltf) => {
-
         this.environementWorld = gltf.scene;
         gltf.scene.scale.set(100, 100, 100);
         gltf.scene.position.set(0, 49, 0);
-        this.scene.add(gltf.scene)a
+        this.scene!.add(gltf.scene);
+      },
       () => { console.log('error') }
     )
 
