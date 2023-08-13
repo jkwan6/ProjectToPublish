@@ -107,7 +107,7 @@ export class CharacterTranslation {
         this.tempRayPoints2.push(intersects[0].point)
       }
     })
-    console.log(this.tempRayPoints2)
+    //console.log(this.tempRayPoints2)
     // Get the first successful raycaster.
     let firstSuccesfulIntercept1 = this.tempRayPoints2[0];
     let distanceFromIntersection1: number;

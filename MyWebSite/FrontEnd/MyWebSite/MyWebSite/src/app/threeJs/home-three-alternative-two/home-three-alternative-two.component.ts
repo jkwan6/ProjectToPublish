@@ -269,21 +269,21 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     );
 
 
-    const gltfloader = new GLTFLoader();
-    const dracroLoader = new DRACOLoader();
-    dracroLoader.setDecoderPath('../../../../../assets/draco/')
+    //const gltfloader = new GLTFLoader();
+    //const dracroLoader = new DRACOLoader();
+    //dracroLoader.setDecoderPath('../../../../../assets/draco/')
 
-    gltfLoader.setDRACOLoader(dracroLoader);
+    //gltfLoader.setDRACOLoader(dracroLoader);
 
-    gltfLoader.load("../../../../../assets/models/AltTower.glb",
-      (gltf) => {
-        this.environementWorld = gltf.scene;
-        gltf.scene.scale.set(100, 100, 100);
-        gltf.scene.position.set(0, 49, 0);
-        this.scene!.add(gltf.scene);
-      },
-      () => { console.log('error') }
-    )
+    //gltfLoader.load("../../../../../assets/models/AltTower.glb",
+    //  (gltf) => {
+    //    this.environementWorld = gltf.scene;
+    //    gltf.scene.scale.set(100, 100, 100);
+    //    gltf.scene.position.set(0, 49, 0);
+    //    this.scene!.add(gltf.scene);
+    //  },
+    //  () => { console.log('error') }
+    //)
 
 
     // Loader
@@ -419,7 +419,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
       } else {
         (keysPressed as any)[event.key.toLowerCase()] = true
       }
-      console.log(keysPressed);
+/*      console.log(keysPressed);*/
     }
     this.keyboardUpEvent = (event: any) => {
       (keysPressed as any)[event.key.toLowerCase()] = false
@@ -433,7 +433,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     this.animateScreenResize = this.sideNavService.getBodyDims.pipe(tap(results => {
       this.sizes.width = results.width * 0.925;                         // Width
       this.sizes.height = 600;                                          // Height
-
+      console.log(results.width)
       this.camera.aspect = this.sizes.width / this.sizes.height;
       this.camera?.updateProjectionMatrix();
       this.renderer!.setSize(this.sizes.width, this.sizes.height);
