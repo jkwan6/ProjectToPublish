@@ -32,7 +32,8 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     private rapierPhysics: RapierPhysicsWorld,
     private threeJsWorld: ThreeJsWorld
   ) {
-    this.sizes = this.sideNavService.getBodyDims.value; this.sizes.height = 600;
+    this.sizes = this.sideNavService.getBodyDims.value;
+    this.sizes.height = 600;
     this.scene = this.threeJsWorld.instantiateThreeJsScene();
     this.camera = this.threeJsWorld.instantiateThreeJsCamera(this.sizes.width / this.sizes.height);
   }
@@ -293,7 +294,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
       (
         path,
         object => {
-          object.scene.scale.set(120, 120, 120);
+          object.scene.scale.set(100, 100, 100);
           object.scene.position.set(0, 150, 0);
           this.scene!.add(object.scene)
           this.threeJsEnvironment.add(object.scene)

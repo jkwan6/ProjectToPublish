@@ -100,35 +100,35 @@ export class CharacterTranslation {
 
     this.tempRayPoints2 = [];
 
-    // Gets intercept of each Ray Caster with Environment
-    this.bodyCollider.forEach((ray) => {
-      var intersects = ray.intersectObject(this.threeJsEnv);
-      if (intersects[0]) {
-        this.tempRayPoints2.push(intersects[0].point)
-      }
-    })
-    //console.log(this.tempRayPoints2)
-    // Get the first successful raycaster.
-    let firstSuccesfulIntercept1 = this.tempRayPoints2[0];
-    let distanceFromIntersection1: number;
-    if (firstSuccesfulIntercept1) {
-      const pointOfImpact = firstSuccesfulIntercept1;
-      distanceFromIntersection1 = translation.z - (pointOfImpact.z + 0.0);
-    }
+//    // Gets intercept of each Ray Caster with Environment
+//    this.bodyCollider.forEach((ray) => {
+//      var intersects = ray.intersectObject(this.threeJsEnv);
+//      if (intersects[0]) {
+//        this.tempRayPoints2.push(intersects[0].point)
+//      }
+//    })
+//    //console.log(this.tempRayPoints2)
+//    // Get the first successful raycaster.
+//    let firstSuccesfulIntercept1 = this.tempRayPoints2[0];
+//    let distanceFromIntersection1: number;
+//    if (firstSuccesfulIntercept1) {
+//      const pointOfImpact = firstSuccesfulIntercept1;
+//      distanceFromIntersection1 = translation.z - (pointOfImpact.z + 0.0);
+//    }
 
-    // Use different fall algorithm depending on distance from fall
-/*    console.log(distanceFromIntersection1!)*/
-    if (distanceFromIntersection1! < 1) {
-      walkDirection.x = 0
-      walkDirection.z = 0
-    }
-    else {
-      walkDirection.x = walkDirection.x * velocity * delta
-      walkDirection.z = walkDirection.z * velocity * delta
-    }
+//    // Use different fall algorithm depending on distance from fall
+///*    console.log(distanceFromIntersection1!)*/
+//    if (distanceFromIntersection1! < 1) {
+//      walkDirection.x = 0
+//      walkDirection.z = 0
+//    }
+//    else {
+//      walkDirection.x = walkDirection.x * velocity * delta
+//      walkDirection.z = walkDirection.z * velocity * delta
+//    }
 
-    //walkDirection.x = walkDirection.x * velocity * delta
-    //walkDirection.z = walkDirection.z * velocity * delta
+    walkDirection.x = walkDirection.x * velocity * delta
+    walkDirection.z = walkDirection.z * velocity * delta
 
     // Jump
     if (keysPressed[SPACEBAR.SPACEBAR]) {
