@@ -270,36 +270,36 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     );
 
 
-    //const gltfloader = new GLTFLoader();
-    //const dracroLoader = new DRACOLoader();
-    //dracroLoader.setDecoderPath('../../../../../assets/draco/')
+    const gltfloader = new GLTFLoader();
+    const dracroLoader = new DRACOLoader();
+    dracroLoader.setDecoderPath('../../../../../assets/draco/')
 
-    //gltfLoader.setDRACOLoader(dracroLoader);
+    gltfLoader.setDRACOLoader(dracroLoader);
 
-    //gltfLoader.load("../../../../../assets/models/AltTower.glb",
-    //  (gltf) => {
-    //    this.environementWorld = gltf.scene;
-    //    gltf.scene.scale.set(100, 100, 100);
-    //    gltf.scene.position.set(0, 49, 0);
-    //    this.scene!.add(gltf.scene);
-    //  },
-    //  () => { console.log('error') }
-    //)
+    gltfLoader.load("../../../../../assets/models/AltTower.glb",
+      (gltf) => {
+        this.environementWorld = gltf.scene;
+        gltf.scene.scale.set(100, 100, 100);
+        gltf.scene.position.set(0, 49, 0);
+        this.scene!.add(gltf.scene);
+      },
+      () => { console.log('error') }
+    )
 
 
     // Loader
-    var path = "../../../../../assets/models/poly_4.glb"
-    var loader = new GLTFLoader();
-    loader.load
-      (
-        path,
-        object => {
-          object.scene.scale.set(100, 100, 100);
-          object.scene.position.set(0, 150, 0);
-          this.scene!.add(object.scene)
-          this.threeJsEnvironment.add(object.scene)
-        }
-      )
+    //var path = "../../../../../assets/models/poly_4.glb"
+    //var loader = new GLTFLoader();
+    //loader.load
+    //  (
+    //    path,
+    //    object => {
+    //      object.scene.scale.set(100, 100, 100);
+    //      object.scene.position.set(0, 150, 0);
+    //      this.scene!.add(object.scene)
+    //      this.threeJsEnvironment.add(object.scene)
+    //    }
+    //  )
     this.defineEvents();
   }
 
