@@ -34,6 +34,7 @@ import { HomeThreeComponent } from './home-page/home-three/home-three.component'
 import { HomeThreeAlternativeComponent } from './home-page/home-three-alternative/home-three-alternative.component';
 import { HomeThreeAlternativeTwoComponent } from './threeJs/home-three-alternative-two/home-three-alternative-two.component';
 import { HomeThreeAlternativeThreeComponent } from './threeJs/home-three-alternative-three/home-three-alternative-three.component';
+import { HomeThreeAlternativeFourComponent } from './threeJs/home-three-alternative-four/home-three-alternative-four.component';
 import { ScheduleComponent } from './sub-pages/schedule/schedule.component';
 import { CarouselModuleComponent } from './modules/carousel-module/carousel-module.component';
 
@@ -64,6 +65,7 @@ import { CarouselModuleComponent } from './modules/carousel-module/carousel-modu
     HomeThreeAlternativeTwoComponent,
     ScheduleComponent,
     HomeThreeAlternativeThreeComponent,
+    HomeThreeAlternativeFourComponent,
     CarouselModuleComponent
 
   ],

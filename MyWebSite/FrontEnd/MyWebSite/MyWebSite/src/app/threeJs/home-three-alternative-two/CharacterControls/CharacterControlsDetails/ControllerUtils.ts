@@ -70,7 +70,7 @@ export class ControllerUtils{
 
   static calculateVelocity(currentAction: string): number {
     let velocity = 0
-    let runVelocity = 50;
+    let runVelocity = 10;
     let walkVelocity = 5;
 
     if (currentAction == modelAction.run || currentAction == modelAction.walk) {
