@@ -282,6 +282,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
         gltf.scene.scale.set(100, 100, 100);
         gltf.scene.position.set(0, 49, 0);
         this.scene!.add(gltf.scene);
+        this.threeJsEnvironment.add(gltf.scene)
       },
       () => { console.log('error') }
     )
@@ -300,6 +301,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     //      this.threeJsEnvironment.add(object.scene)
     //    }
     //  )
+
     this.defineEvents();
   }
 
@@ -362,7 +364,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
       // Moving FeetCollidersWithCharacter
       this.feetArrowGroup.position.set(
         this.characterModel.position.x,
-        this.characterModel.position.y + 4,
+        this.characterModel.position.y + 1,
         this.characterModel.position.z
       )
       this.feetRayAndArrowArray.forEach((rayAndArrow) => {

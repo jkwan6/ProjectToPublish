@@ -90,7 +90,7 @@ export class CharacterTranslation {
     else if (distanceFromIntersection! < 0.5)
     {
       this.gravitySim.resetGravitySimulation();
-      walkDirection.y += this.fallLerp(this.variableToKnowIfFallingOrNot, -9.81 * 2.5 * delta, 0.3)
+      walkDirection.y += this.fallLerp(this.variableToKnowIfFallingOrNot, -9.81 * 1.0 * delta, 0.3)
     }
     else
     {
