@@ -1,59 +1,25 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription, tap } from 'rxjs';
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { IElementDimensions } from '../../interface/IElementDimensions';
 import { SideNavService } from '../../service/SideNavService/SideNavService';
-import { CharacterControls } from './CharacterControls';
-import * as RAPIER from '@dimforge/rapier3d'
-import { RigidBody } from '@dimforge/rapier3d';
-import { Ray, Sphere } from 'cannon-es';
-import { RapierPhysicsWorld } from './RapierPhysicsWorld';
-import { ThreeJsWorld } from './ThreeJsWorld';
-import { WebGLRenderer } from 'three';
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
-
 import { Octree } from 'three/examples/jsm/math/Octree'
 import { OctreeHelper } from 'three/examples/jsm/helpers/OctreeHelper';
 import { Capsule } from 'three/examples/jsm/math/Capsule.js';
 
-export interface IBoxDimensions {
-  length: number,
-  height: number,
-  width: number
-}
-
-export enum modelAnimation {
-  walk = 'walk',
-  run = 'run',
-  idle = 'idle',
-  TPose = 'TPose'
-}
 
 @Component({
   selector: 'app-home-three-alternative-four',
   templateUrl: './home-three-alternative-four.component.html',
   styleUrls: ['./home-three-alternative-four.component.css'],
-  providers: [RapierPhysicsWorld, ThreeJsWorld]
 })
 export class HomeThreeAlternativeFourComponent implements OnInit, OnDestroy{
 
-  constructor(
-    private sideNavService: SideNavService,
-    private rapierPhysics: RapierPhysicsWorld,
-    private threeJsWorld: ThreeJsWorld
-  ) {
-  }
+  constructor() {}
 
-
-  // #region ON DESTROY
   @HostListener('unloaded')
   ngOnDestroy(): void {}
-  // #endregion
 
   ngOnInit(): void {
-
     const clock = new THREE.Clock();
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x88ccee);
@@ -65,20 +31,6 @@ export class HomeThreeAlternativeFourComponent implements OnInit, OnDestroy{
     const fillLight1 = new THREE.HemisphereLight(0x8dc1de, 0x00668d, 1.5);
     fillLight1.position.set(2, 1, 1);
     scene.add(fillLight1);
-    //const directionalLight = new THREE.DirectionalLight(0xffffff, 2.5);
-    //directionalLight.position.set(- 5, 25, - 1);
-    //directionalLight.castShadow = true;
-    //directionalLight.shadow.camera.near = 0.01;
-    //directionalLight.shadow.camera.far = 500;
-    //directionalLight.shadow.camera.right = 30;
-    //directionalLight.shadow.camera.left = - 30;
-    //directionalLight.shadow.camera.top = 30;
-    //directionalLight.shadow.camera.bottom = - 30;
-    //directionalLight.shadow.mapSize.width = 1024;
-    //directionalLight.shadow.mapSize.height = 1024;
-    //directionalLight.shadow.radius = 4;
-    //directionalLight.shadow.bias = - 0.00006;
-    //scene.add(directionalLight);
 
     const container: HTMLCanvasElement = document.querySelector('.HomeWebgl')!; 
     const renderer = new THREE.WebGLRenderer({ canvas: container });
@@ -87,31 +39,9 @@ export class HomeThreeAlternativeFourComponent implements OnInit, OnDestroy{
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.VSMShadowMap;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    //container.appendChild(renderer.domElement);
-
 
     const GRAVITY = 30;
-    const NUM_SPHERES = 100;
-    const SPHERE_RADIUS = 0.2;
     const STEPS_PER_FRAME = 5;
-    //const sphereGeometry = new THREE.IcosahedronGeometry(SPHERE_RADIUS, 5);
-    //const sphereMaterial = new THREE.MeshLambertMaterial({ color: 0xdede8d });
-    //const spheres : any = [];
-    //let sphereIdx = 0;
-
-    // #region Balls Thrown
-    //for (let i = 0; i < NUM_SPHERES; i++) {
-    //  const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-    //  sphere.castShadow = true;
-    //  sphere.receiveShadow = true;
-    //  scene.add(sphere);
-    //  spheres.push({
-    //    mesh: sphere,
-    //    collider: new THREE.Sphere(new THREE.Vector3(0, - 100, 0), SPHERE_RADIUS),
-    //    velocity: new THREE.Vector3()
-    //  });
-    //}
-    // #endregion
 
     const worldOctree = new Octree();
     const playerCollider = new Capsule(new THREE.Vector3(0, 0.35, 0), new THREE.Vector3(0, 1, 0), 0.35);
@@ -119,13 +49,9 @@ export class HomeThreeAlternativeFourComponent implements OnInit, OnDestroy{
     const playerDirection = new THREE.Vector3();
 
     let playerOnFloor = false;
-    let mouseTime = 0;
 
     const keyStates : any = {};
 
-    const vector1 = new THREE.Vector3();
-    const vector2 = new THREE.Vector3();
-    const vector3 = new THREE.Vector3();
 
     document.addEventListener('keydown', (event) => {
       keyStates[event.code] = true;
@@ -158,7 +84,7 @@ export class HomeThreeAlternativeFourComponent implements OnInit, OnDestroy{
     function playerCollisions() {
       const result = worldOctree.capsuleIntersect(playerCollider);    // If Capsule is intersecting World
       playerOnFloor = false;                                          // Reset playerOnFloor
-
+      console.log(result)
       // If Capsule is intersecting World,
       // Check if Player is on Floor
       // If Player is not on Floor, do this
@@ -189,114 +115,6 @@ export class HomeThreeAlternativeFourComponent implements OnInit, OnDestroy{
       camera.position.copy(playerCollider.end);
 
     }
-
-    // #region Delete Dat
-    //function playerSphereCollision(sphere: any) {
-
-    //  const center = vector1.addVectors(playerCollider.start, playerCollider.end).multiplyScalar(0.5);
-
-    //  const sphere_center = sphere.collider.center;
-
-    //  const r = playerCollider.radius + sphere.collider.radius;
-    //  const r2 = r * r;
-
-    //  // approximation: player = 3 spheres
-
-    //  for (const point of [playerCollider.start, playerCollider.end, center]) {
-
-    //    const d2 = point.distanceToSquared(sphere_center);
-
-    //    if (d2 < r2) {
-
-    //      const normal = vector1.subVectors(point, sphere_center).normalize();
-    //      const v1 = vector2.copy(normal).multiplyScalar(normal.dot(playerVelocity));
-    //      const v2 = vector3.copy(normal).multiplyScalar(normal.dot(sphere.velocity));
-
-    //      playerVelocity.add(v2).sub(v1);
-    //      sphere.velocity.add(v1).sub(v2);
-
-    //      const d = (r - Math.sqrt(d2)) / 2;
-    //      sphere_center.addScaledVector(normal, - d);
-
-    //    }
-
-    //  }
-
-    //}
-
-    //function spheresCollisions() {
-
-    //  for (let i = 0, length = spheres.length; i < length; i++) {
-
-    //    const s1 = spheres[i];
-
-    //    for (let j = i + 1; j < length; j++) {
-
-    //      const s2 = spheres[j];
-
-    //      const d2 = s1.collider.center.distanceToSquared(s2.collider.center);
-    //      const r = s1.collider.radius + s2.collider.radius;
-    //      const r2 = r * r;
-
-    //      if (d2 < r2) {
-
-    //        const normal = vector1.subVectors(s1.collider.center, s2.collider.center).normalize();
-    //        const v1 = vector2.copy(normal).multiplyScalar(normal.dot(s1.velocity));
-    //        const v2 = vector3.copy(normal).multiplyScalar(normal.dot(s2.velocity));
-
-    //        s1.velocity.add(v2).sub(v1);
-    //        s2.velocity.add(v1).sub(v2);
-
-    //        const d = (r - Math.sqrt(d2)) / 2;
-
-    //        s1.collider.center.addScaledVector(normal, d);
-    //        s2.collider.center.addScaledVector(normal, - d);
-
-    //      }
-
-    //    }
-
-    //  }
-
-    //}
-
-//    function updateSpheres(deltaTime: any) {
-
-//      spheres.forEach((sphere : any) => {
-
-//        sphere.collider.center.addScaledVector(sphere.velocity, deltaTime);
-
-//        const result = worldOctree.sphereIntersect(sphere.collider);
-
-//        if (result) {
-
-//          sphere.velocity.addScaledVector(result.normal, - result.normal.dot(sphere.velocity) * 1.5);
-//          sphere.collider.center.add(result.normal.multiplyScalar(result.depth));
-
-//        } else {
-
-//          sphere.velocity.y -= GRAVITY * deltaTime;
-
-//        }
-
-//        const damping = Math.exp(- 1.5 * deltaTime) - 1;
-//        sphere.velocity.addScaledVector(sphere.velocity, damping);
-
-///*        playerSphereCollision(sphere);*/
-
-//      });
-
-///*      spheresCollisions();*/
-
-//      for (const sphere of spheres) {
-
-//        sphere.mesh.position.copy(sphere.collider.center);
-
-//      }
-
-//    }
-
-    // #endregion
 
     function getForwardVector() {
       camera.getWorldDirection(playerDirection);
@@ -352,11 +170,9 @@ export class HomeThreeAlternativeFourComponent implements OnInit, OnDestroy{
           }
         }
       });
-
       const helper = new OctreeHelper(worldOctree);
       helper.visible = false;
       scene.add(helper);
-
       animate();
     });
 

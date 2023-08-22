@@ -12,6 +12,10 @@ import { RapierPhysicsWorld } from './RapierPhysicsWorld';
 import { ThreeJsWorld } from './ThreeJsWorld';
 import { IControllerParams, modelAction } from './CharacterControls/CharacterControlsDetails/ControllerUtils';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
+import { Octree } from 'three/examples/jsm/math/Octree';
+import { OctreeHelper } from 'three/examples/jsm/helpers/OctreeHelper';
+import { Capsule } from 'three/examples/jsm/math/Capsule';
+import { CapsuleGeometry } from 'three';
 
 export interface IBoxDimensions {
   length: number,
@@ -82,6 +86,12 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
   bodyArrowGroup = new THREE.Group;
   bodyRayArray: THREE.Raycaster[] = [];
 
+
+  //
+  capsuleHeight: number = 0.65;
+  capsuleMesh!: THREE.Mesh;
+  capsuleMath: Capsule = new Capsule(new THREE.Vector3(0, 0.35, 0), new THREE.Vector3(0, 1, 0), 0.35);
+
   // #region ON DESTROY
   @HostListener('unloaded')
   ngOnDestroy(): void {
@@ -123,7 +133,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     // #endregion
 
     // #region BodyColliders
-    var planeWidth: number = 0.10;
+    var planeWidth: number = 0.05;
     var planeLength: number = 0.5;
     var BodyColliderPlane: THREE.Vector3[] =
       [
@@ -153,6 +163,15 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     this.mouseArrowHelper = new THREE.ArrowHelper(this.mouseRayCaster.ray.direction, this.mouseRayCaster.ray.origin, 1, 0xff0000)
       this.scene.add(this.mouseArrowHelper);
     // #endregion
+
+
+    const playerCollider = new Capsule(new THREE.Vector3(0, 0.35, 0), new THREE.Vector3(0, 1, 0), 0.35);
+
+    var capsuleCheck = new CapsuleGeometry(0.35, this.capsuleHeight)
+    this.capsuleMesh = new THREE.Mesh(capsuleCheck, new THREE.MeshStandardMaterial({
+      color: 'grey'
+    }))
+    this.scene.add(this.capsuleMesh)
 
     // #region Additional ThreeJs Setup
     this.canvas = document.querySelector('.HomeWebgl')!;                                    // Canvas
@@ -353,6 +372,14 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
         )
 
       })
+
+
+
+      this.capsuleMesh.position.set(
+        this.characterModel.position.x,
+        this.characterModel.position.y + this.capsuleHeight + 0.35,
+        this.characterModel.position.z
+      )
     }
     this.animate();
 
