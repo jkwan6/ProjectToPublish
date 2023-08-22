@@ -20,6 +20,7 @@ export class HomeThreeAlternativeFourComponent implements OnInit, OnDestroy{
   ngOnDestroy(): void {}
 
   ngOnInit(): void {
+    // #region threeJsSetup
     const clock = new THREE.Clock();
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x88ccee);
@@ -49,9 +50,8 @@ export class HomeThreeAlternativeFourComponent implements OnInit, OnDestroy{
     const playerDirection = new THREE.Vector3();
 
     let playerOnFloor = false;
-
     const keyStates : any = {};
-
+    // #endregion
 
     document.addEventListener('keydown', (event) => {
       keyStates[event.code] = true;
@@ -151,7 +151,7 @@ export class HomeThreeAlternativeFourComponent implements OnInit, OnDestroy{
 
       if (playerOnFloor) {
         if (keyStates['Space']) {
-          playerVelocity.y = 15;
+          playerVelocity.y = 20;
         }
       }
     }

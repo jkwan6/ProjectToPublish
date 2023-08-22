@@ -92,6 +92,8 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
   capsuleMesh!: THREE.Mesh;
   capsuleMath: Capsule = new Capsule(new THREE.Vector3(0, 0.35, 0), new THREE.Vector3(0, 1, 0), 0.35);
 
+  worldOctTree: Octree = new Octree();
+
   // #region ON DESTROY
   @HostListener('unloaded')
   ngOnDestroy(): void {
