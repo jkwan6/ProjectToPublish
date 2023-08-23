@@ -5,6 +5,7 @@ import { SideNavService } from '../../service/SideNavService/SideNavService';
 import { Octree } from 'three/examples/jsm/math/Octree'
 import { OctreeHelper } from 'three/examples/jsm/helpers/OctreeHelper';
 import { Capsule } from 'three/examples/jsm/math/Capsule.js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 
 @Component({
@@ -27,7 +28,7 @@ export class HomeThreeAlternativeFourComponent implements OnInit, OnDestroy{
     scene.fog = new THREE.Fog(0x88ccee, 0, 50);
 
     const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.rotation.order = 'YXZ';
+/*    camera.rotation.order = 'YXZ';*/
 
     const fillLight1 = new THREE.HemisphereLight(0x8dc1de, 0x00668d, 1.5);
     fillLight1.position.set(2, 1, 1);
@@ -45,7 +46,7 @@ export class HomeThreeAlternativeFourComponent implements OnInit, OnDestroy{
     const STEPS_PER_FRAME = 5;
 
     const worldOctree = new Octree();
-    const playerCollider = new Capsule(new THREE.Vector3(0, 0.35, 0), new THREE.Vector3(0, 1, 0), 0.35);
+    const playerCollider = new Capsule(new THREE.Vector3(3, 0.35, 0), new THREE.Vector3(3, 1, 0), 0.35);
     const playerVelocity = new THREE.Vector3();
     const playerDirection = new THREE.Vector3();
 
@@ -72,6 +73,15 @@ export class HomeThreeAlternativeFourComponent implements OnInit, OnDestroy{
     });
     // #endregion
 
+    //const orbitControls = new OrbitControls(camera, renderer.domElement);
+    //orbitControls.enableDamping = true
+    //orbitControls.minDistance = 0
+    //orbitControls.maxDistance = 15
+    //orbitControls.enablePan = false
+    //orbitControls.maxPolarAngle = Math.PI / 2;
+    //orbitControls.zoomSpeed = 5;
+    //orbitControls.update();
+
     // #region Resize Event
     window.addEventListener('resize', onWindowResize);
     function onWindowResize() {
@@ -84,7 +94,7 @@ export class HomeThreeAlternativeFourComponent implements OnInit, OnDestroy{
     function playerCollisions() {
       const result = worldOctree.capsuleIntersect(playerCollider);    // If Capsule is intersecting World
       playerOnFloor = false;                                          // Reset playerOnFloor
-      console.log(result)
+/*      console.log(result)*/
       // If Capsule is intersecting World,
       // Check if Player is on Floor
       // If Player is not on Floor, do this
@@ -99,21 +109,19 @@ export class HomeThreeAlternativeFourComponent implements OnInit, OnDestroy{
     }
 
     function updatePlayer(deltaTime: any) {
-      let damping = Math.exp(- 4 * deltaTime) - 1;
+      let damping = Math.exp(- 8 * deltaTime) - 1;
       if (!playerOnFloor) {
         playerVelocity.y -= GRAVITY * deltaTime;
         // small air resistance
-        damping *= 0.1;
+        damping *= 0.0;
       }
 
       playerVelocity.addScaledVector(playerVelocity, damping);
       const deltaPosition = playerVelocity.clone().multiplyScalar(deltaTime);
       playerCollider.translate(deltaPosition);
-
       playerCollisions();
 
       camera.position.copy(playerCollider.end);
-
     }
 
     function getForwardVector() {
@@ -134,7 +142,7 @@ export class HomeThreeAlternativeFourComponent implements OnInit, OnDestroy{
     // #region Controls
     function controls(deltaTime: any) {
       // gives a bit of air control
-      const speedDelta = deltaTime * (playerOnFloor ? 25 : 8);
+      const speedDelta = deltaTime * (playerOnFloor ? 40 : 8);
 
       if (keyStates['KeyW']) {
         playerVelocity.add(getForwardVector().multiplyScalar(speedDelta));
@@ -196,6 +204,7 @@ export class HomeThreeAlternativeFourComponent implements OnInit, OnDestroy{
         updatePlayer(deltaTime);
         teleportPlayerIfOob();
       }
+/*      orbitControls.update();*/
       renderer.render(scene, camera);
       requestAnimationFrame(animate);
     }

@@ -7,7 +7,7 @@ import { IElementDimensions } from '../../interface/IElementDimensions';
 import { SideNavService } from '../../service/SideNavService/SideNavService';
 import { CharacterControls } from './CharacterControls/CharacterControls';
 import * as RAPIER from '@dimforge/rapier3d'
-import { RigidBody } from '@dimforge/rapier3d';
+import { RigidBody, Vector3 } from '@dimforge/rapier3d';
 import { RapierPhysicsWorld } from './RapierPhysicsWorld';
 import { ThreeJsWorld } from './ThreeJsWorld';
 import { IControllerParams, modelAction } from './CharacterControls/CharacterControlsDetails/ControllerUtils';
@@ -86,11 +86,12 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
   bodyArrowGroup = new THREE.Group;
   bodyRayArray: THREE.Raycaster[] = [];
 
+  characterStartingPosition: THREE.Vector3 = new THREE.Vector3(0, 10, 0)
 
   //
   capsuleHeight: number = 0.65;
   capsuleMesh!: THREE.Mesh;
-  capsuleMath: Capsule = new Capsule(new THREE.Vector3(0, 0.35, 0), new THREE.Vector3(0, 1, 0), 0.35);
+  capsuleMath!: Capsule;
 
   worldOctTree: Octree = new Octree();
 
@@ -167,12 +168,23 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     // #endregion
 
 
-    const playerCollider = new Capsule(new THREE.Vector3(0, 0.35, 0), new THREE.Vector3(0, 1, 0), 0.35);
-
     var capsuleCheck = new CapsuleGeometry(0.35, this.capsuleHeight)
     this.capsuleMesh = new THREE.Mesh(capsuleCheck, new THREE.MeshStandardMaterial({
       color: 'grey'
     }))
+    this.capsuleMesh.position.set(
+      this.characterStartingPosition.x,
+      this.characterStartingPosition.y,
+      this.characterStartingPosition.z,
+    )
+    this.capsuleMath = new Capsule(
+      this.characterStartingPosition,
+      new THREE.Vector3(
+        this.characterStartingPosition.x,
+        this.characterStartingPosition.y + 1,
+        this.characterStartingPosition.x,
+      ),
+      0.35);
     this.scene.add(this.capsuleMesh)
 
     // #region Additional ThreeJs Setup
@@ -206,7 +218,11 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
           this.characterModel.traverse(function (object: any) {
             if (object.isMesh) object.castShadow = true;
           });
-          this.characterModel.position.set(0, 3, 0);
+          this.characterModel.position.set(
+            this.characterStartingPosition.x,
+            this.characterStartingPosition.y,
+            this.characterStartingPosition.z,
+          );
           this.scene.add(this.characterModel);
           const gltfAnimations: THREE.AnimationClip[] = gltf.animations;
           const animationMixer = new THREE.AnimationMixer(this.characterModel);
@@ -216,7 +232,11 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
           })
 
           // #region Physics Rigid Body Setup
-          let bodyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(20, 10, 1);
+          let bodyDesc = RAPIER.RigidBodyDesc.kinematicPositionBased().setTranslation(
+            this.characterStartingPosition.x,
+            this.characterStartingPosition.y,
+            this.characterStartingPosition.z,
+          );
           let characterRigidBody = this.world.createRigidBody(bodyDesc);
           let dynamicCollider = RAPIER.ColliderDesc.cuboid(0.5,0.5,0.5);
           this.world.createCollider(dynamicCollider, characterRigidBody);
@@ -240,7 +260,8 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
             feetRayStepper: this.feetRayStepper,
             threeJsEnv: this.threeJsEnvironment,
             bodyArrowGroup: this.bodyArrowGroup,
-            bodyCollider: this.bodyRayArray
+            bodyCollider: this.bodyRayArray,
+            capsuleMath: this.capsuleMath
           }
           this.characterControls = new CharacterControls(params)
           // #endregion
@@ -253,11 +274,11 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
 
     gltfLoader.setDRACOLoader(dracroLoader);
 
-    gltfLoader.load("../../../../../assets/models/AltTower.glb",
+    gltfLoader.load("../../../../../assets/models/collision-world.glb",
       (gltf) => {
         this.environementWorld = gltf.scene;
-        gltf.scene.scale.set(100, 100, 100);
-        gltf.scene.position.set(0, 50, 0);
+        gltf.scene.scale.set(2, 2, 2);
+        gltf.scene.position.set(0, 10, 0);
         this.scene!.add(gltf.scene);
         this.threeJsEnvironment.add(gltf.scene)
       },
@@ -378,9 +399,9 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
 
 
       this.capsuleMesh.position.set(
-        this.characterModel.position.x,
-        this.characterModel.position.y + this.capsuleHeight + 0.35,
-        this.characterModel.position.z
+        this.capsuleMath.end.x,
+        this.capsuleMath.end.y,
+        this.capsuleMath.end.z
       )
     }
     this.animate();

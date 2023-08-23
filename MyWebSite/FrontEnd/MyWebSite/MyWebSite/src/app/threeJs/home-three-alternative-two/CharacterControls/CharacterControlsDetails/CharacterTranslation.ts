@@ -3,6 +3,7 @@ import * as RAPIER from '@dimforge/rapier3d'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { SPACEBAR } from './ControllerUtils'
 import { GravitySimulation } from './GravitySimulation'
+import { Capsule } from 'three/examples/jsm/math/Capsule'
 
 export class CharacterTranslation {
 
@@ -15,7 +16,8 @@ export class CharacterTranslation {
     feetCollider: THREE.Raycaster[],
     threeJsEnv: THREE.Group,
     feetRayStepper: THREE.Raycaster[],
-    bodyCollider: THREE.Raycaster[]
+    bodyCollider: THREE.Raycaster[],
+    capsuleMath: Capsule
   ) {
     this.camera = camera;
     this.model = model;
@@ -26,7 +28,8 @@ export class CharacterTranslation {
     this.threeJsEnv = threeJsEnv
     this.feetRayStepper = feetRayStepper
     this.gravitySim = new GravitySimulation(this.rigidBody);
-    this.bodyCollider = bodyCollider
+    this.bodyCollider = bodyCollider;
+    this.capsuleMath = capsuleMath;
   }
   gravitySim: GravitySimulation;
   model: THREE.Group
@@ -44,7 +47,7 @@ export class CharacterTranslation {
   tempRayPoints: THREE.Vector3[] = [];
   tempRayPoints2: THREE.Vector3[] = [];
   bodyCollider: THREE.Raycaster[];
-
+  capsuleMath: Capsule;
 
   calculateTranslation(
     translation: RAPIER.Vector3,
@@ -138,6 +141,18 @@ export class CharacterTranslation {
         y: translation.y + walkDirection.y + 1,
         z: translation.z + walkDirection.z
       });
+
+      //this.capsuleMath.end.set(
+      //  translation.x + walkDirection.x,
+      //  translation.y + walkDirection.y + 1,
+      //  translation.z + walkDirection.z
+      //)
+      this.capsuleMath.translate(
+        new THREE.Vector3(
+          walkDirection.x,
+          walkDirection.y + 1,
+          walkDirection.z)
+      )
     }
     else {
       this.rigidBody.setNextKinematicTranslation({
@@ -145,8 +160,22 @@ export class CharacterTranslation {
         y: translation.y + walkDirection.y,
         z: translation.z + walkDirection.z
       });
+      //this.capsuleMath.end.set(
+      //  translation.x + walkDirection.x,
+      //  translation.y + walkDirection.y,
+      //  translation.z + walkDirection.z
+      //)
+      this.capsuleMath.translate(
+        new THREE.Vector3(
+          walkDirection.x,
+          walkDirection.y,
+          walkDirection.z)
+      )
     }
+    console.log(this.capsuleMath.start)
+    console.log(this.capsuleMath.end)
   }
+
 
   fallLerp =
     (storedFall: number, displacement: number, factor: number) => {

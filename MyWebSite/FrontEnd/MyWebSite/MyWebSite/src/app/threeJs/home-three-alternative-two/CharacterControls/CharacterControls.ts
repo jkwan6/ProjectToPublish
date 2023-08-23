@@ -6,6 +6,7 @@ import { CharacterAnimation } from './CharacterControlsDetails/CharacterAnimatio
 import { ControllerUtils, DIRECTIONS, IControllerParams } from './CharacterControlsDetails/ControllerUtils'
 import { CharacterWalkDirection } from './CharacterControlsDetails/CharacterWalkDirection'
 import { CharacterCameraUpdate } from './CharacterControlsDetails/CharacterCameraUpdate'
+import { Capsule } from 'three/examples/jsm/math/Capsule'
 
 export class CharacterControls {
   // Reference from Parent
@@ -32,6 +33,7 @@ export class CharacterControls {
   threeRayCasterTempValues: THREE.Vector3[] = [];
   bodyCollider: THREE.Raycaster[];
   bodyArrowGroup: THREE.Group;
+  capsuleMath: Capsule
 
   constructor(params: IControllerParams
   ) {
@@ -49,6 +51,7 @@ export class CharacterControls {
     this.feetRayStepper = params.feetRayStepper;
     this.bodyCollider = params.bodyCollider;
     this.bodyArrowGroup = params.bodyArrowGroup;
+    this.capsuleMath = params.capsuleMath;
 
 
     // Constructor Future DI
@@ -64,7 +67,8 @@ export class CharacterControls {
       this.feetCollider,
       this.threeJsEnv,
       this.feetRayStepper,
-      this.bodyCollider
+      this.bodyCollider,
+      this.capsuleMath
     )
 
     // Constructor Logic
