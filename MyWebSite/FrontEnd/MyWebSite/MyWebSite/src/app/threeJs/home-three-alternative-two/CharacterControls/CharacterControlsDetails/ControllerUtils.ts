@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import * as RAPIER from '@dimforge/rapier3d'
 import { Capsule } from 'three/examples/jsm/math/Capsule';
+import { Octree } from 'three/examples/jsm/math/Octree';
 
 
 export interface IControllerParams {
@@ -19,7 +20,8 @@ export interface IControllerParams {
   threeJsEnv: THREE.Group;
   bodyCollider: THREE.Raycaster[];
   bodyArrowGroup: THREE.Group;
-  capsuleMath: Capsule
+  capsuleMath: Capsule;
+  worldOctTree: Octree;
 }
 
 export interface ICharacterColliders

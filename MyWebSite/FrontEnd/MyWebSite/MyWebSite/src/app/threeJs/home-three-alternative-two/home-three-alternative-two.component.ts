@@ -261,7 +261,8 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
             threeJsEnv: this.threeJsEnvironment,
             bodyArrowGroup: this.bodyArrowGroup,
             bodyCollider: this.bodyRayArray,
-            capsuleMath: this.capsuleMath
+            capsuleMath: this.capsuleMath,
+            worldOctTree: this.worldOctTree
           }
           this.characterControls = new CharacterControls(params)
           // #endregion
@@ -280,6 +281,10 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
         gltf.scene.scale.set(2, 2, 2);
         gltf.scene.position.set(0, 10, 0);
         this.scene!.add(gltf.scene);
+        this.worldOctTree.fromGraphNode(gltf.scene);
+        const helper = new OctreeHelper(this.worldOctTree);
+        helper.visible = true;
+        this.scene.add(helper);
         this.threeJsEnvironment.add(gltf.scene)
       },
       () => { console.log('error') }

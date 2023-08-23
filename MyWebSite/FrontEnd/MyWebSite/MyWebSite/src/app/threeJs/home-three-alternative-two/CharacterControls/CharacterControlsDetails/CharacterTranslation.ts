@@ -4,6 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { SPACEBAR } from './ControllerUtils'
 import { GravitySimulation } from './GravitySimulation'
 import { Capsule } from 'three/examples/jsm/math/Capsule'
+import { Octree } from 'three/examples/jsm/math/Octree'
 
 export class CharacterTranslation {
 
@@ -17,7 +18,8 @@ export class CharacterTranslation {
     threeJsEnv: THREE.Group,
     feetRayStepper: THREE.Raycaster[],
     bodyCollider: THREE.Raycaster[],
-    capsuleMath: Capsule
+    capsuleMath: Capsule,
+    worldOctTree: Octree
   ) {
     this.camera = camera;
     this.model = model;
@@ -30,6 +32,7 @@ export class CharacterTranslation {
     this.gravitySim = new GravitySimulation(this.rigidBody);
     this.bodyCollider = bodyCollider;
     this.capsuleMath = capsuleMath;
+    this.worldOctTree = worldOctTree
   }
   gravitySim: GravitySimulation;
   model: THREE.Group
@@ -48,6 +51,7 @@ export class CharacterTranslation {
   tempRayPoints2: THREE.Vector3[] = [];
   bodyCollider: THREE.Raycaster[];
   capsuleMath: Capsule;
+  worldOctTree: Octree
 
   calculateTranslation(
     translation: RAPIER.Vector3,
@@ -128,6 +132,22 @@ export class CharacterTranslation {
     else {
       walkDirection.x = walkDirection.x * velocity * delta
       walkDirection.z = walkDirection.z * velocity * delta
+    }
+
+
+    const result = this.worldOctTree.capsuleIntersect(this.capsuleMath);    // If Capsule is intersecting World
+    var playerOnFloor = false;                                          // Reset playerOnFloor
+    /*      console.log(result)*/
+    // If Capsule is intersecting World,
+    // Check if Player is on Floor
+    // If Player is not on Floor, do this
+    // Else, do that
+    if (result) {
+      playerOnFloor = result.normal.y > 0;
+      if (!playerOnFloor) {
+        walkDirection.addScaledVector(result.normal, - result.normal.dot(walkDirection));
+      }
+      this.capsuleMath.translate(result.normal.multiplyScalar(result.depth));
     }
 
     //walkDirection.x = walkDirection.x * velocity * delta
