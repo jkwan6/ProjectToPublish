@@ -97,7 +97,7 @@ export class CharacterTranslation {
     else if (distanceFromIntersection! < 0.5)
     {
       this.gravitySim.resetGravitySimulation();
-      walkDirection.y += this.fallLerp(this.variableToKnowIfFallingOrNot, -9.81 * 1.0 * delta, 0.3)
+      walkDirection.y += this.fallLerp(this.variableToKnowIfFallingOrNot, -9.81 * 0.5 * delta, 0.1)
     }
     else
     {
@@ -125,15 +125,16 @@ export class CharacterTranslation {
 
     // Use different fall algorithm depending on distance from fall
 /*    console.log(distanceFromIntersection1!)*/
-    if (distanceFromIntersection1! < 0.5) {
-      walkDirection.x = 0
-      walkDirection.z = 0
-    }
-    else {
-      walkDirection.x = walkDirection.x * velocity * delta
-      walkDirection.z = walkDirection.z * velocity * delta
-    }
-
+    //if (distanceFromIntersection1! < 0.5) {
+    //  walkDirection.x = 0
+    //  walkDirection.z = 0
+    //}
+    //else {
+    //  walkDirection.x = walkDirection.x * velocity * delta
+    //  walkDirection.z = walkDirection.z * velocity * delta
+    //}
+    walkDirection.x = walkDirection.x * velocity * delta
+    walkDirection.z = walkDirection.z * velocity * delta
 
     const result = this.worldOctTree.capsuleIntersect(this.capsuleMath);    // If Capsule is intersecting World
     var playerOnFloor = false;                                          // Reset playerOnFloor
@@ -156,10 +157,17 @@ export class CharacterTranslation {
     // Jump
     if (keysPressed[SPACEBAR.SPACEBAR]) {
 
+      this.capsuleMath.translate(
+        new THREE.Vector3(
+          walkDirection.x,
+          walkDirection.y + 1,
+          walkDirection.z)
+      )
+
       this.rigidBody.setNextKinematicTranslation({
-        x: translation.x + walkDirection.x,
-        y: translation.y + walkDirection.y + 1,
-        z: translation.z + walkDirection.z
+        x: this.capsuleMath.start.x,
+        y: this.capsuleMath.start.y,
+        z: this.capsuleMath.start.z
       });
 
       //this.capsuleMath.end.set(
@@ -167,33 +175,28 @@ export class CharacterTranslation {
       //  translation.y + walkDirection.y + 1,
       //  translation.z + walkDirection.z
       //)
-      this.capsuleMath.translate(
-        new THREE.Vector3(
-          walkDirection.x,
-          walkDirection.y + 1,
-          walkDirection.z)
-      )
     }
     else {
-      this.rigidBody.setNextKinematicTranslation({
-        x: translation.x + walkDirection.x,
-        y: translation.y + walkDirection.y,
-        z: translation.z + walkDirection.z
-      });
-      //this.capsuleMath.end.set(
-      //  translation.x + walkDirection.x,
-      //  translation.y + walkDirection.y,
-      //  translation.z + walkDirection.z
-      //)
+      
       this.capsuleMath.translate(
         new THREE.Vector3(
           walkDirection.x,
           walkDirection.y,
           walkDirection.z)
       )
+      this.rigidBody.setNextKinematicTranslation({
+        x: this.capsuleMath.start.x,
+        y: this.capsuleMath.start.y,
+        z: this.capsuleMath.start.z
+      });
+      //this.capsuleMath.end.set(
+      //  translation.x + walkDirection.x,
+      //  translation.y + walkDirection.y,
+      //  translation.z + walkDirection.z
+      //)
     }
-    console.log(this.capsuleMath.start)
-    console.log(this.capsuleMath.end)
+    //console.log(this.capsuleMath.start)
+    //console.log(this.capsuleMath.end)
   }
 
 

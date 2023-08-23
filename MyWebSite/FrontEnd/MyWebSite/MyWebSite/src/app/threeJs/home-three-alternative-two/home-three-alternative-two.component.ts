@@ -87,7 +87,9 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
   bodyRayArray: THREE.Raycaster[] = [];
 
   characterStartingPosition: THREE.Vector3 = new THREE.Vector3(0, 10, 0)
-
+  capsuleStart: THREE.Vector3 = new THREE.Vector3(0, 10, 0);
+  capsuleEnd: THREE.Vector3 = new THREE.Vector3(0, 11, 0);
+  capsuleRadius: number = 0.5;
   //
   capsuleHeight: number = 0.65;
   capsuleMesh!: THREE.Mesh;
@@ -168,23 +170,19 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     // #endregion
 
 
-    var capsuleCheck = new CapsuleGeometry(0.35, this.capsuleHeight)
+    var capsuleCheck = new CapsuleGeometry(this.capsuleRadius, this.capsuleEnd.y - this.capsuleStart.y)
     this.capsuleMesh = new THREE.Mesh(capsuleCheck, new THREE.MeshStandardMaterial({
       color: 'grey'
     }))
     this.capsuleMesh.position.set(
-      this.characterStartingPosition.x,
-      this.characterStartingPosition.y,
-      this.characterStartingPosition.z,
+      this.capsuleStart.x,
+      this.capsuleStart.y,
+      this.capsuleStart.z,
     )
     this.capsuleMath = new Capsule(
-      this.characterStartingPosition,
-      new THREE.Vector3(
-        this.characterStartingPosition.x,
-        this.characterStartingPosition.y + 1,
-        this.characterStartingPosition.x,
-      ),
-      0.35);
+      this.capsuleStart,
+      this.capsuleEnd,
+      this.capsuleRadius);
     this.scene.add(this.capsuleMesh)
 
     // #region Additional ThreeJs Setup
@@ -404,9 +402,9 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
 
 
       this.capsuleMesh.position.set(
-        this.capsuleMath.end.x,
-        this.capsuleMath.end.y,
-        this.capsuleMath.end.z
+        this.capsuleMath.start.x,
+        this.capsuleMath.start.y,
+        this.capsuleMath.start.z
       )
     }
     this.animate();
