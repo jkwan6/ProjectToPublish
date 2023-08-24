@@ -42,7 +42,7 @@ export class GravitySimulation{
 
     if (currentTime < 8) {
       this.displacement =
-        0.4 + (9.81 * currentTime * currentTime) -
+        0.05 + (9.81 * currentTime * currentTime) -
         (9.81 * previousTime * previousTime);
     }
     else {

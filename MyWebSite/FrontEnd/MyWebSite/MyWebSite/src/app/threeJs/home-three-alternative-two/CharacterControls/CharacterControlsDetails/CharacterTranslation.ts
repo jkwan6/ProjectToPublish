@@ -51,7 +51,8 @@ export class CharacterTranslation {
   tempRayPoints2: THREE.Vector3[] = [];
   bodyCollider: THREE.Raycaster[];
   capsuleMath: Capsule;
-  worldOctTree: Octree
+  worldOctTree: Octree;
+  playerOnFloor: boolean = false;
 
   calculateTranslation(
     translation: RAPIER.Vector3,
@@ -80,6 +81,16 @@ export class CharacterTranslation {
       }
     })
 
+    const result = this.worldOctTree.capsuleIntersect(this.capsuleMath);      // If Capsule is intersecting World
+    this.playerOnFloor = false;                                                    // Reset playerOnFloor
+    // If Capsule is intersecting World,
+    // Check if Player is on Floor
+    // If Player is not on Floor, do this
+    // Else, do that
+    if (result) {
+      this.playerOnFloor = result.normal.y > 0;
+    }
+
     // Get the first successful raycaster.
     let firstSuccesfulIntercept = this.tempRayPoints[0];
     let distanceFromIntersection: number;
@@ -89,20 +100,31 @@ export class CharacterTranslation {
     }
 
     // Use different fall algorithm depending on distance from fall
-    if (distanceFromIntersection! < 0.0)
-    {
-      this.variableToKnowIfFallingOrNot = 0
-      walkDirection.y = this.fallLerp(this.variableToKnowIfFallingOrNot, Math.abs(distanceFromIntersection!), 0.2)
-    }
-    else if (distanceFromIntersection! < 0.5)
-    {
+    //if (distanceFromIntersection! < 0.0)
+    //{
+    //  this.variableToKnowIfFallingOrNot = 0
+    //  walkDirection.y = this.fallLerp(this.variableToKnowIfFallingOrNot, Math.abs(distanceFromIntersection!), 0.2)
+    //}
+    //else if (distanceFromIntersection! < 0.5)
+    //{
+    //  this.gravitySim.resetGravitySimulation();
+    //  walkDirection.y += this.fallLerp(this.variableToKnowIfFallingOrNot, -9.81 * 0.5 * delta, 0.1)
+    //}
+    //else
+    //{
+    //  walkDirection.y -= this.gravitySim.getDisplacement(delta);
+    //}
+
+
+
+if (this.playerOnFloor) {
       this.gravitySim.resetGravitySimulation();
       walkDirection.y += this.fallLerp(this.variableToKnowIfFallingOrNot, -9.81 * 0.5 * delta, 0.1)
     }
-    else
-    {
+    else {
       walkDirection.y -= this.gravitySim.getDisplacement(delta);
     }
+
 
 
     this.tempRayPoints2 = [];
@@ -136,16 +158,14 @@ export class CharacterTranslation {
     walkDirection.x = walkDirection.x * velocity * delta
     walkDirection.z = walkDirection.z * velocity * delta
 
-    const result = this.worldOctTree.capsuleIntersect(this.capsuleMath);    // If Capsule is intersecting World
-    var playerOnFloor = false;                                          // Reset playerOnFloor
+
     /*      console.log(result)*/
     // If Capsule is intersecting World,
     // Check if Player is on Floor
     // If Player is not on Floor, do this
     // Else, do that
     if (result) {
-      playerOnFloor = result.normal.y > 0;
-      if (!playerOnFloor) {
+      if (!this.playerOnFloor) {
         walkDirection.addScaledVector(result.normal, - result.normal.dot(walkDirection));
       }
       this.capsuleMath.translate(result.normal.multiplyScalar(result.depth));

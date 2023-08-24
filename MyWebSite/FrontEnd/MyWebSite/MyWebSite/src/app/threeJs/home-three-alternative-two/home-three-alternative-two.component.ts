@@ -91,7 +91,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
   capsuleEnd: THREE.Vector3 = new THREE.Vector3(0, 11, 0);
   capsuleRadius: number = 0.5;
   //
-  capsuleHeight: number = 0.65;
+  capsuleHeight: number = 1.7;
   capsuleMesh!: THREE.Mesh;
   capsuleMath!: Capsule;
 
@@ -273,16 +273,16 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
 
     gltfLoader.setDRACOLoader(dracroLoader);
 
-    gltfLoader.load("../../../../../assets/models/collision-world.glb",
+    gltfLoader.load("../../../../../assets/models/AltTower2.glb",
       (gltf) => {
         this.environementWorld = gltf.scene;
         gltf.scene.scale.set(2, 2, 2);
         gltf.scene.position.set(0, 10, 0);
         this.scene!.add(gltf.scene);
         this.worldOctTree.fromGraphNode(gltf.scene);
-        const helper = new OctreeHelper(this.worldOctTree);
-        helper.visible = true;
-        this.scene.add(helper);
+        //const helper = new OctreeHelper(this.worldOctTree);
+        //helper.visible = true;
+/*        this.scene.add(helper);*/
         this.threeJsEnvironment.add(gltf.scene)
       },
       () => { console.log('error') }
