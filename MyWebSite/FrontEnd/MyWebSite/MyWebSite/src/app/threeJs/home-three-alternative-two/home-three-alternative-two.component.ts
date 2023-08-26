@@ -273,7 +273,7 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
 
     gltfLoader.setDRACOLoader(dracroLoader);
 
-    gltfLoader.load("../../../../../assets/models/AltTower2.glb",
+    gltfLoader.load("../../../../../assets/models/portal.glb",
       (gltf) => {
         this.environementWorld = gltf.scene;
         gltf.scene.scale.set(2, 2, 2);
