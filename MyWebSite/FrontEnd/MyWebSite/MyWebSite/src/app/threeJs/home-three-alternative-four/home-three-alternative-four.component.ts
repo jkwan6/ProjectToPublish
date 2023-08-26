@@ -10,477 +10,404 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import * as BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
 import { MeshBVH, MeshBVHVisualizer, StaticGeometryGenerator } from 'three-mesh-bvh'
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 
 
 @Component({
   selector: 'app-home-three-alternative-four',
   templateUrl: './home-three-alternative-four.component.html',
   styleUrls: ['./home-three-alternative-four.component.css'],
+
 })
 export class HomeThreeAlternativeFourComponent implements OnInit, OnDestroy {
 
-  constructor() { }
+  constructor(
+    private sideNavService: SideNavService,
+  ) {
+    this.sizes = this.sideNavService.getBodyDims.value;
+    this.sizes.height = 600;
+  }
+
+  sizes!: { height: number, width: number };
+  camera!: THREE.PerspectiveCamera;
+
+  playerVelocity: THREE.Vector3 = new THREE.Vector3(0,0,0)
+  player!: THREE.Mesh | any;
+  playerIsOnGround: boolean = false;
+
+
+  controls!: OrbitControls;
+
+
+  fwdPressed = false
+  bkdPressed = false
+  lftPressed = false
+  rgtPressed = false
+  upVector = new THREE.Vector3(0, 1, 0);
+  tempVector = new THREE.Vector3();
+  tempVector2 = new THREE.Vector3();
+  tempBox = new THREE.Box3();
+  tempMat = new THREE.Matrix4();
+  tempSegment = new THREE.Line3();
+
+
+  guiParams = {
+    firstPerson: false,
+    displayCollider: false,
+    displayBVH: false,
+    visualizeDepth: 10,
+    gravity: - 30,
+    playerSpeed: 10,
+    physicsSteps: 5,
+    reset: this.reset,
+  };
+
+  environment: any
+  collider: any
+  visualizer: any
+
+
+  renderer!: THREE.WebGLRenderer
+  canvas!: HTMLCanvasElement
+  scene: any
+  clock: any
+  gui: any
+
+
+  animate!: (() => {}) | any;
+  requestId!: number;
 
   @HostListener('unloaded')
   ngOnDestroy(): void { }
 
   ngOnInit(): void {
-    const params = {
 
-      firstPerson: false,
+    const bgColor = 0x263238 / 2;
 
-      displayCollider: false,
-      displayBVH: false,
-      visualizeDepth: 10,
-      gravity: - 30,
-      playerSpeed: 10,
-      physicsSteps: 5,
+    // renderer setup
+    this.canvas = document.querySelector('.HomeWebgl')!;
+    this.renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      canvas: this.canvas});
+    this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.setClearColor(bgColor, 1);
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    this.renderer.outputEncoding = THREE.sRGBEncoding;
 
-      reset: reset,
+    // scene setup
+    this.scene = new THREE.Scene();
+    this.scene.fog = new THREE.Fog(bgColor, 20, 70);
 
+    // lights
+    const light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.set(1, 1.5, 1).multiplyScalar(50);
+    light.shadow.mapSize.setScalar(2048);
+    light.shadow.bias = - 1e-4;
+    light.shadow.normalBias = 0.05;
+    light.castShadow = true;
+
+    const shadowCam = light.shadow.camera;
+    shadowCam.bottom = shadowCam.left = - 30;
+    shadowCam.top = 30;
+    shadowCam.right = 45;
+
+    this.scene.add(light);
+    this.scene.add(new THREE.HemisphereLight(0xffffff, 0x223344, 0.4));
+
+    // camera setup
+    this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 50);
+    this.camera.position.set(10, 10, - 10);
+    this.camera.far = 100;
+    this.camera.updateProjectionMatrix();
+
+    this.clock = new THREE.Clock();
+
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+
+    // stats setup
+
+    this.loadColliderEnvironment();
+
+    // character
+    this.player = new THREE.Mesh(
+      new RoundedBoxGeometry(1.0, 2.0, 1.0, 10, 0.5),
+      new THREE.MeshStandardMaterial()
+    );
+    this.player.geometry.translate(0, - 0.5, 0);
+    this.player.capsuleInfo = {
+      radius: 0.5,
+      segment: new THREE.Line3(new THREE.Vector3(), new THREE.Vector3(0, - 1.0, 0.0))
     };
+    this.player.castShadow = true;
+    this.player.receiveShadow = true;
+    this.player.material.shadowSide = 2;
+    this.scene.add(this.player);
+    this.reset();
 
-    let renderer: any, camera: any, scene: any, clock: any, gui: any;
-    let environment: any, collider: any, visualizer: any, player: any, controls: any;
-    let playerIsOnGround = false;
-    let fwdPressed = false, bkdPressed = false, lftPressed = false, rgtPressed = false;
-    let playerVelocity = new THREE.Vector3();
-    let upVector = new THREE.Vector3(0, 1, 0);
-    let tempVector = new THREE.Vector3();
-    let tempVector2 = new THREE.Vector3();
-    let tempBox = new THREE.Box3();
-    let tempMat = new THREE.Matrix4();
-    let tempSegment = new THREE.Line3();
+    // dat.gui
+    this.gui = new GUI();
+    this.gui.add(this.guiParams, 'firstPerson').onChange((v:any) => {
 
-    init();
-    render();
+      if (!v) {
 
-    function init() {
+        this.camera
+          .position
+          .sub(this.controls.target)
+          .normalize()
+          .multiplyScalar(10)
+          .add(this.controls.target);
 
-      const bgColor = 0x263238 / 2;
+      }
 
-      // renderer setup
-      const container: HTMLCanvasElement = document.querySelector('.HomeWebgl')!;
-      renderer = new THREE.WebGLRenderer({
-        antialias: true,
-        canvas: container});
-      renderer.setPixelRatio(window.devicePixelRatio);
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setClearColor(bgColor, 1);
-      renderer.shadowMap.enabled = true;
-      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-      renderer.outputEncoding = THREE.sRGBEncoding;
+    });
 
-      // scene setup
-      scene = new THREE.Scene();
-      scene.fog = new THREE.Fog(bgColor, 20, 70);
+    const visFolder = this.gui.addFolder('Visualization');
+    visFolder.add(this.guiParams, 'displayCollider');
+    visFolder.add(this.guiParams, 'displayBVH');
+    visFolder.add(this.guiParams, 'visualizeDepth', 1, 20, 1).onChange((v:any) => {
 
-      // lights
-      const light = new THREE.DirectionalLight(0xffffff, 1);
-      light.position.set(1, 1.5, 1).multiplyScalar(50);
-      light.shadow.mapSize.setScalar(2048);
-      light.shadow.bias = - 1e-4;
-      light.shadow.normalBias = 0.05;
-      light.castShadow = true;
+      this.visualizer.depth = v;
+      this.visualizer.update();
 
-      const shadowCam = light.shadow.camera;
-      shadowCam.bottom = shadowCam.left = - 30;
-      shadowCam.top = 30;
-      shadowCam.right = 45;
+    });
+    visFolder.open();
 
-      scene.add(light);
-      scene.add(new THREE.HemisphereLight(0xffffff, 0x223344, 0.4));
+    const physicsFolder = this.gui.addFolder('Player');
+    physicsFolder.add(this.guiParams, 'physicsSteps', 0, 30, 1);
+    physicsFolder.add(this.guiParams, 'gravity', - 100, 100, 0.01).onChange((v:any) => {
 
-      // camera setup
-      camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 50);
-      camera.position.set(10, 10, - 10);
-      camera.far = 100;
-      camera.updateProjectionMatrix();
+      this.guiParams.gravity = parseFloat(v);
+      
+    });
+    physicsFolder.add(this.guiParams, 'playerSpeed', 1, 20);
+    physicsFolder.open();
 
-      clock = new THREE.Clock();
+    this.gui.add(this.guiParams, 'reset');
+    this.gui.open();
 
-      controls = new OrbitControls(camera, renderer.domElement);
+    this.defineEvents();
+  }
 
-      // stats setup
 
-      loadColliderEnvironment();
+  reset() {
 
-      // character
-      player = new THREE.Mesh(
-        new RoundedBoxGeometry(1.0, 2.0, 1.0, 10, 0.5),
-        new THREE.MeshStandardMaterial()
-      );
-      player.geometry.translate(0, - 0.5, 0);
-      player.capsuleInfo = {
-        radius: 0.5,
-        segment: new THREE.Line3(new THREE.Vector3(), new THREE.Vector3(0, - 1.0, 0.0))
-      };
-      player.castShadow = true;
-      player.receiveShadow = true;
-      player.material.shadowSide = 2;
-      scene.add(player);
-      reset();
+  this.playerVelocity.set(0, 0, 0);
+  this.player.position.set(15.75, - 3, 30);
+  this.camera.position.sub(this.controls.target);
+  this.controls.target.copy(this.player.position);
+  this.camera.position.add(this.player.position);
+    this.controls.update();
+  }
 
-      // dat.gui
-      gui = new GUI();
-      gui.add(params, 'firstPerson').onChange((v:any) => {
+  updatePlayer(delta: any) {
 
-        if (!v) {
+  if (this.playerIsOnGround) {
 
-          camera
-            .position
-            .sub(controls.target)
-            .normalize()
-            .multiplyScalar(10)
-            .add(controls.target);
+    this.playerVelocity.y = delta * this.guiParams.gravity;
 
-        }
+  } else {
 
-      });
+    this.playerVelocity.y += delta * this.guiParams.gravity;
 
-      const visFolder = gui.addFolder('Visualization');
-      visFolder.add(params, 'displayCollider');
-      visFolder.add(params, 'displayBVH');
-      visFolder.add(params, 'visualizeDepth', 1, 20, 1).onChange((v:any) => {
+  }
 
-        visualizer.depth = v;
-        visualizer.update();
+  this.player.position.addScaledVector(this.playerVelocity, delta);
 
-      });
-      visFolder.open();
+  // move the player
+  const angle = this.controls.getAzimuthalAngle();
+  if (this.fwdPressed) {
 
-      const physicsFolder = gui.addFolder('Player');
-      physicsFolder.add(params, 'physicsSteps', 0, 30, 1);
-      physicsFolder.add(params, 'gravity', - 100, 100, 0.01).onChange((v:any) => {
+    this.tempVector.set(0, 0, - 1).applyAxisAngle(this.upVector, angle);
+    this.player.position.addScaledVector(this.tempVector, this.guiParams.playerSpeed * delta);
 
-        params.gravity = parseFloat(v);
+  }
 
-      });
-      physicsFolder.add(params, 'playerSpeed', 1, 20);
-      physicsFolder.open();
+  if (this.bkdPressed) {
 
-      gui.add(params, 'reset');
-      gui.open();
+    this.tempVector.set(0, 0, 1).applyAxisAngle(this.upVector, angle);
+    this.player.position.addScaledVector(this.tempVector, this.guiParams.playerSpeed * delta);
 
-      window.addEventListener('resize', function () {
+  }
 
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
+  if (this.lftPressed) {
 
-        renderer.setSize(window.innerWidth, window.innerHeight);
+    this.tempVector.set(- 1, 0, 0).applyAxisAngle(this.upVector, angle);
+    this.player.position.addScaledVector(this.tempVector, this.guiParams.playerSpeed * delta);
 
-      }, false);
+  }
 
-      window.addEventListener('keydown', function (e) {
+  if (this.rgtPressed) {
 
-        switch (e.code) {
+    this.tempVector.set(1, 0, 0).applyAxisAngle(this.upVector, angle);
+    this.player.position.addScaledVector(this.tempVector, this.guiParams.playerSpeed * delta);
 
-          case 'KeyW': fwdPressed = true; break;
-          case 'KeyS': bkdPressed = true; break;
-          case 'KeyD': rgtPressed = true; break;
-          case 'KeyA': lftPressed = true; break;
-          case 'Space':
-            if (playerIsOnGround) {
+  }
 
-              playerVelocity.y = 10.0;
-              playerIsOnGround = false;
+  this.player.updateMatrixWorld();
 
-            }
+  // adjust player position based on collisions
+  const capsuleInfo = this.player.capsuleInfo;
+  this.tempBox.makeEmpty();
+  this.tempMat.copy(this.collider.matrixWorld).invert();
+  this.tempSegment.copy(capsuleInfo.segment);
 
-            break;
+  // get the position of the capsule in the local space of the collider
+  this.tempSegment.start.applyMatrix4(this.player.matrixWorld).applyMatrix4(this.tempMat);
+  this.tempSegment.end.applyMatrix4(this.player.matrixWorld).applyMatrix4(this.tempMat);
 
-        }
+  // get the axis aligned bounding box of the capsule
+  this.tempBox.expandByPoint(this.tempSegment.start);
+  this.tempBox.expandByPoint(this.tempSegment.end);
 
-      });
+  this.tempBox.min.addScalar(- capsuleInfo.radius);
+  this.tempBox.max.addScalar(capsuleInfo.radius);
 
-      window.addEventListener('keyup', function (e) {
+  this.collider.geometry.boundsTree.shapecast({
 
-        switch (e.code) {
+    intersectsBounds: (box: any) => box.intersectsBox(this.tempBox),
 
-          case 'KeyW': fwdPressed = false; break;
-          case 'KeyS': bkdPressed = false; break;
-          case 'KeyD': rgtPressed = false; break;
-          case 'KeyA': lftPressed = false; break;
+    intersectsTriangle: (tri: any) => {
 
-        }
+      // check if the triangle is intersecting the capsule and adjust the
+      // capsule position if it is.
+      const triPoint = this.tempVector;
+      const capsulePoint = this.tempVector2;
 
-      });
+      const distance = tri.closestPointToSegment(this.tempSegment, triPoint, capsulePoint);
+      if (distance < capsuleInfo.radius) {
+
+        const depth = capsuleInfo.radius - distance;
+        const direction = capsulePoint.sub(triPoint).normalize();
+
+        this.tempSegment.start.addScaledVector(direction, depth);
+        this.tempSegment.end.addScaledVector(direction, depth);
+
+      }
 
     }
 
-    function loadColliderEnvironment() {
+  });
 
-      new GLTFLoader().load('../../../../../assets/models/AltTower2.glb', res => {
+  // get the adjusted position of the capsule collider in world space after checking
+  // triangle collisions and moving it. capsuleInfo.segment.start is assumed to be
+  // the origin of the player model.
+  const newPosition = this.tempVector;
+  newPosition.copy(this.tempSegment.start).applyMatrix4(this.collider.matrixWorld);
+    
+  // check how much the collider was moved
+  const deltaVector = this.tempVector2;
+  deltaVector.subVectors(newPosition, this.player.position);
+    
+  // if the player was primarily adjusted vertically we assume it's on something we should consider ground
+  this.playerIsOnGround = deltaVector.y > Math.abs(delta * this.playerVelocity.y * 0.25);
 
-        const gltfScene = res.scene;
-        gltfScene.scale.setScalar(10);
-        gltfScene.position.set(0,0,-10)
-        const box = new THREE.Box3();
-        box.setFromObject(gltfScene);
-        box.getCenter(gltfScene.position).negate();
-        gltfScene.updateMatrixWorld(true);
+  const offset = Math.max(0.0, deltaVector.length() - 1e-5);
+  deltaVector.normalize().multiplyScalar(offset);
 
-        // visual geometry setup
-        const toMerge: { [key: number]: THREE.Mesh[] } = [];
-        gltfScene.traverse((c:any) => {
+  // adjust the player model
+  this.player.position.add(deltaVector);
 
-//          if (
-//            /Boss/.test(c.name) ||
-//            /Enemie/.test(c.name) ||
-//            /Shield/.test(c.name) ||
-//            /Sword/.test(c.name) ||
-//            /Character/.test(c.name) ||
-//            /Gate/.test(c.name) ||
+  if (!this.playerIsOnGround) {
 
-//            // spears
-//            /Cube/.test(c.name) ||
+    deltaVector.normalize();
+    this.playerVelocity.addScaledVector(deltaVector, - deltaVector.dot(this.playerVelocity));
 
-///*             pink brick*/
-//            c.material && c.material.color.r === 1.0
-//          ) {
+  } else {
 
-//            return;
+    this.playerVelocity.set(0, 0, 0);
 
-//          }
+  }
 
-          if (c.isMesh) {
+  // adjust the camera
+  this.camera.position.sub(this.controls.target);
+  this.controls.target.copy(this.player.position);
+  this.camera.position.add(this.player.position);
 
-            const hex: number = c.material.color.getHex();
-            toMerge[hex] = toMerge[hex] || [];
-            toMerge[hex].push(c);
+  // if the player has fallen too far below the level reset their position to the start
+  if (this.player.position.y < - 25) {
 
-          }
-
-        });
-
-        environment = new THREE.Group();
-        for (const hex in toMerge) {
-
-          const arr = toMerge[hex];
-          const visualGeometries:any = [];
-          arr.forEach((mesh:any) => {
-
-            if (mesh.material.emissive.r !== 0) {
-
-              environment.attach(mesh);
-
-            } else {
-
-              const geom = mesh.geometry.clone();
-              geom.applyMatrix4(mesh.matrixWorld);
-              visualGeometries.push(geom);
-
-            }
-
-          });
-
-          if (visualGeometries.length) {
-
-            const newGeom = BufferGeometryUtils.mergeBufferGeometries(visualGeometries);
-            const newMesh = new THREE.Mesh(newGeom, new THREE.MeshStandardMaterial({ color: parseInt(hex), shadowSide: 2 }));
-            newMesh.castShadow = true;
-            newMesh.receiveShadow = true;
-            newMesh.material.shadowSide = 2;
-
-            environment.add(newMesh);
-
-          }
-
-        }
-
-        const staticGenerator = new StaticGeometryGenerator(environment);
-        staticGenerator.attributes = ['position'];
-
-        const mergedGeometry = staticGenerator.generate();
-        mergedGeometry.boundsTree = new MeshBVH(mergedGeometry);
-
-        collider = new THREE.Mesh(mergedGeometry);
-        collider.material.wireframe = true;
-        collider.material.opacity = 0.5;
-        collider.material.transparent = true;
-
-        visualizer = new MeshBVHVisualizer(collider, params.visualizeDepth);
-        scene.add(visualizer);
-        scene.add(collider);
-        scene.add(environment);
-
-      });
+    this.reset();
 
     }
+  }
 
-    function reset() {
 
-      playerVelocity.set(0, 0, 0);
-      player.position.set(15.75, - 3, 30);
-      camera.position.sub(controls.target);
-      controls.target.copy(player.position);
-      camera.position.add(player.position);
-      controls.update();
+  loadColliderEnvironment() {
+    const dracroLoader = new DRACOLoader();
+    dracroLoader.setDecoderPath('../../../../../assets/draco/')
+    const gltfLoader = new GLTFLoader();
+    gltfLoader.setDRACOLoader(dracroLoader);
 
-    }
+    gltfLoader.load('../../../../../assets/models/AltTower.glb', (gltf) => {
 
-    function updatePlayer(delta: any) {
+      // Scale and position
+      const gltfScene = gltf.scene;
+      gltfScene.scale.setScalar(100);
+      gltfScene.position.set(0, -35, -50)
 
-      if (playerIsOnGround) {
+      const box = new THREE.Box3();
+      box.setFromObject(gltfScene);
+      box.getCenter(gltfScene.position).negate();
+      gltfScene.updateMatrixWorld(true);
 
-        playerVelocity.y = delta * params.gravity;
+      // visual geometry setup
+      this.environment = new THREE.Group();
+      this.environment.add(gltfScene)
+
+      const staticGenerator = new StaticGeometryGenerator(this.environment);
+      staticGenerator.attributes = ['position'];
+
+      const mergedGeometry = staticGenerator.generate();
+      mergedGeometry.boundsTree = new MeshBVH(mergedGeometry);
+      this.collider = new THREE.Mesh(mergedGeometry);
+
+      this.visualizer = new MeshBVHVisualizer(this.collider, this.guiParams.visualizeDepth);
+      this.scene.add(this.visualizer);
+      this.scene.add(this.collider);
+      this.scene.add(this.environment);
+    });
+
+  }
+
+
+
+
+
+
+
+
+  defineEvents() {
+
+    this.animate = () => {
+
+      this.requestId = window.requestAnimationFrame(this.animate);
+      const delta = Math.min(this.clock.getDelta(), 0.1);
+      if (this.guiParams.firstPerson) {
+
+        this.controls.maxPolarAngle = Math.PI;
+        this.controls.minDistance = 1e-4;
+        this.controls.maxDistance = 1e-4;
 
       } else {
 
-        playerVelocity.y += delta * params.gravity;
+        this.controls.maxPolarAngle = Math.PI / 2;
+        this.controls.minDistance = 1;
+        this.controls.maxDistance = 20;
 
       }
 
-      player.position.addScaledVector(playerVelocity, delta);
+      if (this.collider) {
 
-      // move the player
-      const angle = controls.getAzimuthalAngle();
-      if (fwdPressed) {
+        this.collider.visible = this.guiParams.displayCollider;
+        this.visualizer.visible = this.guiParams.displayBVH;
 
-        tempVector.set(0, 0, - 1).applyAxisAngle(upVector, angle);
-        player.position.addScaledVector(tempVector, params.playerSpeed * delta);
-
-      }
-
-      if (bkdPressed) {
-
-        tempVector.set(0, 0, 1).applyAxisAngle(upVector, angle);
-        player.position.addScaledVector(tempVector, params.playerSpeed * delta);
-
-      }
-
-      if (lftPressed) {
-
-        tempVector.set(- 1, 0, 0).applyAxisAngle(upVector, angle);
-        player.position.addScaledVector(tempVector, params.playerSpeed * delta);
-
-      }
-
-      if (rgtPressed) {
-
-        tempVector.set(1, 0, 0).applyAxisAngle(upVector, angle);
-        player.position.addScaledVector(tempVector, params.playerSpeed * delta);
-
-      }
-
-      player.updateMatrixWorld();
-
-      // adjust player position based on collisions
-      const capsuleInfo = player.capsuleInfo;
-      tempBox.makeEmpty();
-      tempMat.copy(collider.matrixWorld).invert();
-      tempSegment.copy(capsuleInfo.segment);
-
-      // get the position of the capsule in the local space of the collider
-      tempSegment.start.applyMatrix4(player.matrixWorld).applyMatrix4(tempMat);
-      tempSegment.end.applyMatrix4(player.matrixWorld).applyMatrix4(tempMat);
-
-      // get the axis aligned bounding box of the capsule
-      tempBox.expandByPoint(tempSegment.start);
-      tempBox.expandByPoint(tempSegment.end);
-
-      tempBox.min.addScalar(- capsuleInfo.radius);
-      tempBox.max.addScalar(capsuleInfo.radius);
-
-      collider.geometry.boundsTree.shapecast({
-
-        intersectsBounds: (box: any) => box.intersectsBox(tempBox),
-
-        intersectsTriangle: (tri: any) => {
-
-          // check if the triangle is intersecting the capsule and adjust the
-          // capsule position if it is.
-          const triPoint = tempVector;
-          const capsulePoint = tempVector2;
-
-          const distance = tri.closestPointToSegment(tempSegment, triPoint, capsulePoint);
-          if (distance < capsuleInfo.radius) {
-
-            const depth = capsuleInfo.radius - distance;
-            const direction = capsulePoint.sub(triPoint).normalize();
-
-            tempSegment.start.addScaledVector(direction, depth);
-            tempSegment.end.addScaledVector(direction, depth);
-
-          }
-
-        }
-
-      });
-
-      // get the adjusted position of the capsule collider in world space after checking
-      // triangle collisions and moving it. capsuleInfo.segment.start is assumed to be
-      // the origin of the player model.
-      const newPosition = tempVector;
-      newPosition.copy(tempSegment.start).applyMatrix4(collider.matrixWorld);
-
-      // check how much the collider was moved
-      const deltaVector = tempVector2;
-      deltaVector.subVectors(newPosition, player.position);
-
-      // if the player was primarily adjusted vertically we assume it's on something we should consider ground
-      playerIsOnGround = deltaVector.y > Math.abs(delta * playerVelocity.y * 0.25);
-
-      const offset = Math.max(0.0, deltaVector.length() - 1e-5);
-      deltaVector.normalize().multiplyScalar(offset);
-
-      // adjust the player model
-      player.position.add(deltaVector);
-
-      if (!playerIsOnGround) {
-
-        deltaVector.normalize();
-        playerVelocity.addScaledVector(deltaVector, - deltaVector.dot(playerVelocity));
-
-      } else {
-
-        playerVelocity.set(0, 0, 0);
-
-      }
-
-      // adjust the camera
-      camera.position.sub(controls.target);
-      controls.target.copy(player.position);
-      camera.position.add(player.position);
-
-      // if the player has fallen too far below the level reset their position to the start
-      if (player.position.y < - 25) {
-
-        reset();
-
-      }
-
-    }
-
-    function render() {
-
-      requestAnimationFrame(render);
-
-      const delta = Math.min(clock.getDelta(), 0.1);
-      if (params.firstPerson) {
-
-        controls.maxPolarAngle = Math.PI;
-        controls.minDistance = 1e-4;
-        controls.maxDistance = 1e-4;
-
-      } else {
-
-        controls.maxPolarAngle = Math.PI / 2;
-        controls.minDistance = 1;
-        controls.maxDistance = 20;
-
-      }
-
-      if (collider) {
-
-        collider.visible = params.displayCollider;
-        visualizer.visible = params.displayBVH;
-
-        const physicsSteps = params.physicsSteps;
+        const physicsSteps = this.guiParams.physicsSteps;
 
         for (let i = 0; i < physicsSteps; i++) {
 
-          updatePlayer(delta / physicsSteps);
+          this.updatePlayer(delta / physicsSteps);
 
         }
 
@@ -489,10 +416,59 @@ export class HomeThreeAlternativeFourComponent implements OnInit, OnDestroy {
       // TODO: limit the camera movement based on the collider
       // raycast in direction of camera and move it if it's further than the closest point
 
-      controls.update();
+      this.controls.update();
 
-      renderer.render(scene, camera);
+      this.renderer.render(this.scene, this.camera);
     }
+    this.animate();
+
+
+
+
+    window.addEventListener('resize', (event:any) => {
+
+      this.camera.aspect = window.innerWidth / window.innerHeight;
+      this.camera.updateProjectionMatrix();
+
+      this.renderer.setSize(window.innerWidth, window.innerHeight);
+
+    }, false);
+
+    window.addEventListener('keydown', (event:any) => {
+
+      switch (event.code) {
+
+        case 'KeyW': this.fwdPressed = true; break;
+        case 'KeyS': this.bkdPressed = true; break;
+        case 'KeyD': this.rgtPressed = true; break;
+        case 'KeyA': this.lftPressed = true; break;
+        case 'Space':
+          if (this.playerIsOnGround) {
+
+            this.playerVelocity.y = 10.0;
+            this.playerIsOnGround = false;
+
+          }
+
+          break;
+
+      }
+
+    });
+
+    window.addEventListener('keyup', (event:any) => {
+
+      switch (event.code) {
+
+        case 'KeyW': this.fwdPressed = false; break;
+        case 'KeyS': this.bkdPressed = false; break;
+        case 'KeyD': this.rgtPressed = false; break;
+        case 'KeyA': this.lftPressed = false; break;
+
+      }
+
+    });
   }
+
 }
 

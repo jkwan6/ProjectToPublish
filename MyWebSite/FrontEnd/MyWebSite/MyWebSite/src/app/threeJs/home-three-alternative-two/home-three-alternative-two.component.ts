@@ -17,6 +17,7 @@ import { OctreeHelper } from 'three/examples/jsm/helpers/OctreeHelper';
 import { Capsule } from 'three/examples/jsm/math/Capsule';
 import { CapsuleGeometry } from 'three';
 
+
 export interface IBoxDimensions {
   length: number,
   height: number,
@@ -445,7 +446,6 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
     this.animateScreenResize = this.sideNavService.getBodyDims.pipe(tap(results => {
       this.sizes.width = results.width * 0.925;                         // Width
       this.sizes.height = 600;                                          // Height
-      console.log(results.width)
       this.camera.aspect = this.sizes.width / this.sizes.height;
       this.camera?.updateProjectionMatrix();
       this.renderer!.setSize(this.sizes.width, this.sizes.height);
