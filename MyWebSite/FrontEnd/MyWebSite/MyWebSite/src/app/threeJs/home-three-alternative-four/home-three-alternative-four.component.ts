@@ -106,17 +106,17 @@ export class HomeThreeAlternativeFourComponent implements OnInit, OnDestroy {
       antialias: true,
       canvas: this.threeJsMainComponents.canvas});
     this.threeJsMainComponents.renderer.setPixelRatio(window.devicePixelRatio);
-    this.threeJsMainComponents.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.threeJsMainComponents.renderer.setSize(this.sizes.width, this.sizes.height);
 
     // scene setup
     this.threeJsMainComponents.scene = new THREE.Scene();
-    this.threeJsMainComponents.scene.fog = new THREE.Fog(bgColor, 20, 70);
+/*    this.threeJsMainComponents.scene.fog = new THREE.Fog(bgColor, 20, 70);*/
     // lights
     this.threeJsMainComponents.scene.add(new THREE.HemisphereLight(0xffffff, 0x223344, 1));
     // camera setup
-    this.threeJsMainComponents.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 50);
+    this.threeJsMainComponents.camera = new THREE.PerspectiveCamera(75, this.sizes.width / this.sizes.height, 0.1, 50);
     this.threeJsMainComponents.camera.position.set(10, 10, - 10);
-    this.threeJsMainComponents.camera.far = 100;
+    this.threeJsMainComponents.camera.far = 500;
     this.threeJsMainComponents.camera.updateProjectionMatrix();
     this.threeJsMainComponents.controls = new OrbitControls(
       this.threeJsMainComponents.camera,
@@ -312,6 +312,8 @@ export class HomeThreeAlternativeFourComponent implements OnInit, OnDestroy {
 
     /* <---------------------- RESIZE EVENT ----------------------> */
     this.animateScreenResize = this.sideNavService.getBodyDims.pipe(tap(results => {
+      console.log(results)
+
       this.sizes.width = results.width * 0.925;                         // Width
       this.sizes.height = 600;                                          // Height
       this.threeJsMainComponents.camera.aspect = this.sizes.width / this.sizes.height;
@@ -336,7 +338,7 @@ export class HomeThreeAlternativeFourComponent implements OnInit, OnDestroy {
         case 'KeyA': this.buttonPressed.lftPressed = true; break;
       case 'Space':
       if (this.playerVariables.playerIsOnGround) {
-        this.playerVariables.playerVelocity.y = 10.0;
+        this.playerVariables.playerVelocity.y = 20.0;
         this.playerVariables.playerIsOnGround = false;
       }
         break;

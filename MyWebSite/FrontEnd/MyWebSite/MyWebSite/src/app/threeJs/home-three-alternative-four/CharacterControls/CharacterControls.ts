@@ -49,7 +49,7 @@ export class CharacterControls {
 
     this.playerVariables.animatedVariables.mesh.position.set(
       this.playerVariables.player.mesh.position.x,
-      this.playerVariables.player.mesh.position.y-1,
+      this.playerVariables.player.mesh.position.y-1.5,
       this.playerVariables.player.mesh.position.z,
     )
 
