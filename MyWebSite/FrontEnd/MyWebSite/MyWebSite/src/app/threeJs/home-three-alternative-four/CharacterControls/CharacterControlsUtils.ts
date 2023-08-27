@@ -3,42 +3,71 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import * as RAPIER from '@dimforge/rapier3d'
 import { Capsule } from 'three/examples/jsm/math/Capsule';
 import { Octree } from 'three/examples/jsm/math/Octree';
+import { MeshBVHVisualizer } from 'three-mesh-bvh';
 
-
-export interface IControllerParams {
-  model: THREE.Group,
-  mixer: THREE.AnimationMixer,
-  animationsMap: Map<string, THREE.AnimationAction>,
-  orbitControl: OrbitControls,
-  camera: THREE.Camera,
-  currentAction: string,
-  ray: RAPIER.Ray,
-  rigidBody: RAPIER.RigidBody,
-  feetCollider: THREE.Raycaster[];
-  feetArrowGroup: THREE.Group;
-  feetRayStepper: THREE.Raycaster[];
-  threeJsEnv: THREE.Group;
-  bodyCollider: THREE.Raycaster[];
-  bodyArrowGroup: THREE.Group;
-  capsuleMath: Capsule;
-  worldOctTree: Octree;
+export interface IPlayerVariables {
+  player: {
+    mesh: THREE.Mesh,
+    capsuleInfo: { radius: number, segment: THREE.Line3 }
+  },
+  animatedVariables: {
+    mesh: THREE.Group,
+    mixer?: THREE.AnimationMixer,
+    animationsMap?: Map<string, THREE.AnimationAction>,
+    currentAction?: string
+  },
+  playerVelocity: THREE.Vector3,
+  playerIsOnGround: boolean
 }
 
-export interface ICharacterColliders {
-  model: THREE.Group,
-  mixer: THREE.AnimationMixer,
-  animationsMap: Map<string, THREE.AnimationAction>,
-  orbitControl: OrbitControls,
-  camera: THREE.Camera,
-  currentAction: string,
-  ray: RAPIER.Ray,
-  rigidBody: RAPIER.RigidBody,
-  feetCollider: THREE.Raycaster[];
-  feetArrowGroup: THREE.Group;
-  feetRayStepper: THREE.Raycaster[];
-  threeJsEnv: THREE.Group;
+export interface IButtonPressed {
+  fwdPressed: boolean,
+  bkdPressed: boolean,
+  lftPressed: boolean,
+  rgtPressed: boolean
 }
 
+export interface IKeysPressed { };
+
+export interface ITempVariables {
+  upVector: THREE.Vector3,
+  tempVector : THREE.Vector3,
+  tempVector2 : THREE.Vector3,
+  tempBox : THREE.Box3,
+  tempMat : THREE.Matrix4,
+  tempSegment : THREE.Line3
+}
+
+export interface IColliderVariables {
+  environment?: THREE.Group,
+  collider?: THREE.Mesh,
+  visualizer?: MeshBVHVisualizer
+}
+
+export interface IGuiParams {
+  firstPerson: boolean,
+  displayCollider: boolean,
+  displayBVH: boolean,
+  visualizeDepth: number,
+  gravity: number,
+  playerSpeed: number,
+  physicsSteps: number
+};
+
+export interface IEventVariables {
+  animate: (() => { }) | any,
+  keyboardUpEvent: (() => { }) | any,
+  keyboardDownEvent: (() => { }) | any,
+  requestId: number
+}
+
+export interface IThreeJsMainComponents {
+  camera: THREE.PerspectiveCamera,
+  renderer: THREE.WebGLRenderer,
+  canvas: HTMLCanvasElement,
+  scene: THREE.Scene,
+  controls?: OrbitControls
+}
 
 export enum DIRECTIONS {
   FORWARD = 'w',
