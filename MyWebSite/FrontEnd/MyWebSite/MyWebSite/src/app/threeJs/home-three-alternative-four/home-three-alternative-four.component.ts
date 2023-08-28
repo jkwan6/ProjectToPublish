@@ -338,7 +338,7 @@ export class HomeThreeAlternativeFourComponent implements OnInit, OnDestroy {
         case 'KeyA': this.buttonPressed.lftPressed = true; break;
       case 'Space':
       if (this.playerVariables.playerIsOnGround) {
-        this.playerVariables.playerVelocity.y = 20.0;
+        this.playerVariables.playerVelocity.y = 10.0;
         this.playerVariables.playerIsOnGround = false;
       }
         break;
