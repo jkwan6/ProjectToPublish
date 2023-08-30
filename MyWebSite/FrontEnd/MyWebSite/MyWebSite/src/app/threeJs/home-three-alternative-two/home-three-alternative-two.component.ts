@@ -274,13 +274,13 @@ export class HomeThreeAlternativeTwoComponent implements OnInit, OnDestroy{
 
     gltfLoader.setDRACOLoader(dracroLoader);
 
-    gltfLoader.load("../../../../../assets/models/portal.glb",
+    gltfLoader.load("../../../../../assets/models/AltTower.glb",
       (gltf) => {
         this.environementWorld = gltf.scene;
-        gltf.scene.scale.set(2, 2, 2);
+        gltf.scene.scale.set(50, 50, 50);
         gltf.scene.position.set(0, 10, 0);
         this.scene!.add(gltf.scene);
-        this.worldOctTree.fromGraphNode(gltf.scene);
+/*        this.worldOctTree.fromGraphNode(gltf.scene);*/
         //const helper = new OctreeHelper(this.worldOctTree);
         //helper.visible = true;
 /*        this.scene.add(helper);*/
