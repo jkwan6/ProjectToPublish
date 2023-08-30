@@ -25,6 +25,7 @@ export class HomeThreeAlternativeFourComponent implements OnInit, OnDestroy {
   {
     this.sizes = this.sideNavService.getBodyDims.value;
     this.sizes.height = 600;
+    console.log(this.sizes)
   }
 
   // #region Properties
@@ -96,7 +97,16 @@ export class HomeThreeAlternativeFourComponent implements OnInit, OnDestroy {
   // #endregion
 
   @HostListener('unloaded')
-  ngOnDestroy(): void { }
+  ngOnDestroy(): void {
+    window.cancelAnimationFrame(this.eventVariables.requestId);
+    this.threeJsMainComponents.renderer!.dispose();
+    this.threeJsMainComponents.renderer.forceContextLoss();
+    this.subscription.unsubscribe();
+    document.removeEventListener('keyup', this.eventVariables.keyboardUpEvent)
+    document.removeEventListener('keydown', this.eventVariables.keyboardDownEvent)
+    this.sizes.height = 0;
+    this.sizes.width = 2000;  // This one is a quick fix on the width that keeps on decreasing in size.
+  }
 
   ngOnInit(): void {
 
@@ -312,8 +322,7 @@ export class HomeThreeAlternativeFourComponent implements OnInit, OnDestroy {
 
     /* <---------------------- RESIZE EVENT ----------------------> */
     this.animateScreenResize = this.sideNavService.getBodyDims.pipe(tap(results => {
-      console.log(results)
-
+/*      console.log(results)*/
       this.sizes.width = results.width * 0.925;                         // Width
       this.sizes.height = 600;                                          // Height
       this.threeJsMainComponents.camera.aspect = this.sizes.width / this.sizes.height;

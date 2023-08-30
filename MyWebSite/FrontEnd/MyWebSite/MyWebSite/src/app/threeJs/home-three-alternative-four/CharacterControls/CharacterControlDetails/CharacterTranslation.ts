@@ -31,7 +31,6 @@ export class CharacterTranslation {
   colliderVariables: IColliderVariables;
 
   calculateTranslation(delta: number) {
-
     // Falling down Algo
     if (this.playerVariables.playerIsOnGround) {
       this.playerVariables.playerVelocity.y = delta * this.guiParams.gravity;
