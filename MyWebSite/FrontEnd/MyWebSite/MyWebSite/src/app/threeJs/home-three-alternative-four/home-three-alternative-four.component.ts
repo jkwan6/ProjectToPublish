@@ -110,13 +110,14 @@ export class HomeThreeAlternativeFourComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    const bgColor = 0x263238 / 2;
+    const bgColor = "#87CEEB";
     this.threeJsMainComponents.canvas = document.querySelector('.HomeWebgl')!;
     this.threeJsMainComponents.renderer = new THREE.WebGLRenderer({
       antialias: true,
       canvas: this.threeJsMainComponents.canvas});
     this.threeJsMainComponents.renderer.setPixelRatio(window.devicePixelRatio);
     this.threeJsMainComponents.renderer.setSize(this.sizes.width, this.sizes.height);
+    this.threeJsMainComponents.renderer.setClearColor(bgColor);
 
     // scene setup
     this.threeJsMainComponents.scene = new THREE.Scene();
@@ -233,7 +234,7 @@ export class HomeThreeAlternativeFourComponent implements OnInit, OnDestroy {
     const gltfLoader = new GLTFLoader();
     gltfLoader.setDRACOLoader(dracroLoader);
 
-    gltfLoader.load('../../../../../assets/models/KingsWaySimple.glb', (gltf) => {
+    gltfLoader.load('../../../../../assets/models/KingStTSP.glb', (gltf) => {
       // Scale and position
       const gltfScene = gltf.scene;
       gltfScene.scale.setScalar(1);
