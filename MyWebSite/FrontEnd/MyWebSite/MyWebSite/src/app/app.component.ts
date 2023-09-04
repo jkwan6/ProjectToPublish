@@ -11,6 +11,7 @@ import { SideNavService } from './service/SideNavService/SideNavService';
 })
 
 export class AppComponent implements OnInit {
+
   constructor(private sideNavService: SideNavService) { }
   subscription!: Subscription;
   ngOnInit(): void {

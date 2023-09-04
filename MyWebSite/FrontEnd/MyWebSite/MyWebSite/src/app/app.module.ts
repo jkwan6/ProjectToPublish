@@ -36,7 +36,7 @@ import { HomeThreeAlternativeTwoComponent } from './threeJs/home-three-alternati
 import { HomeThreeAlternativeThreeComponent } from './threeJs/home-three-alternative-three/home-three-alternative-three.component';
 import { HomeThreeAlternativeFourComponent } from './threeJs/home-three-alternative-four/home-three-alternative-four.component';
 import { ScheduleComponent } from './sub-pages/schedule/schedule.component';
-import { CarouselModuleComponent } from './modules/carousel-module/carousel-module.component';
+import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular'
 
 @NgModule({
   declarations: [
@@ -66,7 +66,7 @@ import { CarouselModuleComponent } from './modules/carousel-module/carousel-modu
     ScheduleComponent,
     HomeThreeAlternativeThreeComponent,
     HomeThreeAlternativeFourComponent,
-    CarouselModuleComponent
+
 
   ],
   imports: [
@@ -77,10 +77,12 @@ import { CarouselModuleComponent } from './modules/carousel-module/carousel-modu
     AngularMaterialModule,
     FormsModule,
     AngularThreeModule,
-    AuthenticationModule
+    AuthenticationModule,
+    EditorModule
   ],
   providers: [
     DatePipe,
+    { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' },
     { provide: HTTP_INTERCEPTORS, useClass: TokenHeaderInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: RefreshTokenTimeOutInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: RefreshTokenInterceptor, multi: true },

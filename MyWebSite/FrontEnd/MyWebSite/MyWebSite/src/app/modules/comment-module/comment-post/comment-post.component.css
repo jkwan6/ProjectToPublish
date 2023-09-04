@@ -38,3 +38,18 @@
     margin-left: 3px;
     border-color: rgb(128, 128, 128, 0.3)
 }
+
+
+/*.editor{
+    background-color:black;
+}*/
+.body {
+  color: #0C74DB;
+  background-color: #d8e3fa;
+  font-family: 'Josefin Sans', sans-serif;
+  line-height: 1;
+}
+
+.tox-toolbar {
+  background-color: #333; /* Your desired color */
+}

@@ -11,6 +11,7 @@ import { IPageParams } from '../interface/IPageParams';
 import { BaseRepository } from '../repository/BaseRepository';
 import { MatCarousel, MatCarouselComponent, Orientation } from '@ngbmodule/material-carousel'
 import { ThemePalette } from '@angular/material/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home-page',
@@ -21,11 +22,11 @@ import { ThemePalette } from '@angular/material/core';
 export class HomePageComponent implements OnInit {
 
 
-
-  constructor() { }
+  constructor(private sanitizer: DomSanitizer) { }
 
   ngOnInit(): void {
   }
+
 
 
 
