@@ -1,0 +1,11 @@
+<div class="tinyMCE">
+  <div class="preview_pane">
+    <h1 class="title">Preview Pane</h1>
+    <div [innerHTML]="testVariable"></div>
+  </div>
+
+  <editor [init]="editorConfig"
+          [(ngModel)]="editorContent"></editor>
+  <button (click)="getContent()">Get Content</button>
+
+</div>
