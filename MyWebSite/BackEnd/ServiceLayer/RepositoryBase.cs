@@ -1,17 +1,10 @@
 ﻿using DataLayer;
 using DataLayer.Entities;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ServiceLayer.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Net;
-using System.Net.Http;
 using System.Net.Http.Formatting;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServiceLayer
 {

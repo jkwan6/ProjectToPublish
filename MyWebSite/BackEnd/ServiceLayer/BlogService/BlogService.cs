@@ -1,13 +1,21 @@
-﻿using DataLayer.Entities;
+﻿using DataLayer;
+using DataLayer.Entities;
+using Microsoft.AspNetCore.Mvc;
 using ServiceLayer.DTO;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Metadata;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace ServiceLayer.CommentsService
+namespace ServiceLayer.BlogService
 {
-    public class CommentsService
+    public class BlogService
     {
-        private readonly IRepositoryBase<Comments> _repository;
+        private readonly IRepositoryBase<Blog> _repository;
         // Constructor
-        public CommentsService(IRepositoryBase<Comments> repository)
+        public BlogService(IRepositoryBase<Blog> repository)
         {
             _repository = repository;
         }
@@ -24,17 +32,17 @@ namespace ServiceLayer.CommentsService
             return results;
         }
 
-        public async Task<HttpResponseMessage> PutAsync(int id, Comments comment)
+        public async Task<HttpResponseMessage> PutAsync(int id, Blog blog)
         {
-            comment.CommentsTime = DateTime.UtcNow;
-            var results = await _repository.PutAsync(id, comment);
+            blog.BlogTime = DateTime.UtcNow;
+            var results = await _repository.PutAsync(id, blog);
             return results!;
         }
 
-        public async Task<HttpResponseMessage> PostAsync(Comments comment)
+        public async Task<HttpResponseMessage> PostAsync(Blog blog)
         {
-            comment.CommentsTime = DateTime.UtcNow;
-            var results = await _repository.PostAsync(comment);
+            blog.BlogTime = DateTime.UtcNow;
+            var results = await _repository.PostAsync(blog);
             return results!;
         }
 

@@ -32,13 +32,13 @@ namespace DataLayer
                 typeof(AppDbContext).Assembly
                 );
         }
+
         public DbSet<Comments> Comments => Set<Comments>();
         public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
         public DbSet<AppSession> AppSessions => Set<AppSession>();
         public DbSet<AccessToken> AccessTokens => Set<AccessToken>();
         public DbSet<Page> Pages => Set<Page>();
         public DbSet<PageContent> PageContents => Set<PageContent>();
-
-
+        public DbSet<Blog> Blogs => Set<Blog>();
     }
 }

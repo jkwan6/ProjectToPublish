@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ServiceLayer.DTO;
+﻿using ServiceLayer.DTO;
 
 namespace ServiceLayer
 {

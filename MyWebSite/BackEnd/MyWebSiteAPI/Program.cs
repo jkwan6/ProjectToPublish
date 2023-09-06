@@ -13,6 +13,7 @@ using AuthenticationBusinessLogic.LoginLogic;
 using AuthenticationBusinessLogic;
 using AuthenticationBusinessLogic.SignInLogic;
 using AuthenticationBusinessLogic.RefreshLogic;
+using ServiceLayer.BlogService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -95,6 +96,8 @@ builder.Services.AddScoped<LoginLogic>();
 builder.Services.AddScoped<SignInLogic>();
 builder.Services.AddScoped<RefreshLogic>();
 builder.Services.AddScoped<JwtCreatorLogic>();
+builder.Services.AddScoped<BlogService>();
+builder.Services.AddScoped<IRepositoryBase<Blog>, BlogRepository>();
 
 var app = builder.Build();
 

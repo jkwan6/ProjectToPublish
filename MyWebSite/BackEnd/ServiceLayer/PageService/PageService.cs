@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ServiceLayer.PageService
+﻿namespace ServiceLayer.PageService
 {
     public class PageService
     {
@@ -14,7 +8,6 @@ namespace ServiceLayer.PageService
             _repository = repository;
         }
         
-
         public void GetByTitle(string title)
         {
 
