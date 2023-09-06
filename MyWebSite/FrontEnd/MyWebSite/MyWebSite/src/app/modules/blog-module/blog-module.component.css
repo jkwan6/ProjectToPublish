@@ -1,0 +1,21 @@
+.grid-layout {
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(370px, 1fr));
+  justify-content: center;
+}
+
+.mat-card {
+  min-width: 350px;
+  padding: 10px;
+}
+
+.mat-card:hover {
+    transform: scale(1.015);
+    transition: transform 0.05s;
+}
+
+.header-image {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
+}

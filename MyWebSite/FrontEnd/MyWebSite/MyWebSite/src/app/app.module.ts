@@ -37,7 +37,8 @@ import { HomeThreeAlternativeThreeComponent } from './threeJs/home-three-alterna
 import { HomeThreeAlternativeFourComponent } from './threeJs/home-three-alternative-four/home-three-alternative-four.component';
 import { ScheduleComponent } from './sub-pages/schedule/schedule.component';
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
-import { TinyMceModuleComponent } from './modules/tiny-mce-module/tiny-mce-module.component'
+import { TinyMceModuleComponent } from './modules/tiny-mce-module/tiny-mce-module.component';
+import { BlogModuleComponent } from './modules/blog-module/blog-module.component'
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { TinyMceModuleComponent } from './modules/tiny-mce-module/tiny-mce-modul
     HomeThreeAlternativeThreeComponent,
     HomeThreeAlternativeFourComponent,
     TinyMceModuleComponent,
+    BlogModuleComponent,
 
 
   ],

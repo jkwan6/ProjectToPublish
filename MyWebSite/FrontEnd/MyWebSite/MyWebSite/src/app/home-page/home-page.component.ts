@@ -13,11 +13,6 @@ import { MatCarousel, MatCarouselComponent, Orientation } from '@ngbmodule/mater
 import { ThemePalette } from '@angular/material/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
-interface card {
-  title: string,
-  body: string
-};
-
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.component.html',
@@ -25,50 +20,6 @@ interface card {
   providers: [BaseRepository]
 })
 export class HomePageComponent implements OnInit {
-  
-  cards: card[] = [
-    {
-      title: 'title1',
-      body: 'body1'
-    },
-    {
-      title: 'title2',
-      body: 'body2'
-    },
-    {
-      title: 'title3',
-      body: 'body3'
-    },
-    {
-      title: 'title4',
-      body: 'body4'
-    },
-    {
-      title: 'title5',
-      body: 'body5'
-    },
-    {
-      title: 'title5',
-      body: 'body5'
-    },
-    {
-      title: 'title5',
-      body: 'body5'
-    },
-    {
-      title: 'title5',
-      body: 'body5'
-    },
-    {
-      title: 'title5',
-      body: 'body5'
-    },
-    {
-      title: 'title5',
-      body: 'body5'
-    },
-  ];
-
 
   constructor(private sanitizer: DomSanitizer) { }
 
