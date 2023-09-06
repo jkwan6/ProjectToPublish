@@ -60,7 +60,7 @@ namespace MyWebSiteApi.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "RegisteredUser")]
+        //[Authorize(Roles = "RegisteredUser")]
         public async Task<ActionResult<Blog>> PostAsync([FromBody] Blog blog)
         {
             var user = User.Identity!.Name;
