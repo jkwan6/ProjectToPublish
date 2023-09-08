@@ -2,7 +2,8 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Observable } from 'rxjs';
+import { DomSanitizer } from '@angular/platform-browser';
+import { map, Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment.prod';
 import { IApiObject } from '../../interface/IApiObject';
 import { IBlog } from '../../interface/IBlog';
@@ -25,7 +26,8 @@ export class BlogModuleComponent implements AfterViewInit {
 
   constructor(
     private repository: BaseRepository<IApiObject<IBlog[]>, IApiObject<IBlog[]>>,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private sanitizer: DomSanitizer,
   ) {
     this.blogRepository$ = this.repository.GetAll("url", this.params)
     this.url = "api/blog" // Gotta Refactor
@@ -130,7 +132,12 @@ export class BlogModuleComponent implements AfterViewInit {
   loadData(event?: PageEvent) {
     this.setPaginatorValues();
     var obs = this.repository.GetAll(this.url, this.params);
-    obs.subscribe(results => {
+
+    obs.pipe(tap(results => {
+      results.objects.forEach(blogEntry => {
+        blogEntry.blogBody = this.sanitizer.bypassSecurityTrustHtml(blogEntry.blogBody as string);
+      })
+    })).subscribe(results => {
       this.paginator.length = results.count;
       this.paginator.pageIndex = this.params.pageIndex;
       this.paginator.pageSize = this.params.pageSize;
@@ -138,6 +145,15 @@ export class BlogModuleComponent implements AfterViewInit {
       console.log(this.Blogs.filteredData)
     })
   }
+
+  //getContent() {
+  //  console.log(this.editorContent)
+  //  var test = this.sanitizer.bypassSecurityTrustHtml(this.editorContent!)
+  //  this.testVariable = test;
+  //  let abcd: SafeHtml;
+  //  abcd = test;
+  //}
+
 
   setPaginatorValues() {
     var sortColumn = (this.sort) ? this.sort.active : this.params.sortColumn;      // Active is the Current string

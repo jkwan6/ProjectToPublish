@@ -21,7 +21,8 @@
   flex-grow: 1;
   min-width: 330px;
   min-height: 200px;
-  max-height: 300px;
+  max-height: 200px;
+  overflow:clip;
 /*  padding-top: 10px;
   margin-top: 10px;
   padding-bottom: 10px;
