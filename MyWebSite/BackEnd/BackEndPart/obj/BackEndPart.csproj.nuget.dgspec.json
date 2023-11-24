@@ -58,6 +58,10 @@
             "OrchardCore.Application.Targets": {
               "target": "Package",
               "version": "[1.7.2, )"
+            },
+            "OrchardCoreContrib.Apis.Swagger": {
+              "target": "Package",
+              "version": "[1.3.0, )"
             }
           },
           "imports": [

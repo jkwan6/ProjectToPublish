@@ -421,3 +421,10 @@ C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BackEndPart\obj\Debug\net6.0\refi
 C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BackEndPart\obj\Debug\net6.0\BackEndPart.pdb
 C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BackEndPart\obj\Debug\net6.0\BackEndPart.genruntimeconfig.cache
 C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BackEndPart\obj\Debug\net6.0\ref\BackEndPart.dll
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BackEndPart\bin\Debug\net6.0\Microsoft.OpenApi.dll
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BackEndPart\bin\Debug\net6.0\OrchardCoreContrib.Abstractions.dll
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BackEndPart\bin\Debug\net6.0\OrchardCoreContrib.Apis.Swagger.dll
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BackEndPart\bin\Debug\net6.0\OrchardCoreContrib.OpenApi.Abstractions.dll
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BackEndPart\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BackEndPart\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BackEndPart\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll

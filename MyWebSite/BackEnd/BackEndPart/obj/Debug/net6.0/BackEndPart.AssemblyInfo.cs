@@ -17,6 +17,7 @@ using System.Reflection;
 [assembly: OrchardCore.Modules.Manifest.ModuleNameAttribute("OrchardCore.Users")]
 [assembly: OrchardCore.Modules.Manifest.ModuleNameAttribute("OrchardCore.Settings")]
 [assembly: OrchardCore.Modules.Manifest.ModuleNameAttribute("OrchardCore.Features")]
+[assembly: OrchardCore.Modules.Manifest.ModuleNameAttribute("OrchardCoreContrib.Apis.Swagger")]
 [assembly: OrchardCore.Modules.Manifest.ModuleNameAttribute("OrchardCore.XmlRpc")]
 [assembly: OrchardCore.Modules.Manifest.ModuleNameAttribute("OrchardCore.Workflows")]
 [assembly: OrchardCore.Modules.Manifest.ModuleNameAttribute("OrchardCore.Widgets")]
