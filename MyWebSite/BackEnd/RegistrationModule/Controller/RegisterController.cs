@@ -30,7 +30,9 @@ namespace RegistrationModule.Controller
             _siteService = siteService;
             _logger = logger;
         }
-
+        [HttpPost("Register")]
+        //[AllowAnonymous]
+        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
         {
             var settings = (await _siteService.GetSiteSettingsAsync()).As<RegistrationSettings>();

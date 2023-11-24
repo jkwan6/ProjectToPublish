@@ -37,16 +37,16 @@ namespace RegistrationModule
                 options.Password.RequiredUniqueChars = 3;
                 options.Password.RequiredLength = 6;
             });
-            services.AddCors(options =>
-            {
-                options.AddPolicy("YourCorsPolicy", builder =>
-                {
-                    builder.WithOrigins("https://localhost:4200")
-                           .AllowAnyHeader()
-                           .AllowAnyMethod()
-                           .AllowCredentials();
-                });
-            });
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy("CorsPolicy", builder =>
+            //    {
+            //        builder.WithOrigins("https://localhost:4200")
+            //               .AllowAnyHeader()
+            //               .AllowAnyMethod()
+            //               .AllowCredentials();
+            //    });
+            //});
             services.AddScoped<UserManager<IUser>, UserManager<IUser>>();
             services.AddScoped<IDataMigration, RegistrationMigration>();
             services.AddScoped<IShellFeaturesManager, ShellFeaturesManager>();
