@@ -16,6 +16,16 @@
                       appearance="outline">
         <mat-label>Username</mat-label>
         <input matInput
+               formControlName="userName">
+      </mat-form-field>
+    </div>
+
+    <div class="test">
+      <mat-form-field style="margin-bottom:-1.25em;"
+                      class="log-in-field"
+                      appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput
                formControlName="email">
       </mat-form-field>
     </div>
@@ -35,41 +45,14 @@
                 matSuffix (click)="passwordHide = !passwordHide"
                 [attr.aria-label]="'Hide password'"
                 [attr.aria-pressed]="passwordHide">
-          <mat-icon>
-            {{passwordHide ? 'visibility_off' : 'visibility'}}
+          <mat-icon [ngClass]="{'success': this.passwordCheck.value }">
+            {{this.passwordCheck.value ? 'check' : confirmPasswordHide ? 'visibility_off' : 'visibility'}}
           </mat-icon>
         </button>
       </mat-form-field>
     </div>
 
-    <div class="title-style-2">
-      Confirm Username and Password
-    </div>
-
     <div class="test">
-      <mat-form-field style="margin-bottom:-1.25em;"
-                      class="log-in-field"
-                      appearance="outline">
-        <mat-label>Confirm Username</mat-label>
-        <input matInput
-               formControlName="confirmEmail">
-
-        <div class="confirm-symbol"
-                matSuffix>
-          <mat-icon
-                    [ngClass]="{'success': this.emailCheck.value, 'fail' : !this.emailCheck.value }"
-                    *ngIf ="this.form.controls['confirmEmail'].dirty">
-            {{this.emailCheck.value ? 'check' : 'close'}}
-          </mat-icon>
-        </div>
-
-      </mat-form-field>
-
-    </div>
-
-    <div class="test">
-
-
       <mat-form-field style="margin-bottom: -1.25em;"
                       class="log-in-field"
                       appearance="outline">
@@ -78,18 +61,16 @@
                formControlName="confirmPassword"
                [type]="confirmPasswordHide ? 'password' : 'text'">
 
-        <button *ngIf ="this.form.controls['confirmPassword'].dirty"
+        <button *ngIf="this.form.controls['confirmPassword'].dirty"
                 type="button"
                 mat-icon-button
                 matSuffix (click)="confirmPasswordHide = !confirmPasswordHide"
                 [attr.aria-label]="'Hide password'"
                 [attr.aria-pressed]="confirmPasswordHide">
-          <mat-icon
-                    [ngClass]="{'success': this.passwordCheck.value }">
+          <mat-icon [ngClass]="{'success': this.passwordCheck.value }">
             {{this.passwordCheck.value ? 'check' : confirmPasswordHide ? 'visibility_off' : 'visibility'}}
           </mat-icon>
         </button>
-
       </mat-form-field>
 
     </div>

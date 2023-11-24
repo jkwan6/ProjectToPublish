@@ -9,10 +9,12 @@ using OrchardCore.Users.Models;
 using OrchardCore.Users.ViewModels;
 using OrchardCore.ContentManagement;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Cors;
 
 namespace RegistrationModule.Controller
 {
     [Route("api/[controller]")]
+    [EnableCors("CorsPolicy")]
     public partial class RegisterController : Microsoft.AspNetCore.Mvc.Controller
     {
         private readonly UserManager<IUser> _userManager;
@@ -29,9 +31,6 @@ namespace RegistrationModule.Controller
             _logger = logger;
         }
 
-        [HttpPost("Register")]
-        [AllowAnonymous]
-        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
         {
             var settings = (await _siteService.GetSiteSettingsAsync()).As<RegistrationSettings>();

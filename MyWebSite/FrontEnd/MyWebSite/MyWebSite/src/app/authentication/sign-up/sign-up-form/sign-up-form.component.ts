@@ -40,7 +40,7 @@ export class SignUpFormComponent implements OnInit {
   ) {
     this.passwordCheck = { value: false }
     this.emailCheck = { value: false }
-    this.baseUrl = "api/authentication/signin"
+    this.baseUrl = "api/Register/Register"
   }
 
   ngOnInit(): void {
@@ -50,13 +50,13 @@ export class SignUpFormComponent implements OnInit {
   // #region --> Code Module to Initialize FormGroup
   private InitialializeFormGroup() {
 
-    this.formVariable = { email: "", password: "", confirmPassword: "", confirmEmail: "" }; // Gotta initialize First
+    this.formVariable = { userName: "", email: "", password: "", confirmPassword: "" }; // Gotta initialize First
 
     this.form = new FormGroup({});
 
     // Add Parameters to Form Group
     this.form.addControl(
-      SharedUtils.nameof(this.formVariable, x => x.email),            // Update Property Here
+      SharedUtils.nameof(this.formVariable, x => x.userName),            // Update Property Here
       new FormControl("", Validators.required)                        // "" To initialize empty form
     );
     this.form.addControl(
@@ -68,19 +68,19 @@ export class SignUpFormComponent implements OnInit {
       new FormControl("", Validators.required)                        // "" To initialize empty form
     );
     this.form.addControl(
-      SharedUtils.nameof(this.formVariable, x => x.confirmEmail),  // Update Property Here
+      SharedUtils.nameof(this.formVariable, x => x.email),  // Update Property Here
       new FormControl("", Validators.required)                        // "" To initialize empty form
     );
 
-    // Add Validators to fields
-    this.form.controls
-    [SharedUtils.nameof(this.formVariable, x => x.confirmEmail)]
-      .addAsyncValidators(
-        [this.fieldMatches(
-          SharedUtils.nameof(this.formVariable, x => x.email),
-          SharedUtils.nameof(this.formVariable, x => x.confirmEmail),
-          this.emailCheck)]
-    );
+    //// Add Validators to fields
+    //this.form.controls
+    //[SharedUtils.nameof(this.formVariable, x => x.email)]
+    //  .addAsyncValidators(
+    //    [this.fieldMatches(
+    //      SharedUtils.nameof(this.formVariable, x => x.userName),
+    //      SharedUtils.nameof(this.formVariable, x => x.email),
+    //      this.emailCheck)]
+    //);
 
     this.form.controls
     [SharedUtils.nameof(this.formVariable, x => x.confirmPassword)]
@@ -92,8 +92,8 @@ export class SignUpFormComponent implements OnInit {
     );
 
     // Update AsyncValidator when primary fields changes
-    this.form.controls[SharedUtils.nameof(this.formVariable, x => x.email)].valueChanges.subscribe(() =>
-      this.form.controls[SharedUtils.nameof(this.formVariable, x => x.confirmEmail)].updateValueAndValidity({ onlySelf: true, emitEvent: false }));
+    //this.form.controls[SharedUtils.nameof(this.formVariable, x => x.userName)].valueChanges.subscribe(() =>
+    //  this.form.controls[SharedUtils.nameof(this.formVariable, x => x.email)].updateValueAndValidity({ onlySelf: true, emitEvent: false }));
 
     this.form.controls[SharedUtils.nameof(this.formVariable, x => x.password)].valueChanges.subscribe(() =>
       this.form.controls[SharedUtils.nameof(this.formVariable, x => x.confirmPassword)].updateValueAndValidity({ onlySelf: true, emitEvent: false }))
@@ -103,14 +103,14 @@ export class SignUpFormComponent implements OnInit {
   // Assign User Values from UI to class property
   public onSubmit() {
     this.formVariable = {
-      email:
-        this.form.controls[SharedUtils.nameof(this.formVariable, x => x.email)].value,
+      userName:
+        this.form.controls[SharedUtils.nameof(this.formVariable, x => x.userName)].value,
       password:
         this.form.controls[SharedUtils.nameof(this.formVariable, x => x.password)].value,
       confirmPassword:
         this.form.controls[SharedUtils.nameof(this.formVariable, x => x.confirmPassword)].value,
-      confirmEmail:
-        this.form.controls[SharedUtils.nameof(this.formVariable, x => x.confirmEmail)].value
+      email:
+        this.form.controls[SharedUtils.nameof(this.formVariable, x => x.email)].value
     }
     this.signup();
   }

@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, Injectable, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, first, map, Observable, of, Subject, switchMap } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../environments/environment.prod';
 import { ILoginRequest } from '../../interface/ILoginRequest';
 import { ILoginResult } from '../../interface/ILoginResult';
 import { IRefreshResult } from '../../interface/IRefreshResult';
@@ -26,9 +26,9 @@ export class AuthenticationService implements OnInit{
   }
 
   // URL Endpoints
-  private baseUrl: string = 'api/authentication/';
+  private baseUrl: string = 'api/Register/';
   private endpoints: { login: string, signup: string, refresh: string, logout: string } =
-    { login: 'login', signup: "signin", refresh: "refreshtoken", logout: "revoke-token" };
+    { login: 'login', signup: "register", refresh: "refreshtoken", logout: "revoke-token" };
 
   constructor(
     private _loginRepository: BaseRepository<ILoginRequest, ILoginResult>,
