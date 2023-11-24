@@ -1,0 +1,22 @@
+.preview_pane{
+    flex-grow:1;
+    border-color: white;
+    border:solid;
+    border-width: thin;
+    border-radius: 5px;
+    padding:10px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+.title{
+    text-decoration:underline;
+}
+
+.tinyMCE{
+    display: flex;
+    flex-direction:column;
+    height: fit-content;
+    flex-grow:1;
+    padding-bottom: 20px;
+}

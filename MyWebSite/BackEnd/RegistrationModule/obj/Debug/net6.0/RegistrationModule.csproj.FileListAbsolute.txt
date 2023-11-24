@@ -1,0 +1,24 @@
+C:\Users\User\Documents\C# Projects\OrchardCoreTestParts\OrchardPartTest\RegistrationModule\bin\Debug\net6.0\RegistrationModule.deps.json
+C:\Users\User\Documents\C# Projects\OrchardCoreTestParts\OrchardPartTest\RegistrationModule\bin\Debug\net6.0\RegistrationModule.dll
+C:\Users\User\Documents\C# Projects\OrchardCoreTestParts\OrchardPartTest\RegistrationModule\bin\Debug\net6.0\RegistrationModule.pdb
+C:\Users\User\Documents\C# Projects\OrchardCoreTestParts\OrchardPartTest\RegistrationModule\obj\Debug\net6.0\RegistrationModule.csproj.AssemblyReference.cache
+C:\Users\User\Documents\C# Projects\OrchardCoreTestParts\OrchardPartTest\RegistrationModule\obj\Debug\net6.0\RegistrationModule.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Documents\C# Projects\OrchardCoreTestParts\OrchardPartTest\RegistrationModule\obj\Debug\net6.0\RegistrationModule.AssemblyInfoInputs.cache
+C:\Users\User\Documents\C# Projects\OrchardCoreTestParts\OrchardPartTest\RegistrationModule\obj\Debug\net6.0\RegistrationModule.AssemblyInfo.cs
+C:\Users\User\Documents\C# Projects\OrchardCoreTestParts\OrchardPartTest\RegistrationModule\obj\Debug\net6.0\RegistrationModule.csproj.CoreCompileInputs.cache
+C:\Users\User\Documents\C# Projects\OrchardCoreTestParts\OrchardPartTest\RegistrationModule\obj\Debug\net6.0\RegistrationModule.dll
+C:\Users\User\Documents\C# Projects\OrchardCoreTestParts\OrchardPartTest\RegistrationModule\obj\Debug\net6.0\refint\RegistrationModule.dll
+C:\Users\User\Documents\C# Projects\OrchardCoreTestParts\OrchardPartTest\RegistrationModule\obj\Debug\net6.0\RegistrationModule.pdb
+C:\Users\User\Documents\C# Projects\OrchardCoreTestParts\OrchardPartTest\RegistrationModule\obj\Debug\net6.0\ref\RegistrationModule.dll
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\RegistrationModule\bin\Debug\net6.0\RegistrationModule.deps.json
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\RegistrationModule\bin\Debug\net6.0\RegistrationModule.dll
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\RegistrationModule\bin\Debug\net6.0\RegistrationModule.pdb
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\RegistrationModule\obj\Debug\net6.0\RegistrationModule.csproj.AssemblyReference.cache
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\RegistrationModule\obj\Debug\net6.0\RegistrationModule.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\RegistrationModule\obj\Debug\net6.0\RegistrationModule.AssemblyInfoInputs.cache
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\RegistrationModule\obj\Debug\net6.0\RegistrationModule.AssemblyInfo.cs
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\RegistrationModule\obj\Debug\net6.0\RegistrationModule.csproj.CoreCompileInputs.cache
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\RegistrationModule\obj\Debug\net6.0\RegistrationModule.dll
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\RegistrationModule\obj\Debug\net6.0\refint\RegistrationModule.dll
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\RegistrationModule\obj\Debug\net6.0\RegistrationModule.pdb
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\RegistrationModule\obj\Debug\net6.0\ref\RegistrationModule.dll

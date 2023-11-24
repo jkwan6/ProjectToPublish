@@ -1,0 +1,277 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BackEndPart\\BackEndPart.csproj": {}
+  },
+  "projects": {
+    "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BackEndPart\\BackEndPart.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BackEndPart\\BackEndPart.csproj",
+        "projectName": "BackEndPart",
+        "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BackEndPart\\BackEndPart.csproj",
+        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+        "outputPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BackEndPart\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BlogModule\\BlogModule.csproj": {
+                "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BlogModule\\BlogModule.csproj"
+              },
+              "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\RegistrationModule\\RegistrationModule.csproj": {
+                "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\RegistrationModule\\RegistrationModule.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "OrchardCore.Application.Cms.Core.Targets": {
+              "target": "Package",
+              "version": "[1.7.2, )"
+            },
+            "OrchardCore.Application.Targets": {
+              "target": "Package",
+              "version": "[1.7.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BlogModule\\BlogModule.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BlogModule\\BlogModule.csproj",
+        "projectName": "BlogModule",
+        "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BlogModule\\BlogModule.csproj",
+        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+        "outputPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\BlogModule\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "OrchardCore.Alias": {
+              "target": "Package",
+              "version": "[1.7.2, )"
+            },
+            "OrchardCore.Autoroute": {
+              "target": "Package",
+              "version": "[1.7.2, )"
+            },
+            "OrchardCore.ContentFields": {
+              "target": "Package",
+              "version": "[1.7.2, )"
+            },
+            "OrchardCore.ContentManagement": {
+              "target": "Package",
+              "version": "[1.7.2, )"
+            },
+            "OrchardCore.ContentManagement.Abstractions": {
+              "target": "Package",
+              "version": "[1.7.2, )"
+            },
+            "OrchardCore.ContentManagement.Display": {
+              "target": "Package",
+              "version": "[1.7.2, )"
+            },
+            "OrchardCore.Markdown": {
+              "target": "Package",
+              "version": "[1.7.2, )"
+            },
+            "OrchardCore.Markdown.Abstractions": {
+              "target": "Package",
+              "version": "[1.7.2, )"
+            },
+            "OrchardCore.Media": {
+              "target": "Package",
+              "version": "[1.7.2, )"
+            },
+            "OrchardCore.Module.Targets": {
+              "target": "Package",
+              "version": "[1.7.2, )"
+            },
+            "OrchardCore.Taxonomies": {
+              "target": "Package",
+              "version": "[1.7.2, )"
+            },
+            "OrchardCore.Title": {
+              "target": "Package",
+              "version": "[1.7.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\RegistrationModule\\RegistrationModule.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\RegistrationModule\\RegistrationModule.csproj",
+        "projectName": "RegistrationModule",
+        "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\RegistrationModule\\RegistrationModule.csproj",
+        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+        "outputPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\RegistrationModule\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "OrchardCore": {
+              "target": "Package",
+              "version": "[1.7.2, )"
+            },
+            "OrchardCore.Features": {
+              "target": "Package",
+              "version": "[1.7.2, )"
+            },
+            "OrchardCore.Module.Targets": {
+              "target": "Package",
+              "version": "[1.7.2, )"
+            },
+            "OrchardCore.Settings": {
+              "target": "Package",
+              "version": "[1.7.2, )"
+            },
+            "OrchardCore.Users": {
+              "target": "Package",
+              "version": "[1.7.2, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

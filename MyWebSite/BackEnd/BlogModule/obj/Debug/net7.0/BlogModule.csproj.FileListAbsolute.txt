@@ -1,0 +1,12 @@
+C:\Users\User\Documents\C# Projects\OrchardCoreTestParts\BlogModule\obj\Debug\net7.0\BlogModule.csproj.AssemblyReference.cache
+C:\Users\User\Documents\C# Projects\OrchardCoreTestParts\BlogModule\obj\Debug\net7.0\BlogModule.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Documents\C# Projects\OrchardCoreTestParts\BlogModule\obj\Debug\net7.0\BlogModule.AssemblyInfoInputs.cache
+C:\Users\User\Documents\C# Projects\OrchardCoreTestParts\BlogModule\obj\Debug\net7.0\BlogModule.AssemblyInfo.cs
+C:\Users\User\Documents\C# Projects\OrchardCoreTestParts\BlogModule\obj\Debug\net7.0\BlogModule.csproj.CoreCompileInputs.cache
+C:\Users\User\Documents\C# Projects\OrchardCoreTestParts\BlogModule\bin\Debug\net7.0\BlogModule.deps.json
+C:\Users\User\Documents\C# Projects\OrchardCoreTestParts\BlogModule\bin\Debug\net7.0\BlogModule.dll
+C:\Users\User\Documents\C# Projects\OrchardCoreTestParts\BlogModule\bin\Debug\net7.0\BlogModule.pdb
+C:\Users\User\Documents\C# Projects\OrchardCoreTestParts\BlogModule\obj\Debug\net7.0\BlogModule.dll
+C:\Users\User\Documents\C# Projects\OrchardCoreTestParts\BlogModule\obj\Debug\net7.0\refint\BlogModule.dll
+C:\Users\User\Documents\C# Projects\OrchardCoreTestParts\BlogModule\obj\Debug\net7.0\BlogModule.pdb
+C:\Users\User\Documents\C# Projects\OrchardCoreTestParts\BlogModule\obj\Debug\net7.0\ref\BlogModule.dll
