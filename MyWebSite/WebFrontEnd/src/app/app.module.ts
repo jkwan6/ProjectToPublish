@@ -84,9 +84,9 @@ import { BlogModuleComponent } from './modules/blog-module/blog-module.component
   ],
   providers: [
     DatePipe,
-    { provide: HTTP_INTERCEPTORS, useClass: TokenHeaderInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: RefreshTokenTimeOutInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: RefreshTokenInterceptor, multi: true },
+    //{ provide: HTTP_INTERCEPTORS, useClass: TokenHeaderInterceptor, multi: true },
+    //{ provide: HTTP_INTERCEPTORS, useClass: RefreshTokenTimeOutInterceptor, multi: true },
+    //{ provide: HTTP_INTERCEPTORS, useClass: RefreshTokenInterceptor, multi: true },
 
   ],
   bootstrap: [AppComponent]
