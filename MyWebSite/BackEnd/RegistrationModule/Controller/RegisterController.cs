@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Cors;
 namespace RegistrationModule.Controller
 {
     [Route("api/[controller]")]
-    [EnableCors("CorsPolicy")]
+    //[EnableCors("CorsPolicy")]
     public partial class RegisterController : Microsoft.AspNetCore.Mvc.Controller
     {
         private readonly UserManager<IUser> _userManager;
@@ -71,5 +71,15 @@ namespace RegistrationModule.Controller
             }
             return BadRequest(ModelState);
         }
+
+
+        [HttpPost("Register123")]
+        //[AllowAnonymous]
+        [IgnoreAntiforgeryToken]
+        public async Task<IActionResult> Register123([FromBody] RegisterViewModel model)
+        {
+            return Ok("User Registered");
+        }
+
     }
 }

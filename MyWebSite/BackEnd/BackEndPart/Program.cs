@@ -12,9 +12,9 @@ builder.Services.AddCors(options =>
                .AllowCredentials();
 
         builder.WithOrigins("http://localhost:4200")
-       .AllowAnyHeader()
-       .AllowAnyMethod()
-       .AllowCredentials();
+               .AllowAnyHeader()
+               .AllowAnyMethod()
+               .AllowCredentials();
     });
 });
 
