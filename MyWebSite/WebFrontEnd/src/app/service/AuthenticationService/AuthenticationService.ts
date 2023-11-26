@@ -9,12 +9,23 @@ import { ILoginResult } from '../../interface/ILoginResult';
 import { IRefreshResult } from '../../interface/IRefreshResult';
 import { ISignUpRequest } from '../../interface/ISignUpRequest';
 import { BaseRepository } from '../../repository/BaseRepository';
+import { IAuthEndpoints } from './AuthTypes';
 
 @Injectable({
   providedIn: 'root'    // Singleton bcz Injected in Root
 })
 
 export class AuthenticationService implements OnInit{
+
+  // URL Endpoints
+  private baseUrl: string = 'api/register/';
+  private endpoints: IAuthEndpoints =
+    {
+      login: 'login',
+      signup: "register",
+      refresh: "refreshtoken",
+      logout: "revoke-token"
+    };
 
   // EMMITTERS
   tokenPresentInLocalStorage!: BehaviorSubject<boolean>;
@@ -24,11 +35,6 @@ export class AuthenticationService implements OnInit{
   public get $authState() {  // Returning a BehaviourSubject.
     return this._authState;
   }
-
-  // URL Endpoints
-  private baseUrl: string = 'api/Register/';
-  private endpoints: { login: string, signup: string, refresh: string, logout: string } =
-    { login: 'login', signup: "register", refresh: "refreshtoken", logout: "revoke-token" };
 
   constructor(
     private _loginRepository: BaseRepository<ILoginRequest, ILoginResult>,
@@ -48,12 +54,13 @@ export class AuthenticationService implements OnInit{
     var url = environment.baseUrl + this.baseUrl + this.endpoints.signup;
     var $signup = this._signupRepository.PostItem(url, signUpRequest);
     console.log(1);
-    return $signup.pipe(
-      map(results => {
-        console.log(results);
-      }),
-      first()
-    );
+    //var test = $signup.pipe(
+    //  map(results => {
+    //    console.log(results);
+    //  }),
+    //  first()
+    //);
+    return $signup;
   }
 
   $login(loginRequest: ILoginRequest): Observable<ILoginResult> {

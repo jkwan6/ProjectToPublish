@@ -82,4 +82,9 @@
       Sign Up
     </button>
   </form>
+  <div class="error-message" *ngIf="this.signupFailed" >
+    <div *ngFor="let error of this.errorMessages">
+      - {{error}}
+    </div>
+  </div>
 </div>

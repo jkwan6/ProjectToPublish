@@ -1,4 +1,3 @@
-
 .container{
     width: stretch;
     flex-grow:1;
@@ -30,7 +29,6 @@
   padding-bottom: 5px;
 }
 
-
 .success{
     color:green;
 }
@@ -38,13 +36,11 @@
     color:red;
 }
 
-
 .test{
     display: flex;
     flex-direction: row;
     width: stretch;
 }
-
 
 .test2{
     width: inherit;
@@ -55,6 +51,9 @@
     align-content: center
 }
 
+.error-message{
+    color: red;
+}
 
 @media (max-width: 599px) {
   .log-in-body {

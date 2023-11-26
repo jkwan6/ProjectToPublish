@@ -9,6 +9,7 @@ import { ILoginRequest } from '../../../interface/ILoginRequest';
 import { ISignUpRequest } from '../../../interface/ISignUpRequest';
 import { BaseRepository } from '../../../repository/BaseRepository';
 import { AuthenticationService } from '../../../service/AuthenticationService/AuthenticationService';
+import { ErrorObject } from '../../../service/AuthenticationService/AuthTypes';
 import { SharedUtils } from '../../../shared-utils/SharedUtils';
 
 
@@ -24,11 +25,12 @@ export interface IBoolObject {
 })
 export class SignUpFormComponent implements OnInit {
 
-  passwordHide = true                 // Property to Hide/Unhide Password
-  confirmPasswordHide = true;
+  passwordHide = true                 // Property to Hide/Unhide password
+  confirmPasswordHide = true;         // Property to Hide/Unhide confirmPassword
   formVariable!: ISignUpRequest;      // Update Type Based on Form Parameters
   form!: FormGroup;                   // ReactiveForm
-  signupFailed!: boolean;
+  signupFailed: boolean = false;
+  errorMessages: string[] = [];
  
   passwordCheck!: IBoolObject;
   emailCheck!: IBoolObject;
@@ -48,7 +50,13 @@ export class SignUpFormComponent implements OnInit {
   // #region --> Code Module to Initialize FormGroup
   private InitialializeFormGroup() {
 
-    this.formVariable = { userName: "", email: "", password: "", confirmPassword: "" }; // Gotta initialize First
+    this.formVariable = 
+    { 
+      userName: "", 
+      email: "", 
+      password: "", 
+      confirmPassword: "" 
+    }; // Gotta initialize First
 
     this.form = new FormGroup({});
 
@@ -71,15 +79,6 @@ export class SignUpFormComponent implements OnInit {
     );
 
     //// Add Validators to fields
-    //this.form.controls
-    //[SharedUtils.nameof(this.formVariable, x => x.email)]
-    //  .addAsyncValidators(
-    //    [this.fieldMatches(
-    //      SharedUtils.nameof(this.formVariable, x => x.userName),
-    //      SharedUtils.nameof(this.formVariable, x => x.email),
-    //      this.emailCheck)]
-    //);
-
     this.form.controls
     [SharedUtils.nameof(this.formVariable, x => x.confirmPassword)]
       .addAsyncValidators(
@@ -90,9 +89,6 @@ export class SignUpFormComponent implements OnInit {
     );
 
     // Update AsyncValidator when primary fields changes
-    //this.form.controls[SharedUtils.nameof(this.formVariable, x => x.userName)].valueChanges.subscribe(() =>
-    //  this.form.controls[SharedUtils.nameof(this.formVariable, x => x.email)].updateValueAndValidity({ onlySelf: true, emitEvent: false }));
-
     this.form.controls[SharedUtils.nameof(this.formVariable, x => x.password)].valueChanges.subscribe(() =>
       this.form.controls[SharedUtils.nameof(this.formVariable, x => x.confirmPassword)].updateValueAndValidity({ onlySelf: true, emitEvent: false }))
   }
@@ -115,12 +111,34 @@ export class SignUpFormComponent implements OnInit {
 
   signup() {
     // Subscribe and Implement Custom Logic based on Success/Error
+    this.errorMessages = [];
     var $signup = this.authenticationService.$signup(this.formVariable);
-    $signup.subscribe(() => {
-      this.router.navigate(['/']);
-    }, (error) => {
-      this.signupFailed = true;
-    });
+    $signup.subscribe
+      (
+        {
+          complete: () => { this.router.navigate(['/']) },
+          error: (error) => { this.signupFailed = true; this.getErrorMessages(error); }
+        }
+      );
+  }
+
+  getErrorMessages(error: any) {
+    var errorMessages = error.error;
+    if (typeof errorMessages !== 'string') {
+      var errorTitles = Object.keys(errorMessages)
+      errorTitles.forEach(title => {
+        var test123 = errorMessages[title];
+        this.errorMessages.push(...test123);
+      })
+    }
+    else {
+      var test123 = errorMessages;
+      this.errorMessages.push(test123);
+    }
+  }
+
+  getErrorTitles(): string[] {
+    return Object.keys(this.errorMessages);
   }
 
   // #region Custom Async Validator

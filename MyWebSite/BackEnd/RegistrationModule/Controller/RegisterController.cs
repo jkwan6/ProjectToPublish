@@ -66,7 +66,7 @@ namespace RegistrationModule.Controller
                     return BadRequest(ModelState);
                 };
 
-                return Ok("User Registered");
+                return Ok(ModelState);
 
             }
             return BadRequest(ModelState);
