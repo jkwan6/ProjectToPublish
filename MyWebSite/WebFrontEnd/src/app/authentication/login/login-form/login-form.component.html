@@ -21,6 +21,7 @@
              autocomplete="on">
 
       <button type="button"
+              tabindex="-1"
               mat-icon-button
               matSuffix (click)="hide = !hide"
               [attr.aria-label]="'Hide password'"
@@ -33,8 +34,8 @@
     </mat-form-field>
 
     <div class="flex-content">
-      <button color="primary"
-              class="log-in-button"
+      <button 
+              class="log-in-button mat-accent"
               type="submit"
               mat-raised-button>
         Login

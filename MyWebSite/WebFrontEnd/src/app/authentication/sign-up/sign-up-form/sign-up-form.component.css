@@ -51,8 +51,12 @@
     align-content: center
 }
 
-.error-message{
-    color: red;
+.error-message {
+  color: #C83232;
+  font-weight:500;
+/*  font-weight: 700;*/
+  padding: 10px;
+  margin-top: 10px;
 }
 
 @media (max-width: 599px) {

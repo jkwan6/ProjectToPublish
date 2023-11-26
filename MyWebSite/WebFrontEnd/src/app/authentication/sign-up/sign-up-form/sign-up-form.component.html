@@ -39,7 +39,7 @@
                formControlName="password"
                [type]="passwordHide ? 'password' : 'text'">
 
-        <button *ngIf="this.form.controls['password'].dirty"
+        <button tabindex="-1" *ngIf="this.form.controls['password'].dirty"
                 type="button"
                 mat-icon-button
                 matSuffix (click)="passwordHide = !passwordHide"
@@ -61,7 +61,7 @@
                formControlName="confirmPassword"
                [type]="confirmPasswordHide ? 'password' : 'text'">
 
-        <button *ngIf="this.form.controls['confirmPassword'].dirty"
+        <button tabindex="-1" *ngIf="this.form.controls['confirmPassword'].dirty"
                 type="button"
                 mat-icon-button
                 matSuffix (click)="confirmPasswordHide = !confirmPasswordHide"
@@ -74,17 +74,18 @@
       </mat-form-field>
 
     </div>
-    <button color="primary"
-            class="log-in-button"
+    <button 
+            class="log-in-button mat-accent"
             type="submit"
             [disabled]="!form.valid"
             mat-raised-button>
       Sign Up
     </button>
   </form>
-  <div class="error-message" *ngIf="this.signupFailed" >
+
+  <mat-card class="error-message" *ngIf="this.signupFailed">
     <div *ngFor="let error of this.errorMessages">
-      - {{error}}
+        &#x2022; {{error}}
     </div>
-  </div>
+  </mat-card>
 </div>
