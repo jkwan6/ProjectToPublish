@@ -9,6 +9,7 @@
       "BackEndPart/1.0.0": {
         "dependencies": {
           "BlogModule": "1.0.0",
+          "LoginModule": "1.0.0",
           "OrchardCore.Application.Cms.Core.Targets": "1.7.2",
           "OrchardCore.Application.Targets": "1.7.2",
           "OrchardCoreContrib.Apis.Swagger": "1.3.0",
@@ -5771,6 +5772,16 @@
           "BlogModule.dll": {}
         }
       },
+      "LoginModule/1.0.0": {
+        "dependencies": {
+          "OrchardCore.Module.Targets": "1.7.2",
+          "OrchardCore.Settings": "1.7.2",
+          "OrchardCore.Users": "1.7.2"
+        },
+        "runtime": {
+          "LoginModule.dll": {}
+        }
+      },
       "RegistrationModule/1.0.0": {
         "dependencies": {
           "OrchardCore": "1.7.2",
@@ -8900,6 +8911,11 @@
       "hashPath": "zstring.2.5.0.nupkg.sha512"
     },
     "BlogModule/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "LoginModule/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

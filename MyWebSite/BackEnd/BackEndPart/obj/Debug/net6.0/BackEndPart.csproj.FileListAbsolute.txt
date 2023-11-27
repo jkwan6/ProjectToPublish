@@ -428,3 +428,5 @@ C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BackEndPart\bin\Debug\net6.0\Orch
 C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BackEndPart\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BackEndPart\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BackEndPart\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BackEndPart\bin\Debug\net6.0\LoginModule.dll
+C:\Projects\ProjectToPublish\MyWebSite\BackEnd\BackEndPart\bin\Debug\net6.0\LoginModule.pdb

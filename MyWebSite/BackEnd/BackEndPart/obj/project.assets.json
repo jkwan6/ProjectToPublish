@@ -9247,6 +9247,21 @@
           "bin/placeholder/BlogModule.dll": {}
         }
       },
+      "LoginModule/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "OrchardCore.Module.Targets": "1.7.2",
+          "OrchardCore.Settings": "1.7.2",
+          "OrchardCore.Users": "1.7.2"
+        },
+        "compile": {
+          "bin/placeholder/LoginModule.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/LoginModule.dll": {}
+        }
+      },
       "RegistrationModule/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
@@ -21419,6 +21434,11 @@
       "path": "../BlogModule/BlogModule.csproj",
       "msbuildProject": "../BlogModule/BlogModule.csproj"
     },
+    "LoginModule/1.0.0": {
+      "type": "project",
+      "path": "../../LoginModule/LoginModule.csproj",
+      "msbuildProject": "../../LoginModule/LoginModule.csproj"
+    },
     "RegistrationModule/1.0.0": {
       "type": "project",
       "path": "../RegistrationModule/RegistrationModule.csproj",
@@ -21428,6 +21448,7 @@
   "projectFileDependencyGroups": {
     "net6.0": [
       "BlogModule >= 1.0.0",
+      "LoginModule >= 1.0.0",
       "OrchardCore.Application.Cms.Core.Targets >= 1.7.2",
       "OrchardCore.Application.Targets >= 1.7.2",
       "OrchardCoreContrib.Apis.Swagger >= 1.3.0",
@@ -21471,6 +21492,9 @@
             },
             "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\RegistrationModule\\RegistrationModule.csproj": {
               "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\BackEnd\\RegistrationModule\\RegistrationModule.csproj"
+            },
+            "C:\\Projects\\ProjectToPublish\\MyWebSite\\LoginModule\\LoginModule.csproj": {
+              "projectPath": "C:\\Projects\\ProjectToPublish\\MyWebSite\\LoginModule\\LoginModule.csproj"
             }
           }
         }

@@ -71,15 +71,5 @@ namespace RegistrationModule.Controller
             }
             return BadRequest(ModelState);
         }
-
-
-        [HttpPost("Register123")]
-        //[AllowAnonymous]
-        [IgnoreAntiforgeryToken]
-        public async Task<IActionResult> Register123([FromBody] RegisterViewModel model)
-        {
-            return Ok("User Registered");
-        }
-
     }
 }

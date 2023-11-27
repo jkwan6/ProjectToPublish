@@ -95,6 +95,7 @@ using System.Reflection;
 [assembly: OrchardCore.Modules.Manifest.ModuleNameAttribute("OrchardCore.Alias")]
 [assembly: OrchardCore.Modules.Manifest.ModuleNameAttribute("OrchardCore.AdminMenu")]
 [assembly: OrchardCore.Modules.Manifest.ModuleNameAttribute("OrchardCore.AdminDashboard")]
+[assembly: OrchardCore.Modules.Manifest.ModuleNameAttribute("LoginModule")]
 [assembly: OrchardCore.Modules.Manifest.ModuleNameAttribute("BlogModule")]
 [assembly: OrchardCore.Modules.Manifest.ModuleNameAttribute("RegistrationModule")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("BackEndPart")]

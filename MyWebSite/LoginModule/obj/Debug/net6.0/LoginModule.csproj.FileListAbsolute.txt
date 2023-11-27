@@ -1,0 +1,12 @@
+C:\Projects\ProjectToPublish\MyWebSite\LoginModule\bin\Debug\net6.0\LoginModule.deps.json
+C:\Projects\ProjectToPublish\MyWebSite\LoginModule\bin\Debug\net6.0\LoginModule.dll
+C:\Projects\ProjectToPublish\MyWebSite\LoginModule\bin\Debug\net6.0\LoginModule.pdb
+C:\Projects\ProjectToPublish\MyWebSite\LoginModule\obj\Debug\net6.0\LoginModule.csproj.AssemblyReference.cache
+C:\Projects\ProjectToPublish\MyWebSite\LoginModule\obj\Debug\net6.0\LoginModule.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projects\ProjectToPublish\MyWebSite\LoginModule\obj\Debug\net6.0\LoginModule.AssemblyInfoInputs.cache
+C:\Projects\ProjectToPublish\MyWebSite\LoginModule\obj\Debug\net6.0\LoginModule.AssemblyInfo.cs
+C:\Projects\ProjectToPublish\MyWebSite\LoginModule\obj\Debug\net6.0\LoginModule.csproj.CoreCompileInputs.cache
+C:\Projects\ProjectToPublish\MyWebSite\LoginModule\obj\Debug\net6.0\LoginModule.dll
+C:\Projects\ProjectToPublish\MyWebSite\LoginModule\obj\Debug\net6.0\refint\LoginModule.dll
+C:\Projects\ProjectToPublish\MyWebSite\LoginModule\obj\Debug\net6.0\LoginModule.pdb
+C:\Projects\ProjectToPublish\MyWebSite\LoginModule\obj\Debug\net6.0\ref\LoginModule.dll

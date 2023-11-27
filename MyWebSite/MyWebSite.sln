@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RegistrationModule", "BackE
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "WebFrontEnd", "WebFrontEnd\WebFrontEnd.esproj", "{566F9D0B-1507-405D-BF1B-1EC4E2F732BA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoginModule", "LoginModule\LoginModule.csproj", "{B3AFE622-9DCD-42E8-AE80-88351E0FAE9B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{566F9D0B-1507-405D-BF1B-1EC4E2F732BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{566F9D0B-1507-405D-BF1B-1EC4E2F732BA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{566F9D0B-1507-405D-BF1B-1EC4E2F732BA}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{B3AFE622-9DCD-42E8-AE80-88351E0FAE9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3AFE622-9DCD-42E8-AE80-88351E0FAE9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3AFE622-9DCD-42E8-AE80-88351E0FAE9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3AFE622-9DCD-42E8-AE80-88351E0FAE9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
