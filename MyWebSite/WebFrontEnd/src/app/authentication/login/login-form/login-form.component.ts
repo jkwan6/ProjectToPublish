@@ -19,18 +19,17 @@ import { SharedUtils } from '../../../shared-utils/SharedUtils';
 })
 export class LoginFormComponent implements OnInit {
 
+  private client_id = "MyWebsite";
+  private scope = "offline_access";
+  private grant_type = "password";
+
   hide = true                       // Property to Hide/Unhide Password
   formVariable!: ILoginRequest;     // Update Type Based on Form Parameters
   form!: FormGroup;                 // ReactiveForm
-  baseUrl: string;
   loginFailed!: boolean;
   constructor(
     private _authenticationService: AuthenticationService,
-    private _router: Router
-  )
-  {
-    this.baseUrl = "api/authentication/login"
-  }
+    private _router: Router){}
 
   ngOnInit(): void {
     this.InitialializeFormGroup();
@@ -38,12 +37,19 @@ export class LoginFormComponent implements OnInit {
   // #region --> Code Module to Initialize FormGroup
   private InitialializeFormGroup() {
 
-    this.formVariable = { email: "", password: "" };                  // Gotta initialize First
+    this.formVariable =
+    {
+      client_id: this.client_id,
+      scope: this.scope,
+      grant_type: this.grant_type,
+      username: "",
+      password: ""
+    };                  // Gotta initialize First
     this.form = new FormGroup({});
 
     // Add Parameters to Form Group
     this.form.addControl(
-      SharedUtils.nameof(this.formVariable, x => x.email),            // Update Property Here
+      SharedUtils.nameof(this.formVariable, x => x.username),            // Update Property Here
       new FormControl("", Validators.required)                        // "" To initialize empty form
     );
     this.form.addControl(
@@ -56,8 +62,11 @@ export class LoginFormComponent implements OnInit {
   // Assign User Values from UI to class property
   public onSubmit() {
     this.formVariable = {
-      email:
-        this.form.controls[SharedUtils.nameof(this.formVariable, x => x.email)].value,
+      client_id: this.client_id,
+      scope: this.scope,
+      grant_type: this.grant_type,
+      username:
+        this.form.controls[SharedUtils.nameof(this.formVariable, x => x.username)].value,
       password:
         this.form.controls[SharedUtils.nameof(this.formVariable, x => x.password)].value,
     }

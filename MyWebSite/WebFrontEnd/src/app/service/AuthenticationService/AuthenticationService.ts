@@ -18,10 +18,11 @@ import { IAuthEndpoints } from './AuthTypes';
 export class AuthenticationService implements OnInit{
 
   // URL Endpoints
-  private baseUrl: string = 'api/register/';
+  private registerBaseUrl: string = 'api/register/';
+  private loginBaseUrl: string = 'connect/';
   private endpoints: IAuthEndpoints =
     {
-      login: 'login',
+      login: 'token',
       signup: "register",
       refresh: "refreshtoken",
       logout: "revoke-token"
@@ -51,7 +52,7 @@ export class AuthenticationService implements OnInit{
   }
 
   $signup(signUpRequest: ISignUpRequest): Observable<any> {
-    var url = environment.baseUrl + this.baseUrl + this.endpoints.signup;
+    var url = environment.baseUrl + this.registerBaseUrl + this.endpoints.signup;
     var $signup = this._signupRepository.PostItem(url, signUpRequest);
     console.log(1);
     //var test = $signup.pipe(
@@ -64,7 +65,7 @@ export class AuthenticationService implements OnInit{
   }
 
   $login(loginRequest: ILoginRequest): Observable<ILoginResult> {
-    var url = environment.baseUrl + this.baseUrl + this.endpoints.login;
+    var url = environment.baseUrl + this.loginBaseUrl + this.endpoints.login;
     var login = this._loginRepository.PostItem(url, loginRequest);
     var castedLogin: Observable<ILoginResult> = login
       .pipe(
@@ -81,7 +82,7 @@ export class AuthenticationService implements OnInit{
   }
 
   logout() {
-    var url = environment.baseUrl + this.baseUrl + this.endpoints.logout;       // Revokes the Refresh Token
+    var url = environment.baseUrl + this.registerBaseUrl + this.endpoints.logout;       // Revokes the Refresh Token
     this.stopRefreshTokenTimer();
     if (localStorage.getItem("token")) {
       var $logout = this._logoutRepository.PostItem(url, null).pipe(first());   // Unsubscribes Automatically
@@ -92,7 +93,7 @@ export class AuthenticationService implements OnInit{
   }
 
   refreshToken(): Observable<any> {
-    var url = environment.baseUrl + this.baseUrl + this.endpoints.refresh;
+    var url = environment.baseUrl + this.registerBaseUrl + this.endpoints.refresh;
     return this._refreshRepository.PostItem(url, null)
       .pipe(map((results) => {
         this.refreshTokenInnerLogic(results)

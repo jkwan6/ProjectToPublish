@@ -320,6 +320,10 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "OrchardCore.Features": {
+              "target": "Package",
+              "version": "[1.7.2, )"
+            },
             "OrchardCore.Module.Targets": {
               "target": "Package",
               "version": "[1.7.2, )"

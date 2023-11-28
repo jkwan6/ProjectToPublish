@@ -9251,6 +9251,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
+          "OrchardCore.Features": "1.7.2",
           "OrchardCore.Module.Targets": "1.7.2",
           "OrchardCore.Settings": "1.7.2",
           "OrchardCore.Users": "1.7.2"

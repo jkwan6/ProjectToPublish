@@ -1,4 +1,7 @@
 export interface ILoginRequest {
-  email: string;
+  client_id: string;
+  username: string;
   password: string;
+  scope: string;
+  grant_type: string;
 }
