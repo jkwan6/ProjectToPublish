@@ -25,6 +25,7 @@
     "@ngbmodule/material-carousel": "^0.7.2",
     "@tinymce/tinymce-angular": "^6.0.0",
     "@types/estree": "^1.0.0",
+    "angular-auth-oidc-client": "^16.0.1",
     "bootstrap": "^3.4.1",
     "esbuild-plugin-glsl": "^1.1.0",
     "glslify-loader": "^2.0.0",
