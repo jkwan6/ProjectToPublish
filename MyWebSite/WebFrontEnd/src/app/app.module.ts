@@ -38,6 +38,11 @@ import { HomeThreeAlternativeFourComponent } from './threeJs/home-three-alternat
 import { ScheduleComponent } from './sub-pages/schedule/schedule.component';
 import { TinyMceModuleComponent } from './modules/tiny-mce-module/tiny-mce-module.component';
 import { BlogModuleComponent } from './modules/blog-module/blog-module.component'
+import { OIDCModule } from './app-oidc.module';
+import { OIDCComponent } from './authentication/oidc/oidc.component';
+import { UnauthorizedComponent } from './authentication/unauthorized/unauthorized.component';
+import { EventTypes, PublicEventsService } from 'angular-auth-oidc-client';
+import { filter } from 'rxjs';
 
 @NgModule({
   declarations: [
@@ -69,8 +74,8 @@ import { BlogModuleComponent } from './modules/blog-module/blog-module.component
     HomeThreeAlternativeFourComponent,
     TinyMceModuleComponent,
     BlogModuleComponent,
-
-
+    OIDCComponent,
+    UnauthorizedComponent,
   ],
   imports: [
     BrowserModule,
@@ -81,6 +86,7 @@ import { BlogModuleComponent } from './modules/blog-module/blog-module.component
     FormsModule,
     AngularThreeModule,
     AuthenticationModule,
+    OIDCModule
   ],
   providers: [
     DatePipe,
@@ -91,4 +97,15 @@ import { BlogModuleComponent } from './modules/blog-module/blog-module.component
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(private readonly eventService: PublicEventsService) {
+    this.eventService
+      .registerForEvents()
+      .pipe(
+        filter((notification) => notification.type === EventTypes.ConfigLoaded)
+      )
+      .subscribe((config) => {
+        console.log('ConfigLoaded', config);
+      });
+  }
+}

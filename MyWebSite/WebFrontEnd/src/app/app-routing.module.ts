@@ -26,9 +26,11 @@ import { ThreeJsPage9Component } from './sub-pages/ThreeJs/three-js-page9/three-
 import { AuthGuard } from './route-guard/AuthGuard';
 import { WebsiteDetailsComponent } from './sub-pages/website-details/website-details.component';
 import { ScheduleComponent } from './sub-pages/schedule/schedule.component';
+import { UnauthorizedComponent } from './authentication/unauthorized/unauthorized.component';
+import { OIDCComponent } from './authentication/oidc/oidc.component';
 
 const routes: Routes = [
-  { path: '', component: HomePageComponent, pathMatch: 'full' },
+/*  { path: '', component: HomePageComponent, pathMatch: 'full' },*/
   { path: 'login', component: AuthenticationComponent },
   { path: 'signup', component: AuthenticationComponent },
   { path: 'contact', component: ContactInfoComponent },
@@ -53,6 +55,10 @@ const routes: Routes = [
   { path: 'three-15', component: ThreeJsPage15Component },
   { path: 'website-details', component: WebsiteDetailsComponent },
   { path: 'schedule', component: ScheduleComponent },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: 'home', component: OIDCComponent },
+  { path: 'forbidden', component: UnauthorizedComponent },
+  { path: 'unauthorized', component: UnauthorizedComponent },
 ]
 
 

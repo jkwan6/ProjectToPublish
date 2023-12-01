@@ -8,14 +8,15 @@ import { AuthModule, LogLevel } from 'angular-auth-oidc-client';
     // ...
     AuthModule.forRoot({
       config: {
-        authority: '<your authority address here>',
+        authority: 'https://offeringsolutions-sts.azurewebsites.net',
         redirectUrl: window.location.origin,
         postLogoutRedirectUri: window.location.origin,
-        clientId: '<your clientId>',
-        scope: 'openid profile email offline_access',
+        clientId: 'angularCodeRefreshTokens',
+        scope: 'openid profile email taler_api offline_access',
         responseType: 'code',
         silentRenew: true,
         useRefreshToken: true,
+        // triggerRefreshWhenIdTokenExpired: false,
         logLevel: LogLevel.Debug,
       },
     }),
